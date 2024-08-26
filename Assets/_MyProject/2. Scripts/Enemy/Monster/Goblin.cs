@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Goblin : Monster
+public class Goblin : MonsterUnit
 {
     public override int MaxHp { get; set; }
     public override int Hp { get; set; }
