@@ -4,26 +4,34 @@ using UnityEngine;
 
 public class Goblin : MonsterUnit
 {
-    public override int MaxHp { get; set; }
-    public override int Hp { get; set; }
-
+    public override int Damage { get; set; }
+    
     private void Awake()
     {
+        // TODO : 몬스터 능력치 나중에 따로 데이터베이스로 관리하여 데이터 받아와야 함
         MaxHp = 100;
         Hp = MaxHp;
+        Range = 2;
+
+        M_StateMachine = new MonsterStateMachine(this);
+        player = FindObjectOfType<PlayerController>();
     }
 
-    public override void GetDamage(int damage)
+    private void Start()
     {
-        Hp -= damage;
-
-        if (Hp <= 0)
-        {
-            Death();
-        }
+        M_StateMachine.Initialize(M_StateMachine.idleState);        
     }
-    public override void Death()
+
+    private void Update()
     {
-        Debug.Log("고블린 죽었다.");
+        M_StateMachine.Excute();
+        CalculateDistance();
+    }
+
+
+
+    public override void SendDamage(int damage)
+    {
+        
     }
 }

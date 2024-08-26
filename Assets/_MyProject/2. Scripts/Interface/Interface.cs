@@ -7,6 +7,7 @@ public interface IState
 public interface IAttackable
 {
     int Damage { get; set; }
+    int Range { get; set; }
 
     void SendDamage(int damage);
 }
@@ -21,5 +22,7 @@ public interface IDamagable
 public interface IMovable
 {
     int MoveSpeed { get; set; }
-     
+    float DistanceToPlayer { get; set; }
+
+    void CalculateDistance();     
 }

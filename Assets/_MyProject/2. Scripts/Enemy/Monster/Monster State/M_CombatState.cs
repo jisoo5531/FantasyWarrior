@@ -12,17 +12,26 @@ public class M_CombatState : IState
     }
 
     public void Enter()
-    {
-        
+    {        
+        Debug.Log("Combat State Enter");
     }
 
     public void Excute()
     {
-        
+        Debug.Log("Combat State ½ÇÇà Áß");
+        if (monster.DistanceToPlayer > monster.Range)
+        {
+            if (monster.DistanceToPlayer > monster.detectionRange)
+            {
+                monster.M_StateMachine.StateTransition(monster.M_StateMachine.followState);
+                return;
+            }
+            monster.M_StateMachine.StateTransition(monster.M_StateMachine.idleState);
+        }
     }
 
     public void Exit()
     {
-        
+        Debug.Log("Combat State exit");
     }
 }

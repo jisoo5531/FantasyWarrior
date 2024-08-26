@@ -13,14 +13,24 @@ public class M_IdleState : IState
 
     public void Enter()
     {
-        
+        Debug.Log("Idle State Enter");
     }
     public void Excute()
     {
-
+        Debug.Log("Idle State ½ÇÇà Áß");
+        
+        if (monster.DistanceToPlayer <= monster.detectionRange)
+        {
+            if (monster.DistanceToPlayer <= monster.Range)
+            {
+                monster.M_StateMachine.StateTransition(monster.M_StateMachine.combatState);
+                return;
+            }
+            monster.M_StateMachine.StateTransition(monster.M_StateMachine.followState);
+        }
     }
     public void Exit()
     {
-        
+        Debug.Log("Idle State Exit");
     }
 }

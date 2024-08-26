@@ -23,14 +23,5 @@ public class PlayerWeapon : Weapon
         
         
     }
-
-    private void OnTriggerExit(Collider other)
-    {
-        Debug.Log("Ä® Âñ·¶´Ù ³ª¿È. ´Ù½Ã Âî¸¦ ÁØºñ!");
-        //if (((targetLayer | (1 << other.gameObject.layer)) != targetLayer) && false == boxCollider.enabled)
-        //{
-        //    return;
-        //}
-        boxCollider.enabled = true;   
-    }
+    
 }
