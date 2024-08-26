@@ -14,6 +14,10 @@ public class M_CombatState : IState
     public void Enter()
     {        
         Debug.Log("Combat State Enter");
+        if (false == monster.nav.isStopped)
+        {
+            monster.nav.isStopped = true;
+        }
     }
 
     public void Excute()

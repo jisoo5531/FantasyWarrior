@@ -14,6 +14,11 @@ public class M_IdleState : IState
     public void Enter()
     {
         Debug.Log("Idle State Enter");
+        if (false == monster.nav.isStopped)
+        {
+            monster.nav.isStopped = true;
+        }
+        
     }
     public void Excute()
     {

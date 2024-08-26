@@ -21,7 +21,7 @@ public interface IDamagable
 }
 public interface IMovable
 {
-    int MoveSpeed { get; set; }
+    float MoveSpeed { get; set; }
     float DistanceToPlayer { get; set; }
 
     void CalculateDistance();     
