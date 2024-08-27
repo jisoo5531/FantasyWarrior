@@ -22,11 +22,34 @@ public class MonsterUnit : Enemy
     {
         unitAnim = GetComponent<UnitAnimation>();
         nav = GetComponent<NavMeshAgent>();
+
+        damagable.OnHpChangeEvent += OnHpChange;
+        damagable.OnDeathEvent += OnDeath;
     }
 
     protected void OnHpChange(int damage)
     {
         damagable.Hp -= damage;
         Debug.Log($"데미지 받음 {damage} 만큼");
+    }
+
+    private void OnDisable()
+    {
+        Debug.Log("유닛 비활성");
+        damagable.OnHpChangeEvent -= OnHpChange;
+        damagable.OnDeathEvent -= OnDeath;
+    }
+    private void OnDestroy()
+    {
+        Debug.Log("유닛 파괴");
+        damagable.OnHpChangeEvent -= OnHpChange;
+        damagable.OnDeathEvent -= OnDeath;
+    }
+
+    protected virtual void OnDeath()
+    {        
+        unitAnim.DeathAnimPlay();
+        
+        Destroy(gameObject, 3f);
     }
 }

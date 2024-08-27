@@ -39,4 +39,10 @@ public class UnitAnimation : MonoBehaviour
         }
         return false;
     }
+    
+    public void DeathAnimPlay()
+    {
+        anim.SetLayerWeight(1, 0);
+        anim.SetTrigger("Death");
+    }
 }

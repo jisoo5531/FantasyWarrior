@@ -28,7 +28,7 @@ public class Damagable : MonoBehaviour, IDamagable
     }
     public void Death()
     {
+        Debug.Log("ав╬З╢ы");
         OnDeathEvent?.Invoke();
     }
-
 }
