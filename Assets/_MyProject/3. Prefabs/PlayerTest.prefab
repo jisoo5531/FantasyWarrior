@@ -48103,6 +48103,9 @@ GameObject:
   - component: {fileID: 842685315122213127}
   - component: {fileID: 785584000030884027}
   - component: {fileID: 785584000030884026}
+  - component: {fileID: 6743587053633993628}
+  - component: {fileID: 7470106043174233753}
+  - component: {fileID: 5621971428741896498}
   m_Layer: 0
   m_Name: PlayerTest
   m_TagString: Untagged
@@ -48178,6 +48181,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b63aef7f01b8d8479b44677dbfaa0d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6743587053633993628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 785584000030884021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46d10ee4a36636341b512a3fee8b7edf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7470106043174233753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 785584000030884021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e06479e6df1b8649acf0d967d856642, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5621971428741896498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 785584000030884021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6099a2bdbb05ba409ef682cd02e3388, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 0}
 --- !u!1 &785584838214404721
 GameObject:
   m_ObjectHideFlags: 0
@@ -69346,7 +69386,7 @@ BoxCollider:
   m_GameObject: {fileID: 6145576409136994968}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.04140663, y: 1.2098321, z: 0.24043013}
   m_Center: {x: -0.00002255165, y: 0.51199216, z: 0.000033732005}
@@ -69364,7 +69404,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
 --- !u!4 &6151912592348635840 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4645529486811846, guid: 1a66284f93ee5da4faa156902261b154, type: 3}
