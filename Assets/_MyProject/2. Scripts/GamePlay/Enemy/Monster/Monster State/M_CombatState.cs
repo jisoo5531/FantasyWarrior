@@ -18,13 +18,22 @@ public class M_CombatState : IState
         {
             monster.nav.isStopped = true;
         }
+        
     }
 
     public void Excute()
     {
         //Debug.Log("Combat State 실행 중");
+
+        monster.unitAnim.AttackAnimPlay();
+
         if (monster.followable.DistanceToPlayer > monster.attackable.Range)
         {
+            //if (monster.unitAnim.IsPlayAnim())
+            //{
+            //    Debug.Log("아직 안 돼");
+            //    return;
+            //}
             if (monster.followable.DistanceToPlayer > monster.detectionRange)
             {
                 monster.M_StateMachine.StateTransition(monster.M_StateMachine.followState);
@@ -36,6 +45,6 @@ public class M_CombatState : IState
 
     public void Exit()
     {
-        //Debug.Log("Combat State exit");
+        //Debug.Log("Combat State exit");        
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class M_FollowState : IState
 {
-    private MonsterUnit monster;    
+    private MonsterUnit monster;
 
     public M_FollowState(MonsterUnit monster)
     {
@@ -15,17 +15,17 @@ public class M_FollowState : IState
     public void Enter()
     {
         //Debug.Log("Follow State Enter");
-        if (monster.nav.isStopped)
-        {
-            monster.nav.isStopped = false;
-        }
+
+        monster.nav.isStopped = false;
+
+
+        monster.unitAnim.MoveAnimPlay(true);
     }
 
     public void Excute()
     {
-        //Debug.Log("Follow State 실행 중");
-        
-        monster.nav?.SetDestination(monster.player.transform.position);        
+        //Debug.Log("Follow State 실행 중");        
+        monster.nav?.SetDestination(monster.player.transform.position);
 
         // TODO : follow state에서 idle state로 전환 시 원래 자리로 이동?
         if (monster.followable.DistanceToPlayer >= monster.detectionRange)
@@ -41,5 +41,7 @@ public class M_FollowState : IState
     public void Exit()
     {
         //Debug.Log("Follow State exit");
+        monster.unitAnim.MoveAnimPlay(false);
+        monster.nav.isStopped = true;
     }
 }

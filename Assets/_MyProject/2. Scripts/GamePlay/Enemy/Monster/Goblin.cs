@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Goblin : MonsterUnit
-{        
+{            
     private void Awake()
     {        
         player = FindObjectOfType<PlayerController>();
