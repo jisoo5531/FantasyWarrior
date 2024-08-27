@@ -9,7 +9,7 @@ public interface IState
 public interface IAttackable
 {
     int Damage { get; set; }
-    int Range { get; set; }
+    float Range { get; set; }
 
     void SendDamage(int damage);
 }

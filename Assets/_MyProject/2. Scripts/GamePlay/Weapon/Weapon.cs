@@ -23,7 +23,7 @@ public abstract class Weapon : MonoBehaviour
         }
 
         if (other.TryGetComponent(out Damagable damagable))
-        {
+        {            
             damagable.GetDamage(damage);
         }           
     }

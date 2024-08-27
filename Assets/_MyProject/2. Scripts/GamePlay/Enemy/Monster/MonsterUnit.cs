@@ -18,11 +18,18 @@ public class MonsterUnit : Enemy
     [Tooltip("모든 몬스터의 공통된 탐지거리값")]
     public int detectionRange = 10;
 
+    private void Start()
+    {
+        Debug.Log("부모 Start");
+    }
+
     protected virtual void Initialize()
     {
         unitAnim = GetComponent<UnitAnimation>();
-        nav = GetComponent<NavMeshAgent>();
-
+        nav = GetComponent<NavMeshAgent>();        
+    }
+    private void OnEnable()
+    {
         damagable.OnHpChangeEvent += OnHpChange;
         damagable.OnDeathEvent += OnDeath;
     }
@@ -32,6 +39,7 @@ public class MonsterUnit : Enemy
         damagable.Hp -= damage;
         Debug.Log($"데미지 받음 {damage} 만큼");
     }
+    
 
     private void OnDisable()
     {
@@ -39,12 +47,12 @@ public class MonsterUnit : Enemy
         damagable.OnHpChangeEvent -= OnHpChange;
         damagable.OnDeathEvent -= OnDeath;
     }
-    private void OnDestroy()
-    {
-        Debug.Log("유닛 파괴");
-        damagable.OnHpChangeEvent -= OnHpChange;
-        damagable.OnDeathEvent -= OnDeath;
-    }
+    //private void OnDestroy()
+    //{
+    //    Debug.Log("유닛 파괴");
+    //    damagable.OnHpChangeEvent -= OnHpChange;
+    //    damagable.OnDeathEvent -= OnDeath;
+    //}
 
     protected virtual void OnDeath()
     {        

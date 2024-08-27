@@ -18,7 +18,7 @@ public class Goblin : MonsterUnit
         base.Initialize();
 
         // TODO : 몬스터 능력치 나중에 따로 데이터베이스로 관리하여 데이터 받아와야 함
-        damagable.Initialize(maxHp: 100, hp: 100);
+        damagable.Initialize(maxHp: 200, hp: 200);
         attackable.Initialize(damage: 10, range: 2);
         followable.Initialize(moveSpeed: 1.5f);
 
@@ -28,8 +28,9 @@ public class Goblin : MonsterUnit
 
     private void Start()
     {
+        Debug.Log("자식 Start");
         M_StateMachine = new MonsterStateMachine(this);
-        M_StateMachine.Initialize(M_StateMachine.idleState);        
+        M_StateMachine.Initialize(M_StateMachine.idleState);
     }
 
     private void Update()
@@ -43,8 +44,10 @@ public class Goblin : MonsterUnit
     }
 
     protected override void OnDeath()
-    {        
-
+    {
+        Debug.Log("죽음?");
+        GameObject item = Instantiate(GameManager.Instance.Item, transform.position, GameManager.Instance.Item.transform.rotation);
+        item.GetComponent<Rigidbody>().AddForce(Vector3.up * 40f, ForceMode.Impulse);
 
         base.OnDeath();
     }
