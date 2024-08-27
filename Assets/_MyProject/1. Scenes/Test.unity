@@ -4081,17 +4081,13 @@ Animator:
   m_GameObject: {fileID: 5200578416674916976}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: c5040ee8ce85c473388230d694758f1c, type: 3}
-  m_Controller: {fileID: 9100000, guid: a538bd723f3bf4e45b4396f2310f4cc1, type: 2}
+  m_Controller: {fileID: 9100000, guid: 6a73d72a638a72240b4ecf0c16dce6c7, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
-  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
-    are already bound by a Humanoid avatar. These transforms can only be changed
-    by Humanoid clips.\n\tTransform 'eye_R_blink'\n\tTransform 'eye_L_blink'\n\tTransform
-    'eye_R_blink'\n\tTransform 'eye_L_blink'\n\tTransform 'eye_R_blink'\n\tTransform
-    'eye_L_blink'\n\tFrom animation clip 'Attack1'"
+  m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
