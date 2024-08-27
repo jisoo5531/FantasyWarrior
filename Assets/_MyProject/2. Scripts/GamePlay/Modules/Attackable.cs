@@ -7,7 +7,7 @@ public class Attackable : MonoBehaviour, IAttackable
     public int Damage { get; set; }
     public int Range { get; set; }
 
-    public Attackable(int damage, int range)
+    public void Initialize(int damage, int range)
     {
         this.Damage = damage;
         this.Range = range;

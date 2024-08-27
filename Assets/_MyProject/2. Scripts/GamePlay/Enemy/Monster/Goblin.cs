@@ -7,7 +7,9 @@ public class Goblin : MonsterUnit
     private void Awake()
     {        
         player = FindObjectOfType<PlayerController>();
+        attackable = gameObject.AddComponent<Attackable>();
         damagable = gameObject.AddComponent<Damagable>();
+        followable = gameObject.AddComponent<Followable>();
 
         damagable.OnHpChangeEvent += OnHpChange;
 
@@ -20,10 +22,8 @@ public class Goblin : MonsterUnit
         // TODO : 몬스터 능력치 나중에 따로 데이터베이스로 관리하여 데이터 받아와야 함
 
         damagable.Initialize(maxHp: 100, hp: 100);
-        
-        
-        attackable = new Attackable(damage: 10, range: 2);
-        followable = new Followable(moveSpeed: 1.5f);
+        attackable.Initialize(damage: 10, range: 2);
+        followable.Initialize(moveSpeed: 1.5f);        
 
         nav.speed = followable.MoveSpeed;        
     }

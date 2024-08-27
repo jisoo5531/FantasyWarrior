@@ -16,13 +16,19 @@ public class Damagable : MonoBehaviour, IDamagable
         this.Hp = hp;
     }
 
-    public virtual void Death()
+    
+    public void GetDamage(int damage)
+    {
+        OnHpChangeEvent?.Invoke(damage);
+
+        if (Hp <= 0)
+        {
+            Death();
+        }
+    }
+    public void Death()
     {
         OnDeathEvent?.Invoke();
     }
 
-    public void GetDamage(int damage)
-    {
-        OnHpChangeEvent?.Invoke(damage);
-    }
 }

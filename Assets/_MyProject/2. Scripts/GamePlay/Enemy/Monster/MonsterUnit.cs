@@ -27,9 +27,4 @@ public class MonsterUnit : Enemy
         damagable.Hp -= damage;
         Debug.Log($"데미지 받음 {damage} 만큼");
     }
-
-    public void GetDamage(int damage)
-    {
-        damagable.GetDamage(damage);
-    }
 }

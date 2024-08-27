@@ -7,7 +7,8 @@ public class Followable : MonoBehaviour, IFollowable
     public float MoveSpeed { get; set; }
     public float DistanceToPlayer { get; set; }
 
-    public Followable(float moveSpeed)
+
+    public void Initialize(float moveSpeed)
     {
         this.MoveSpeed = moveSpeed;
     }

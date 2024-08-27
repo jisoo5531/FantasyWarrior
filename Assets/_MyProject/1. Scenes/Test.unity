@@ -4275,6 +4275,9 @@ MonoBehaviour:
   M_StateMachine: {fileID: 0}
   player: {fileID: 0}
   nav: {fileID: 0}
+  damagable: {fileID: 0}
+  attackable: {fileID: 0}
+  followable: {fileID: 0}
   detectionRange: 10
 --- !u!195 &5200578416674916980
 NavMeshAgent:
@@ -4862,6 +4865,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 370378224779733917, guid: 7f68c200e0919104391f829bb0648058, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 785584000030884021, guid: 7f68c200e0919104391f829bb0648058, type: 3}
       propertyPath: m_Name
       value: PlayerTest

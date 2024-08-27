@@ -15,9 +15,12 @@ public class PlayerController : MonoBehaviour
     private PlayerInput playerInput;
     private PlayerMovement playerMovement;
     private PlayerAnimation playerAnimation;
+    private PlayerWeapon playerWeapon;
 
     private Damagable damagable;
     private Attackable attackable;
+
+    private BoxCollider weaponCollider;
 
     private void Awake()
     {
@@ -27,13 +30,17 @@ public class PlayerController : MonoBehaviour
         playerAnimation = GetComponent<PlayerAnimation>();
 
         damagable = gameObject.AddComponent<Damagable>();
-        attackable = new Attackable(damage: 10, range: 2);
+        attackable = gameObject.AddComponent<Attackable>();
 
-        GetComponentInChildren<PlayerWeapon>().damage = attackable.Damage;
+        playerWeapon = GetComponentInChildren<PlayerWeapon>();
+        weaponCollider = playerWeapon.GetComponent<BoxCollider>();        
     }
     private void Start()
     {
         damagable.Initialize(maxHp: 100, hp: 100);
+        attackable.Initialize(damage: 10, range: 2);
+
+        playerWeapon.damage = attackable.Damage;
     }
 
     private void OnEnable()
@@ -52,6 +59,15 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         playerMovement?.Move(transform, controller, playerInput.Horizontal, playerInput.Vertical, playerInput.IsRun);
+    }
+
+    public void OnWeaponCollider()
+    {
+        weaponCollider.enabled = true;
+    }
+    public void OffWeaponCollider()
+    {
+        weaponCollider.enabled = false;
     }
 
     private void OnDisable()
