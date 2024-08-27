@@ -10,7 +10,7 @@ public class Damagable : MonoBehaviour, IDamagable
     public event DeathEventHandler OnDeathEvent;
     public event HpChangeEventHandler OnHpChangeEvent;
 
-    public Damagable(int maxHp, int hp)
+    public void Initialize(int maxHp, int hp)
     {
         this.MaxHp = maxHp;
         this.Hp = hp;
@@ -21,8 +21,8 @@ public class Damagable : MonoBehaviour, IDamagable
         OnDeathEvent?.Invoke();
     }
 
-    public virtual void GetDamage(int damage)
+    public void GetDamage(int damage)
     {
-        OnHpChangeEvent?.Invoke();
+        OnHpChangeEvent?.Invoke(damage);
     }
 }

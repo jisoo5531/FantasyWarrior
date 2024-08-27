@@ -15,7 +15,7 @@ public interface IAttackable
 }
 
 public delegate void DeathEventHandler();
-public delegate void HpChangeEventHandler();
+public delegate void HpChangeEventHandler(int damage);
 
 public interface IDamagable
 {

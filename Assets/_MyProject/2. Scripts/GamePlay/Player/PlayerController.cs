@@ -16,12 +16,24 @@ public class PlayerController : MonoBehaviour
     private PlayerMovement playerMovement;
     private PlayerAnimation playerAnimation;
 
+    private Damagable damagable;
+    private Attackable attackable;
+
     private void Awake()
     {
         controller = GetComponent<CharacterController>();        
         playerInput = GetComponent<PlayerInput>();
         playerMovement = GetComponent<PlayerMovement>();
         playerAnimation = GetComponent<PlayerAnimation>();
+
+        damagable = gameObject.AddComponent<Damagable>();
+        attackable = new Attackable(damage: 10, range: 2);
+
+        GetComponentInChildren<PlayerWeapon>().damage = attackable.Damage;
+    }
+    private void Start()
+    {
+        damagable.Initialize(maxHp: 100, hp: 100);
     }
 
     private void OnEnable()

@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerWeapon : Weapon
-{
-    public override int damage { get; set; }
+{    
     private BoxCollider boxCollider;
 
     private void Awake()
@@ -14,14 +13,7 @@ public class PlayerWeapon : Weapon
 
     protected override void OnTriggerEnter(Collider other)
     {
-        base.OnTriggerEnter(other);
-
-        if (IsReturn)
-        {
-            return;
-        }
-        
-        
+        base.OnTriggerEnter(other);              
     }
     
 }

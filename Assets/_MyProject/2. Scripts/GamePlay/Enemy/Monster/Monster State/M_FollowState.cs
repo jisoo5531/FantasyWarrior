@@ -14,7 +14,7 @@ public class M_FollowState : IState
 
     public void Enter()
     {
-        Debug.Log("Follow State Enter");
+        //Debug.Log("Follow State Enter");
         if (monster.nav.isStopped)
         {
             monster.nav.isStopped = false;
@@ -23,7 +23,7 @@ public class M_FollowState : IState
 
     public void Excute()
     {
-        Debug.Log("Follow State 실행 중");
+        //Debug.Log("Follow State 실행 중");
         
         monster.nav?.SetDestination(monster.player.transform.position);        
 
@@ -40,6 +40,6 @@ public class M_FollowState : IState
 
     public void Exit()
     {
-        Debug.Log("Follow State exit");
+        //Debug.Log("Follow State exit");
     }
 }

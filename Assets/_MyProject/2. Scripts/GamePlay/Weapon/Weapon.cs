@@ -4,11 +4,14 @@ using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
-    public abstract int damage { get; set; }
+    public int damage { get; set; }
 
     public LayerMask targetLayer;
 
-    protected bool IsReturn = false;
+    public virtual void Initialize()
+    {
+
+    }
 
     protected virtual void OnTriggerEnter(Collider other)
     {
@@ -16,15 +19,12 @@ public abstract class Weapon : MonoBehaviour
         if ((targetLayer | (1 << other.gameObject.layer)) != targetLayer)
         {
             Debug.Log("타겟 레이어 아님");
-            IsReturn = true;
             return;
         }
-        if (other.TryGetComponent<IDamagable>(out IDamagable damagable))
-        {
-            Debug.Log("적맞았다.");
-            damagable.GetDamage(damage);
-        }
 
-        IsReturn = false;
+        if (other.TryGetComponent(out Damagable damagable))
+        {
+            damagable.GetDamage(damage);
+        }           
     }
 }

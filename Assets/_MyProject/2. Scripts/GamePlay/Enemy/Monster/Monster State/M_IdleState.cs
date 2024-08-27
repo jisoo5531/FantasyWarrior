@@ -13,7 +13,7 @@ public class M_IdleState : IState
 
     public void Enter()
     {
-        Debug.Log("Idle State Enter");
+        //Debug.Log("Idle State Enter");
         if (false == monster.nav.isStopped)
         {
             monster.nav.isStopped = true;
@@ -22,7 +22,7 @@ public class M_IdleState : IState
     }
     public void Excute()
     {
-        Debug.Log("Idle State 실행 중");
+        //Debug.Log("Idle State 실행 중");
         
         if (monster.followable.DistanceToPlayer <= monster.detectionRange)
         {
@@ -36,6 +36,6 @@ public class M_IdleState : IState
     }
     public void Exit()
     {
-        Debug.Log("Idle State Exit");
+        //Debug.Log("Idle State Exit");
     }
 }

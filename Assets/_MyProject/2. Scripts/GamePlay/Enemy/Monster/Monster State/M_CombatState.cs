@@ -13,7 +13,7 @@ public class M_CombatState : IState
 
     public void Enter()
     {        
-        Debug.Log("Combat State Enter");
+        //Debug.Log("Combat State Enter");
         if (false == monster.nav.isStopped)
         {
             monster.nav.isStopped = true;
@@ -22,7 +22,7 @@ public class M_CombatState : IState
 
     public void Excute()
     {
-        Debug.Log("Combat State 실행 중");
+        //Debug.Log("Combat State 실행 중");
         if (monster.followable.DistanceToPlayer > monster.attackable.Range)
         {
             if (monster.followable.DistanceToPlayer > monster.detectionRange)
@@ -36,6 +36,6 @@ public class M_CombatState : IState
 
     public void Exit()
     {
-        Debug.Log("Combat State exit");
+        //Debug.Log("Combat State exit");
     }
 }
