@@ -23,9 +23,9 @@ public class M_CombatState : IState
     public void Excute()
     {
         Debug.Log("Combat State ½ÇÇà Áß");
-        if (monster.DistanceToPlayer > monster.Range)
+        if (monster.followable.DistanceToPlayer > monster.attackable.Range)
         {
-            if (monster.DistanceToPlayer > monster.detectionRange)
+            if (monster.followable.DistanceToPlayer > monster.detectionRange)
             {
                 monster.M_StateMachine.StateTransition(monster.M_StateMachine.followState);
                 return;

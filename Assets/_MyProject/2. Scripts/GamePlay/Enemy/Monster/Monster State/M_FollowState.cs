@@ -28,11 +28,11 @@ public class M_FollowState : IState
         monster.nav?.SetDestination(monster.player.transform.position);        
 
         // TODO : follow state에서 idle state로 전환 시 원래 자리로 이동?
-        if (monster.DistanceToPlayer >= monster.detectionRange)
+        if (monster.followable.DistanceToPlayer >= monster.detectionRange)
         {
             monster.M_StateMachine.StateTransition(monster.M_StateMachine.idleState);
         }
-        else if (monster.DistanceToPlayer <= monster.Range)
+        else if (monster.followable.DistanceToPlayer <= monster.attackable.Range)
         {
             monster.M_StateMachine.StateTransition(monster.M_StateMachine.combatState);
         }

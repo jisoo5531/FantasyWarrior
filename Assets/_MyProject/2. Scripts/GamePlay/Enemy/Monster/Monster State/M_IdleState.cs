@@ -24,9 +24,9 @@ public class M_IdleState : IState
     {
         Debug.Log("Idle State ½ÇÇà Áß");
         
-        if (monster.DistanceToPlayer <= monster.detectionRange)
+        if (monster.followable.DistanceToPlayer <= monster.detectionRange)
         {
-            if (monster.DistanceToPlayer <= monster.Range)
+            if (monster.followable.DistanceToPlayer <= monster.attackable.Range)
             {
                 monster.M_StateMachine.StateTransition(monster.M_StateMachine.combatState);
                 return;

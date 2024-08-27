@@ -1,3 +1,5 @@
+using System;
+using UnityEngine;
 public interface IState
 {
     void Enter();
@@ -11,18 +13,25 @@ public interface IAttackable
 
     void SendDamage(int damage);
 }
+
+public delegate void DeathEventHandler();
+public delegate void HpChangeEventHandler();
+
 public interface IDamagable
 {
+    event DeathEventHandler OnDeathEvent;
+    event HpChangeEventHandler OnHpChangeEvent;
+
     int MaxHp { get; set; }
     int Hp { get; set; }
 
     void GetDamage(int damage);
     void Death();
 }
-public interface IMovable
+public interface IFollowable
 {
     float MoveSpeed { get; set; }
     float DistanceToPlayer { get; set; }
 
-    void CalculateDistance();     
+    void CalculateDistance(Vector3 originPos, Vector3 targetPos);     
 }
