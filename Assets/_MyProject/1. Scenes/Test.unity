@@ -1286,11 +1286,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1339356621 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 620095770565811937, guid: 7f68c200e0919104391f829bb0648058, type: 3}
-  m_PrefabInstance: {fileID: 6283237606684045542}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1923281264
 GameObject:
   m_ObjectHideFlags: 0
@@ -9313,6 +9308,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerTest
       objectReference: {fileID: 0}
+    - target: {fileID: 620095770565811951, guid: 7f68c200e0919104391f829bb0648058, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f68c200e0919104391f829bb0648058, type: 3}
 --- !u!224 &6286601977850163318
@@ -10038,20 +10037,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 617325541625208543, guid: 7f68c200e0919104391f829bb0648058, type: 3}
   m_PrefabInstance: {fileID: 6283237606684045542}
   m_PrefabAsset: {fileID: 0}
---- !u!136 &6891533407413579328
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1339356621}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!224 &6894208726863528527
 RectTransform:
   m_ObjectHideFlags: 0

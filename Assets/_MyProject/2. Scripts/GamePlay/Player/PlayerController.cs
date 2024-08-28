@@ -32,8 +32,7 @@ public class PlayerController : MonoBehaviour
         attackable = gameObject.AddComponent<Attackable>();               
     }
     private void Start()
-    {
-        
+    {        
         damagable.Initialize(maxHp: 100, hp: 100);
         attackable.Initialize(damage: 10, range: 2);
 
