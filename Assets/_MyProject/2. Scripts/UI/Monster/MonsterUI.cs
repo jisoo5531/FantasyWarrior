@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class MonsterUI : MonoBehaviour
 {
     public UI_HPBar ui_HPBar;
+    
     private Slider hpBar;
 
     private void Awake()
