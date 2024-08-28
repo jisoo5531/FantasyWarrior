@@ -34,13 +34,6 @@ public class MonsterUnit : Enemy
         damagable.OnDeathEvent += OnDeath;
     }
 
-    protected void OnHpChange(int damage)
-    {
-        damagable.Hp -= damage;
-        Debug.Log($"데미지 받음 {damage} 만큼");
-    }
-    
-
     private void OnDisable()
     {
         Debug.Log("유닛 비활성");
@@ -54,6 +47,11 @@ public class MonsterUnit : Enemy
     //    damagable.OnDeathEvent -= OnDeath;
     //}
 
+    protected virtual void OnHpChange(int damage)
+    {
+        damagable.Hp -= damage;
+        Debug.Log($"데미지 받음 {damage} 만큼");
+    }
     protected virtual void OnDeath()
     {        
         unitAnim.DeathAnimPlay();
