@@ -8,14 +8,14 @@ public class MonsterUnit : Enemy
 {
     public MonsterStateMachine M_StateMachine;
     public PlayerController player;
-    public NavMeshAgent nav;
     public UnitAnimation unitAnim;    
+    public NavMeshAgent nav;
 
     [HideInInspector] public Damagable damagable;
     [HideInInspector] public Attackable attackable;
     [HideInInspector] public Followable followable;
 
-    protected MonsterUI monsterUI;
+    protected UIComponent monsterUI;
 
     [Tooltip("모든 몬스터의 공통된 탐지거리값")]
     public int detectionRange = 10;
@@ -27,7 +27,7 @@ public class MonsterUnit : Enemy
         damagable = gameObject.AddComponent<Damagable>();
         followable = gameObject.AddComponent<Followable>();
 
-        monsterUI = GetComponentInChildren<MonsterUI>();
+        monsterUI = GetComponentInChildren<UIComponent>();
         unitAnim = GetComponent<UnitAnimation>();
         nav = GetComponent<NavMeshAgent>();
 
@@ -44,28 +44,24 @@ public class MonsterUnit : Enemy
         M_StateMachine = new MonsterStateMachine(this);
         M_StateMachine.Initialize(M_StateMachine.idleState);
     }
-
     private void Update()
     {
         M_StateMachine.Excute();
-
     }
     private void LateUpdate()
     {
         followable.CalculateDistance(transform.position, player.transform.position);
-    }
-    
+    }    
     private void OnEnable()
     {
-        EventHandler.actionEvent.RegisterHpChange(OnHpChange);
-        EventHandler.actionEvent.RegisterDeath(OnDeath);        
+        damagable.OnHpChange += OnHpChange;
+        damagable.OnDeath += OnDeath;    
     }
-
     private void OnDisable()
     {
         Debug.Log("유닛 비활성");
-        EventHandler.actionEvent.UnRegisterHpChange(OnHpChange);
-        EventHandler.actionEvent.UnRegisterDeath(OnDeath);        
+        damagable.OnHpChange -= OnHpChange;
+        damagable.OnDeath -= OnDeath;
     }
     //private void OnDestroy()
     //{

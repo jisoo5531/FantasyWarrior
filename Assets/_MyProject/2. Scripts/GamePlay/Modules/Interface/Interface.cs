@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 public interface IState
 {
@@ -7,6 +8,7 @@ public interface IState
 }
 public interface IAttackable
 {
+    LayerMask TargetLayer { get; set; }
     int Damage { get; set; }
     float Range { get; set; }
 
@@ -15,6 +17,8 @@ public interface IAttackable
 
 public interface IDamagable
 {
+    event Action<int> OnHpChange;
+    event Action OnDeath;
     int MaxHp { get; set; }
     int Hp { get; set; }
 

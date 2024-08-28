@@ -11,6 +11,9 @@ public class Damagable : MonoBehaviour, IDamagable
 
     private bool isDeath = false;
 
+    public event Action<int> OnHpChange;
+    public event Action OnDeath;
+
     public void Initialize(int maxHp, int hp)
     {
         this.MaxHp = maxHp;
@@ -25,7 +28,7 @@ public class Damagable : MonoBehaviour, IDamagable
             return;
         }
 
-        EventHandler.actionEvent.TriggerHpChange(damage);        
+        OnHpChange?.Invoke(damage);
 
         if (Hp <= 0)
         {                        
@@ -36,6 +39,6 @@ public class Damagable : MonoBehaviour, IDamagable
     {
         isDeath = true;
         Debug.Log("ав╬З╢ы");
-        EventHandler.actionEvent.TriggetDeath();        
+        OnDeath?.Invoke();
     }
 }

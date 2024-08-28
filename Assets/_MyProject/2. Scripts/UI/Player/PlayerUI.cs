@@ -3,15 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MonsterUI : UIComponent
+public class PlayerUI : UIComponent
 {
+    // TODO : HP, MP, EXP, 스킬, 아이템
+
+    public Slider MpBar;
+    public Slider ExpBar;
+
     private void Awake()
     {
-        Debug.Log("monsterUI Awake");
-        hpBar = GetComponentInChildren<Slider>();
+        
     }
+
     public override void Initialize(Damagable damagable)
     {
         base.Initialize(damagable);
+
+
     }
 }

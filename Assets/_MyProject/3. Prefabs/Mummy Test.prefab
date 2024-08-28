@@ -1286,8 +1286,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   M_StateMachine: {fileID: 0}
   player: {fileID: 0}
-  nav: {fileID: 0}
   unitAnim: {fileID: 0}
+  nav: {fileID: 0}
   damagable: {fileID: 0}
   attackable: {fileID: 0}
   followable: {fileID: 0}
@@ -3371,7 +3371,7 @@ GameObject:
   - component: {fileID: 371184345814448791}
   - component: {fileID: 3562369677354434791}
   - component: {fileID: 6445263330902902114}
-  - component: {fileID: 404630940611004592}
+  - component: {fileID: 8518476053709135712}
   m_Layer: 6
   m_Name: Canvas
   m_TagString: Untagged
@@ -3474,7 +3474,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5d1d92ceda6f154da21e924ac8935d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &404630940611004592
+--- !u!114 &8518476053709135712
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3483,9 +3483,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7512001473576867411}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1702f6fd8c20db1449139828d7b74f42, type: 3}
+  m_Script: {fileID: 11500000, guid: 4efac16060693af4f93214f2c7335437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hpBar: {fileID: 552172610883248541}
 --- !u!1 &7760432940984921997
 GameObject:
   m_ObjectHideFlags: 0

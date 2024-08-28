@@ -621,7 +621,21 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.27140072
+        functionName: OnWeaponCollider
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 628a74b1ec86e5c4096ce6e1158479d6, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.9762289
+        functionName: OffWeaponCollider
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 628a74b1ec86e5c4096ce6e1158479d6, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask:
       - path: 
         weight: 1

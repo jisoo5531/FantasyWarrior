@@ -15,7 +15,7 @@ public class UI_HPBar
         this.damagable = damagable;
         this.hpBar = slider;
 
-        EventHandler.actionEvent.RegisterHpChange(OnHpChange);
+        damagable.OnHpChange += OnHpChange;        
 
         SetInitValue();
     }
@@ -24,6 +24,7 @@ public class UI_HPBar
         Debug.Log(damagable.MaxHp);
         if (hpBar != null)
         {
+            Debug.Log("¿©±â?");
             hpBar.maxValue = (float)damagable.MaxHp;
             hpBar.value = hpBar.maxValue;
         }        
@@ -31,6 +32,8 @@ public class UI_HPBar
 
     private void OnHpChange(int damage)
     {
+        Debug.Log(hpBar == null);
+        Debug.Log(damagable == null);
         hpBar.value = damagable.Hp;
     }
 }

@@ -15,12 +15,10 @@ public class PlayerController : MonoBehaviour
     private PlayerInput playerInput;
     private PlayerMovement playerMovement;
     private PlayerAnimation playerAnimation;
-    private PlayerWeapon playerWeapon;
+    private PlayerUI playerUI;
 
     private Damagable damagable;
-    private Attackable attackable;
-
-    private BoxCollider weaponCollider;
+    private Attackable attackable;    
 
     private void Awake()
     {
@@ -28,26 +26,28 @@ public class PlayerController : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         playerMovement = GetComponent<PlayerMovement>();
         playerAnimation = GetComponent<PlayerAnimation>();
+        playerUI = GetComponentInChildren<PlayerUI>();
 
         damagable = gameObject.AddComponent<Damagable>();
-        attackable = gameObject.AddComponent<Attackable>();
-
-        playerWeapon = GetComponentInChildren<PlayerWeapon>();
-        weaponCollider = playerWeapon.GetComponent<BoxCollider>();        
+        attackable = gameObject.AddComponent<Attackable>();               
     }
     private void Start()
     {
+        
         damagable.Initialize(maxHp: 100, hp: 100);
         attackable.Initialize(damage: 10, range: 2);
 
-        EventHandler.actionEvent.RegisterDeath(() => { Debug.Log("플레이어 죽었다."); });        
+        playerUI?.Initialize(damagable);
 
-        playerWeapon.damage = attackable.Damage;
-    }
+        damagable.OnDeath += () => { Debug.Log("플레이어 죽었다."); };        
+    }        
 
     private void OnEnable()
     {
         playerInput.OnAttack += playerAnimation.AttackAnimation;
+
+        damagable.OnHpChange += OnHpChange;
+        damagable.OnDeath += OnDeath;        
     }
 
     private void Update()
@@ -61,23 +61,31 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         playerMovement?.Move(transform, controller, playerInput.Horizontal, playerInput.Vertical, playerInput.IsRun);
-    }
-
-    public void OnWeaponCollider()
-    {
-        weaponCollider.enabled = true;
-    }
-    public void OffWeaponCollider()
-    {
-        weaponCollider.enabled = false;
-    }
+    }    
 
     private void OnDisable()
     {        
         playerInput.OnAttack -= playerAnimation.AttackAnimation;
+
+        damagable.OnHpChange -= OnHpChange;
+        damagable.OnDeath -= OnDeath;        
     }
-    private void OnDestroy()
+    //private void OnDestroy()
+    //{
+    //    playerInput.OnAttack -= playerAnimation.AttackAnimation;
+    //    EventHandler.actionEvent.UnRegisterHpChange(OnHpChange);
+    //    EventHandler.actionEvent.UnRegisterDeath(OnDeath);
+    //}
+    private void OnHpChange(int damage)
     {
-        playerInput.OnAttack -= playerAnimation.AttackAnimation;
+        // TODO : 유닛마다 들어가는 데미지 다르게끔 (방어도? 따라)
+        damagable.Hp -= damage;
+        Debug.Log($"데미지 받음 {damage} 만큼");
+    }
+    private void OnDeath()
+    {
+        playerAnimation.DeathAnimation();
+
+        Destroy(gameObject, 3f);
     }
 }
