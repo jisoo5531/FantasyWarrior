@@ -3,16 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Goblin : MonsterUnit
-{            
-    private void Awake()
-    {                
-        player = FindObjectOfType<PlayerController>();
-        attackable = gameObject.AddComponent<Attackable>();
-        damagable = gameObject.AddComponent<Damagable>();
-        followable = gameObject.AddComponent<Followable>();        
-        
-        Initialize();
-    }
+{                
     protected override void Initialize()
     {
         base.Initialize();
@@ -23,24 +14,12 @@ public class Goblin : MonsterUnit
         followable.Initialize(moveSpeed: 1.5f);
 
         Debug.Log(nav == null);
-        nav.speed = followable.MoveSpeed;        
+        nav.speed = followable.MoveSpeed;                      
     }
 
-    private void Start()
+    protected override void OnHpChange(int damage)
     {
-        Debug.Log("ÀÚ½Ä Start");
-        M_StateMachine = new MonsterStateMachine(this);
-        M_StateMachine.Initialize(M_StateMachine.idleState);
-    }
-
-    private void Update()
-    {
-        M_StateMachine.Excute();
-        
-    }
-    private void LateUpdate()
-    {
-        followable.CalculateDistance(transform.position, player.transform.position);        
+        base.OnHpChange(damage);
     }
 
     protected override void OnDeath()

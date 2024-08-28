@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
         damagable.Initialize(maxHp: 100, hp: 100);
         attackable.Initialize(damage: 10, range: 2);
 
-        damagable.OnDeathEvent += () => { Debug.Log("플레이어 죽었다."); };
+        EventHandler.actionEvent.RegisterDeath(() => { Debug.Log("플레이어 죽었다."); });        
 
         playerWeapon.damage = attackable.Damage;
     }

@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 public interface IState
 {
@@ -14,14 +13,8 @@ public interface IAttackable
     void SendDamage(int damage);
 }
 
-public delegate void DeathEventHandler();
-public delegate void HpChangeEventHandler(int damage);
-
 public interface IDamagable
 {
-    event DeathEventHandler OnDeathEvent;
-    event HpChangeEventHandler OnHpChangeEvent;
-
     int MaxHp { get; set; }
     int Hp { get; set; }
 

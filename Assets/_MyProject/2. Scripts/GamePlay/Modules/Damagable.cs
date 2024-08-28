@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,8 +8,6 @@ public class Damagable : MonoBehaviour, IDamagable
     public int MaxHp { get; set; }
     public int Hp { get; set; }
 
-    public event DeathEventHandler OnDeathEvent;
-    public event HpChangeEventHandler OnHpChangeEvent;
 
     private bool isDeath = false;
 
@@ -25,7 +24,8 @@ public class Damagable : MonoBehaviour, IDamagable
         {
             return;
         }
-        OnHpChangeEvent?.Invoke(damage);
+
+        EventHandler.actionEvent.TriggerHpChange(damage);        
 
         if (Hp <= 0)
         {                        
@@ -36,6 +36,6 @@ public class Damagable : MonoBehaviour, IDamagable
     {
         isDeath = true;
         Debug.Log("ав╬З╢ы");
-        OnDeathEvent?.Invoke();
+        EventHandler.actionEvent.TriggetDeath();        
     }
 }
