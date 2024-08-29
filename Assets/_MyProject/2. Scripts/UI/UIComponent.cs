@@ -2,17 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
-public class UIComponent : MonoBehaviour
+public class UIComponent : MonoBehaviour, IHpHandler
 {    
+    [Header("HP")]
     public Slider hpBar;
+    public TextMeshProUGUI hpText;
+    
+    public Damagable Damagable { get; set; }
 
-    protected UI_HPBar ui_HPBar;
-
-    public virtual void Initialize(Damagable damagable)
+    public void Initialize(Damagable damagable)
     {
-        Debug.Log(hpBar == null);
-        ui_HPBar = new UI_HPBar(damagable, hpBar);
-        
+        this.Damagable = damagable;
+        SetInitValue();
     }
+
+    public virtual void SetInitValue()
+    {
+    }
+    public virtual void OnHpChange(int damage)
+    {        
+    }    
 }

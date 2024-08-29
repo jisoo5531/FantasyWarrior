@@ -7,18 +7,27 @@ public class PlayerUI : UIComponent
 {
     // TODO : HP, MP, EXP, 스킬, 아이템
 
+    [Header("MP")]
     public Slider MpBar;
+    [Header("Xp")]
     public Slider ExpBar;
 
-    private void Awake()
+
+    public override void SetInitValue()
     {
-        
+        Damagable.OnHpChange += OnHpChange;
+
+        if (hpBar != null)
+        {            
+            hpBar.maxValue = (float)Damagable.MaxHp;
+            hpBar.value = hpBar.maxValue;
+
+            hpText.text = $"{Damagable.Hp} / {Damagable.MaxHp}";
+        }
     }
-
-    public override void Initialize(Damagable damagable)
+    public override void OnHpChange(int damage)
     {
-        base.Initialize(damagable);
-
-
+        hpBar.value = Damagable.Hp;
+        hpText.text = $"{Damagable.Hp} / {Damagable.MaxHp}";
     }
 }

@@ -1,5 +1,7 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 public interface IState
 {
     void Enter();
@@ -14,7 +16,6 @@ public interface IAttackable
 
     void SendDamage(int damage);
 }
-
 public interface IDamagable
 {
     event Action<int> OnHpChange;
@@ -31,4 +32,11 @@ public interface IFollowable
     float DistanceToPlayer { get; set; }
 
     void CalculateDistance(Vector3 originPos, Vector3 targetPos);     
+}
+public interface IHpHandler 
+{
+    Damagable Damagable { get; set; }
+
+    void SetInitValue();
+    void OnHpChange(int damage);
 }

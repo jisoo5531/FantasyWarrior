@@ -7,11 +7,26 @@ public class MonsterUI : UIComponent
 {
     private void Awake()
     {
-        Debug.Log("monsterUI Awake");
+        Debug.Log("ÀÚ½Ä Monster Awake");
         hpBar = GetComponentInChildren<Slider>();
     }
-    public override void Initialize(Damagable damagable)
+
+    public override void SetInitValue()
     {
-        base.Initialize(damagable);
+        Damagable.OnHpChange += OnHpChange;
+
+        if (hpBar != null)
+        {            
+            hpBar.maxValue = (float)Damagable.MaxHp;
+            hpBar.value = hpBar.maxValue;
+
+            hpText.text = $"{Damagable.Hp}";
+        }
     }
+    public override void OnHpChange(int damage)
+    {
+        base.OnHpChange(damage);
+        hpBar.value = Damagable.Hp;
+        hpText.text = $"{Damagable.Hp}";
+    }    
 }

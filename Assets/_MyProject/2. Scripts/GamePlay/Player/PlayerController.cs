@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     private PlayerInput playerInput;
     private PlayerMovement playerMovement;
     private PlayerAnimation playerAnimation;
-    private PlayerUI playerUI;
+    private UIComponent playerUI;
 
     private Damagable damagable;
     private Attackable attackable;    
@@ -26,14 +26,14 @@ public class PlayerController : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         playerMovement = GetComponent<PlayerMovement>();
         playerAnimation = GetComponent<PlayerAnimation>();
-        playerUI = GetComponentInChildren<PlayerUI>();
+        playerUI = GetComponentInChildren<UIComponent>();
 
         damagable = gameObject.AddComponent<Damagable>();
         attackable = gameObject.AddComponent<Attackable>();               
     }
     private void Start()
     {        
-        damagable.Initialize(maxHp: 100, hp: 100);
+        damagable.Initialize(maxHp: 1000, hp: 1000);
         attackable.Initialize(damage: 10, range: 2);
 
         playerUI?.Initialize(damagable);
