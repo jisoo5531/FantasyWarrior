@@ -429,7 +429,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &493417635
 GameObject:
@@ -2497,7 +2497,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 969131254655829341, guid: add197de3f5a61e4281f720411b1f126, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 969131254655829341, guid: add197de3f5a61e4281f720411b1f126, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9948,6 +9948,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8059890869778438471, guid: 7f68c200e0919104391f829bb0648058, type: 3}
+      propertyPath: swordSpear.effect
+      value: 
+      objectReference: {fileID: 965469397746021247, guid: add197de3f5a61e4281f720411b1f126, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f68c200e0919104391f829bb0648058, type: 3}
 --- !u!224 &6286601977850163318

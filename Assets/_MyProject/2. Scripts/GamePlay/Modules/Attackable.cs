@@ -9,12 +9,12 @@ public class Attackable : MonoBehaviour, IAttackable
     public float Range { get; set; }
 
     [SerializeField] public Weapon weapon;
-    [SerializeField] public BoxCollider weaponCollider;
+    [SerializeField] public Collider weaponCollider;
 
     private void Awake()
     {
         weapon = GetComponentInChildren<Weapon>();
-        weaponCollider = weapon.GetComponent<BoxCollider>();
+        weaponCollider = weapon.GetComponent<Collider>();
     }
     
     public void Initialize(int damage, float range)

@@ -7,7 +7,8 @@ using UnityEngine;
     RequireComponent(typeof(CharacterController)), 
     RequireComponent(typeof(PlayerInput)), 
     RequireComponent(typeof(PlayerMovement)), 
-    RequireComponent(typeof(PlayerAnimation))
+    RequireComponent(typeof(PlayerAnimation)),
+    RequireComponent(typeof(PlayerSkill))
 ]
 public class PlayerController : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class PlayerController : MonoBehaviour
     private PlayerInput playerInput;
     private PlayerMovement playerMovement;
     private PlayerAnimation playerAnimation;
+    private PlayerSkill playerSkill;
     private UIComponent playerUI;
 
     private Damagable damagable;
@@ -26,6 +28,7 @@ public class PlayerController : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
         playerMovement = GetComponent<PlayerMovement>();
         playerAnimation = GetComponent<PlayerAnimation>();
+        playerSkill = GetComponent<PlayerSkill>();
         playerUI = GetComponentInChildren<UIComponent>();
 
         damagable = gameObject.AddComponent<Damagable>();

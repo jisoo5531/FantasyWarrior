@@ -6,9 +6,9 @@ public class PlayerWeapon : Weapon
 {    
     
 
-    protected override void OnTriggerEnter(Collider other)
-    {
-        base.OnTriggerEnter(other);              
-    }
+    //protected override void OnTriggerEnter(Collider other)
+    //{
+    //    base.OnTriggerEnter(other);              
+    //}
     
 }
