@@ -25,8 +25,7 @@ public class WarriorSkill : PlayerSkill
     {
         switch (skillNum)
         {
-            case 0:
-                StartCoroutine(sword_Stab.Rush());
+            case 0:                
                 sword_Stab.Play(GetComponent<CharacterController>());
                 break;
             default:
@@ -59,30 +58,9 @@ public class Sword_Stab
     {
         this.controller = controller;
 
-        isPlay = true;        
-    }    
-    public IEnumerator Rush()
-    {
-        Debug.Log(isPlay);
-        yield return new WaitUntil(() => isPlay);
-        Debug.Log(isPlay);
-
-        Vector3 position = controller.transform.position;
-
-        while (true)
-        {
-            yield return null;            
-            position.z = Mathf.Lerp(position.z, position.z + .5f, Time.deltaTime);
-            controller.Move(position);
-
-            if (isEnd)
-            {
-                break;
-            }            
-        }
-
+        isPlay = true;
         EffectPlay();
-    } 
+    }        
     private void EffectPlay()
     {        
         GameObject skillEffect = MonoBehaviour.Instantiate(effect, effectPos);
