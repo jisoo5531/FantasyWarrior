@@ -14,9 +14,7 @@ public class Weapon : MonoBehaviour
     }
 
     protected void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("맞았다.");
-        Debug.Log("부모 트리거");
+    {        
         if ((targetLayer | (1 << other.gameObject.layer)) != targetLayer)
         {
             Debug.Log("타겟 레이어 아님");

@@ -7,40 +7,43 @@ using UnityEngine;
     RequireComponent(typeof(CharacterController)), 
     RequireComponent(typeof(PlayerInput)), 
     RequireComponent(typeof(PlayerMovement)), 
-    RequireComponent(typeof(PlayerAnimation)),
-    RequireComponent(typeof(PlayerSkill))
+    RequireComponent(typeof(PlayerAnimation))
 ]
 public class PlayerController : MonoBehaviour
 {
-    private CharacterController controller;
-    private PlayerInput playerInput;
-    private PlayerMovement playerMovement;
-    private PlayerAnimation playerAnimation;
-    private PlayerSkill playerSkill;
-    private UIComponent playerUI;
-
-    private Damagable damagable;
-    private Attackable attackable;    
+    protected CharacterController controller;
+    protected PlayerInput playerInput;
+    protected PlayerMovement playerMovement;
+    protected PlayerAnimation playerAnimation;
+    protected UIComponent playerUI;
+    protected PlayerSkill playerSkill;
+    
+    protected Damagable damagable;
+    protected Attackable attackable;    
 
     private void Awake()
     {
         controller = GetComponent<CharacterController>();        
         playerInput = GetComponent<PlayerInput>();
         playerMovement = GetComponent<PlayerMovement>();
-        playerAnimation = GetComponent<PlayerAnimation>();
-        playerSkill = GetComponent<PlayerSkill>();
+        playerAnimation = GetComponent<PlayerAnimation>();        
         playerUI = GetComponentInChildren<UIComponent>();
 
         damagable = gameObject.AddComponent<Damagable>();
-        attackable = gameObject.AddComponent<Attackable>();               
+        attackable = gameObject.AddComponent<Attackable>();
+
+        PlayerInit();
+    }
+    protected virtual void PlayerInit()
+    {
+
     }
     private void Start()
     {        
         damagable.Initialize(maxHp: 1000, hp: 1000);
         attackable.Initialize(damage: 10, range: 2);
 
-        playerUI?.Initialize(damagable);
-
+        playerUI?.Initialize(damagable);        
         damagable.OnDeath += () => { Debug.Log("플레이어 죽었다."); };        
     }        
 
@@ -58,6 +61,7 @@ public class PlayerController : MonoBehaviour
         
         float moveValue = Mathf.Max(Mathf.Abs(playerInput.Vertical), Mathf.Abs(playerInput.Horizontal));
         playerAnimation?.MoveAnimation(moveValue, playerInput.IsRun);
+        playerAnimation?.SkillAnimation(playerInput.IsSkills, playerSkill.skillTable);
     }
     
     private void FixedUpdate()

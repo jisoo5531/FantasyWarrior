@@ -21,6 +21,16 @@ public class PlayerAnimation : MonoBehaviour
     {
         anim.SetTrigger("Attack");
     }
+    public void SkillAnimation(List<bool> skillInput, Dictionary<int, string> skillTable)
+    {
+        int skillNum = skillInput.IndexOf(true);
+        if (skillNum < 0)
+        {
+            return;
+        }
+        Debug.Log($"{skillTable[skillNum]} »ç¿ë");
+        anim.SetTrigger($"{skillTable[skillNum]}"); 
+    }
     public void DeathAnimation()
     {
         anim.SetTrigger("Death");

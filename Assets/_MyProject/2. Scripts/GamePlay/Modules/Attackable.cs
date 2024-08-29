@@ -35,8 +35,7 @@ public class Attackable : MonoBehaviour, IAttackable
     }
 
     public void OnWeaponCollider()
-    {
-        Debug.Log("콜라이더 켜짐");
+    {        
         if (weaponCollider != null)
         {
             weaponCollider.enabled = true;
