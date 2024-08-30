@@ -28,10 +28,10 @@ public class PlayerAnimation : MonoBehaviour
         PlayerController.inputActions.PlayerActions.Attack.performed += AttackAnimation;
 
         PlayerController.inputActions.PlayerActions.Skill_1.performed += OnSkill_1;
-        //PlayerController.inputActions.PlayerActions.Skill_2.performed += OnSkill_2;
-        //PlayerController.inputActions.PlayerActions.Skill_3.performed += OnSkill_3;
-        //PlayerController.inputActions.PlayerActions.Skill_4.performed += OnSkill_4;
-        
+        PlayerController.inputActions.PlayerActions.Skill_2.performed += OnSkill_2;
+        PlayerController.inputActions.PlayerActions.Skill_3.performed += OnSkill_3;
+        PlayerController.inputActions.PlayerActions.Skill_4.performed += OnSkill_4;
+
     }
     private void OnDisable()
     {
@@ -43,9 +43,9 @@ public class PlayerAnimation : MonoBehaviour
         PlayerController.inputActions.PlayerActions.Attack.performed -= AttackAnimation;
 
         PlayerController.inputActions.PlayerActions.Skill_1.performed -= OnSkill_1;
-        //PlayerController.inputActions.PlayerActions.Skill_2.performed -= OnSkill_2;
-        //PlayerController.inputActions.PlayerActions.Skill_3.performed -= OnSkill_3;
-        //PlayerController.inputActions.PlayerActions.Skill_4.performed -= OnSkill_4;
+        PlayerController.inputActions.PlayerActions.Skill_2.performed -= OnSkill_2;
+        PlayerController.inputActions.PlayerActions.Skill_3.performed -= OnSkill_3;
+        PlayerController.inputActions.PlayerActions.Skill_4.performed -= OnSkill_4;
     }
 
     #region Move
