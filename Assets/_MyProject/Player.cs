@@ -55,9 +55,117 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Skill"",
+                    ""name"": ""Skill_1"",
                     ""type"": ""Button"",
                     ""id"": ""4344bfc4-5217-4e2c-83d1-8a9e65e5857a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Skill_2"",
+                    ""type"": ""Button"",
+                    ""id"": ""27da7549-5fe3-4e18-87bf-1850ef5d7f7e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Skill_3"",
+                    ""type"": ""Button"",
+                    ""id"": ""da4ad837-3072-44c9-b501-3c34bcb227ed"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Skill_4"",
+                    ""type"": ""Button"",
+                    ""id"": ""8c1f89fa-66c7-4806-855d-0a5aa628bce8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Inventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""f637057a-43e9-44ea-8805-9bea271fbe68"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Quest"",
+                    ""type"": ""Button"",
+                    ""id"": ""e5aeefe9-0c24-477e-8348-7aeecc8056ad"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Status"",
+                    ""type"": ""Button"",
+                    ""id"": ""a561b33a-819a-4fc9-8c7b-50a5bba606b6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Map"",
+                    ""type"": ""Button"",
+                    ""id"": ""6ad3b3b1-6fa0-4413-9db3-6c6538724bdf"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Item_1"",
+                    ""type"": ""Button"",
+                    ""id"": ""d73f939d-0216-465f-b01e-2aa148ad76a5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Item_2"",
+                    ""type"": ""Button"",
+                    ""id"": ""4bb8fd5b-4e35-4159-89cc-d563f33cdb5c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Item_3"",
+                    ""type"": ""Button"",
+                    ""id"": ""89b159f3-6b1e-4468-ba45-cd7275163810"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Item_4"",
+                    ""type"": ""Button"",
+                    ""id"": ""80eabdf1-81c3-4649-af25-3bd44518e666"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Item_5"",
+                    ""type"": ""Button"",
+                    ""id"": ""deccf1e9-9d06-4beb-988c-64e85c7041ef"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -145,44 +253,143 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""8fb853de-7d09-46ab-a5d4-4f4b596579c2"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Skill_1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a85c446d-547c-49e6-92da-3eb086af3505"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Skill_2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e4c450a2-2072-4e92-a6a0-de274e4aa1e4"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Skill_3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7fa6b7fc-f6a1-4dce-b4ff-55324c8ea7ce"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""Skill_4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""40877bdf-8e25-4469-8a5a-01210c1192ce"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""62c19e57-ebc3-49dd-a48d-529e148c994a"",
                     ""path"": ""<Keyboard>/q"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""PC"",
-                    ""action"": ""Skill"",
+                    ""groups"": """",
+                    ""action"": ""Quest"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""0e613c38-51ef-4374-994c-6b9b5d00f7ba"",
-                    ""path"": ""<Keyboard>/w"",
+                    ""id"": ""d09f364e-6725-4953-bf58-0683faabeb12"",
+                    ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""PC"",
-                    ""action"": ""Skill"",
+                    ""groups"": """",
+                    ""action"": ""Status"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""bf27b08f-b9e8-4c07-aae6-5e3fac975100"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""id"": ""f1bdb77e-bc3b-4dcb-95ba-3291b80f4b0c"",
+                    ""path"": ""<Keyboard>/m"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""PC"",
-                    ""action"": ""Skill"",
+                    ""groups"": """",
+                    ""action"": ""Map"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""4539a638-f817-4339-859b-d2db8f153117"",
-                    ""path"": ""<Keyboard>/r"",
+                    ""id"": ""71da82d7-c7fb-4056-ac4a-4411664e7e55"",
+                    ""path"": ""<Keyboard>/1"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": ""PC"",
-                    ""action"": ""Skill"",
+                    ""groups"": """",
+                    ""action"": ""Item_1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""05342a96-6726-44c0-aa38-866d6c0dedc7"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Item_2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3ff4c898-3beb-45c2-8aed-98260c2015f9"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Item_3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a642efdb-c987-45f2-8fa0-0c7c9635b6ee"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Item_4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e10b187d-0b1b-4da5-8b69-58d56b5549e4"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Item_5"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -213,7 +420,19 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         m_PlayerActions_Move = m_PlayerActions.FindAction("Move", throwIfNotFound: true);
         m_PlayerActions_Run = m_PlayerActions.FindAction("Run", throwIfNotFound: true);
         m_PlayerActions_Attack = m_PlayerActions.FindAction("Attack", throwIfNotFound: true);
-        m_PlayerActions_Skill = m_PlayerActions.FindAction("Skill", throwIfNotFound: true);
+        m_PlayerActions_Skill_1 = m_PlayerActions.FindAction("Skill_1", throwIfNotFound: true);
+        m_PlayerActions_Skill_2 = m_PlayerActions.FindAction("Skill_2", throwIfNotFound: true);
+        m_PlayerActions_Skill_3 = m_PlayerActions.FindAction("Skill_3", throwIfNotFound: true);
+        m_PlayerActions_Skill_4 = m_PlayerActions.FindAction("Skill_4", throwIfNotFound: true);
+        m_PlayerActions_Inventory = m_PlayerActions.FindAction("Inventory", throwIfNotFound: true);
+        m_PlayerActions_Quest = m_PlayerActions.FindAction("Quest", throwIfNotFound: true);
+        m_PlayerActions_Status = m_PlayerActions.FindAction("Status", throwIfNotFound: true);
+        m_PlayerActions_Map = m_PlayerActions.FindAction("Map", throwIfNotFound: true);
+        m_PlayerActions_Item_1 = m_PlayerActions.FindAction("Item_1", throwIfNotFound: true);
+        m_PlayerActions_Item_2 = m_PlayerActions.FindAction("Item_2", throwIfNotFound: true);
+        m_PlayerActions_Item_3 = m_PlayerActions.FindAction("Item_3", throwIfNotFound: true);
+        m_PlayerActions_Item_4 = m_PlayerActions.FindAction("Item_4", throwIfNotFound: true);
+        m_PlayerActions_Item_5 = m_PlayerActions.FindAction("Item_5", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -278,7 +497,19 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_Move;
     private readonly InputAction m_PlayerActions_Run;
     private readonly InputAction m_PlayerActions_Attack;
-    private readonly InputAction m_PlayerActions_Skill;
+    private readonly InputAction m_PlayerActions_Skill_1;
+    private readonly InputAction m_PlayerActions_Skill_2;
+    private readonly InputAction m_PlayerActions_Skill_3;
+    private readonly InputAction m_PlayerActions_Skill_4;
+    private readonly InputAction m_PlayerActions_Inventory;
+    private readonly InputAction m_PlayerActions_Quest;
+    private readonly InputAction m_PlayerActions_Status;
+    private readonly InputAction m_PlayerActions_Map;
+    private readonly InputAction m_PlayerActions_Item_1;
+    private readonly InputAction m_PlayerActions_Item_2;
+    private readonly InputAction m_PlayerActions_Item_3;
+    private readonly InputAction m_PlayerActions_Item_4;
+    private readonly InputAction m_PlayerActions_Item_5;
     public struct PlayerActionsActions
     {
         private @PlayerInputAction m_Wrapper;
@@ -286,7 +517,19 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_PlayerActions_Move;
         public InputAction @Run => m_Wrapper.m_PlayerActions_Run;
         public InputAction @Attack => m_Wrapper.m_PlayerActions_Attack;
-        public InputAction @Skill => m_Wrapper.m_PlayerActions_Skill;
+        public InputAction @Skill_1 => m_Wrapper.m_PlayerActions_Skill_1;
+        public InputAction @Skill_2 => m_Wrapper.m_PlayerActions_Skill_2;
+        public InputAction @Skill_3 => m_Wrapper.m_PlayerActions_Skill_3;
+        public InputAction @Skill_4 => m_Wrapper.m_PlayerActions_Skill_4;
+        public InputAction @Inventory => m_Wrapper.m_PlayerActions_Inventory;
+        public InputAction @Quest => m_Wrapper.m_PlayerActions_Quest;
+        public InputAction @Status => m_Wrapper.m_PlayerActions_Status;
+        public InputAction @Map => m_Wrapper.m_PlayerActions_Map;
+        public InputAction @Item_1 => m_Wrapper.m_PlayerActions_Item_1;
+        public InputAction @Item_2 => m_Wrapper.m_PlayerActions_Item_2;
+        public InputAction @Item_3 => m_Wrapper.m_PlayerActions_Item_3;
+        public InputAction @Item_4 => m_Wrapper.m_PlayerActions_Item_4;
+        public InputAction @Item_5 => m_Wrapper.m_PlayerActions_Item_5;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -305,9 +548,45 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @Attack.started += instance.OnAttack;
             @Attack.performed += instance.OnAttack;
             @Attack.canceled += instance.OnAttack;
-            @Skill.started += instance.OnSkill;
-            @Skill.performed += instance.OnSkill;
-            @Skill.canceled += instance.OnSkill;
+            @Skill_1.started += instance.OnSkill_1;
+            @Skill_1.performed += instance.OnSkill_1;
+            @Skill_1.canceled += instance.OnSkill_1;
+            @Skill_2.started += instance.OnSkill_2;
+            @Skill_2.performed += instance.OnSkill_2;
+            @Skill_2.canceled += instance.OnSkill_2;
+            @Skill_3.started += instance.OnSkill_3;
+            @Skill_3.performed += instance.OnSkill_3;
+            @Skill_3.canceled += instance.OnSkill_3;
+            @Skill_4.started += instance.OnSkill_4;
+            @Skill_4.performed += instance.OnSkill_4;
+            @Skill_4.canceled += instance.OnSkill_4;
+            @Inventory.started += instance.OnInventory;
+            @Inventory.performed += instance.OnInventory;
+            @Inventory.canceled += instance.OnInventory;
+            @Quest.started += instance.OnQuest;
+            @Quest.performed += instance.OnQuest;
+            @Quest.canceled += instance.OnQuest;
+            @Status.started += instance.OnStatus;
+            @Status.performed += instance.OnStatus;
+            @Status.canceled += instance.OnStatus;
+            @Map.started += instance.OnMap;
+            @Map.performed += instance.OnMap;
+            @Map.canceled += instance.OnMap;
+            @Item_1.started += instance.OnItem_1;
+            @Item_1.performed += instance.OnItem_1;
+            @Item_1.canceled += instance.OnItem_1;
+            @Item_2.started += instance.OnItem_2;
+            @Item_2.performed += instance.OnItem_2;
+            @Item_2.canceled += instance.OnItem_2;
+            @Item_3.started += instance.OnItem_3;
+            @Item_3.performed += instance.OnItem_3;
+            @Item_3.canceled += instance.OnItem_3;
+            @Item_4.started += instance.OnItem_4;
+            @Item_4.performed += instance.OnItem_4;
+            @Item_4.canceled += instance.OnItem_4;
+            @Item_5.started += instance.OnItem_5;
+            @Item_5.performed += instance.OnItem_5;
+            @Item_5.canceled += instance.OnItem_5;
         }
 
         private void UnregisterCallbacks(IPlayerActionsActions instance)
@@ -321,9 +600,45 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @Attack.started -= instance.OnAttack;
             @Attack.performed -= instance.OnAttack;
             @Attack.canceled -= instance.OnAttack;
-            @Skill.started -= instance.OnSkill;
-            @Skill.performed -= instance.OnSkill;
-            @Skill.canceled -= instance.OnSkill;
+            @Skill_1.started -= instance.OnSkill_1;
+            @Skill_1.performed -= instance.OnSkill_1;
+            @Skill_1.canceled -= instance.OnSkill_1;
+            @Skill_2.started -= instance.OnSkill_2;
+            @Skill_2.performed -= instance.OnSkill_2;
+            @Skill_2.canceled -= instance.OnSkill_2;
+            @Skill_3.started -= instance.OnSkill_3;
+            @Skill_3.performed -= instance.OnSkill_3;
+            @Skill_3.canceled -= instance.OnSkill_3;
+            @Skill_4.started -= instance.OnSkill_4;
+            @Skill_4.performed -= instance.OnSkill_4;
+            @Skill_4.canceled -= instance.OnSkill_4;
+            @Inventory.started -= instance.OnInventory;
+            @Inventory.performed -= instance.OnInventory;
+            @Inventory.canceled -= instance.OnInventory;
+            @Quest.started -= instance.OnQuest;
+            @Quest.performed -= instance.OnQuest;
+            @Quest.canceled -= instance.OnQuest;
+            @Status.started -= instance.OnStatus;
+            @Status.performed -= instance.OnStatus;
+            @Status.canceled -= instance.OnStatus;
+            @Map.started -= instance.OnMap;
+            @Map.performed -= instance.OnMap;
+            @Map.canceled -= instance.OnMap;
+            @Item_1.started -= instance.OnItem_1;
+            @Item_1.performed -= instance.OnItem_1;
+            @Item_1.canceled -= instance.OnItem_1;
+            @Item_2.started -= instance.OnItem_2;
+            @Item_2.performed -= instance.OnItem_2;
+            @Item_2.canceled -= instance.OnItem_2;
+            @Item_3.started -= instance.OnItem_3;
+            @Item_3.performed -= instance.OnItem_3;
+            @Item_3.canceled -= instance.OnItem_3;
+            @Item_4.started -= instance.OnItem_4;
+            @Item_4.performed -= instance.OnItem_4;
+            @Item_4.canceled -= instance.OnItem_4;
+            @Item_5.started -= instance.OnItem_5;
+            @Item_5.performed -= instance.OnItem_5;
+            @Item_5.canceled -= instance.OnItem_5;
         }
 
         public void RemoveCallbacks(IPlayerActionsActions instance)
@@ -355,6 +670,18 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
-        void OnSkill(InputAction.CallbackContext context);
+        void OnSkill_1(InputAction.CallbackContext context);
+        void OnSkill_2(InputAction.CallbackContext context);
+        void OnSkill_3(InputAction.CallbackContext context);
+        void OnSkill_4(InputAction.CallbackContext context);
+        void OnInventory(InputAction.CallbackContext context);
+        void OnQuest(InputAction.CallbackContext context);
+        void OnStatus(InputAction.CallbackContext context);
+        void OnMap(InputAction.CallbackContext context);
+        void OnItem_1(InputAction.CallbackContext context);
+        void OnItem_2(InputAction.CallbackContext context);
+        void OnItem_3(InputAction.CallbackContext context);
+        void OnItem_4(InputAction.CallbackContext context);
+        void OnItem_5(InputAction.CallbackContext context);
     }
 }

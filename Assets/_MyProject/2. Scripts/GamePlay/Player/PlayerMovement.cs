@@ -36,20 +36,6 @@ public class PlayerMovement : MonoBehaviour
         PlayerController.inputActions.PlayerActions.Run.canceled -= OnRunPerformed;
     }
 
-    public void OnMovePerformed(InputAction.CallbackContext context)
-    {
-        moveInput = context.ReadValue<Vector2>();
-    }
-    public void OnMoveCanceld(InputAction.CallbackContext context)
-    {
-        moveDir = Vector2.zero;
-    }
-    public void OnRunPerformed(InputAction.CallbackContext context)
-    {
-        Debug.Log("달린다.");
-        isRun = context.ReadValueAsButton();        
-    }
-
     public void Move(CharacterController controller)
     {
         this.controller = controller;        
@@ -85,5 +71,18 @@ public class PlayerMovement : MonoBehaviour
         {
             velocity.y = -2f; // 땅에 있을 때의 속도 초기화
         }
+    }
+    public void OnMovePerformed(InputAction.CallbackContext context)
+    {
+        moveInput = context.ReadValue<Vector2>();
+    }
+    public void OnMoveCanceld(InputAction.CallbackContext context)
+    {
+        moveDir = Vector2.zero;
+    }
+    public void OnRunPerformed(InputAction.CallbackContext context)
+    {
+        Debug.Log("달린다.");
+        isRun = context.ReadValueAsButton();
     }
 }

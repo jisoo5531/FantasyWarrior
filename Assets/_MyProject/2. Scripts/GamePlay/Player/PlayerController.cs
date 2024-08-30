@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
         playerUI = GetComponentInChildren<UIComponent>();
 
         damagable = gameObject.AddComponent<Damagable>();
-        attackable = gameObject.AddComponent<Attackable>();
+        attackable = gameObject.AddComponent<Attackable>();                
         
         PlayerInit();
     }
@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
 
     }
     private void Start()
-    {        
+    {                
         damagable.Initialize(maxHp: 1000, hp: 1000);
         attackable.Initialize(damage: 10, range: 2);
 
@@ -55,19 +55,8 @@ public class PlayerController : MonoBehaviour
     {       
         inputActions.PlayerActions.Enable();        
 
-        //playerInput.OnAttack += playerAnimation.AttackAnimation;
-
         damagable.OnHpChange += OnHpChange;
         damagable.OnDeath += OnDeath;        
-    }
-
-    private void Update()
-    {
-        //playerInput?.Keyinput();
-        
-        //float moveValue = Mathf.Max(Mathf.Abs(playerInput.Vertical), Mathf.Abs(playerInput.Horizontal));
-        //playerAnimation?.MoveAnimation(moveValue, playerInput.IsRun);
-        //playerAnimation?.SkillAnimation(playerInput.IsSkills, playerSkill.skillTable);
     }
     
     private void FixedUpdate()
@@ -76,8 +65,7 @@ public class PlayerController : MonoBehaviour
     }    
 
     private void OnDisable()
-    {
-        //playerInput.OnAttack -= playerAnimation.AttackAnimation;
+    {        
 
         inputActions.PlayerActions.Move.performed -= playerMovement.OnMovePerformed;
         inputActions.PlayerActions.Run.performed -= playerMovement.OnRunPerformed;

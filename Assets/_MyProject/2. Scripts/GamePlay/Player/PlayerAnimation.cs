@@ -7,30 +7,48 @@ public class PlayerAnimation : MonoBehaviour
 {
     public Animator anim;
     private bool isRun = false;
+    public Dictionary<int, string> skillTable;
 
     private void Awake()
     {
         anim = GetComponent<Animator>();
+    }
+    private void Start()
+    {
+        skillTable = GetComponent<PlayerSkill>().skillTable;
     }
 
     private void OnEnable()
     {
         PlayerController.inputActions.PlayerActions.Move.performed += MoveAnimation;
         PlayerController.inputActions.PlayerActions.Move.canceled += MoveAnimation;
-
         PlayerController.inputActions.PlayerActions.Run.performed += OnRunAction;
         PlayerController.inputActions.PlayerActions.Run.canceled += OnRunAction;
+
+        PlayerController.inputActions.PlayerActions.Attack.performed += AttackAnimation;
+
+        PlayerController.inputActions.PlayerActions.Skill_1.performed += OnSkill_1;
+        //PlayerController.inputActions.PlayerActions.Skill_2.performed += OnSkill_2;
+        //PlayerController.inputActions.PlayerActions.Skill_3.performed += OnSkill_3;
+        //PlayerController.inputActions.PlayerActions.Skill_4.performed += OnSkill_4;
         
     }
     private void OnDisable()
     {
         PlayerController.inputActions.PlayerActions.Move.performed -= MoveAnimation;
         PlayerController.inputActions.PlayerActions.Move.canceled -= MoveAnimation;
-
         PlayerController.inputActions.PlayerActions.Run.performed -= OnRunAction;
         PlayerController.inputActions.PlayerActions.Run.canceled -= OnRunAction;
+
+        PlayerController.inputActions.PlayerActions.Attack.performed -= AttackAnimation;
+
+        PlayerController.inputActions.PlayerActions.Skill_1.performed -= OnSkill_1;
+        //PlayerController.inputActions.PlayerActions.Skill_2.performed -= OnSkill_2;
+        //PlayerController.inputActions.PlayerActions.Skill_3.performed -= OnSkill_3;
+        //PlayerController.inputActions.PlayerActions.Skill_4.performed -= OnSkill_4;
     }
 
+    #region Move
     public void MoveAnimation(InputAction.CallbackContext context)
     {
         Vector2 move = context.ReadValue<Vector2>();
@@ -42,21 +60,33 @@ public class PlayerAnimation : MonoBehaviour
     {
         isRun = context.ReadValueAsButton();
     }
+    #endregion
 
-    public void AttackAnimation()
+    #region Skill
+    public void OnSkill_1(InputAction.CallbackContext context)
     {
+        anim.SetTrigger($"{skillTable[0]}");
+    }
+    public void OnSkill_2(InputAction.CallbackContext context)
+    {
+        anim.SetTrigger($"{skillTable[1]}");
+    }
+    public void OnSkill_3(InputAction.CallbackContext context)
+    {
+        anim.SetTrigger($"{skillTable[2]}");
+    }
+    public void OnSkill_4(InputAction.CallbackContext context)
+    {
+        anim.SetTrigger($"{skillTable[3]}");
+    }
+    #endregion
+
+    #region Attack
+    public void AttackAnimation(InputAction.CallbackContext context)
+    {        
         anim.SetTrigger("Attack");
     }
-    public void SkillAnimation(List<bool> skillInput, Dictionary<int, string> skillTable)
-    {
-        int skillNum = skillInput.IndexOf(true);
-        if (skillNum < 0)
-        {
-            return;
-        }
-        Debug.Log($"{skillTable[skillNum]} »ç¿ë");
-        anim.SetTrigger($"{skillTable[skillNum]}"); 
-    }
+    #endregion
     public void DeathAnimation()
     {
         anim.SetTrigger("Death");

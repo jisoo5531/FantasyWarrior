@@ -10,18 +10,17 @@ public class PlayerSkill : MonoBehaviour
     {
         Initialize();
     }
-    private void OnEnable()
-    {
-        //PlayerController.inputActions.PlayerActions.Skill;
-    }
-    private void OnDisable()
-    {
-        
-    }
+    
 
     protected virtual void Initialize()
     {
-
+        skillTable = new Dictionary<int, string>
+        {
+            { 0, "Skill_1" },
+            { 1, "Skill_2" },
+            { 2, "Skill_3" },
+            { 3, "Skill_4" }
+        };
     }
 
     public virtual void SKill_Play(int skillNum)

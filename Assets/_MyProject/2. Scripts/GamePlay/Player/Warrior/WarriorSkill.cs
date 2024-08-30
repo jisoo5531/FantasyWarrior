@@ -14,12 +14,7 @@ public class WarriorSkill : PlayerSkill
     protected override void Initialize()
     {
         base.Initialize();
-        sword_Stab.Initialize(OnEndSkill_1);
-
-        skillTable = new Dictionary<int, string>
-        {
-            { 0, "Skill_Spear" }
-        };        
+        sword_Stab.Initialize(OnEndSkill_1);              
     }
     public override void SKill_Play(int skillNum)
     {
