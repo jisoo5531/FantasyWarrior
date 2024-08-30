@@ -65458,6 +65458,7 @@ GameObject:
   - component: {fileID: 6893197390754033165}
   - component: {fileID: 6893197390754033164}
   - component: {fileID: 6893197390754033167}
+  - component: {fileID: 6893197390754033168}
   m_Layer: 7
   m_Name: PlayerTest
   m_TagString: Untagged
@@ -65520,6 +65521,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e06479e6df1b8649acf0d967d856642, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controller: {fileID: 0}
 --- !u!114 &6893197390754033166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65548,6 +65550,52 @@ MonoBehaviour:
   sword_Stab:
     effect: {fileID: 965469397746021247, guid: add197de3f5a61e4281f720411b1f126, type: 3}
     effectPos: {fileID: 391264706}
+--- !u!114 &6893197390754033168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6893197390754033159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: f5c67645263874943bc6f3a17704d092, type: 3}
+  m_NotificationBehavior: 3
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 35030fda-d2ef-4402-860f-3b44d38f0385
+    m_ActionName: PlayerActions/Move[/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c95db564-3b69-4fc2-8106-75770e7997ad
+    m_ActionName: PlayerActions/Run[/Keyboard/leftShift]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5b2d8aa8-1f02-4653-96e4-a29ddf119b17
+    m_ActionName: PlayerActions/Attack[/Keyboard/leftCtrl]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 4344bfc4-5217-4e2c-83d1-8a9e65e5857a
+    m_ActionName: PlayerActions/Skill[/Keyboard/q,/Keyboard/w,/Keyboard/e,/Keyboard/r]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: PC
+  m_DefaultActionMap: PlayerActions
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &6893197502580434529
 GameObject:
   m_ObjectHideFlags: 0

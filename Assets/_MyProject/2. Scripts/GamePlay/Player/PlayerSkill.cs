@@ -10,6 +10,14 @@ public class PlayerSkill : MonoBehaviour
     {
         Initialize();
     }
+    private void OnEnable()
+    {
+        //PlayerController.inputActions.PlayerActions.Skill;
+    }
+    private void OnDisable()
+    {
+        
+    }
 
     protected virtual void Initialize()
     {

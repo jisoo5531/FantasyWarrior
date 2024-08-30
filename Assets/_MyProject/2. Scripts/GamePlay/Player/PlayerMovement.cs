@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -10,26 +11,60 @@ public class PlayerMovement : MonoBehaviour
     private float gravity = -9.81f;
     private float jumpHeight = 1.5f;
     private float rotationSpeed = 100f; // 회전 속도
+    private Vector2 moveInput;
     private Vector3 moveDir;
     private Vector3 velocity;
     private bool isGrounded;
-    private CharacterController controller;
+    [HideInInspector] public CharacterController controller;
 
+    private bool isRun = false;
 
-    public void Move(Transform unitTrans, CharacterController controller, float horizontal, float vertical, bool isRun)
+    private void OnEnable()
     {
-        this.controller = controller;
-        CheckGrounded();
+        PlayerController.inputActions.PlayerActions.Move.performed += OnMovePerformed;
+        PlayerController.inputActions.PlayerActions.Move.canceled += OnMovePerformed;
 
-        moveDir = new Vector3(horizontal, 0, vertical);
+        PlayerController.inputActions.PlayerActions.Run.performed += OnRunPerformed;
+        PlayerController.inputActions.PlayerActions.Run.canceled += OnRunPerformed;
+    }
+    private void OnDisable()
+    {
+        PlayerController.inputActions.PlayerActions.Move.performed -= OnMovePerformed;
+        PlayerController.inputActions.PlayerActions.Move.canceled -= OnMovePerformed;
+
+        PlayerController.inputActions.PlayerActions.Run.performed -= OnRunPerformed;
+        PlayerController.inputActions.PlayerActions.Run.canceled -= OnRunPerformed;
+    }
+
+    public void OnMovePerformed(InputAction.CallbackContext context)
+    {
+        moveInput = context.ReadValue<Vector2>();
+    }
+    public void OnMoveCanceld(InputAction.CallbackContext context)
+    {
+        moveDir = Vector2.zero;
+    }
+    public void OnRunPerformed(InputAction.CallbackContext context)
+    {
+        Debug.Log("달린다.");
+        isRun = context.ReadValueAsButton();        
+    }
+
+    public void Move(CharacterController controller)
+    {
+        this.controller = controller;        
+        CheckGrounded();
 
         float moveSpeed = initSpeed;
 
-        if (horizontal != 0 || vertical != 0)
+        moveDir = new Vector3(moveInput.x, 0, moveInput.y);
+
+        Debug.Log(isRun);
+        if (moveDir.x != 0 || moveDir.z != 0)
         {
             moveSpeed = Mathf.Lerp(moveSpeed, walkSpeed, Time.deltaTime * 30f);
             controller.Move(isRun ? moveDir * runSpeed * Time.deltaTime : moveDir * moveSpeed * Time.deltaTime);
-            Rotate(unitTrans, moveDir);
+            Rotate(moveDir);
         }
 
         // 중력 적용
@@ -37,9 +72,9 @@ public class PlayerMovement : MonoBehaviour
         controller.Move(velocity * Time.deltaTime);
     }
 
-    private void Rotate(Transform unitTrans, Vector3 direction)
+    private void Rotate(Vector3 direction)
     {
-        unitTrans.rotation = Quaternion.Lerp(unitTrans.rotation, Quaternion.LookRotation(direction), Time.deltaTime * rotationSpeed);
+        transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(direction), Time.deltaTime * rotationSpeed);
     }
 
     private void CheckGrounded()

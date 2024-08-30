@@ -11,8 +11,10 @@ using UnityEngine;
 ]
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerInputAction inputActions;
+
     protected CharacterController controller;
-    protected PlayerInput playerInput;
+    //protected PlayerInput playerInput;
     protected PlayerMovement playerMovement;
     protected PlayerAnimation playerAnimation;
     protected UIComponent playerUI;
@@ -23,15 +25,17 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        inputActions = new();
+
         controller = GetComponent<CharacterController>();        
-        playerInput = GetComponent<PlayerInput>();
+        //playerInput = GetComponent<PlayerInput>();
         playerMovement = GetComponent<PlayerMovement>();
         playerAnimation = GetComponent<PlayerAnimation>();        
         playerUI = GetComponentInChildren<UIComponent>();
 
         damagable = gameObject.AddComponent<Damagable>();
         attackable = gameObject.AddComponent<Attackable>();
-
+        
         PlayerInit();
     }
     protected virtual void PlayerInit()
@@ -48,8 +52,10 @@ public class PlayerController : MonoBehaviour
     }        
 
     private void OnEnable()
-    {
-        playerInput.OnAttack += playerAnimation.AttackAnimation;
+    {       
+        inputActions.PlayerActions.Enable();        
+
+        //playerInput.OnAttack += playerAnimation.AttackAnimation;
 
         damagable.OnHpChange += OnHpChange;
         damagable.OnDeath += OnDeath;        
@@ -57,21 +63,24 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        playerInput?.Keyinput();
+        //playerInput?.Keyinput();
         
-        float moveValue = Mathf.Max(Mathf.Abs(playerInput.Vertical), Mathf.Abs(playerInput.Horizontal));
-        playerAnimation?.MoveAnimation(moveValue, playerInput.IsRun);
-        playerAnimation?.SkillAnimation(playerInput.IsSkills, playerSkill.skillTable);
+        //float moveValue = Mathf.Max(Mathf.Abs(playerInput.Vertical), Mathf.Abs(playerInput.Horizontal));
+        //playerAnimation?.MoveAnimation(moveValue, playerInput.IsRun);
+        //playerAnimation?.SkillAnimation(playerInput.IsSkills, playerSkill.skillTable);
     }
     
     private void FixedUpdate()
     {
-        playerMovement?.Move(transform, controller, playerInput.Horizontal, playerInput.Vertical, playerInput.IsRun);
+        playerMovement?.Move(controller);
     }    
 
     private void OnDisable()
-    {        
-        playerInput.OnAttack -= playerAnimation.AttackAnimation;
+    {
+        //playerInput.OnAttack -= playerAnimation.AttackAnimation;
+
+        inputActions.PlayerActions.Move.performed -= playerMovement.OnMovePerformed;
+        inputActions.PlayerActions.Run.performed -= playerMovement.OnRunPerformed;
 
         damagable.OnHpChange -= OnHpChange;
         damagable.OnDeath -= OnDeath;        
