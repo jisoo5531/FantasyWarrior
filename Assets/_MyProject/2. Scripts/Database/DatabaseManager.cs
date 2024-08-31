@@ -109,16 +109,9 @@ public class DatabaseManager : MonoBehaviour
         //        pwHash += $"{b:X2}";
         //    }
         //}
+        string query = $"SELECT * FROM {tableName} WHERE email='{email}' AND password_hash='{passwd}'";
 
-
-        MySqlCommand cmd = new MySqlCommand();
-        cmd.Connection = conn;
-        cmd.CommandText = $"SELECT * FROM {tableName} WHERE email='{email}' AND password_hash='{passwd}'";
-
-        MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd);
-        DataSet set = new DataSet();
-
-        dataAdapter.Fill(set);
+        DataSet set = OnSelectRequest(query);
 
         bool isLoginSuccess = set.Tables.Count > 0 && set.Tables[0].Rows.Count > 0;
 
@@ -174,7 +167,7 @@ public class DatabaseManager : MonoBehaviour
         MySqlCommand cmd = new MySqlCommand();
         cmd.Connection = conn;
         cmd.CommandText = $"UPDATE {tableName} SET class={classNum} WHERE uid={data.UID}";
-
+        
         if (ExcuteNonQ(cmd))
         {
             data.CharClass = changedClass;
@@ -234,5 +227,55 @@ public class DatabaseManager : MonoBehaviour
         {
             return null;
         }
+    }
+
+    public bool OnInsertOrUpdateRequest(string query)
+    {
+        try
+        {
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.Connection = conn;
+            cmd.CommandText = query;
+
+            if (ExcuteNonQ(cmd))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e.Message);
+            return false;            
+        }
+    }
+    public DataSet OnSelectRequest(string query)
+    {
+        try
+        {
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.Connection = conn;
+            cmd.CommandText = query;
+
+            MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd);
+            DataSet set = new DataSet();
+
+            dataAdapter.Fill(set);
+
+            return set;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e.Message);
+            return null;
+        }
+    }
+
+    private void OnApplicationQuit()
+    {
+        conn.Close();
     }
 }
