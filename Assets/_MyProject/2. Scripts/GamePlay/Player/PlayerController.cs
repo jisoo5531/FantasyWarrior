@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
         //playerInput = GetComponent<PlayerInput>();
         playerMovement = GetComponent<PlayerMovement>();
         playerAnimation = GetComponent<PlayerAnimation>();        
-        playerUI = GetComponentInChildren<UIComponent>();
+        playerUI = FindObjectOfType<PlayerUI>();
 
         damagable = gameObject.AddComponent<Damagable>();
         attackable = gameObject.AddComponent<Attackable>();                
