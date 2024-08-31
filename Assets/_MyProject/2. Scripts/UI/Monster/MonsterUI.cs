@@ -18,7 +18,7 @@ public class MonsterUI : UIComponent
         if (hpBar != null)
         {            
             hpBar.maxValue = (float)Damagable.MaxHp;
-            hpBar.value = hpBar.maxValue;
+            hpBar.value = Damagable.Hp;
 
             hpText.text = $"{Damagable.Hp}";
         }

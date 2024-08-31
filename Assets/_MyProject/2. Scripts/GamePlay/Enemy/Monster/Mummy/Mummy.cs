@@ -7,14 +7,8 @@ public class Mummy : MonsterUnit
     protected override void Initialize()
     {
         base.Initialize();
-
-        // TODO : 몬스터 능력치 나중에 따로 데이터베이스로 관리하여 데이터 받아와야 함
-        damagable.Initialize(maxHp: 100, hp: 100);
-        attackable.Initialize(damage: 8, range: 0.7f);
-        followable.Initialize(moveSpeed: 1f);
-
-        Debug.Log(nav == null);
-        nav.speed = followable.MoveSpeed;
+               
+        
     }
 
     protected override void OnHpChange(int damage)

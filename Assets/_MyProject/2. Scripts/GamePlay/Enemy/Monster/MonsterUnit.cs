@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent)), RequireComponent(typeof(UnitAnimation))]
 public class MonsterUnit : Enemy
 {
+    protected MonsterData monsterData;
+
     public MonsterStateMachine M_StateMachine;
     public PlayerController player;
     public UnitAnimation unitAnim;    
@@ -16,6 +19,7 @@ public class MonsterUnit : Enemy
     [HideInInspector] public Followable followable;
 
     protected UIComponent monsterUI;
+    protected Dictionary<string, object> whereQuery;
 
     [Tooltip("모든 몬스터의 공통된 탐지거리값")]
     public int detectionRange = 10;
@@ -39,7 +43,14 @@ public class MonsterUnit : Enemy
     }
 
     private void Start()
-    {        
+    {
+        GetFromDatabaseData();
+        // TODO : 몬스터 능력치 나중에 따로 데이터베이스로 관리하여 데이터 받아와야 함
+        damagable.Initialize(maxHp: monsterData.MaxHp, hp: monsterData.Hp);
+        attackable.Initialize(damage: monsterData.Damage, range: monsterData.AttackRange);
+        followable.Initialize(moveSpeed: monsterData.MoveSpeed);
+        nav.speed = followable.MoveSpeed;
+
         monsterUI.Initialize(damagable);        
         M_StateMachine = new MonsterStateMachine(this);
         M_StateMachine.Initialize(M_StateMachine.idleState);
@@ -69,6 +80,28 @@ public class MonsterUnit : Enemy
     //    EventHandler.actionEvent.UnRegisterHpChange(OnHpChange);
     //    EventHandler.actionEvent.UnRegisterDeath(OnDeath);
     //}
+
+    /// <summary>
+    /// 데이터베이스에서 몬스터 데이터 가져오기
+    /// </summary>
+    protected virtual void GetFromDatabaseData()
+    {
+        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest("monsters", whereQuery);
+
+        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
+
+        if (isGetData)
+        {
+            DataRow row = dataSet.Tables[0].Rows[0];
+
+            monsterData = new MonsterData(row);
+        }
+        else
+        {
+            //  실패
+
+        }
+    }
     
     protected virtual void OnHpChange(int damage)
     {
@@ -81,5 +114,48 @@ public class MonsterUnit : Enemy
         unitAnim.DeathAnimPlay();
         
         Destroy(gameObject, 3f);
+    }
+}
+public class MonsterData
+{
+    public int MonsterID { get; set; }
+    public string MonsterName { get; set; }    
+    public int MaxHp { get; set; }
+    public int Hp { get; set; }
+    public int Damage { get; set; }
+    public int Defense { get; set; }
+    public float MoveSpeed { get; set; }
+    public float AttackRange { get; set; }
+    public int EXP_Reward { get; set; }
+    public int Gold_Reward { get; set; }
+
+
+    public MonsterData(DataRow row) : this
+        (
+            int.Parse(row["monster_id"].ToString()),
+            row["name"].ToString(),
+            int.Parse(row["maxhp"].ToString()),
+            int.Parse(row["hp"].ToString()),
+            int.Parse(row["damage"].ToString()),
+            int.Parse(row["defense"].ToString()),
+            float.Parse(row["move_speed"].ToString()),
+            float.Parse(row["attack_range"].ToString()),
+            int.Parse(row["experience_reward"].ToString()),
+            int.Parse(row["gold_reward"].ToString())
+        )
+    { }
+
+    public MonsterData(int monsterID, string monsterName, int maxHp, int hp, int damage, int defense, float moveSpeed, float attackRange, int eXP_Reward, int gold_Reward)
+    {
+        this.MonsterID = monsterID;
+        this.MonsterName = monsterName;
+        this.MaxHp = maxHp;
+        this.Hp = hp;
+        this.Damage = damage;
+        this.Defense = defense;
+        this.MoveSpeed = moveSpeed;
+        this.AttackRange = attackRange;
+        this.EXP_Reward = eXP_Reward;
+        this.Gold_Reward = gold_Reward;
     }
 }

@@ -33,8 +33,7 @@ public class DatabaseManager : MonoBehaviour
         {
             string config = $"server={serverIP};port={portHum};database={dbName};uid=root;pwd={rootPassword};charset=utf8;";
 
-            conn = new MySqlConnection(config);
-            conn.Open();
+            conn = new MySqlConnection(config);            
             Debug.Log("Connect Success");
         }
         catch (Exception e)
@@ -50,7 +49,7 @@ public class DatabaseManager : MonoBehaviour
         cmd.Connection = conn;
         cmd.CommandText = $"INSERT INTO {tableName}(email, pw, LEVEL, class) VALUES('{email}', '{passwd}', {0}, {0})";
 
-        if (ExcuteNonQ(cmd))
+        if (ExcuteNonQuery(cmd))
         {
             successCallback?.Invoke();
         }
@@ -70,7 +69,7 @@ public class DatabaseManager : MonoBehaviour
         cmd.Connection = conn;
         cmd.CommandText = $"DELETE FROM {tableName} WHERE email='{email}'";
 
-        if (ExcuteNonQ(cmd))
+        if (ExcuteNonQuery(cmd))
         {
             successCallback?.Invoke();
         }
@@ -110,8 +109,12 @@ public class DatabaseManager : MonoBehaviour
         //    }
         //}
         string query = $"SELECT * FROM {tableName} WHERE email='{email}' AND password_hash='{passwd}'";
-
-        DataSet set = OnSelectRequest(query);
+        Dictionary<string, object> where = new Dictionary<string, object>
+        {
+            { "email", email },
+            { "password_hash", passwd }
+        };
+        DataSet set = OnSelectRequest(tableName, where);
 
         bool isLoginSuccess = set.Tables.Count > 0 && set.Tables[0].Rows.Count > 0;
 
@@ -144,7 +147,7 @@ public class DatabaseManager : MonoBehaviour
         cmd.Connection = conn;
         cmd.CommandText = $"UPDATE {tableName} SET level={nextLevel} WHERE uid={data.UID}";
 
-        if (ExcuteNonQ(cmd))
+        if (ExcuteNonQuery(cmd))
         {
             // 쿼리가 정상적으로 실행된 경우
             data.Level = nextLevel;
@@ -168,7 +171,7 @@ public class DatabaseManager : MonoBehaviour
         cmd.Connection = conn;
         cmd.CommandText = $"UPDATE {tableName} SET class={classNum} WHERE uid={data.UID}";
         
-        if (ExcuteNonQ(cmd))
+        if (ExcuteNonQuery(cmd))
         {
             data.CharClass = changedClass;
 
@@ -187,7 +190,7 @@ public class DatabaseManager : MonoBehaviour
         cmd.Connection = conn;
         cmd.CommandText = $"UPDATE {tableName} SET name='{name}', profile_text='{profile_Text}'";
 
-        if (ExcuteNonQ(cmd))
+        if (ExcuteNonQuery(cmd))
         {
             data.Name = name;            
 
@@ -198,11 +201,7 @@ public class DatabaseManager : MonoBehaviour
 
     #endregion
 
-    private bool ExcuteNonQ(MySqlCommand cmd)
-    {
-        int queryCount = cmd.ExecuteNonQuery();
-        return queryCount > 0;
-    }
+    
 
     private UserData UpdateData()
     {
@@ -233,11 +232,13 @@ public class DatabaseManager : MonoBehaviour
     {
         try
         {
+            conn.Open();
+
             MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = conn;
-            cmd.CommandText = query;
+            cmd.CommandText = query;            
 
-            if (ExcuteNonQ(cmd))
+            if (ExcuteNonQuery(cmd))
             {
                 return true;
             }
@@ -252,13 +253,34 @@ public class DatabaseManager : MonoBehaviour
             return false;            
         }
     }
-    public DataSet OnSelectRequest(string query)
+    public DataSet OnSelectRequest(string tableName, Dictionary<string, object> where)
     {
         try
         {
+            conn.Open();
+
             MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = conn;
-            cmd.CommandText = query;
+
+            if (where.Count > 0)
+            {
+                // 조건들을 리스트에 담고, AND로 연결
+                List<string> conditions = new List<string>();
+
+                foreach (var kvp in where)
+                {
+                    conditions.Add($"{kvp.Key}=@{kvp.Key}");
+                    cmd.Parameters.AddWithValue($"@{kvp.Key}", kvp.Value);
+                }
+
+                // 조건들을 AND로 연결하여 WHERE 절 생성
+                string whereClause = string.Join(" AND ", conditions);
+                cmd.CommandText = $"SELECT * FROM {tableName} WHERE {whereClause}";
+            }
+            else
+            {
+                cmd.CommandText = $"SELECT * FROM {tableName}";
+            }                                    
 
             MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd);
             DataSet set = new DataSet();
@@ -272,6 +294,17 @@ public class DatabaseManager : MonoBehaviour
             Debug.LogError(e.Message);
             return null;
         }
+    }
+    /// <summary>
+    /// MySqlCommand.ExcuteNonQuery() 했을 때 결과가 있는지
+    /// </summary>
+    /// <param name="cmd"></param>
+    /// <returns></returns>
+    private bool ExcuteNonQuery(MySqlCommand cmd)
+    {
+        int queryCount = cmd.ExecuteNonQuery();
+        conn.Close();
+        return queryCount > 0;
     }
 
     private void OnApplicationQuit()
