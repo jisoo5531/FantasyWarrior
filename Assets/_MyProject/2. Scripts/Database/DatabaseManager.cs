@@ -86,7 +86,7 @@ public class DatabaseManager : MonoBehaviour
 
     // 로그인을 하려고 할 때, 로그인 쿼리를 날린 즉시 데이터가 오지 않을 수 있으므로,
     // 로그인이 완료되었을 때 호출될 함수를 파라미터로 함께 받아주도록 함.
-    public void Login(string email, string passwd, Action<UserData> successCallback, Action failureCallback)
+    public void Login(string email, string passwd, Action<UserData> successCallback = null, Action failureCallback = null)
     {
         string pwHash = "";
 
@@ -113,7 +113,7 @@ public class DatabaseManager : MonoBehaviour
 
         MySqlCommand cmd = new MySqlCommand();
         cmd.Connection = conn;
-        cmd.CommandText = $"SELECT * FROM {tableName} WHERE email='{email}' AND pw='{passwd}'";
+        cmd.CommandText = $"SELECT * FROM {tableName} WHERE email='{email}' AND password_hash='{passwd}'";
 
         MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd);
         DataSet set = new DataSet();
