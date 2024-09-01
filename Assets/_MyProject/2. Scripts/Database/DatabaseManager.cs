@@ -11,9 +11,9 @@ public class DatabaseManager : MonoBehaviour
 {
     public static DatabaseManager Instance { get; private set; }
 
-    private string serverIP = "127.0.0.1";
-    private string portHum = "9333";
-    private string dbName = "test";
+    private string serverIP = "3.35.25.227";
+    private string portHum = "3306";
+    private string dbName = "game";
     private string tableName = "user";
     private string rootPassword = "1234";   // 테스트 시에 활용할 수 있지만 보안에 취약하므로 주의
 
