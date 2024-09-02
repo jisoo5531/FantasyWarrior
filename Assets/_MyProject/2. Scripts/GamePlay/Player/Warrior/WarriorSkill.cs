@@ -20,24 +20,8 @@ public class WarriorSkill : PlayerSkill
 
         //}
     }
-    public void SKill_Play(int skillNum)
-    {
-        switch (currentSkillNum)
-        {
-            case 0:
-                skillList[0].Play(skillNum);
-                break;
-            case 1:
-                skillList[1].Play(skillNum);
-                break;
-            case 2:
-                skillList[2].Play(skillNum);
-                break;
-            case 3:
-                skillList[3].Play(skillNum);
-                break;
-            default:
-                break;
-        }                
+    public void Skill_Play(int skillNum)
+    {        
+        skillList[currentSkillNum].Play(skillNum);
     }
 }
