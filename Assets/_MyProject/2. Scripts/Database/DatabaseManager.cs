@@ -264,7 +264,7 @@ public class DatabaseManager : MonoBehaviour
             MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = conn;
 
-            if (where.Count > 0)
+            if (where != null)
             {
                 // 조건들을 리스트에 담고, AND로 연결
                 List<string> conditions = new List<string>();

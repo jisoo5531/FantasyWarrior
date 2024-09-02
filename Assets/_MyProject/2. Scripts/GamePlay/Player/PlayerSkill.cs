@@ -8,7 +8,7 @@ public class PlayerSkill : MonoBehaviour
     /// <summary>
     /// 전체 스킬 정보
     /// </summary>
-    public Dictionary<int, string> skillTable;
+    public Dictionary<int, string> skillTable = new Dictionary<int, string>();
     /// <summary>
     /// 현재 장착하고 있는 스킬
     /// </summary>
@@ -18,7 +18,7 @@ public class PlayerSkill : MonoBehaviour
     /// </summary>
     protected Dictionary<string, object> whereQuery;
 
-    protected List<SkillData> skillDataList;
+    protected List<SkillData> skillDataList = new List<SkillData>();
 
     private void Awake()
     {
@@ -52,7 +52,7 @@ public class PlayerSkill : MonoBehaviour
     /// </summary>
     protected virtual void GetSkillFromDatabaseData()
     {
-        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest("skills", whereQuery);
+        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest("skills");
 
         bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
 
@@ -60,7 +60,9 @@ public class PlayerSkill : MonoBehaviour
         {                        
             foreach (DataRow row in dataSet.Tables[0].Rows)
             {
+                Debug.Log(dataSet.Tables[0].Rows.Count);
                 SkillData data = new SkillData(row);
+                Debug.Log($"id : {data.Skill_ID - 1}, name : {data.Skill_Name}");
                 skillDataList.Add(data);
                 skillTable.Add(data.Skill_ID - 1, data.Skill_Name);
             }                        

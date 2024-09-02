@@ -14,22 +14,6 @@ public class WarriorSkill : PlayerSkill
     protected override void Initialize()
     {
         base.Initialize();
-
-        skillTable = new Dictionary<int, string>
-        {
-            { 0, "Skill_1" },
-            { 1, "Skill_2" },
-            { 2, "Skill_3" },
-            { 3, "Skill_4" },
-            { 4, "Skill_5" },
-            { 5, "Skill_6" },
-            { 6, "Skill_7" },
-            { 7, "Skill_8" },
-            { 8, "Skill_9" },
-            { 9, "Skill_10" },
-            { 10, "Skill_11" },
-            { 11, "Skill_12" },
-        };
     }
     protected override void GetSkillFromDatabaseData()
     {
