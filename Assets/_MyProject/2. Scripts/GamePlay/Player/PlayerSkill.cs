@@ -64,7 +64,7 @@ public class PlayerSkill : MonoBehaviour
     /// </summary>
     protected virtual void GetSkillFromDatabaseData()
     {
-        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest("skills");
+        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest("skills");        
 
         bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
 
