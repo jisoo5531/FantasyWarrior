@@ -14,7 +14,7 @@ public class DatabaseManager : MonoBehaviour
     private string serverIP = "3.34.57.13";
     private string portHum = "3306";
     private string dbName = "game";
-    private string tableName = "user";
+    private string tableName = "users";
     private string rootPassword = "1234";   // 테스트 시에 활용할 수 있지만 보안에 취약하므로 주의
 
     private MySqlConnection conn;           // mySql DB와 연결상태를 유지하는 객체
