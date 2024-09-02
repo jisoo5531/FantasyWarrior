@@ -14,7 +14,30 @@ public class WarriorSkill : PlayerSkill
     protected override void Initialize()
     {
         base.Initialize();
-        sword_Stab.Initialize(OnEndSkill_1);              
+
+        skillTable = new Dictionary<int, string>
+        {
+            { 0, "Skill_1" },
+            { 1, "Skill_2" },
+            { 2, "Skill_3" },
+            { 3, "Skill_4" },
+            { 4, "Skill_5" },
+            { 5, "Skill_6" },
+            { 6, "Skill_7" },
+            { 7, "Skill_8" },
+            { 8, "Skill_9" },
+            { 9, "Skill_10" },
+            { 10, "Skill_11" },
+            { 11, "Skill_12" },
+        };
+    }
+    protected override void GetSkillFromDatabaseData()
+    {
+        base.GetSkillFromDatabaseData();
+        //whereQuery = new Dictionary<string, object>
+        //{
+
+        //}
     }
     public override void SKill_Play(int skillNum)
     {
@@ -40,28 +63,18 @@ public class Sword_Stab
     public Transform effectPos;
     private Rigidbody rigid;
     CharacterController controller;    
-
-    private bool isPlay = false;
-    private bool isEnd = false;
-
-    public void Initialize(Action skillsEnd)
-    {
-        WarriorSkill.OnEndSkill_1 += () => { isEnd = true; };        
-    }
+    
 
     public void Play(CharacterController controller)
     {
         this.controller = controller;
-
-        isPlay = true;
+        
         EffectPlay();
     }        
     private void EffectPlay()
     {        
         GameObject skillEffect = MonoBehaviour.Instantiate(effect, effectPos);
         MonoBehaviour.Destroy(skillEffect, 1f);
-
-        isPlay = false;
-        isEnd = false;
+        
     }
 }

@@ -31,7 +31,8 @@ public class UserData
             int.Parse(row["level"].ToString()),            
             int.Parse(row["exp"].ToString()),            
             int.Parse(row["gold"].ToString())            
-        ) { }
+        )
+    { }
 
     public UserData(int uID, string name, string email, string passwd, CharClass charClass, int level, int eXP, int gold)
     {

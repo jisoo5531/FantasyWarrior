@@ -8,6 +8,7 @@ public class PlayerAnimation : MonoBehaviour
     public Animator anim;
     private bool isRun = false;
     public Dictionary<int, string> skillTable;
+    public List<int> equipSkills;
 
     private void Awake()
     {
@@ -15,7 +16,9 @@ public class PlayerAnimation : MonoBehaviour
     }
     private void Start()
     {
-        skillTable = GetComponent<PlayerSkill>().skillTable;
+        PlayerSkill skill = GetComponent<PlayerSkill>();
+        skillTable = skill.skillTable;
+        equipSkills = skill.equipSkills;
     }
 
     private void OnEnable()
@@ -65,19 +68,19 @@ public class PlayerAnimation : MonoBehaviour
     #region Skill
     public void OnSkill_1(InputAction.CallbackContext context)
     {
-        anim.SetTrigger($"{skillTable[0]}");
+        anim.SetTrigger($"{skillTable[equipSkills[0]]}");
     }
     public void OnSkill_2(InputAction.CallbackContext context)
     {
-        anim.SetTrigger($"{skillTable[1]}");
+        anim.SetTrigger($"{skillTable[equipSkills[1]]}");
     }
     public void OnSkill_3(InputAction.CallbackContext context)
     {
-        anim.SetTrigger($"{skillTable[2]}");
+        anim.SetTrigger($"{skillTable[equipSkills[2]]}");
     }
     public void OnSkill_4(InputAction.CallbackContext context)
     {
-        anim.SetTrigger($"{skillTable[3]}");
+        anim.SetTrigger($"{skillTable[equipSkills[3]]}");
     }
     #endregion
 

@@ -240,10 +240,12 @@ public class DatabaseManager : MonoBehaviour
 
             if (ExcuteNonQuery(cmd))
             {
+                conn.Close();
                 return true;
             }
             else
             {
+                conn.Close();
                 return false;
             }
         }
@@ -253,7 +255,7 @@ public class DatabaseManager : MonoBehaviour
             return false;            
         }
     }
-    public DataSet OnSelectRequest(string tableName, Dictionary<string, object> where)
+    public DataSet OnSelectRequest(string tableName, Dictionary<string, object> where = null)
     {
         try
         {
@@ -287,6 +289,8 @@ public class DatabaseManager : MonoBehaviour
 
             dataAdapter.Fill(set);
 
+            conn.Close();
+
             return set;
         }
         catch (Exception e)
@@ -302,8 +306,7 @@ public class DatabaseManager : MonoBehaviour
     /// <returns></returns>
     private bool ExcuteNonQuery(MySqlCommand cmd)
     {
-        int queryCount = cmd.ExecuteNonQuery();
-        conn.Close();
+        int queryCount = cmd.ExecuteNonQuery();        
         return queryCount > 0;
     }
 

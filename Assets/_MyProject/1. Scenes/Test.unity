@@ -59210,7 +59210,7 @@ Animator:
   m_GameObject: {fileID: 6893197390754033159}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 038320a534bd8b444b43734860d1a211, type: 3}
-  m_Controller: {fileID: 22100000, guid: aa482a569ff565449affa717ac8b6003, type: 2}
+  m_Controller: {fileID: 9100000, guid: 08ea7ce372aa89d49893c13b27139052, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -72292,6 +72292,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
+  equipSkills: 
 --- !u!114 &6893197390754033165
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72330,6 +72331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2e804ba45e6954099c3545171d8289, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentSkill: 
   sword_Stab:
     effect: {fileID: 965469397746021247, guid: add197de3f5a61e4281f720411b1f126, type: 3}
     effectPos: {fileID: 391264706}
