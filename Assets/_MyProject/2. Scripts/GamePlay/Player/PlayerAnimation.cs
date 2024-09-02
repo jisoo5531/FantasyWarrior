@@ -30,10 +30,6 @@ public class PlayerAnimation : MonoBehaviour
 
         PlayerController.inputActions.PlayerActions.Attack.performed += AttackAnimation;
 
-        PlayerController.inputActions.PlayerActions.Skill_1.performed += OnSkill_1;
-        PlayerController.inputActions.PlayerActions.Skill_2.performed += OnSkill_2;
-        PlayerController.inputActions.PlayerActions.Skill_3.performed += OnSkill_3;
-        PlayerController.inputActions.PlayerActions.Skill_4.performed += OnSkill_4;
 
     }
     private void OnDisable()
@@ -44,11 +40,6 @@ public class PlayerAnimation : MonoBehaviour
         PlayerController.inputActions.PlayerActions.Run.canceled -= OnRunAction;
 
         PlayerController.inputActions.PlayerActions.Attack.performed -= AttackAnimation;
-
-        PlayerController.inputActions.PlayerActions.Skill_1.performed -= OnSkill_1;
-        PlayerController.inputActions.PlayerActions.Skill_2.performed -= OnSkill_2;
-        PlayerController.inputActions.PlayerActions.Skill_3.performed -= OnSkill_3;
-        PlayerController.inputActions.PlayerActions.Skill_4.performed -= OnSkill_4;
     }
 
     #region Move
@@ -66,21 +57,9 @@ public class PlayerAnimation : MonoBehaviour
     #endregion
 
     #region Skill
-    public void OnSkill_1(InputAction.CallbackContext context)
+    public void SkillAnimation(string skillName)
     {
-        anim.SetTrigger($"{skillTable[equipSkills[0]]}");
-    }
-    public void OnSkill_2(InputAction.CallbackContext context)
-    {
-        anim.SetTrigger($"{skillTable[equipSkills[1]]}");
-    }
-    public void OnSkill_3(InputAction.CallbackContext context)
-    {
-        anim.SetTrigger($"{skillTable[equipSkills[2]]}");
-    }
-    public void OnSkill_4(InputAction.CallbackContext context)
-    {
-        anim.SetTrigger($"{skillTable[equipSkills[3]]}");
+        anim.SetTrigger(skillName);
     }
     #endregion
 

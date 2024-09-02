@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerSkill : MonoBehaviour
 {    
@@ -20,10 +22,28 @@ public class PlayerSkill : MonoBehaviour
 
     protected List<SkillData> skillDataList = new List<SkillData>();
 
+    protected int currentSkillNum;
+    private PlayerAnimation playerAnimation;
+
+    private void OnEnable()
+    {
+        PlayerController.inputActions.PlayerActions.Skill_1.performed += OnSkill_1;
+        PlayerController.inputActions.PlayerActions.Skill_2.performed += OnSkill_2;
+        PlayerController.inputActions.PlayerActions.Skill_3.performed += OnSkill_3;
+        PlayerController.inputActions.PlayerActions.Skill_4.performed += OnSkill_4;
+    }
+    private void OnDisable()
+    {
+        PlayerController.inputActions.PlayerActions.Skill_1.performed -= OnSkill_1;
+        PlayerController.inputActions.PlayerActions.Skill_2.performed -= OnSkill_2;
+        PlayerController.inputActions.PlayerActions.Skill_3.performed -= OnSkill_3;
+        PlayerController.inputActions.PlayerActions.Skill_4.performed -= OnSkill_4;
+    }
+
     private void Awake()
     {
         Initialize();
-    }    
+    }        
 
     protected virtual void Initialize()
     {
@@ -35,18 +55,10 @@ public class PlayerSkill : MonoBehaviour
     private void Start()
     {
         GetSkillFromDatabaseData();
+        playerAnimation = GetComponent<PlayerAnimation>();
     }
 
-    public virtual void SKill_Play(int skillNum)
-    {
-        
-    }    
-    public virtual void SkillChagne()
-    {
-        // TODO : 스킬 교체
-        //equipSkills.RemoveAt(1);
-        //equipSkills.Insert(1, 5)
-    }
+    #region Database
     /// <summary>
     /// 데이터베이스에서 스킬 데이터 가져오기
     /// </summary>
@@ -59,10 +71,8 @@ public class PlayerSkill : MonoBehaviour
         if (isGetData)
         {                        
             foreach (DataRow row in dataSet.Tables[0].Rows)
-            {
-                Debug.Log(dataSet.Tables[0].Rows.Count);
-                SkillData data = new SkillData(row);
-                Debug.Log($"id : {data.Skill_ID - 1}, name : {data.Skill_Name}");
+            {                
+                SkillData data = new SkillData(row);                
                 skillDataList.Add(data);
                 skillTable.Add(data.Skill_ID - 1, data.Skill_Name);
             }                        
@@ -72,6 +82,39 @@ public class PlayerSkill : MonoBehaviour
             //  실패
         }
     }
+    #endregion
+
+    #region Input System
+    private void OnSkill_1(InputAction.CallbackContext context)
+    {
+        currentSkillNum = equipSkills[0];
+        playerAnimation.SkillAnimation($"{skillTable[equipSkills[0]]}");        
+    }
+    private void OnSkill_2(InputAction.CallbackContext context)
+    {
+        currentSkillNum = equipSkills[1];
+        playerAnimation.SkillAnimation($"{skillTable[equipSkills[1]]}");
+    }
+    private void OnSkill_3(InputAction.CallbackContext context)
+    {
+        currentSkillNum = equipSkills[2];
+        playerAnimation.SkillAnimation($"{skillTable[equipSkills[2]]}");
+    }
+    private void OnSkill_4(InputAction.CallbackContext context)
+    {
+        currentSkillNum = equipSkills[3];
+        playerAnimation.SkillAnimation($"{skillTable[equipSkills[3]]}");
+    }
+    #endregion
+
+    #region TODO List
+    public virtual void SkillChagne()
+    {
+        // TODO : 스킬 교체
+        //equipSkills.RemoveAt(1);
+        //equipSkills.Insert(1, 5)
+    }
+    #endregion
 }
 
 #region 스킬 데이터베이스
