@@ -11,7 +11,7 @@ public class DatabaseManager : MonoBehaviour
 {
     public static DatabaseManager Instance { get; private set; }
 
-    private string serverIP = "3.35.25.227";
+    private string serverIP = "3.34.57.13";
     private string portHum = "3306";
     private string dbName = "game";
     private string tableName = "user";
