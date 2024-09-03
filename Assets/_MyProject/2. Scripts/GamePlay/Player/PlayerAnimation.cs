@@ -18,7 +18,7 @@ public class PlayerAnimation : MonoBehaviour
     {
         PlayerSkill skill = GetComponent<PlayerSkill>();
         skillTable = skill.skillTable;
-        equipSkills = skill.equipSkills;
+        equipSkills = PlayerSkill.equipSkills;
     }
 
     private void OnEnable()

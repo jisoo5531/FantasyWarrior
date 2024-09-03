@@ -44,8 +44,7 @@ public class PlayerMovement : MonoBehaviour
         float moveSpeed = initSpeed;
 
         moveDir = new Vector3(moveInput.x, 0, moveInput.y);
-
-        Debug.Log(isRun);
+        
         if (moveDir.x != 0 || moveDir.z != 0)
         {
             moveSpeed = Mathf.Lerp(moveSpeed, walkSpeed, Time.deltaTime * 30f);

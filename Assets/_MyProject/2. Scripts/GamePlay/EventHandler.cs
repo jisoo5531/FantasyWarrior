@@ -3,40 +3,74 @@ using UnityEngine;
 
 public static class EventHandler
 {
-    public static ActionEvent actionEvent = new();
+    public static SkillKey skillKey = new();
 }
-public class ActionEvent
+public class SkillKey
 {
-    private event Action<int> OnHpChange;
-    private event Action OnDeath;
+    private event Action OnKeyChangeSkill_1;
+    private event Action OnKeyChangeSkill_2;
+    private event Action OnKeyChangeSkill_3;
+    private event Action OnKeyChangeSkill_4;
 
-    #region HPChange
-    public void RegisterHpChange(Action<int> listener)
+    public void RegisterSkillKeyChange(Action listener, int number)
     {
-        OnHpChange += listener;
+        switch (number)
+        {
+            case 1:
+                OnKeyChangeSkill_1 += listener;
+                break;
+            case 2:
+                OnKeyChangeSkill_2 += listener;
+                break;
+            case 3:
+                OnKeyChangeSkill_3 += listener;
+                break;
+            case 4:
+                OnKeyChangeSkill_4 += listener;
+                break;
+            default:
+                break;
+        }        
     }
-    public void UnRegisterHpChange(Action<int> listener)
+    public void UnRegisterHpChange(Action listener, int number)
     {
-        OnHpChange -= listener;
+        switch (number)
+        {
+            case 1:
+                OnKeyChangeSkill_1 -= listener;
+                break;
+            case 2:
+                OnKeyChangeSkill_2 -= listener;
+                break;
+            case 3:
+                OnKeyChangeSkill_3 -= listener;
+                break;
+            case 4:
+                OnKeyChangeSkill_4 -= listener;
+                break;
+            default:
+                break;
+        }
     }    
-    public void TriggerHpChange(int damage)
+    public void TriggetSkillKeyChange(int number)
     {
-        OnHpChange?.Invoke(damage);
+        switch (number)
+        {
+            case 1:
+                OnKeyChangeSkill_1?.Invoke();
+                break;
+            case 2:
+                OnKeyChangeSkill_2?.Invoke();
+                break;
+            case 3:
+                OnKeyChangeSkill_3?.Invoke();
+                break;
+            case 4:
+                OnKeyChangeSkill_4?.Invoke();
+                break;
+            default:
+                break;
+        }
+        
     }
-    #endregion
-
-    #region Death
-    public void RegisterDeath(Action listener)
-    {
-        OnDeath += listener;
-    }
-    public void UnRegisterDeath(Action listener)
-    {
-        OnDeath -= listener;
-    }
-    public void TriggetDeath()
-    {
-        OnDeath?.Invoke();
-    }
-    #endregion
 }

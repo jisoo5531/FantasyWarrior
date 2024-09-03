@@ -11,7 +11,7 @@ public class DatabaseManager : MonoBehaviour
 {
     public static DatabaseManager Instance { get; private set; }
 
-    private string serverIP = "3.34.57.13";
+    private string serverIP = "3.36.111.142";
     private string portHum = "3306";
     private string dbName = "game";
     private string tableName = "users";
@@ -22,10 +22,11 @@ public class DatabaseManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        DBConnect();
     }
     private void Start()
     {        
-        DBConnect();
+        
     }
     public void DBConnect()
     {        
@@ -227,7 +228,42 @@ public class DatabaseManager : MonoBehaviour
             return null;
         }
     }
+    public bool OnUpdateRequest(string tableName, Dictionary<string, object> whereQuery)
+    {
+        try
+        {
+            conn.Open();
 
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.Connection = conn;            
+
+            List<string> conditions = new List<string>();
+            foreach (var kvp in whereQuery)
+            {
+                conditions.Add($"{kvp.Key}=@{kvp.Key}");
+                cmd.Parameters.AddWithValue($"@{kvp.Key}", kvp.Value);
+            }
+            string whereClause = string.Join(" , ", conditions);
+
+            cmd.CommandText = $"UPDATE {tableName} SET {whereClause}";
+
+            if (ExcuteNonQuery(cmd))
+            {
+                conn.Close();
+                return true;
+            }
+            else
+            {
+                conn.Close();
+                return false;
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e.Message);
+            return false;
+        }
+    }
     public bool OnInsertOrUpdateRequest(string query)
     {
         try
@@ -255,7 +291,13 @@ public class DatabaseManager : MonoBehaviour
             return false;            
         }
     }
-    public DataSet OnSelectRequest(string tableName, Dictionary<string, object> where = null)
+    /// <summary>
+    /// Select Query를 위한 메서드.
+    /// </summary>
+    /// <param name="tableName"></param>
+    /// <param name="whereQuery">조건문 쿼리, 없다면 null</param>
+    /// <returns></returns>
+    public DataSet OnSelectRequest(string tableName, Dictionary<string, object> whereQuery = null)
     {
         try
         {
@@ -263,13 +305,13 @@ public class DatabaseManager : MonoBehaviour
 
             MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = conn;
-
-            if (where != null)
-            {
+            Debug.Log(tableName);
+            if (whereQuery != null)
+            {                
                 // 조건들을 리스트에 담고, AND로 연결
                 List<string> conditions = new List<string>();
 
-                foreach (var kvp in where)
+                foreach (var kvp in whereQuery)
                 {
                     conditions.Add($"{kvp.Key}=@{kvp.Key}");
                     cmd.Parameters.AddWithValue($"@{kvp.Key}", kvp.Value);
@@ -278,6 +320,7 @@ public class DatabaseManager : MonoBehaviour
                 // 조건들을 AND로 연결하여 WHERE 절 생성
                 string whereClause = string.Join(" AND ", conditions);
                 cmd.CommandText = $"SELECT * FROM {tableName} WHERE {whereClause}";
+                Debug.Log(cmd.CommandText);
             }
             else
             {

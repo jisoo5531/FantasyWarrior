@@ -33,7 +33,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3881687657502562237, guid: 6c080ba6c6fc17c479ffea071ae105a1, type: 3}
       propertyPath: m_Name
-      value: HUD_SciFi_Interact_ContextSensitive_Object
+      value: HUD_FantasyWarrior_Interact_ContextSensitive03
       objectReference: {fileID: 0}
     - target: {fileID: 4898854678204676101, guid: 6c080ba6c6fc17c479ffea071ae105a1, type: 3}
       propertyPath: m_AnchorMax.y
@@ -225,7 +225,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8695897238867267683, guid: 6c080ba6c6fc17c479ffea071ae105a1, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 136.29001
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8695897238867267683, guid: 6c080ba6c6fc17c479ffea071ae105a1, type: 3}
       propertyPath: m_AnchoredPosition.y
