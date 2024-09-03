@@ -4,10 +4,13 @@ using System.Data;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SkillPanel : MonoBehaviour
+public class UI_SkillPanel : MonoBehaviour
 {
+
+
     public GameObject skillWindowContent;
     public GameObject skillInfo;
+    public GameObject keySetPanel;
     public List<SkillData> skillDataList = new List<SkillData>();
 
     private string tableName = "warrior_skills";
@@ -22,10 +25,10 @@ public class SkillPanel : MonoBehaviour
         foreach (SkillData skillData in skillDataList)
         {
             GameObject skillInfoObj = Instantiate(skillInfo, skillWindowContent.transform);
-            SkillEntry skillEntry = skillInfoObj.GetComponent<SkillEntry>();            
+            UI_SkillEntry skillEntry = skillInfoObj.GetComponent<UI_SkillEntry>();            
             
             // TODO : 직업 추가 시, tableName 바꾸기            
-            skillEntry.Initialize(skillData, this.tableName);
+            skillEntry.Initialize(skillData, this.tableName, keySetPanel);
         }
     }
     #region Database
