@@ -1,11 +1,43 @@
-/*CREATE TABLE Users (
-    user_id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) NOT NULL UNIQUE,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    password_hash VARCHAR(255) NOT NULL,
-    level INT DEFAULT 1,
-    exp INT DEFAULT 0,
-    gold INT DEFAULT 0
+/*CREATE TABLE Jobs (
+    JobID INT PRIMARY KEY AUTO_INCREMENT,
+    JobName VARCHAR(255) NOT NULL,
+    JobDescription TEXT
 );*/
-INSERT INTO users (username, email, password_hash)
-VALUES ('player1', 'player1@test.test', '1234');
+/*CREATE TABLE Skills (
+    Skill_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Skill_Name VARCHAR(255) NOT NULL,
+    MaxLevel INT DEFAULT 1,
+    Damage INT	DEFAULT 0,
+    Unlock_Level INT DEFAULT 0,
+    Skill_Order INT DEFAULT 0,
+    Mana_Cost INT DEFAULT 0,
+    
+    Skill_Description TEXT
+);*/
+/*CREATE TABLE JobSkills (
+    JobSkill_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Job_ID INT,
+    Skill_ID INT,
+    FOREIGN KEY (Job_ID) REFERENCES Jobs(Job_ID),
+    FOREIGN KEY (Skill_ID) REFERENCES Skills(Skill_ID)
+);*/
+/*CREATE TABLE UserJobs (
+    UserJob_ID INT PRIMARY KEY AUTO_INCREMENT,
+    User_ID INT,
+    Job_ID INT,
+    Job_Level INT DEFAULT 1,
+    Job_Experience INT DEFAULT 0,
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
+    FOREIGN KEY (Job_ID) REFERENCES Jobs(Job_ID)
+);*/
+CREATE TABLE UserSkills (
+    UserSkill_ID INT PRIMARY KEY AUTO_INCREMENT,
+    User_ID INT,
+    Job_ID INT,
+    Skill_ID INT,
+    Skill_Level INT DEFAULT 1,
+    Skill_Experience INT DEFAULT 0,
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
+    FOREIGN KEY (Job_ID) REFERENCES Jobs(Job_ID),
+    FOREIGN KEY (Skill_ID) REFERENCES Skills(Skill_ID)
+);

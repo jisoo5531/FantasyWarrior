@@ -52,12 +52,10 @@ public class SkillData
 {
     public int Skill_ID { get; set; }
     public string Skill_Name { get; set; }
-    public int Level { get; set; }
-    public Skill_Type SkillType { get; set; }
+    public int Level { get; set; }    
     public int Damage { get; set; }
     public int Mana_Cost { get; set; }
-    public float CoolTime { get; set; }
-    public Status_Effect Status_Effect { get; set; }
+    public float CoolTime { get; set; }    
     public int Unlock_Level { get; set; }    
     public int Skill_Order { get; set; }
     public string Skill_Desc { get; set; }
@@ -67,12 +65,10 @@ public class SkillData
         (
             int.Parse(row["skill_id"].ToString()),
             row["skill_name"].ToString(),
-            int.Parse(row["level"].ToString()),
-            (Skill_Type)int.Parse(row["skill_type"].ToString()),
+            int.Parse(row["level"].ToString()),            
             int.Parse(row["damage"].ToString()),
             int.Parse(row["mana_cost"].ToString()),
-            float.Parse(row["cooltime"].ToString()),
-            (Status_Effect)int.Parse(row["status_effects"].ToString()),
+            float.Parse(row["cooltime"].ToString()),            
             int.Parse(row["unlock_level"].ToString()),            
             int.Parse(row["skill_order"].ToString()),
             row["DESCRIPTION"].ToString(),
@@ -80,16 +76,14 @@ public class SkillData
         )
     { }
 
-    public SkillData(int skill_ID, string skill_Name, int level, Skill_Type skillType, int damage, int mana_Cost, float coolTime, Status_Effect status_Effect, int unlock_Level, int skill_Order, string skill_Desc, string icon_Name)
+    public SkillData(int skill_ID, string skill_Name, int level, int damage, int mana_Cost, float coolTime, int unlock_Level, int skill_Order, string skill_Desc, string icon_Name)
     {
         this.Skill_ID = skill_ID;
         this.Skill_Name = skill_Name;
-        this.Level = level;
-        this.SkillType = skillType;
+        this.Level = level;        
         this.Damage = damage;
         this.Mana_Cost = mana_Cost;
-        this.CoolTime = coolTime;
-        this.Status_Effect = status_Effect;
+        this.CoolTime = coolTime;        
         this.Unlock_Level = unlock_Level;        
         this.Skill_Order = skill_Order;
         this.Skill_Desc = skill_Desc;

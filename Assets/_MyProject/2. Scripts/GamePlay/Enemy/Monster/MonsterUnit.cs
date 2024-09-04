@@ -86,7 +86,9 @@ public class MonsterUnit : Enemy
     /// </summary>
     protected virtual void GetFromDatabaseData()
     {
-        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest("monsters", whereQuery);
+        // TODO : 몬스터 쿼리문 바꾸기
+
+        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest("monsters");
 
         bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
 

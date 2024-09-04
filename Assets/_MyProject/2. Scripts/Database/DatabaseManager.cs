@@ -11,13 +11,15 @@ public class DatabaseManager : MonoBehaviour
 {
     public static DatabaseManager Instance { get; private set; }
 
+    private MySqlConnection conn;           // mySql DB와 연결상태를 유지하는 객체
+
     private string serverIP = "13.209.20.39";
     private string portHum = "3306";
     private string dbName = "game";
     private string tableName = "users";
     private string rootPassword = "1234";   // 테스트 시에 활용할 수 있지만 보안에 취약하므로 주의
 
-    private MySqlConnection conn;           // mySql DB와 연결상태를 유지하는 객체
+    public CharClass playerClass;
 
     private void Awake()
     {
@@ -41,7 +43,36 @@ public class DatabaseManager : MonoBehaviour
         {
             Debug.LogError(e.Message);            
         }        
+    }    
+
+    private void GetClassTest()
+    {
+        string query =
+            $"SELECT jobs.Job_ID" +
+            $"FROM userjobs" +
+            $"JOIN Jobs ON UserJobs.Job_ID = Jobs.Job_ID" +
+            $"WHERE UserJobs.User_ID = 1;";
+
+        DataSet dataSet = OnSelectRequest(query);
+
+        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
+
+        if (isGetData)
+        {
+            DataRow row = dataSet.Tables[0].Rows[0];
+            playerClass = (CharClass)int.Parse(row["Job_ID"].ToString());
+
+            //foreach (DataRow row in dataSet.Tables[0].Rows)
+            //{
+            //    SkillData data = new SkillData(row);               
+            //}
+        }
+        else
+        {
+            //  실패
+        }
     }
+
     #region 회원가입
 
     public void SignUP(string email, string passwd, Action successCallback, Action failureCallback)
@@ -115,7 +146,9 @@ public class DatabaseManager : MonoBehaviour
             { "email", email },
             { "password_hash", passwd }
         };
-        DataSet set = OnSelectRequest(tableName, where);
+
+        // TODO : 로그인 query문 바꾸기
+        DataSet set = OnSelectRequest(tableName);
 
         bool isLoginSuccess = set.Tables.Count > 0 && set.Tables[0].Rows.Count > 0;
 
@@ -297,7 +330,7 @@ public class DatabaseManager : MonoBehaviour
     /// <param name="tableName"></param>
     /// <param name="whereQuery">조건문 쿼리, 없다면 null</param>
     /// <returns></returns>
-    public DataSet OnSelectRequest(string tableName, Dictionary<string, object> whereQuery = null)
+    public DataSet OnSelectRequest(string query, string tableName = null)
     {
         try
         {
@@ -305,27 +338,28 @@ public class DatabaseManager : MonoBehaviour
 
             MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = conn;
-            Debug.Log(tableName);
-            if (whereQuery != null)
-            {                
-                // 조건들을 리스트에 담고, AND로 연결
-                List<string> conditions = new List<string>();
+            cmd.CommandText = query;
 
-                foreach (var kvp in whereQuery)
-                {
-                    conditions.Add($"{kvp.Key}=@{kvp.Key}");
-                    cmd.Parameters.AddWithValue($"@{kvp.Key}", kvp.Value);
-                }
+            //if (whereQuery != null)
+            //{                
+            //    // 조건들을 리스트에 담고, AND로 연결
+            //    List<string> conditions = new List<string>();
 
-                // 조건들을 AND로 연결하여 WHERE 절 생성
-                string whereClause = string.Join(" AND ", conditions);
-                cmd.CommandText = $"SELECT * FROM {tableName} WHERE {whereClause}";
-                Debug.Log(cmd.CommandText);
-            }
-            else
-            {
-                cmd.CommandText = $"SELECT * FROM {tableName}";
-            }                                    
+            //    foreach (var kvp in whereQuery)
+            //    {
+            //        conditions.Add($"{kvp.Key}=@{kvp.Key}");
+            //        cmd.Parameters.AddWithValue($"@{kvp.Key}", kvp.Value);
+            //    }
+
+            //    // 조건들을 AND로 연결하여 WHERE 절 생성
+            //    string whereClause = string.Join(" AND ", conditions);
+            //    cmd.CommandText = $"SELECT * FROM {tableName} WHERE {whereClause}";
+            //    Debug.Log(cmd.CommandText);
+            //}
+            //else
+            //{
+            //    cmd.CommandText = $"SELECT * FROM {tableName}";
+            //}                                    
 
             MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd);
             DataSet set = new DataSet();
