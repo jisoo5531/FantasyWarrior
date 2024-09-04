@@ -10,9 +10,7 @@ using UnityEngine;
     RequireComponent(typeof(PlayerAnimation))
 ]
 public class PlayerController : MonoBehaviour
-{
-    public static PlayerInputAction inputActions;
-
+{    
     protected CharacterController controller;
     //protected PlayerInput playerInput;
     protected PlayerMovement playerMovement;
