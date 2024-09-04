@@ -24,17 +24,6 @@ public class UI_SkillEntry : MonoBehaviour
                 keySetPanel.gameObject.SetActive(true);
                 keySetPanel.GetComponent<UI_SkillKeySetting>().Initialize(skillData.Skill_Order);
             });
-
-        //var skillOptions = new List<TMP_Dropdown.OptionData>();
-
-        //foreach (string skillKey in Enum.GetNames(typeof(Skill.Skill_Key)))
-        //{
-        //    skillOptions.Add(new TMP_Dropdown.OptionData(skillKey));
-        //}
-        //skillDropdown.options = skillOptions;
-
-        //skillDropdown.onValueChanged.AddListener(SkillChange);
-
     }
     public void Initialize(SkillData skillData, string tableName, GameObject keySetPanel)
     {
@@ -42,11 +31,5 @@ public class UI_SkillEntry : MonoBehaviour
         this.keySetPanel = keySetPanel;
         skillIcon.sprite = Resources.Load<Sprite>($"{tableName}/{skillData.Icon_Name}");        
         skillName.text = skillData.Skill_Name;
-    }
-    public void SkillChange(int num)
-    {
-        PlayerSkill.equipSkills.RemoveAt(num);
-        PlayerSkill.equipSkills.Insert(num, skillData.Skill_Order);
-
     }
 }

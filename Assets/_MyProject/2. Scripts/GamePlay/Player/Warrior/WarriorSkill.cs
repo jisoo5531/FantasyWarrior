@@ -14,6 +14,6 @@ public class WarriorSkill : PlayerSkill
     }
     public void Skill_Play(int skillNum)
     {        
-        skillList[currentSkillNum].Play(skillNum);
+        skillList[currentSkillNum - 1].Play(skillNum);
     }
 }

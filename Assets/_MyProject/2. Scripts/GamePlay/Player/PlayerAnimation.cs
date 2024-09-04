@@ -18,7 +18,7 @@ public class PlayerAnimation : MonoBehaviour
     {
         PlayerSkill skill = GetComponent<PlayerSkill>();
         skillTable = skill.skillTable;
-        equipSkills = PlayerSkill.equipSkills;
+        equipSkills = PlayerSkill.EquipSkills;
     }
 
     private void OnEnable()
@@ -59,6 +59,7 @@ public class PlayerAnimation : MonoBehaviour
     #region Skill
     public void SkillAnimation(string skillName)
     {
+        Debug.Log(skillName);
         anim.SetTrigger(skillName);
     }
     #endregion

@@ -23,17 +23,22 @@ public class UI_SkillPanel : MonoBehaviour
 
     private void Awake()
     {
-        for (int i = 0; i < iconPanelList.Count; i++)
-        {
-            // TODO : 스킬 데이터 Manager
-        }
-        
+        EventHandler.skillKey.RegisterSkillKeyChange(OnChangeSkill_1, 1);
+        EventHandler.skillKey.RegisterSkillKeyChange(OnChangeSkill_2, 2);
+        EventHandler.skillKey.RegisterSkillKeyChange(OnChangeSkill_3, 3);
+        EventHandler.skillKey.RegisterSkillKeyChange(OnChangeSkill_4, 4);
     }
 
     private void Start()
     {
         //GetSkillFromDatabaseData();
-        InitSkillWindow();
+        for (int i = 0; i < iconPanelList.Count; i++)
+        {
+            Sprite skillIcon = UIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];
+            iconPanelList[i].ActionBarIcon.sprite = skillIcon;
+            iconPanelList[i].KeyIcon.sprite = skillIcon;
+        }
+        InitSkillWindow();        
     }
     private void InitSkillWindow()
     {
@@ -47,35 +52,27 @@ public class UI_SkillPanel : MonoBehaviour
                 // TODO : 직업 추가 시, tableName 바꾸기            
                 skillEntry.Initialize(skillData, this.tableName, keySetPanel);
             }
-        }
-        
+        }        
     }
-    #region Database
-    /// <summary>
-    /// 데이터베이스에서 스킬 데이터 가져오기
-    /// </summary>
-    private void GetSkillFromDatabaseData()
+
+    private void OnChangeSkill_1()
     {
-        Dictionary<string, object> whereQuery = new Dictionary<string, object>
-        {
-            { "char_class", 1 }
-        };
-        // TODO : 직업 추가 시, 수정
-        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest("skills", whereQuery);
-        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
-        if (isGetData)
-        {
-            Debug.Log(dataSet.Tables[0].Rows.Count);
-            foreach (DataRow row in dataSet.Tables[0].Rows)
-            {
-                SkillData data = new SkillData(row);                
-                skillDataList.Add(data);
-            }
-        }
-        else
-        {
-            //  실패
-        }
+        iconPanelList[0].ActionBarIcon.sprite = UIManager.Instance.skillIconList[PlayerSkill.EquipSkills[0]];
+        iconPanelList[0].KeyIcon.sprite = UIManager.Instance.skillIconList[PlayerSkill.EquipSkills[0]];
     }
-    #endregion
+    private void OnChangeSkill_2()
+    {
+        iconPanelList[1].ActionBarIcon.sprite = UIManager.Instance.skillIconList[PlayerSkill.EquipSkills[1]];
+        iconPanelList[1].KeyIcon.sprite = UIManager.Instance.skillIconList[PlayerSkill.EquipSkills[1]];
+    }
+    private void OnChangeSkill_3()
+    {
+        iconPanelList[2].ActionBarIcon.sprite = UIManager.Instance.skillIconList[PlayerSkill.EquipSkills[2]];
+        iconPanelList[2].KeyIcon.sprite = UIManager.Instance.skillIconList[PlayerSkill.EquipSkills[2]];
+    }
+    private void OnChangeSkill_4()
+    {
+        iconPanelList[3].ActionBarIcon.sprite = UIManager.Instance.skillIconList[PlayerSkill.EquipSkills[3]];
+        iconPanelList[3].KeyIcon.sprite = UIManager.Instance.skillIconList[PlayerSkill.EquipSkills[3]];
+    }
 }

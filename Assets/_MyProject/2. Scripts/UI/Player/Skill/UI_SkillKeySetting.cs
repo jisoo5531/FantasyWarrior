@@ -50,13 +50,13 @@ public class UI_SkillKeySetting : MonoBehaviour
 
     private void ChangeSkillSet(int index)
     {
-        PlayerSkill.equipSkills.Remove(index);
-        int originIndex = PlayerSkill.equipSkills.Find((x) => { return x == skillNum; });
-        PlayerSkill.equipSkills.Remove(originIndex);
+        PlayerSkill.EquipSkills.Remove(index);
+        int originIndex = PlayerSkill.EquipSkills.Find((x) => { return x == skillNum; });
+        PlayerSkill.EquipSkills.Remove(originIndex);
 
-        PlayerSkill.equipSkills.Insert(index, skillNum);
+        PlayerSkill.EquipSkills.Insert(index, skillNum);
 
-        Debug.Log($"{PlayerSkill.equipSkills[0]},{PlayerSkill.equipSkills[1]},{PlayerSkill.equipSkills[2]},{PlayerSkill.equipSkills[3]}");
+        Debug.Log($"{PlayerSkill.EquipSkills[0]},{PlayerSkill.EquipSkills[1]},{PlayerSkill.EquipSkills[2]},{PlayerSkill.EquipSkills[3]}");
 
         gameObject.SetActive(false);
     }

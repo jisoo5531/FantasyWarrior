@@ -6,15 +6,16 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerSkill : MonoBehaviour
-{    
+{
+    /// <summary>
+    /// 현재 장착하고 있는 스킬
+    /// </summary>
+    [HideInInspector] public static List<int> EquipSkills { get; private set; }
     /// <summary>
     /// 전체 스킬 정보
     /// </summary>
     public Dictionary<int, string> skillTable = new Dictionary<int, string>();
-    /// <summary>
-    /// 현재 장착하고 있는 스킬
-    /// </summary>
-    [HideInInspector] public static List<int> equipSkills;
+    
     /// <summary>
     /// 데이터베이스 where 쿼리문
     /// </summary>
@@ -47,22 +48,24 @@ public class PlayerSkill : MonoBehaviour
 
     protected virtual void Initialize()
     {
-        equipSkills = new List<int>
+        EquipSkills = new List<int>
         {
-            //0, 1, 2, 3
+            //1,2,3,4
             5,6,7,8
-            //8
+            //9
         };
     }
     private void Start()
     {        
-        playerAnimation = GetComponent<PlayerAnimation>();        
+        playerAnimation = GetComponent<PlayerAnimation>();
+        
         if (GameManager.Instance.userSkillDataList != null)
         {
-            foreach (SkillData skillData in GameManager.Instance.userSkillDataList)
+            for (int i = 0; i < GameManager.Instance.userSkillDataList.Count; i++)
             {
-                skillTable.Add(skillData.Skill_ID - 1, skillData.Skill_Name);
-            }
+                SkillData skillData = GameManager.Instance.userSkillDataList[i];
+                skillTable.Add(i + 1, skillData.Skill_Name);
+            }            
         }
     }
 
@@ -71,27 +74,27 @@ public class PlayerSkill : MonoBehaviour
     #region Input System
     private void OnSkill_1(InputAction.CallbackContext context)
     {
-        currentSkillNum = equipSkills[0];
-        playerAnimation.SkillAnimation($"{skillTable[equipSkills[0]]}");
-        Debug.Log(currentSkillNum);
+        currentSkillNum = EquipSkills[0];
+        playerAnimation.SkillAnimation($"{skillTable[EquipSkills[0]]}");
+        Debug.Log($"현재 스킬 번호 : {currentSkillNum}");
     }
     private void OnSkill_2(InputAction.CallbackContext context)
     {
-        currentSkillNum = equipSkills[1];
-        playerAnimation.SkillAnimation($"{skillTable[equipSkills[1]]}");
-        Debug.Log(currentSkillNum);
+        currentSkillNum = EquipSkills[1];
+        playerAnimation.SkillAnimation($"{skillTable[EquipSkills[1]]}");
+        Debug.Log($"현재 스킬 번호 : {currentSkillNum}");
     }
     private void OnSkill_3(InputAction.CallbackContext context)
     {
-        currentSkillNum = equipSkills[2];
-        playerAnimation.SkillAnimation($"{skillTable[equipSkills[2]]}");
-        Debug.Log(currentSkillNum);
+        currentSkillNum = EquipSkills[2];
+        playerAnimation.SkillAnimation($"{skillTable[EquipSkills[2]]}");
+        Debug.Log($"현재 스킬 번호 : {currentSkillNum}");
     }
     private void OnSkill_4(InputAction.CallbackContext context)
     {
-        currentSkillNum = equipSkills[3];
-        playerAnimation.SkillAnimation($"{skillTable[equipSkills[3]]}");
-        Debug.Log(currentSkillNum);
+        currentSkillNum = EquipSkills[3];
+        playerAnimation.SkillAnimation($"{skillTable[EquipSkills[3]]}");
+        Debug.Log($"현재 스킬 번호 : {currentSkillNum}");
     }
     #endregion
 
