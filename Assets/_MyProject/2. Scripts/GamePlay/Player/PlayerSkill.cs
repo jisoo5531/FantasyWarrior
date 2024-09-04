@@ -76,24 +76,40 @@ public class PlayerSkill : MonoBehaviour
     private void OnSkill_1(InputAction.CallbackContext context)
     {
         currentSkillNum = EquipSkills[0];
+        if (currentSkillNum == 0)
+        {
+            return;
+        }
         playerAnimation.SkillAnimation($"{skillTable[EquipSkills[0]]}");
         Debug.Log($"현재 스킬 번호 : {currentSkillNum}");
     }
     private void OnSkill_2(InputAction.CallbackContext context)
     {
         currentSkillNum = EquipSkills[1];
+        if (currentSkillNum == 0)
+        {
+            return;
+        }
         playerAnimation.SkillAnimation($"{skillTable[EquipSkills[1]]}");
         Debug.Log($"현재 스킬 번호 : {currentSkillNum}");
     }
     private void OnSkill_3(InputAction.CallbackContext context)
     {
         currentSkillNum = EquipSkills[2];
+        if (currentSkillNum == 0)
+        {
+            return;
+        }
         playerAnimation.SkillAnimation($"{skillTable[EquipSkills[2]]}");
         Debug.Log($"현재 스킬 번호 : {currentSkillNum}");
     }
     private void OnSkill_4(InputAction.CallbackContext context)
     {
         currentSkillNum = EquipSkills[3];
+        if (currentSkillNum == 0)
+        {
+            return;
+        }
         playerAnimation.SkillAnimation($"{skillTable[EquipSkills[3]]}");
         Debug.Log($"현재 스킬 번호 : {currentSkillNum}");
     }
