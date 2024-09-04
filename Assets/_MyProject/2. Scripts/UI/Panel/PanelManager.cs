@@ -6,9 +6,11 @@ using UnityEngine.UI;
 
 public class PanelManager : MonoBehaviour
 {
+    [Header("PlayerUI")]
+    public PlayerUI playerUI;
     [Header("Panel")]
-    public UI_SkillPanel SkillPanel;
     public UI_InventoryPanel InventoryPanel;
+    public UI_SkillPanel SkillPanel;
     public UI_QuestPanel QuestPanel;
 
     private void OnEnable()
@@ -27,18 +29,21 @@ public class PanelManager : MonoBehaviour
     private void OnSkill_UI(InputAction.CallbackContext context)
     {
         SkillPanel.gameObject.SetActive(!SkillPanel.gameObject.activeSelf);
+        playerUI.gameObject.SetActive(!SkillPanel.gameObject.activeSelf);
         InventoryPanel.gameObject.SetActive(false);
         QuestPanel.gameObject.SetActive(false);
     }
     private void OnInventory_UI(InputAction.CallbackContext context)
     {
         InventoryPanel.gameObject.SetActive(!InventoryPanel.gameObject.activeSelf);
+        playerUI.gameObject.SetActive(!InventoryPanel.gameObject.activeSelf);
         SkillPanel.gameObject.SetActive(false);
         QuestPanel.gameObject.SetActive(false);
     }
     private void OnQuest_UI(InputAction.CallbackContext context)
     {
         QuestPanel.gameObject.SetActive(!QuestPanel.gameObject.activeSelf);
+        playerUI.gameObject.SetActive(!QuestPanel.gameObject.activeSelf);
         SkillPanel.gameObject.SetActive(false);
         InventoryPanel.gameObject.SetActive(false);
     }

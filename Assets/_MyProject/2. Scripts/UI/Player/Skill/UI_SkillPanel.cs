@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class KeySetIcon
 {    
     public Image ActionBarIcon;
-    public Image KeyIcon;
+    public Image KeyIcon;    
 }
 public class UI_SkillPanel : MonoBehaviour
 {
@@ -30,7 +30,7 @@ public class UI_SkillPanel : MonoBehaviour
         {
             Sprite skillIcon = UIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];
             iconPanelList[i].ActionBarIcon.sprite = skillIcon;
-            iconPanelList[i].KeyIcon.sprite = skillIcon;
+            iconPanelList[i].KeyIcon.sprite = skillIcon;            
         }
         InitSkillWindow();        
     }
@@ -65,7 +65,7 @@ public class UI_SkillPanel : MonoBehaviour
             }
 
             iconPanelList[i].ActionBarIcon.sprite = UIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];
-            iconPanelList[i].KeyIcon.sprite = UIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];
+            iconPanelList[i].KeyIcon.sprite = UIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];            
             iconPanelList[i].ActionBarIcon.ImageTransparent(1);
             iconPanelList[i].KeyIcon.ImageTransparent(1);
         }        
