@@ -55,39 +55,18 @@ public class PlayerSkill : MonoBehaviour
         };
     }
     private void Start()
-    {
-        GetSkillFromDatabaseData();
-        playerAnimation = GetComponent<PlayerAnimation>();
+    {        
+        playerAnimation = GetComponent<PlayerAnimation>();        
+        if (GameManager.Instance.userSkillDataList != null)
+        {
+            foreach (SkillData skillData in GameManager.Instance.userSkillDataList)
+            {
+                skillTable.Add(skillData.Skill_ID - 1, skillData.Skill_Name);
+            }
+        }
     }
 
-    #region Database
-    /// <summary>
-    /// 데이터베이스에서 스킬 데이터 가져오기
-    /// </summary>
-    protected virtual void GetSkillFromDatabaseData()
-    {
-        Dictionary<string, object> whereQuery = new Dictionary<string, object>
-        {
-            { "char_class", 1 }
-        };
-        // TODO : 직업 추가 시, 수정
-        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest("skills", whereQuery);        
-        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;        
-        if (isGetData)
-        {                        
-            foreach (DataRow row in dataSet.Tables[0].Rows)
-            {                
-                SkillData data = new SkillData(row);                
-                skillDataList.Add(data);
-                skillTable.Add(data.Skill_ID - 1, data.Skill_Name);
-            }                        
-        }
-        else
-        {
-            //  실패
-        }
-    }
-    #endregion
+    
 
     #region Input System
     private void OnSkill_1(InputAction.CallbackContext context)

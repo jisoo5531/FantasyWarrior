@@ -12,14 +12,6 @@ public class WarriorSkill : PlayerSkill
     {
         base.Initialize();
     }
-    protected override void GetSkillFromDatabaseData()
-    {
-        base.GetSkillFromDatabaseData();
-        //whereQuery = new Dictionary<string, object>
-        //{
-
-        //}
-    }
     public void Skill_Play(int skillNum)
     {        
         skillList[currentSkillNum].Play(skillNum);

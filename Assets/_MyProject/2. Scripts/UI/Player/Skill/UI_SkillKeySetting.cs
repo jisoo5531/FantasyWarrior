@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class UI_SkillKeySetting : MonoBehaviour
     public Button key2_Button;
     public Button key3_Button;
     public Button key4_Button;
+    
 
     public int skillNum;
 
@@ -22,30 +24,40 @@ public class UI_SkillKeySetting : MonoBehaviour
     public void Initialize(int skillNum)
     {
         this.skillNum = skillNum;
+
     }
 
     public void OnClickKey1Button()
     {
-        PlayerSkill.equipSkills.Remove(0);
-        PlayerSkill.equipSkills.Insert(0, skillNum);
-        gameObject.SetActive(false);
-    }
+        ChangeSkillSet(0);
+        EventHandler.skillKey.TriggetSkillKeyChange(1);
+    }    
     public void OnClickKey2Button()
     {
-        PlayerSkill.equipSkills.Remove(1);
-        PlayerSkill.equipSkills.Insert(1, skillNum);
-        gameObject.SetActive(false);
+        ChangeSkillSet(1);
+        EventHandler.skillKey.TriggetSkillKeyChange(2);
     }
     public void OnClickKey3Button()
     {
-        PlayerSkill.equipSkills.Remove(2);
-        PlayerSkill.equipSkills.Insert(2, skillNum);
-        gameObject.SetActive(false);
+        ChangeSkillSet(2);
+        EventHandler.skillKey.TriggetSkillKeyChange(3);
     }
     public void OnClickKey4Button()
     {
-        PlayerSkill.equipSkills.Remove(3);
-        PlayerSkill.equipSkills.Insert(3, skillNum);
+        ChangeSkillSet(3);
+        EventHandler.skillKey.TriggetSkillKeyChange(4);
+    }
+
+    private void ChangeSkillSet(int index)
+    {
+        PlayerSkill.equipSkills.Remove(index);
+        int originIndex = PlayerSkill.equipSkills.Find((x) => { return x == skillNum; });
+        PlayerSkill.equipSkills.Remove(originIndex);
+
+        PlayerSkill.equipSkills.Insert(index, skillNum);
+
+        Debug.Log($"{PlayerSkill.equipSkills[0]},{PlayerSkill.equipSkills[1]},{PlayerSkill.equipSkills[2]},{PlayerSkill.equipSkills[3]}");
+
         gameObject.SetActive(false);
     }
 }
