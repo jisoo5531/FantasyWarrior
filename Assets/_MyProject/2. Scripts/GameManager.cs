@@ -40,12 +40,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void GetSkillFromDatabaseData()
     {
-        Dictionary<string, object> whereQuery = new Dictionary<string, object>
-        {
-            { "char_class", 1 }
-        };
         // TODO : 직업 추가 시, 수정
-        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest("skills", whereQuery);
+        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest("warrior_skills");
+        //DataSet dataSet = DatabaseManager.Instance.OnSelectRequest("archer_skills");
         bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
         if (isGetData)
         {

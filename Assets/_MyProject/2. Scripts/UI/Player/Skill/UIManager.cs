@@ -21,5 +21,10 @@ public class UIManager : MonoBehaviour
         {
             skillIconList.Add(item);
         }
+
+        //foreach (var item in Resources.LoadAll<Sprite>("archer_skills"))
+        //{
+        //    skillIconList.Add(item);
+        //}
     }
 }

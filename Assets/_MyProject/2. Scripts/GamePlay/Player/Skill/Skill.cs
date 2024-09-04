@@ -58,8 +58,7 @@ public class SkillData
     public int Mana_Cost { get; set; }
     public float CoolTime { get; set; }
     public Status_Effect Status_Effect { get; set; }
-    public int Unlock_Level { get; set; }
-    public CharClass CharClass { get; set; }
+    public int Unlock_Level { get; set; }    
     public int Skill_Order { get; set; }
     public string Skill_Desc { get; set; }
     public string Icon_Name { get; set; }
@@ -74,15 +73,14 @@ public class SkillData
             int.Parse(row["mana_cost"].ToString()),
             float.Parse(row["cooltime"].ToString()),
             (Status_Effect)int.Parse(row["status_effects"].ToString()),
-            int.Parse(row["unlock_level"].ToString()),
-            (CharClass)int.Parse(row["char_class"].ToString()),
+            int.Parse(row["unlock_level"].ToString()),            
             int.Parse(row["skill_order"].ToString()),
             row["DESCRIPTION"].ToString(),
             row["icon_name"].ToString()
         )
     { }
 
-    public SkillData(int skill_ID, string skill_Name, int level, Skill_Type skillType, int damage, int mana_Cost, float coolTime, Status_Effect status_Effect, int unlock_Level, CharClass charClass, int skill_Order, string skill_Desc, string icon_Name)
+    public SkillData(int skill_ID, string skill_Name, int level, Skill_Type skillType, int damage, int mana_Cost, float coolTime, Status_Effect status_Effect, int unlock_Level, int skill_Order, string skill_Desc, string icon_Name)
     {
         this.Skill_ID = skill_ID;
         this.Skill_Name = skill_Name;
@@ -92,8 +90,7 @@ public class SkillData
         this.Mana_Cost = mana_Cost;
         this.CoolTime = coolTime;
         this.Status_Effect = status_Effect;
-        this.Unlock_Level = unlock_Level;
-        this.CharClass = charClass;
+        this.Unlock_Level = unlock_Level;        
         this.Skill_Order = skill_Order;
         this.Skill_Desc = skill_Desc;
         this.Icon_Name = icon_Name;

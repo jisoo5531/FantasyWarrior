@@ -1,4 +1,4 @@
-/*CREATE TABLE Skills (
+CREATE TABLE archer_skills (
     skill_id INT AUTO_INCREMENT PRIMARY KEY,
     skill_name VARCHAR(50) NOT NULL UNIQUE,
     level INT DEFAULT 1,
@@ -9,6 +9,4 @@
     status_effects INT DEFAULT 0,
     unlock_level INT DEFAULT 0,
     DESCRIPTION VARCHAR(50),
-);*/
-INSERT INTO skills (skill_name)
-VALUES ('Skill_11');
+);
