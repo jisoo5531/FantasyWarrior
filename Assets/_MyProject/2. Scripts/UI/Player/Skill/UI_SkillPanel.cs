@@ -17,9 +17,7 @@ public class UI_SkillPanel : MonoBehaviour
     public GameObject skillInfo;
     public GameObject keySetPanel;
     public List<KeySetIcon> iconPanelList;
-    public List<SkillData> skillDataList = new List<SkillData>();
-
-    private string tableName = "warrior_skills";
+    public List<SkillData> skillDataList = new List<SkillData>();    
 
     private void Awake()
     {
@@ -27,8 +25,7 @@ public class UI_SkillPanel : MonoBehaviour
     }
 
     private void Start()
-    {
-        //GetSkillFromDatabaseData();
+    {        
         for (int i = 0; i < iconPanelList.Count; i++)
         {
             Sprite skillIcon = UIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];
@@ -47,7 +44,8 @@ public class UI_SkillPanel : MonoBehaviour
                 UI_SkillEntry skillEntry = skillInfoObj.GetComponent<UI_SkillEntry>();
 
                 // TODO : 직업 추가 시, tableName 바꾸기            
-                skillEntry.Initialize(skillData, this.tableName, keySetPanel);
+                Debug.Log("왜 안찍혀");
+                skillEntry.Initialize(skillData, keySetPanel);
             }
         }        
     }

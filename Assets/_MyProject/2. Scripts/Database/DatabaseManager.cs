@@ -13,7 +13,7 @@ public class DatabaseManager : MonoBehaviour
 
     private MySqlConnection conn;           // mySql DB와 연결상태를 유지하는 객체
 
-    private string serverIP = "13.209.20.39";
+    private string serverIP = "3.36.88.178";
     private string portHum = "3306";
     private string dbName = "game";
     private string tableName = "users";
@@ -25,6 +25,7 @@ public class DatabaseManager : MonoBehaviour
     {
         Instance = this;
         DBConnect();
+        GetClassTest();
     }
     private void Start()
     {        
@@ -48,20 +49,20 @@ public class DatabaseManager : MonoBehaviour
     private void GetClassTest()
     {
         string query =
-            $"SELECT jobs.Job_ID" +
-            $"FROM userjobs" +
-            $"JOIN Jobs ON UserJobs.Job_ID = Jobs.Job_ID" +
+            $"SELECT jobs.Job_ID\n" +
+            $"FROM userjobs\n" +
+            $"JOIN Jobs ON UserJobs.Job_ID = Jobs.Job_ID\n" +
             $"WHERE UserJobs.User_ID = 1;";
-
+        Debug.Log(query);
         DataSet dataSet = OnSelectRequest(query);
 
         bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
-
+            
         if (isGetData)
         {
             DataRow row = dataSet.Tables[0].Rows[0];
             playerClass = (CharClass)int.Parse(row["Job_ID"].ToString());
-
+            Debug.Log(playerClass);
             //foreach (DataRow row in dataSet.Tables[0].Rows)
             //{
             //    SkillData data = new SkillData(row);               

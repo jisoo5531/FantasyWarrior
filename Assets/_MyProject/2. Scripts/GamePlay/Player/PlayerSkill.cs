@@ -27,8 +27,7 @@ public class PlayerSkill : MonoBehaviour
     private PlayerAnimation playerAnimation;
 
     private void OnEnable()
-    {
-        Debug.Log(GameManager.inputActions == null);
+    {        
         GameManager.inputActions.PlayerActions.Skill_1.performed += OnSkill_1;
         GameManager.inputActions.PlayerActions.Skill_2.performed += OnSkill_2;
         GameManager.inputActions.PlayerActions.Skill_3.performed += OnSkill_3;
@@ -112,15 +111,6 @@ public class PlayerSkill : MonoBehaviour
         }
         playerAnimation.SkillAnimation($"{skillTable[EquipSkills[3]]}");
         Debug.Log($"현재 스킬 번호 : {currentSkillNum}");
-    }
-    #endregion
-
-    #region TODO List
-    public virtual void SkillChagne()
-    {
-        // TODO : 스킬 교체
-        //equipSkills.RemoveAt(1);
-        //equipSkills.Insert(1, 5)
     }
     #endregion
 }

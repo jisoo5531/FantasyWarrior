@@ -25,11 +25,13 @@ public class UI_SkillEntry : MonoBehaviour
                 keySetPanel.GetComponent<UI_SkillKeySetting>().Initialize(skillData.Skill_Order);
             });
     }
-    public void Initialize(SkillData skillData, string tableName, GameObject keySetPanel)
+    public void Initialize(SkillData skillData, GameObject keySetPanel)
     {
         this.skillData = skillData;
         this.keySetPanel = keySetPanel;
-        skillIcon.sprite = Resources.Load<Sprite>($"{tableName}/{skillData.Icon_Name}");        
+        string folderName = $"{DatabaseManager.Instance.playerClass.ToString()}_Skills";
+        Debug.Log(folderName);
+        skillIcon.sprite = Resources.Load<Sprite>($"{folderName}/{skillData.Icon_Name}");        
         skillName.text = skillData.Skill_Name;
     }
 }

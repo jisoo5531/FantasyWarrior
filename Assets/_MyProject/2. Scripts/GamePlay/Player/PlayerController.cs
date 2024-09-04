@@ -51,8 +51,7 @@ public class PlayerController : MonoBehaviour
     }        
 
     private void OnEnable()
-    {
-        Debug.Log("¿©±â?");            
+    {        
 
         damagable.OnHpChange += OnHpChange;
         damagable.OnDeath += OnDeath;        

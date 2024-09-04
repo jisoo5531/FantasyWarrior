@@ -50,16 +50,12 @@ public class GameManager : MonoBehaviour
     /// 데이터베이스에서 스킬 데이터 가져오기
     /// </summary>
     private void GetSkillFromDatabaseData()
-    {
-        // TODO : 스킬 쿼리 불러오기 수정, GameManager와 DatabaseManager 호출 순서 파악하기
-
+    {        
         string query =
-            $"SELECT skills.Skill_ID, skills.Skill_Name, userskills.Skill_Level, skills.Damage, skills.Mana_Cost, skills.Cooltime, skills.Unlock_Level, skills.Skill_Order, skills.Skill_Description, skills.Icon_Name" +
-            $"FROM UserSkills" +
-            $"JOIN Skills ON UserSkills.Skill_ID = Skills.Skill_ID" +
-            $"WHERE UserSkills.User_ID = 1 AND UserSkills.Job_ID = 1;";
-
-        // TODO : 직업 추가 시, 수정
+            $"SELECT skills.Skill_ID, skills.Skill_Name, userskills.Skill_Level, skills.Damage, skills.Mana_Cost, skills.Cooltime, skills.Unlock_Level, skills.Skill_Order, skills.Description, skills.Icon_Name\n" +
+            $"FROM UserSkills\n" +
+            $"JOIN Skills ON UserSkills.Skill_ID = Skills.Skill_ID\n" +
+            $"WHERE UserSkills.User_ID = {(int)DatabaseManager.Instance.playerClass} AND UserSkills.Job_ID = 1;";                
         DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
         //DataSet dataSet = DatabaseManager.Instance.OnSelectRequest("archer_skills");
         bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;

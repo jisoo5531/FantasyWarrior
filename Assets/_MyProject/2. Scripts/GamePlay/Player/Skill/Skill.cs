@@ -65,13 +65,13 @@ public class SkillData
         (
             int.Parse(row["skill_id"].ToString()),
             row["skill_name"].ToString(),
-            int.Parse(row["level"].ToString()),            
+            int.Parse(row["skill_level"].ToString()),            
             int.Parse(row["damage"].ToString()),
             int.Parse(row["mana_cost"].ToString()),
             float.Parse(row["cooltime"].ToString()),            
             int.Parse(row["unlock_level"].ToString()),            
             int.Parse(row["skill_order"].ToString()),
-            row["DESCRIPTION"].ToString(),
+            row["description"].ToString(),
             row["icon_name"].ToString()
         )
     { }
