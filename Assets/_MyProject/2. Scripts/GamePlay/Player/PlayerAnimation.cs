@@ -22,24 +22,24 @@ public class PlayerAnimation : MonoBehaviour
     }
 
     private void OnEnable()
-    {
-        PlayerController.inputActions.PlayerActions.Move.performed += MoveAnimation;
-        PlayerController.inputActions.PlayerActions.Move.canceled += MoveAnimation;
-        PlayerController.inputActions.PlayerActions.Run.performed += OnRunAction;
-        PlayerController.inputActions.PlayerActions.Run.canceled += OnRunAction;
+    {        
+        GameManager.inputActions.PlayerActions.Move.performed += MoveAnimation;
+        GameManager.inputActions.PlayerActions.Move.canceled += MoveAnimation;
+        GameManager.inputActions.PlayerActions.Run.performed += OnRunAction;
+        GameManager.inputActions.PlayerActions.Run.canceled += OnRunAction;
 
-        PlayerController.inputActions.PlayerActions.Attack.performed += AttackAnimation;
+        GameManager.inputActions.PlayerActions.Attack.performed += AttackAnimation;
 
 
     }
     private void OnDisable()
     {
-        PlayerController.inputActions.PlayerActions.Move.performed -= MoveAnimation;
-        PlayerController.inputActions.PlayerActions.Move.canceled -= MoveAnimation;
-        PlayerController.inputActions.PlayerActions.Run.performed -= OnRunAction;
-        PlayerController.inputActions.PlayerActions.Run.canceled -= OnRunAction;
+        GameManager.inputActions.PlayerActions.Move.performed -= MoveAnimation;
+        GameManager.inputActions.PlayerActions.Move.canceled -= MoveAnimation;
+        GameManager.inputActions.PlayerActions.Run.performed -= OnRunAction;
+        GameManager.inputActions.PlayerActions.Run.canceled -= OnRunAction;
 
-        PlayerController.inputActions.PlayerActions.Attack.performed -= AttackAnimation;
+        GameManager.inputActions.PlayerActions.Attack.performed -= AttackAnimation;
     }
 
     #region Move

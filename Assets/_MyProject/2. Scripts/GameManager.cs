@@ -6,6 +6,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+    public static PlayerInputAction inputActions;
 
     public List<SkillData> userSkillDataList = new List<SkillData>();
 
@@ -15,6 +16,16 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        inputActions = new();
+    }
+    private void OnEnable()
+    {
+        Debug.Log(inputActions == null);
+        inputActions.PlayerActions.Enable();
+    }
+    private void OnDisable()
+    {
+        
     }
     private void Start()
     {

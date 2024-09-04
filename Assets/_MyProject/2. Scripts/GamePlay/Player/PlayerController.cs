@@ -24,8 +24,7 @@ public class PlayerController : MonoBehaviour
     protected Attackable attackable;    
 
     private void Awake()
-    {
-        inputActions = new();
+    {        
 
         controller = GetComponent<CharacterController>();        
         //playerInput = GetComponent<PlayerInput>();
@@ -52,8 +51,8 @@ public class PlayerController : MonoBehaviour
     }        
 
     private void OnEnable()
-    {       
-        inputActions.PlayerActions.Enable();        
+    {
+        Debug.Log("¿©±â?");            
 
         damagable.OnHpChange += OnHpChange;
         damagable.OnDeath += OnDeath;        
@@ -66,9 +65,6 @@ public class PlayerController : MonoBehaviour
 
     private void OnDisable()
     {        
-
-        inputActions.PlayerActions.Move.performed -= playerMovement.OnMovePerformed;
-        inputActions.PlayerActions.Run.performed -= playerMovement.OnRunPerformed;
 
         damagable.OnHpChange -= OnHpChange;
         damagable.OnDeath -= OnDeath;        

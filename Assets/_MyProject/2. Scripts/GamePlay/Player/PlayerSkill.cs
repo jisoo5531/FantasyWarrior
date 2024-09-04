@@ -28,17 +28,18 @@ public class PlayerSkill : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerController.inputActions.PlayerActions.Skill_1.performed += OnSkill_1;
-        PlayerController.inputActions.PlayerActions.Skill_2.performed += OnSkill_2;
-        PlayerController.inputActions.PlayerActions.Skill_3.performed += OnSkill_3;
-        PlayerController.inputActions.PlayerActions.Skill_4.performed += OnSkill_4;
+        Debug.Log(GameManager.inputActions == null);
+        GameManager.inputActions.PlayerActions.Skill_1.performed += OnSkill_1;
+        GameManager.inputActions.PlayerActions.Skill_2.performed += OnSkill_2;
+        GameManager.inputActions.PlayerActions.Skill_3.performed += OnSkill_3;
+        GameManager.inputActions.PlayerActions.Skill_4.performed += OnSkill_4;
     }
     private void OnDisable()
     {
-        PlayerController.inputActions.PlayerActions.Skill_1.performed -= OnSkill_1;
-        PlayerController.inputActions.PlayerActions.Skill_2.performed -= OnSkill_2;
-        PlayerController.inputActions.PlayerActions.Skill_3.performed -= OnSkill_3;
-        PlayerController.inputActions.PlayerActions.Skill_4.performed -= OnSkill_4;
+        GameManager.inputActions.PlayerActions.Skill_1.performed -= OnSkill_1;
+        GameManager.inputActions.PlayerActions.Skill_2.performed -= OnSkill_2;
+        GameManager.inputActions.PlayerActions.Skill_3.performed -= OnSkill_3;
+        GameManager.inputActions.PlayerActions.Skill_4.performed -= OnSkill_4;
     }
 
     private void Awake()

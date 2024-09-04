@@ -21,19 +21,19 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnEnable()
     {
-        PlayerController.inputActions.PlayerActions.Move.performed += OnMovePerformed;
-        PlayerController.inputActions.PlayerActions.Move.canceled += OnMovePerformed;
+        GameManager.inputActions.PlayerActions.Move.performed += OnMovePerformed;
+        GameManager.inputActions.PlayerActions.Move.canceled += OnMovePerformed;
 
-        PlayerController.inputActions.PlayerActions.Run.performed += OnRunPerformed;
-        PlayerController.inputActions.PlayerActions.Run.canceled += OnRunPerformed;
+        GameManager.inputActions.PlayerActions.Run.performed += OnRunPerformed;
+        GameManager.inputActions.PlayerActions.Run.canceled += OnRunPerformed;
     }
     private void OnDisable()
     {
-        PlayerController.inputActions.PlayerActions.Move.performed -= OnMovePerformed;
-        PlayerController.inputActions.PlayerActions.Move.canceled -= OnMovePerformed;
+        GameManager.inputActions.PlayerActions.Move.performed -= OnMovePerformed;
+        GameManager.inputActions.PlayerActions.Move.canceled -= OnMovePerformed;
 
-        PlayerController.inputActions.PlayerActions.Run.performed -= OnRunPerformed;
-        PlayerController.inputActions.PlayerActions.Run.canceled -= OnRunPerformed;
+        GameManager.inputActions.PlayerActions.Run.performed -= OnRunPerformed;
+        GameManager.inputActions.PlayerActions.Run.canceled -= OnRunPerformed;
     }
 
     public void Move(CharacterController controller)

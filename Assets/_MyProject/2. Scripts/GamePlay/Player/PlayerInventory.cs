@@ -10,16 +10,16 @@ public class PlayerInventory : MonoBehaviour
     // TODO : 인벤토리 열고 닫기 - UI 와 연동
     private void OnEnable()
     {
-        PlayerController.inputActions.PlayerActions.Inventory.performed += OnInventory;
-        PlayerController.inputActions.PlayerActions.Inventory.canceled += OnInventory;
+        GameManager.inputActions.PlayerActions.UI_Inventory.performed += OnInventory;
+        GameManager.inputActions.PlayerActions.UI_Inventory.canceled += OnInventory;
     }
     private void OnDisable()
     {
-        PlayerController.inputActions.PlayerActions.Inventory.performed -= OnInventory;
-        PlayerController.inputActions.PlayerActions.Inventory.canceled -= OnInventory;
+        GameManager.inputActions.PlayerActions.UI_Inventory.performed -= OnInventory;
+        GameManager.inputActions.PlayerActions.UI_Inventory.canceled -= OnInventory;
     }
 
-    public void OnInventory(InputAction.CallbackContext context)
+    private void OnInventory(InputAction.CallbackContext context)
     {
         isOpenInventory = context.ReadValueAsButton();
     }

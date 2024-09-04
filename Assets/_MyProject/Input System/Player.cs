@@ -91,7 +91,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Inventory"",
+                    ""name"": ""UI_Inventory"",
                     ""type"": ""Button"",
                     ""id"": ""f637057a-43e9-44ea-8805-9bea271fbe68"",
                     ""expectedControlType"": ""Button"",
@@ -100,7 +100,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Quest"",
+                    ""name"": ""UI_Quest"",
                     ""type"": ""Button"",
                     ""id"": ""e5aeefe9-0c24-477e-8348-7aeecc8056ad"",
                     ""expectedControlType"": ""Button"",
@@ -109,7 +109,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Status"",
+                    ""name"": ""UI_Status"",
                     ""type"": ""Button"",
                     ""id"": ""a561b33a-819a-4fc9-8c7b-50a5bba606b6"",
                     ""expectedControlType"": ""Button"",
@@ -118,9 +118,18 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Map"",
+                    ""name"": ""UI_Map"",
                     ""type"": ""Button"",
                     ""id"": ""6ad3b3b1-6fa0-4413-9db3-6c6538724bdf"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""UI_Skill"",
+                    ""type"": ""Button"",
+                    ""id"": ""157a0ce7-e12c-4e4a-8bd8-f03707698576"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -301,7 +310,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Inventory"",
+                    ""action"": ""UI_Inventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -312,7 +321,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Quest"",
+                    ""action"": ""UI_Quest"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -323,7 +332,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Status"",
+                    ""action"": ""UI_Status"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -334,7 +343,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Map"",
+                    ""action"": ""UI_Map"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -392,6 +401,17 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""action"": ""Item_5"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""16973480-9c59-49fe-9bf0-7f6c3a47a970"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UI_Skill"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -424,10 +444,11 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         m_PlayerActions_Skill_2 = m_PlayerActions.FindAction("Skill_2", throwIfNotFound: true);
         m_PlayerActions_Skill_3 = m_PlayerActions.FindAction("Skill_3", throwIfNotFound: true);
         m_PlayerActions_Skill_4 = m_PlayerActions.FindAction("Skill_4", throwIfNotFound: true);
-        m_PlayerActions_Inventory = m_PlayerActions.FindAction("Inventory", throwIfNotFound: true);
-        m_PlayerActions_Quest = m_PlayerActions.FindAction("Quest", throwIfNotFound: true);
-        m_PlayerActions_Status = m_PlayerActions.FindAction("Status", throwIfNotFound: true);
-        m_PlayerActions_Map = m_PlayerActions.FindAction("Map", throwIfNotFound: true);
+        m_PlayerActions_UI_Inventory = m_PlayerActions.FindAction("UI_Inventory", throwIfNotFound: true);
+        m_PlayerActions_UI_Quest = m_PlayerActions.FindAction("UI_Quest", throwIfNotFound: true);
+        m_PlayerActions_UI_Status = m_PlayerActions.FindAction("UI_Status", throwIfNotFound: true);
+        m_PlayerActions_UI_Map = m_PlayerActions.FindAction("UI_Map", throwIfNotFound: true);
+        m_PlayerActions_UI_Skill = m_PlayerActions.FindAction("UI_Skill", throwIfNotFound: true);
         m_PlayerActions_Item_1 = m_PlayerActions.FindAction("Item_1", throwIfNotFound: true);
         m_PlayerActions_Item_2 = m_PlayerActions.FindAction("Item_2", throwIfNotFound: true);
         m_PlayerActions_Item_3 = m_PlayerActions.FindAction("Item_3", throwIfNotFound: true);
@@ -501,10 +522,11 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_Skill_2;
     private readonly InputAction m_PlayerActions_Skill_3;
     private readonly InputAction m_PlayerActions_Skill_4;
-    private readonly InputAction m_PlayerActions_Inventory;
-    private readonly InputAction m_PlayerActions_Quest;
-    private readonly InputAction m_PlayerActions_Status;
-    private readonly InputAction m_PlayerActions_Map;
+    private readonly InputAction m_PlayerActions_UI_Inventory;
+    private readonly InputAction m_PlayerActions_UI_Quest;
+    private readonly InputAction m_PlayerActions_UI_Status;
+    private readonly InputAction m_PlayerActions_UI_Map;
+    private readonly InputAction m_PlayerActions_UI_Skill;
     private readonly InputAction m_PlayerActions_Item_1;
     private readonly InputAction m_PlayerActions_Item_2;
     private readonly InputAction m_PlayerActions_Item_3;
@@ -521,10 +543,11 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         public InputAction @Skill_2 => m_Wrapper.m_PlayerActions_Skill_2;
         public InputAction @Skill_3 => m_Wrapper.m_PlayerActions_Skill_3;
         public InputAction @Skill_4 => m_Wrapper.m_PlayerActions_Skill_4;
-        public InputAction @Inventory => m_Wrapper.m_PlayerActions_Inventory;
-        public InputAction @Quest => m_Wrapper.m_PlayerActions_Quest;
-        public InputAction @Status => m_Wrapper.m_PlayerActions_Status;
-        public InputAction @Map => m_Wrapper.m_PlayerActions_Map;
+        public InputAction @UI_Inventory => m_Wrapper.m_PlayerActions_UI_Inventory;
+        public InputAction @UI_Quest => m_Wrapper.m_PlayerActions_UI_Quest;
+        public InputAction @UI_Status => m_Wrapper.m_PlayerActions_UI_Status;
+        public InputAction @UI_Map => m_Wrapper.m_PlayerActions_UI_Map;
+        public InputAction @UI_Skill => m_Wrapper.m_PlayerActions_UI_Skill;
         public InputAction @Item_1 => m_Wrapper.m_PlayerActions_Item_1;
         public InputAction @Item_2 => m_Wrapper.m_PlayerActions_Item_2;
         public InputAction @Item_3 => m_Wrapper.m_PlayerActions_Item_3;
@@ -560,18 +583,21 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @Skill_4.started += instance.OnSkill_4;
             @Skill_4.performed += instance.OnSkill_4;
             @Skill_4.canceled += instance.OnSkill_4;
-            @Inventory.started += instance.OnInventory;
-            @Inventory.performed += instance.OnInventory;
-            @Inventory.canceled += instance.OnInventory;
-            @Quest.started += instance.OnQuest;
-            @Quest.performed += instance.OnQuest;
-            @Quest.canceled += instance.OnQuest;
-            @Status.started += instance.OnStatus;
-            @Status.performed += instance.OnStatus;
-            @Status.canceled += instance.OnStatus;
-            @Map.started += instance.OnMap;
-            @Map.performed += instance.OnMap;
-            @Map.canceled += instance.OnMap;
+            @UI_Inventory.started += instance.OnUI_Inventory;
+            @UI_Inventory.performed += instance.OnUI_Inventory;
+            @UI_Inventory.canceled += instance.OnUI_Inventory;
+            @UI_Quest.started += instance.OnUI_Quest;
+            @UI_Quest.performed += instance.OnUI_Quest;
+            @UI_Quest.canceled += instance.OnUI_Quest;
+            @UI_Status.started += instance.OnUI_Status;
+            @UI_Status.performed += instance.OnUI_Status;
+            @UI_Status.canceled += instance.OnUI_Status;
+            @UI_Map.started += instance.OnUI_Map;
+            @UI_Map.performed += instance.OnUI_Map;
+            @UI_Map.canceled += instance.OnUI_Map;
+            @UI_Skill.started += instance.OnUI_Skill;
+            @UI_Skill.performed += instance.OnUI_Skill;
+            @UI_Skill.canceled += instance.OnUI_Skill;
             @Item_1.started += instance.OnItem_1;
             @Item_1.performed += instance.OnItem_1;
             @Item_1.canceled += instance.OnItem_1;
@@ -612,18 +638,21 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @Skill_4.started -= instance.OnSkill_4;
             @Skill_4.performed -= instance.OnSkill_4;
             @Skill_4.canceled -= instance.OnSkill_4;
-            @Inventory.started -= instance.OnInventory;
-            @Inventory.performed -= instance.OnInventory;
-            @Inventory.canceled -= instance.OnInventory;
-            @Quest.started -= instance.OnQuest;
-            @Quest.performed -= instance.OnQuest;
-            @Quest.canceled -= instance.OnQuest;
-            @Status.started -= instance.OnStatus;
-            @Status.performed -= instance.OnStatus;
-            @Status.canceled -= instance.OnStatus;
-            @Map.started -= instance.OnMap;
-            @Map.performed -= instance.OnMap;
-            @Map.canceled -= instance.OnMap;
+            @UI_Inventory.started -= instance.OnUI_Inventory;
+            @UI_Inventory.performed -= instance.OnUI_Inventory;
+            @UI_Inventory.canceled -= instance.OnUI_Inventory;
+            @UI_Quest.started -= instance.OnUI_Quest;
+            @UI_Quest.performed -= instance.OnUI_Quest;
+            @UI_Quest.canceled -= instance.OnUI_Quest;
+            @UI_Status.started -= instance.OnUI_Status;
+            @UI_Status.performed -= instance.OnUI_Status;
+            @UI_Status.canceled -= instance.OnUI_Status;
+            @UI_Map.started -= instance.OnUI_Map;
+            @UI_Map.performed -= instance.OnUI_Map;
+            @UI_Map.canceled -= instance.OnUI_Map;
+            @UI_Skill.started -= instance.OnUI_Skill;
+            @UI_Skill.performed -= instance.OnUI_Skill;
+            @UI_Skill.canceled -= instance.OnUI_Skill;
             @Item_1.started -= instance.OnItem_1;
             @Item_1.performed -= instance.OnItem_1;
             @Item_1.canceled -= instance.OnItem_1;
@@ -674,10 +703,11 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         void OnSkill_2(InputAction.CallbackContext context);
         void OnSkill_3(InputAction.CallbackContext context);
         void OnSkill_4(InputAction.CallbackContext context);
-        void OnInventory(InputAction.CallbackContext context);
-        void OnQuest(InputAction.CallbackContext context);
-        void OnStatus(InputAction.CallbackContext context);
-        void OnMap(InputAction.CallbackContext context);
+        void OnUI_Inventory(InputAction.CallbackContext context);
+        void OnUI_Quest(InputAction.CallbackContext context);
+        void OnUI_Status(InputAction.CallbackContext context);
+        void OnUI_Map(InputAction.CallbackContext context);
+        void OnUI_Skill(InputAction.CallbackContext context);
         void OnItem_1(InputAction.CallbackContext context);
         void OnItem_2(InputAction.CallbackContext context);
         void OnItem_3(InputAction.CallbackContext context);

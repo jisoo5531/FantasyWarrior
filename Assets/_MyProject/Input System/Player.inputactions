@@ -69,7 +69,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Inventory",
+                    "name": "UI_Inventory",
                     "type": "Button",
                     "id": "f637057a-43e9-44ea-8805-9bea271fbe68",
                     "expectedControlType": "Button",
@@ -78,7 +78,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Quest",
+                    "name": "UI_Quest",
                     "type": "Button",
                     "id": "e5aeefe9-0c24-477e-8348-7aeecc8056ad",
                     "expectedControlType": "Button",
@@ -87,7 +87,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Status",
+                    "name": "UI_Status",
                     "type": "Button",
                     "id": "a561b33a-819a-4fc9-8c7b-50a5bba606b6",
                     "expectedControlType": "Button",
@@ -96,9 +96,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Map",
+                    "name": "UI_Map",
                     "type": "Button",
                     "id": "6ad3b3b1-6fa0-4413-9db3-6c6538724bdf",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "UI_Skill",
+                    "type": "Button",
+                    "id": "157a0ce7-e12c-4e4a-8bd8-f03707698576",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -279,7 +288,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Inventory",
+                    "action": "UI_Inventory",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -290,7 +299,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Quest",
+                    "action": "UI_Quest",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -301,7 +310,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Status",
+                    "action": "UI_Status",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -312,7 +321,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Map",
+                    "action": "UI_Map",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -368,6 +377,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Item_5",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "16973480-9c59-49fe-9bf0-7f6c3a47a970",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UI_Skill",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
