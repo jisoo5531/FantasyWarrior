@@ -23,10 +23,7 @@ public class UI_SkillPanel : MonoBehaviour
 
     private void Awake()
     {
-        EventHandler.skillKey.RegisterSkillKeyChange(OnChangeSkill_1, 1);
-        EventHandler.skillKey.RegisterSkillKeyChange(OnChangeSkill_2, 2);
-        EventHandler.skillKey.RegisterSkillKeyChange(OnChangeSkill_3, 3);
-        EventHandler.skillKey.RegisterSkillKeyChange(OnChangeSkill_4, 4);
+        EventHandler.skillKey.RegisterSkillKeyChange(OnChangeSkill);
     }
 
     private void Start()
@@ -55,24 +52,24 @@ public class UI_SkillPanel : MonoBehaviour
         }        
     }
 
-    private void OnChangeSkill_1()
+    private void OnChangeSkill()
     {
-        iconPanelList[0].ActionBarIcon.sprite = UIManager.Instance.skillIconList[PlayerSkill.EquipSkills[0]];
-        iconPanelList[0].KeyIcon.sprite = UIManager.Instance.skillIconList[PlayerSkill.EquipSkills[0]];
-    }
-    private void OnChangeSkill_2()
-    {
-        iconPanelList[1].ActionBarIcon.sprite = UIManager.Instance.skillIconList[PlayerSkill.EquipSkills[1]];
-        iconPanelList[1].KeyIcon.sprite = UIManager.Instance.skillIconList[PlayerSkill.EquipSkills[1]];
-    }
-    private void OnChangeSkill_3()
-    {
-        iconPanelList[2].ActionBarIcon.sprite = UIManager.Instance.skillIconList[PlayerSkill.EquipSkills[2]];
-        iconPanelList[2].KeyIcon.sprite = UIManager.Instance.skillIconList[PlayerSkill.EquipSkills[2]];
-    }
-    private void OnChangeSkill_4()
-    {
-        iconPanelList[3].ActionBarIcon.sprite = UIManager.Instance.skillIconList[PlayerSkill.EquipSkills[3]];
-        iconPanelList[3].KeyIcon.sprite = UIManager.Instance.skillIconList[PlayerSkill.EquipSkills[3]];
+        for (int i = 0; i < iconPanelList.Count; i++)
+        {
+            if (PlayerSkill.EquipSkills[i] == 0)
+            {
+                iconPanelList[i].ActionBarIcon.sprite = null;                           
+                iconPanelList[i].KeyIcon.sprite = null;
+                iconPanelList[i].ActionBarIcon.ImageTransparent(0);                
+                iconPanelList[i].KeyIcon.ImageTransparent(0);
+
+                continue;
+            }
+
+            iconPanelList[i].ActionBarIcon.sprite = UIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];
+            iconPanelList[i].KeyIcon.sprite = UIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];
+            iconPanelList[i].ActionBarIcon.ImageTransparent(1);
+            iconPanelList[i].KeyIcon.ImageTransparent(1);
+        }        
     }
 }

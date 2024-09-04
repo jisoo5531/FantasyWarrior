@@ -10,7 +10,7 @@ public class UI_SkillKeySetting : MonoBehaviour
     public Button key2_Button;
     public Button key3_Button;
     public Button key4_Button;
-    
+
 
     public int skillNum;
 
@@ -30,31 +30,32 @@ public class UI_SkillKeySetting : MonoBehaviour
     public void OnClickKey1Button()
     {
         ChangeSkillSet(0);
-        EventHandler.skillKey.TriggetSkillKeyChange(1);
-    }    
+        EventHandler.skillKey.TriggetSkillKeyChange();
+    }
     public void OnClickKey2Button()
     {
         ChangeSkillSet(1);
-        EventHandler.skillKey.TriggetSkillKeyChange(2);
+        EventHandler.skillKey.TriggetSkillKeyChange();
     }
     public void OnClickKey3Button()
     {
         ChangeSkillSet(2);
-        EventHandler.skillKey.TriggetSkillKeyChange(3);
+        EventHandler.skillKey.TriggetSkillKeyChange();
     }
     public void OnClickKey4Button()
     {
         ChangeSkillSet(3);
-        EventHandler.skillKey.TriggetSkillKeyChange(4);
+        EventHandler.skillKey.TriggetSkillKeyChange();
     }
 
     private void ChangeSkillSet(int index)
-    {
-        PlayerSkill.EquipSkills.Remove(index);
-        int originIndex = PlayerSkill.EquipSkills.Find((x) => { return x == skillNum; });
-        PlayerSkill.EquipSkills.Remove(originIndex);
-
-        PlayerSkill.EquipSkills.Insert(index, skillNum);
+    {        
+        int originIndex = PlayerSkill.EquipSkills.FindIndex((x) => { return x == skillNum; });        
+        if (originIndex >= 0)
+        {
+            PlayerSkill.EquipSkills[originIndex] = 0;
+        }        
+        PlayerSkill.EquipSkills[index] = skillNum;        
 
         Debug.Log($"{PlayerSkill.EquipSkills[0]},{PlayerSkill.EquipSkills[1]},{PlayerSkill.EquipSkills[2]},{PlayerSkill.EquipSkills[3]}");
 
