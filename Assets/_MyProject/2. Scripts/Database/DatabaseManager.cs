@@ -13,13 +13,15 @@ public class DatabaseManager : MonoBehaviour
 
     private MySqlConnection conn;           // mySql DB와 연결상태를 유지하는 객체
 
-    private string serverIP = "3.36.88.178";
+    private string serverIP = "43.202.64.113";
     private string portHum = "3306";
     private string dbName = "game";
     private string tableName = "users";
     private string rootPassword = "1234";   // 테스트 시에 활용할 수 있지만 보안에 취약하므로 주의
 
+    // TODO : 테스트용 임시 저장
     public CharClass playerClass;
+    public UserData userData;
 
     private void Awake()
     {
@@ -158,9 +160,9 @@ public class DatabaseManager : MonoBehaviour
             // 로그인 성공(email과 pw 값이 동시에 일치하는 행이 존재함.)
             DataRow row = set.Tables[0].Rows[0];
 
-            UserData data = new UserData(row);
+            userData = new UserData(row);
 
-            successCallback?.Invoke(data);
+            successCallback?.Invoke(userData);
         }
         else
         {

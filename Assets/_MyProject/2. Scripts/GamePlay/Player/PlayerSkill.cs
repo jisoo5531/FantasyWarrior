@@ -58,12 +58,14 @@ public class PlayerSkill : MonoBehaviour
     private void Start()
     {        
         playerAnimation = GetComponent<PlayerAnimation>();
-        
-        if (GameManager.Instance.userSkillDataList != null)
+
+        List<SkillData> skillDatas = SkillManager.Instance.userSkillDataList;
+
+        if (skillDatas != null)
         {
-            for (int i = 0; i < GameManager.Instance.userSkillDataList.Count; i++)
+            for (int i = 0; i < skillDatas.Count; i++)
             {
-                SkillData skillData = GameManager.Instance.userSkillDataList[i];
+                SkillData skillData = skillDatas[i];
                 skillTable.Add(i + 1, skillData.Skill_Name);
             }            
         }

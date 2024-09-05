@@ -36,9 +36,11 @@ public class UI_SkillPanel : MonoBehaviour
     }
     private void InitSkillWindow()
     {
-        if (GameManager.Instance.userSkillDataList != null)
+        List<SkillData> skills = SkillManager.Instance.userSkillDataList;
+        
+        if (skills != null)
         {
-            foreach (SkillData skillData in GameManager.Instance.userSkillDataList)
+            foreach (SkillData skillData in skills)
             {
                 GameObject skillInfoObj = Instantiate(skillInfo, skillWindowContent.transform);
                 UI_SkillEntry skillEntry = skillInfoObj.GetComponent<UI_SkillEntry>();

@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     public static PlayerInputAction inputActions;
 
-    public List<SkillData> userSkillDataList = new List<SkillData>();
+    // TODO : 나중에 SkillManager로 따로 관리하기    
 
     public GameObject goblin;
     public GameObject mummy;
@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
-        GetSkillFromDatabaseData();
+        
     }
 
     private void Update()
@@ -45,33 +45,5 @@ public class GameManager : MonoBehaviour
     }
 
 
-    #region Database
-    /// <summary>
-    /// 데이터베이스에서 스킬 데이터 가져오기
-    /// </summary>
-    private void GetSkillFromDatabaseData()
-    {        
-        string query =
-            $"SELECT skills.Skill_ID, skills.Skill_Name, userskills.Skill_Level, skills.Damage, skills.Mana_Cost, skills.Cooltime, skills.Unlock_Level, skills.Skill_Order, skills.Description, skills.Icon_Name\n" +
-            $"FROM UserSkills\n" +
-            $"JOIN Skills ON UserSkills.Skill_ID = Skills.Skill_ID\n" +
-            $"WHERE UserSkills.User_ID = {(int)DatabaseManager.Instance.playerClass} AND UserSkills.Job_ID = 1;";                
-        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
-        //DataSet dataSet = DatabaseManager.Instance.OnSelectRequest("archer_skills");
-        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
-        if (isGetData)
-        {
-            foreach (DataRow row in dataSet.Tables[0].Rows)
-            {
-                SkillData data = new SkillData(row);
-                userSkillDataList.Add(data);
-                //skillTable.Add(data.Skill_ID - 1, data.Skill_Name);
-            }
-        }
-        else
-        {
-            //  실패
-        }
-    }
-    #endregion
+   
 }
