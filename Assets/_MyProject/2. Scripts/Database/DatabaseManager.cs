@@ -27,6 +27,7 @@ public class DatabaseManager : MonoBehaviour
     {
         Instance = this;
         DBConnect();
+        GetUserDataTest();
         GetClassTest();
     }
     private void Start()
@@ -46,8 +47,36 @@ public class DatabaseManager : MonoBehaviour
         {
             Debug.LogError(e.Message);            
         }        
-    }    
+    }   
+    /// <summary>
+    /// TODO : 임시
+    /// </summary>
+    private void GetUserDataTest()
+    {
+        string query =
+            $"SELECT *\n" +
+            $"FROM users\n" +
+            $"WHERE user_id = 1;";
 
+        DataSet dataSet = OnSelectRequest(query);
+
+        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
+
+        if (isGetData)
+        {
+            DataRow row = dataSet.Tables[0].Rows[0];
+            userData = new UserData(row);
+            //foreach (DataRow row in dataSet.Tables[0].Rows)
+            //{
+            //    SkillData data = new SkillData(row);               
+            //}
+        }
+        else
+        {
+            //  실패
+        }
+    }
+    // TODO : 임시 메서드
     private void GetClassTest()
     {
         string query =
@@ -175,25 +204,29 @@ public class DatabaseManager : MonoBehaviour
 
     #region 레벨업
 
-    public void LevelUP(UserData data, Action successCallback)
+    public void LevelUP(Action successCallback = null)
     {
-        int level = data.Level;
+        conn.Open();
+        int level = userData.Level;
         int nextLevel = level + 1;
 
         MySqlCommand cmd = new MySqlCommand();
         cmd.Connection = conn;
-        cmd.CommandText = $"UPDATE {tableName} SET level={nextLevel} WHERE uid={data.UID}";
+        cmd.CommandText = $"UPDATE users SET level={nextLevel} WHERE user_id={userData.UID}";
 
         if (ExcuteNonQuery(cmd))
         {
+            conn.Close();
             // 쿼리가 정상적으로 실행된 경우
-            data.Level = nextLevel;
+            userData.Level = nextLevel;
             successCallback?.Invoke();
         }
         else
         {
             // 쿼리 수행 실패
         }
+
+        
     }
 
     #endregion

@@ -3,9 +3,27 @@ using UnityEngine;
 
 public static class EventHandler
 {
-    public static SkillKey skillKey = new();
+    public static SkillKeyEvent skillKey = new();
+    public static PlayerEvent playerEvent = new();
 }
-public class SkillKey
+public class PlayerEvent
+{
+    private event Action OnPlayerLevelUp;
+
+    public void RegisterPlayerLevelUp(Action listener)
+    {
+        OnPlayerLevelUp += listener;
+    }
+    public void UnRegisterPlayerLevelUp(Action listener)
+    {
+        OnPlayerLevelUp -= listener;
+    }
+    public void TriggerPlayerLevelUp()
+    {
+        OnPlayerLevelUp?.Invoke();
+    }
+}
+public class SkillKeyEvent
 {
     private event Action OnKeyChangeSkill;
 

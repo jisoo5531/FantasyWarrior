@@ -5,6 +5,9 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    // TODO : 임시 레벨업 테스트 버튼
+    public Button levelUpButton;
+
     public static UIManager Instance { get; private set; }
 
     public List<Sprite> skillIconList = new List<Sprite>();
@@ -13,6 +16,8 @@ public class UIManager : MonoBehaviour
     {
         Instance = this;
         Initialize();
+
+        levelUpButton.onClick.AddListener(() => { PlayerController.OnLevelUp(); });
     }
 
     private void Initialize()

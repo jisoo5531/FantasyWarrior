@@ -19,9 +19,7 @@ public class PlayerSkill : MonoBehaviour
     /// <summary>
     /// 데이터베이스 where 쿼리문
     /// </summary>
-    protected Dictionary<string, object> whereQuery;
-
-    public List<SkillData> skillDataList = new List<SkillData>();
+    protected Dictionary<string, object> whereQuery;    
 
     protected int currentSkillNum;
     private PlayerAnimation playerAnimation;

@@ -20,10 +20,10 @@ public class PlayerController : MonoBehaviour
     
     protected Damagable damagable;
     protected Attackable attackable;    
+    
 
     private void Awake()
     {        
-
         controller = GetComponent<CharacterController>();        
         //playerInput = GetComponent<PlayerInput>();
         playerMovement = GetComponent<PlayerMovement>();
@@ -31,9 +31,9 @@ public class PlayerController : MonoBehaviour
         playerUI = FindObjectOfType<PlayerUI>();
 
         damagable = gameObject.AddComponent<Damagable>();
-        attackable = gameObject.AddComponent<Attackable>();                
+        attackable = gameObject.AddComponent<Attackable>();                   
         
-        PlayerInit();
+        PlayerInit();        
     }
     protected virtual void PlayerInit()
     {
@@ -50,7 +50,6 @@ public class PlayerController : MonoBehaviour
 
     private void OnEnable()
     {        
-
         damagable.OnHpChange += OnHpChange;
         damagable.OnDeath += OnDeath;        
     }
@@ -62,7 +61,6 @@ public class PlayerController : MonoBehaviour
 
     private void OnDisable()
     {        
-
         damagable.OnHpChange -= OnHpChange;
         damagable.OnDeath -= OnDeath;        
     }
@@ -72,6 +70,15 @@ public class PlayerController : MonoBehaviour
     //    EventHandler.actionEvent.UnRegisterHpChange(OnHpChange);
     //    EventHandler.actionEvent.UnRegisterDeath(OnDeath);
     //}
+
+    public static void OnLevelUp()
+    {
+        DatabaseManager.Instance.LevelUP(LevelUpSuccess);
+    }
+    private static void LevelUpSuccess()
+    {
+        EventHandler.playerEvent.TriggerPlayerLevelUp();
+    }
     private void OnHpChange(int damage)
     {
         // TODO : 유닛마다 들어가는 데미지 다르게끔 (방어도? 따라)
