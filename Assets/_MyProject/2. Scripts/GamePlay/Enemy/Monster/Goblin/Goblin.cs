@@ -20,6 +20,7 @@ public class Goblin : MonsterUnit
     protected override void OnDeath()
     {
         Debug.Log("Á×À½?");
+        
         GameObject item = Instantiate(GameManager.Instance.Item, transform.position, GameManager.Instance.Item.transform.rotation);
         item.GetComponent<Rigidbody>().AddForce(Vector3.up * 40f, ForceMode.Impulse);
 

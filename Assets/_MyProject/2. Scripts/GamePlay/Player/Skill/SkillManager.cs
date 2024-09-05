@@ -54,9 +54,7 @@ public class SkillManager : MonoBehaviour
         else
         {
             //  실패
-        }
-        Debug.Log(userAvailableSkillList.Count);
-        Debug.Log($"유저 레벨 : {DatabaseManager.Instance.userData.Level}");
+        }        
     }
 
 

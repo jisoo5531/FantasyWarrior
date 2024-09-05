@@ -30,7 +30,7 @@
     FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
     FOREIGN KEY (Job_ID) REFERENCES Jobs(Job_ID)
 );*/
-CREATE TABLE UserSkills (
+/*CREATE TABLE UserSkills (
     UserSkill_ID INT PRIMARY KEY AUTO_INCREMENT,
     User_ID INT,
     Job_ID INT,
@@ -40,4 +40,20 @@ CREATE TABLE UserSkills (
     FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
     FOREIGN KEY (Job_ID) REFERENCES Jobs(Job_ID),
     FOREIGN KEY (Skill_ID) REFERENCES Skills(Skill_ID)
+);*/
+CREATE TABLE Inventory (
+    InventoryID INT PRIMARY KEY AUTO_INCREMENT,
+    User_ID INT,
+    Item_ID INT,
+    Quantity INT DEFAULT 1,
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
+    FOREIGN KEY (Item_ID) REFERENCES Items(Item_ID)
 );
+/*CREATE TABLE Items (
+    ItemID INT PRIMARY KEY AUTO_INCREMENT,
+    ItemName VARCHAR(255) NOT NULL,
+    ItemType VARCHAR(100),
+    ItemDescription TEXT,
+    Rarity INT
+);*/
+

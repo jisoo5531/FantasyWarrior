@@ -23,7 +23,7 @@ public class PlayerUI : UIComponent
     {
         for (int i = 0; i < skillIconList.Count; i++)
         {
-            Sprite skillIcon = UIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];
+            Sprite skillIcon = PlayerUIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];
             skillIconList[i].sprite = skillIcon;
         }
     }
@@ -58,7 +58,7 @@ public class PlayerUI : UIComponent
                 continue;
             }
           
-            skillIconList[i].sprite = UIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];
+            skillIconList[i].sprite = PlayerUIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];
             skillIconList[i].ImageTransparent(1);
         }
     }

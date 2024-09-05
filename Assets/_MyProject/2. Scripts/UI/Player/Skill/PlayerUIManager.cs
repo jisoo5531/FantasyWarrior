@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour
+public class PlayerUIManager : MonoBehaviour
 {
     // TODO : 임시 레벨업 테스트 버튼
     public Button levelUpButton;
 
-    public static UIManager Instance { get; private set; }
+    public static PlayerUIManager Instance { get; private set; }
 
     public List<Sprite> skillIconList = new List<Sprite>();
 
@@ -19,13 +19,18 @@ public class UIManager : MonoBehaviour
 
         levelUpButton.onClick.AddListener(() => { PlayerController.OnLevelUp(); });
     }
-
-    private void Initialize()
+    private void Start()
     {
-        foreach (var item in Resources.LoadAll<Sprite>("warrior_skills"))
+        Debug.Log(DatabaseManager.Instance.userData.CharClass.ToString());
+        foreach (var item in Resources.LoadAll<Sprite>($"{DatabaseManager.Instance.userData.CharClass.ToString()}_skills"))
         {
             skillIconList.Add(item);
         }
+    }
+
+    private void Initialize()
+    {
+        
 
         //foreach (var item in Resources.LoadAll<Sprite>("archer_skills"))
         //{

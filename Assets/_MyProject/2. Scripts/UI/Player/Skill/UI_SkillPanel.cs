@@ -28,7 +28,7 @@ public class UI_SkillPanel : MonoBehaviour
     {        
         for (int i = 0; i < iconPanelList.Count; i++)
         {
-            Sprite skillIcon = UIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];
+            Sprite skillIcon = PlayerUIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];
             iconPanelList[i].ActionBarIcon.sprite = skillIcon;
             iconPanelList[i].KeyIcon.sprite = skillIcon;            
         }
@@ -66,8 +66,8 @@ public class UI_SkillPanel : MonoBehaviour
                 continue;
             }
 
-            iconPanelList[i].ActionBarIcon.sprite = UIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];
-            iconPanelList[i].KeyIcon.sprite = UIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];            
+            iconPanelList[i].ActionBarIcon.sprite = PlayerUIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];
+            iconPanelList[i].KeyIcon.sprite = PlayerUIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];            
             iconPanelList[i].ActionBarIcon.ImageTransparent(1);
             iconPanelList[i].KeyIcon.ImageTransparent(1);
         }        
