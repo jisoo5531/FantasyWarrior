@@ -5,36 +5,36 @@ using UnityEngine.UI;
 
 public class UI_InventoryPanel : MonoBehaviour
 {
-    public GameObject inventoryContent;
+    public GameObject inventoryContent;   
 
     private void Awake()
-    {        
+    {
+        
     }
     private void Start()
     {
         InventoryManager.Instance.OnGetItem += SetItemToSlot;
 
+        Debug.Log(InventoryManager.Instance.inventoryDataList.Count);
         if (InventoryManager.Instance.inventoryDataList.Count > 0)
         {
+            Debug.Log("¿Ö ¾ÈµÅ?");
             SetItemToSlot();
         }        
     }
     private void SetItemToSlot()
     {
-        for (int i = 0; i < InventoryManager.Instance.inventoryDataList.Count; i++)
-        {            
-            UI_InventorySlot slot = inventoryContent.transform.GetChild(i).gameObject.AddComponent<UI_InventorySlot>();            
+        Debug.Log("¿©±â>?");
+        UI_InventorySlot[] slots = inventoryContent.GetComponentsInChildren<UI_InventorySlot>();
+        for (int i = 0; i < slots.Length; i++)
+        {                       
+            if (i >= InventoryManager.Instance.inventoryDataList.Count)
+            {
+                continue;
+            }
             Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{InventoryManager.Instance.GetInventoryItemNameFromDB(InventoryManager.Instance.inventoryDataList[i].Item_ID)}");
-            Dictionary<Image, Sprite> imgParam = new Dictionary<Image, Sprite>
-            {
-                { slot.transform.GetChild(1).GetComponent<Image>(), sprite }                
-            };            
             int itemQuantity = InventoryManager.Instance.inventoryDataList[i].Quantity;
-            Dictionary<TMPro.TMP_Text, string> txtParam = new Dictionary<TMPro.TMP_Text, string>
-            {
-                { slot.transform.GetChild(2).GetComponentInChildren<TMPro.TMP_Text>(), itemQuantity.ToString() }
-            };
-            slot.Initialize(imgParam, txtParam);                            
+            slots[i].Initialize(sprite, itemQuantity);
         }
     }
 }

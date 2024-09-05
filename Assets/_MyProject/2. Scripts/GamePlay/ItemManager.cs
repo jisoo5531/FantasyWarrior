@@ -15,8 +15,7 @@ public class ItemManager : MonoBehaviour
     }
     private void Start()
     {
-        GetItemDataFromDatabase();
-        Debug.Log(itemDataList.Count);
+        GetItemDataFromDatabase();        
     }
 
     private void GetItemDataFromDatabase()

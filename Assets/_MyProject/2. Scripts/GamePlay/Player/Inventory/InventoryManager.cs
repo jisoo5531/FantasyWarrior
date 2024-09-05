@@ -15,6 +15,11 @@ public class InventoryManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        
+    }
+    private void OnEnable()
+    {
+        
     }
 
     private void Start()
@@ -42,17 +47,16 @@ public class InventoryManager : MonoBehaviour
         else
         {            
         }
+        OnGetItem?.Invoke();
     }
 
     public void GetItem(ItemData itemData, int amount)
     {
         this.itemData = itemData;
         int user_Id = DatabaseManager.Instance.userData.UID;
-        int index = FindItemIndexInventory(itemData);
-        Debug.Log($"번호 : {index}");
+        int index = FindItemIndexInventory(itemData);        
         if (index >= 0)
-        {
-            Debug.Log("여기?");
+        {            
             string query =
                 $"UPDATE inventory\n" +
                 $"SET quantity={inventoryDataList[index].Quantity + amount}\n" +
@@ -61,16 +65,13 @@ public class InventoryManager : MonoBehaviour
             GetDataFromDatabase();
         }
         else
-        {
-            Debug.Log("여기!");
+        {            
             string query =
                 $"INSERT INTO Inventory (user_id, item_id, quantity)\n" +
                 $"VALUES (1, {itemData.Item_ID}, {amount});";
             _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
             GetDataFromDatabase();
         }
-
-        OnGetItem?.Invoke();
     }
     private int FindItemIndexInventory(ItemData itemData)
     {        
