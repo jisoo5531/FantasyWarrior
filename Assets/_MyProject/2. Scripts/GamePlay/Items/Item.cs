@@ -20,7 +20,7 @@ public class Item : MonoBehaviour
             return;
         }
         Debug.Log("플레이어 아이템 먹었다.");
-        InventoryManager.Instance.GetItem_InsertDatabase(itemData, 2);
+        InventoryManager.Instance.GetItem(itemData, 2);
 
         Destroy(gameObject);
     }

@@ -43,7 +43,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public void GetItem_InsertDatabase(ItemData itemData, int amount)
+    public void GetItem(ItemData itemData, int amount)
     {
         this.itemData = itemData;
         int user_Id = DatabaseManager.Instance.userData.UID;
