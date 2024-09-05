@@ -20,9 +20,13 @@ public class Goblin : MonsterUnit
     protected override void OnDeath()
     {
         Debug.Log("Á×À½?");
-        
-        GameObject item = Instantiate(GameManager.Instance.Item, transform.position, GameManager.Instance.Item.transform.rotation);
-        item.GetComponent<Rigidbody>().AddForce(Vector3.up * 40f, ForceMode.Impulse);
+        Debug.Log(ItemManager.Instance.itemDataList == null);
+        Debug.Log(ItemManager.Instance.itemDataList[0].Item_Name);
+        GameObject rewardItem = Resources.Load<GameObject>($"Items/{ItemManager.Instance.itemDataList[0].Item_Name}");
+        GameObject itemObj = Instantiate(rewardItem, transform.position + new Vector3(0, 0.5f, 0), rewardItem.transform.rotation);
+        Item item = itemObj.GetComponent<Item>();
+        item?.Initialize(ItemManager.Instance.itemDataList[0]);
+        //item.GetComponent<Rigidbody>().AddForce(Vector3.up * 20f, ForceMode.Impulse);
 
         base.OnDeath();
     }

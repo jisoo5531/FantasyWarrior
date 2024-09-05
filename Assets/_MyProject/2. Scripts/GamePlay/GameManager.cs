@@ -19,8 +19,7 @@ public class GameManager : MonoBehaviour
         inputActions = new();
     }
     private void OnEnable()
-    {
-        Debug.Log(inputActions == null);
+    {        
         inputActions.PlayerActions.Enable();
     }
     private void OnDisable()

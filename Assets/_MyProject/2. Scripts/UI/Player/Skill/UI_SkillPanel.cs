@@ -45,8 +45,7 @@ public class UI_SkillPanel : MonoBehaviour
                 GameObject skillInfoObj = Instantiate(skillInfo, skillWindowContent.transform);
                 UI_SkillEntry skillEntry = skillInfoObj.GetComponent<UI_SkillEntry>();
 
-                // TODO : 직업 추가 시, tableName 바꾸기            
-                Debug.Log("왜 안찍혀");
+                // TODO : 직업 추가 시, tableName 바꾸기                            
                 skillEntry.Initialize(skillData, keySetPanel);
             }
         }        

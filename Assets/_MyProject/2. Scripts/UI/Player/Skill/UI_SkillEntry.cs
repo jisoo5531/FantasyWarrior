@@ -52,8 +52,7 @@ public class UI_SkillEntry : MonoBehaviour
     }
 
     private void OnLevelUp_UnlockSkill()
-    {
-        Debug.Log(SkillManager.Instance.userAvailableSkillList == null);
+    {        
         if (SkillManager.Instance.userAvailableSkillList != null)
         {
             bool isLock = false == SkillManager.Instance.userAvailableSkillList.Exists((x) => { return x.Skill_ID.Equals(skillData.Skill_ID); });

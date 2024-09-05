@@ -70,8 +70,7 @@ public class MonsterUnit : Enemy
         damagable.OnDeath += OnDeath;    
     }
     private void OnDisable()
-    {
-        Debug.Log("¿Ø¥÷ ∫Ò»∞º∫");
+    {        
         damagable.OnHpChange -= OnHpChange;
         damagable.OnDeath -= OnDeath;
     }

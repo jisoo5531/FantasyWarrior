@@ -83,8 +83,7 @@ public class DatabaseManager : MonoBehaviour
             $"SELECT jobs.Job_ID\n" +
             $"FROM userjobs\n" +
             $"JOIN Jobs ON UserJobs.Job_ID = Jobs.Job_ID\n" +
-            $"WHERE UserJobs.User_ID = 1;";
-        Debug.Log(query);
+            $"WHERE UserJobs.User_ID = 1;";        
         DataSet dataSet = OnSelectRequest(query);
 
         bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
@@ -92,8 +91,7 @@ public class DatabaseManager : MonoBehaviour
         if (isGetData)
         {
             DataRow row = dataSet.Tables[0].Rows[0];
-            playerClass = (CharClass)int.Parse(row["Job_ID"].ToString());
-            Debug.Log(playerClass);
+            playerClass = (CharClass)int.Parse(row["Job_ID"].ToString());            
             //foreach (DataRow row in dataSet.Tables[0].Rows)
             //{
             //    SkillData data = new SkillData(row);               
