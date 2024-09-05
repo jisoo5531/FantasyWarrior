@@ -6,9 +6,9 @@ public class Mummy : MonsterUnit
 {
     protected override void Initialize()
     {
+        unitName = "Mummy";
         base.Initialize();
-               
-        
+                      
     }
 
     protected override void OnHpChange(int damage)

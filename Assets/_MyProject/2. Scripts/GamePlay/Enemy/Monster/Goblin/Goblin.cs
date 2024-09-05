@@ -7,6 +7,7 @@ public class Goblin : MonsterUnit
 {                    
     protected override void Initialize()
     {
+        unitName = "Goblin";
         base.Initialize();      
                     
     }
@@ -23,14 +24,5 @@ public class Goblin : MonsterUnit
         item.GetComponent<Rigidbody>().AddForce(Vector3.up * 40f, ForceMode.Impulse);
 
         base.OnDeath();
-    }
-
-    protected override void GetFromDatabaseData()
-    {
-        whereQuery = new Dictionary<string, object>
-        {
-            { "name", "Goblin" }
-        };
-        base.GetFromDatabaseData();
     }
 }

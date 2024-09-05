@@ -18,11 +18,12 @@ public class MonsterUnit : Enemy
     [HideInInspector] public Attackable attackable;
     [HideInInspector] public Followable followable;
 
-    protected UIComponent monsterUI;
-    protected Dictionary<string, object> whereQuery;
+    protected UIComponent monsterUI;    
 
     [Tooltip("모든 몬스터의 공통된 탐지거리값")]
     public int detectionRange = 10;
+
+    protected string unitName;
 
     private void Awake()
     {
@@ -84,11 +85,15 @@ public class MonsterUnit : Enemy
     /// <summary>
     /// 데이터베이스에서 몬스터 데이터 가져오기
     /// </summary>
-    protected virtual void GetFromDatabaseData()
+    protected void GetFromDatabaseData()
     {
         // TODO : 몬스터 쿼리문 바꾸기
+        string query =
+            $"SELECT *\n" +
+            $"FROM monsters\n" +
+            $"WHERE NAME='{unitName}';";
 
-        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest("monsters");
+        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
 
         bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
 
