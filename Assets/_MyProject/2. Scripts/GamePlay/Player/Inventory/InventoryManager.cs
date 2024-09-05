@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -9,7 +10,7 @@ public class InventoryManager : MonoBehaviour
     public List<InventoryData> inventoryDataList = new List<InventoryData>();
     private ItemData itemData;
 
-    private int itemQuantity;
+    public event Action OnGetItem;
 
     private void Awake()
     {
@@ -68,9 +69,33 @@ public class InventoryManager : MonoBehaviour
             _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
             GetDataFromDatabase();
         }
+
+        OnGetItem?.Invoke();
     }
     private int FindItemIndexInventory(ItemData itemData)
     {        
         return inventoryDataList.FindIndex((x) => { return x.Item_ID.Equals(itemData.Item_ID); });
     }
+
+    public string GetInventoryItemNameFromDB(int itemID)
+    {
+        string query =
+            $"SELECT items.item_name\n" +
+            $"FROM items\n" +
+            $"WHERE items.Item_ID={itemID};";
+        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
+
+        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
+
+        if (isGetData)
+        {
+            DataRow row = dataSet.Tables[0].Rows[0];
+            return row["item_name"].ToString();
+        }
+        else
+        {
+            //  ½ÇÆÐ
+            return string.Empty;
+        }
+    }    
 }

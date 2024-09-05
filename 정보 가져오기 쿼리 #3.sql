@@ -15,7 +15,3 @@
 #FROM users
 #JOIN skills ON users.`level` >= skills.Unlock_Level
 #WHERE users.user_id = 1 AND skills.Class = 1;
-
-SELECT *
-FROM monsters
-WHERE NAME='Goblin';
