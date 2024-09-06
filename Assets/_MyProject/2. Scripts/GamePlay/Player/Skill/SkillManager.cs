@@ -23,7 +23,7 @@ public class SkillManager : MonoBehaviour
 
         foreach (SkillData skillData in userSkillDataList)
         {
-            if (DatabaseManager.Instance.userData.Level >= skillData.Unlock_Level)
+            if (DatabaseManager.Instance.userStatData.Level >= skillData.Unlock_Level)
             {
                 userAvailableSkillList.Add(skillData);
             }
@@ -34,9 +34,9 @@ public class SkillManager : MonoBehaviour
     {
         string query =
             $"SELECT skills.Skill_ID, skills.Skill_Name, skills.Level, skills.Damage, skills.Mana_Cost, skills.Cooltime, skills.Unlock_Level, skills.Skill_Order, skills.Class, skills.Description, skills.Icon_Name\n" +
-            $"FROM users\n" +
-            $"JOIN skills ON users.`level` >= skills.Unlock_Level\n" +
-            $"WHERE users.user_id = 1 AND skills.Class = 1;";
+            $"FROM userstats\n" +
+            $"JOIN skills ON userstats.`Level` >= skills.Unlock_Level\n" +
+            $"WHERE userstats.user_id = 1 AND skills.Class = 1;";
 
         DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
 

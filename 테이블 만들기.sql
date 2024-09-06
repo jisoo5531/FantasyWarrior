@@ -56,4 +56,20 @@
     ItemDescription TEXT,
     Rarity INT
 );*/
+CREATE TABLE UserStats (
+    User_ID INT PRIMARY KEY,                -- 유저 고유 ID (Users 테이블의 외래 키)
+    Level INT DEFAULT 1,                   -- 유저 레벨
+    Exp INT DEFAULT 0,              -- 유저 경험치
+    MaxHp INT DEFAULT 100,             -- 최대 체력
+    Hp INT DEFAULT 100,         -- 현재 체력
+    MaxMana INT DEFAULT 50,                -- 최대 마나
+    Mana INT DEFAULT 50,            -- 현재 마나
+    STR INT DEFAULT 10,               -- 힘 (Physical Power)
+    DEX INT DEFAULT 10,                -- 민첩성 (Dexterity)
+    Intelligence INT DEFAULT 10,           -- 지능 (Magical Power)
+    Defense INT DEFAULT 5,                 -- 방어력
+    Luck INT DEFAULT 5,                    -- 행운
+    Gold INT DEFAULT 0,                    -- 유저가 보유한 골드
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID)  -- Users 테이블과 연관
+);
 

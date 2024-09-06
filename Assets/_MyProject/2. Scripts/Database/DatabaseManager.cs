@@ -21,13 +21,15 @@ public class DatabaseManager : MonoBehaviour
 
     // TODO : 테스트용 임시 저장
     public CharClass playerClass;
-    public UserData userData;
+    public UserData userData { get; private set; }
+    public UserStatData userStatData { get; private set; }
 
     private void Awake()
     {
         Instance = this;
         DBConnect();
         GetUserDataTest();
+        GetUserStatDataTest();
         GetClassTest();
     }
     private void Start()
@@ -66,6 +68,34 @@ public class DatabaseManager : MonoBehaviour
         {
             DataRow row = dataSet.Tables[0].Rows[0];
             userData = new UserData(row);
+            //foreach (DataRow row in dataSet.Tables[0].Rows)
+            //{
+            //    SkillData data = new SkillData(row);               
+            //}
+        }
+        else
+        {
+            //  실패
+        }
+    }  
+    /// <summary>
+    /// TODO : 임시
+    /// </summary>
+    private void GetUserStatDataTest()
+    {
+        string query =
+            $"SELECT *\n" +
+            $"FROM userstats\n" +
+            $"WHERE user_id = 1;";
+
+        DataSet dataSet = OnSelectRequest(query);
+
+        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
+
+        if (isGetData)
+        {
+            DataRow row = dataSet.Tables[0].Rows[0];
+            userStatData = new UserStatData(row);
             //foreach (DataRow row in dataSet.Tables[0].Rows)
             //{
             //    SkillData data = new SkillData(row);               
@@ -205,18 +235,18 @@ public class DatabaseManager : MonoBehaviour
     public void LevelUP(Action successCallback = null)
     {
         conn.Open();
-        int level = userData.Level;
+        int level = userStatData.Level;
         int nextLevel = level + 1;
 
         MySqlCommand cmd = new MySqlCommand();
         cmd.Connection = conn;
-        cmd.CommandText = $"UPDATE users SET level={nextLevel} WHERE user_id={userData.UID}";
+        cmd.CommandText = $"UPDATE userstats SET level={nextLevel} WHERE user_id={userData.UID}";
 
         if (ExcuteNonQuery(cmd))
         {
             conn.Close();
             // 쿼리가 정상적으로 실행된 경우
-            userData.Level = nextLevel;
+            userStatData.Level = nextLevel;
             successCallback?.Invoke();
         }
         else
@@ -231,22 +261,22 @@ public class DatabaseManager : MonoBehaviour
 
     #region 직업 선택
 
-    public void ChangeCharClass(UserData data, int classNum, Action<UserData> successCallback)
-    {
-        CharClass changedClass = (CharClass)classNum;
+    //public void ChangeCharClass(UserData data, int classNum, Action<UserData> successCallback)
+    //{
+    //    CharClass changedClass = (CharClass)classNum;
 
-        MySqlCommand cmd = new MySqlCommand();
-        cmd.Connection = conn;
-        cmd.CommandText = $"UPDATE {tableName} SET class={classNum} WHERE uid={data.UID}";
+    //    MySqlCommand cmd = new MySqlCommand();
+    //    cmd.Connection = conn;
+    //    cmd.CommandText = $"UPDATE {tableName} SET class={classNum} WHERE uid={data.UID}";
         
-        if (ExcuteNonQuery(cmd))
-        {
-            data.CharClass = changedClass;
+    //    if (ExcuteNonQuery(cmd))
+    //    {
+    //        data.CharClass = changedClass;
 
-            data = UpdateData();
-            successCallback?.Invoke(data);
-        }
-    }
+    //        data = UpdateData();
+    //        successCallback?.Invoke(data);
+    //    }
+    //}
 
     #endregion
 

@@ -20,8 +20,9 @@ public class PlayerUIManager : MonoBehaviour
         levelUpButton.onClick.AddListener(() => { PlayerController.OnLevelUp(); });
     }
     private void Start()
-    {        
-        foreach (var item in Resources.LoadAll<Sprite>($"{DatabaseManager.Instance.userData.CharClass.ToString()}_skills"))
+    {
+        string folderName = $"{DatabaseManager.Instance.userStatData.CharClass.ToString()}";
+        foreach (var item in Resources.LoadAll<Sprite>($"{folderName}_skills"))
         {
             skillIconList.Add(item);
         }

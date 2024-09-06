@@ -38,13 +38,13 @@ public class UI_SkillEntry : MonoBehaviour
     }
     public void Initialize(SkillData skillData, GameObject keySetPanel)
     {
-        UserData userData = DatabaseManager.Instance.userData;        
+        UserStatData userStatData = DatabaseManager.Instance.userStatData;        
         this.skillData = skillData;
         this.keySetPanel = keySetPanel;
 
         OnLevelUp_UnlockSkill();
 
-        string folderName = $"{userData.CharClass.ToString()}_Skills";
+        string folderName = $"{userStatData.CharClass.ToString()}_Skills";
         skillIcon.sprite = Resources.Load<Sprite>($"{folderName}/{skillData.Icon_Name}");
         skillName.text = skillData.Skill_Name;
 
