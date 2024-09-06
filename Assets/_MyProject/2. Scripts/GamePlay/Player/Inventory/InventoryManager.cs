@@ -50,6 +50,11 @@ public class InventoryManager : MonoBehaviour
         OnGetItem?.Invoke();
     }
 
+    /// <summary>
+    /// 아이템을 획득 시, 실행할 메서드
+    /// </summary>
+    /// <param name="itemData"></param>
+    /// <param name="amount"></param>
     public void GetItem(ItemData itemData, int amount)
     {
         this.itemData = itemData;
@@ -99,4 +104,25 @@ public class InventoryManager : MonoBehaviour
             return string.Empty;
         }
     }    
+    public Item_Type GetInventoryItemTypeFromDB(int itemID)
+    {
+        string query =
+            $"SELECT items.Item_Type\n" +
+            $"FROM items\n" +
+            $"WHERE items.item_ID={itemID};";
+        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
+
+        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
+
+        if (isGetData)
+        {
+            DataRow row = dataSet.Tables[0].Rows[0];
+            return (Item_Type)int.Parse(row["Item_Type"].ToString());
+        }
+        else
+        {
+            //  실패
+            return (Item_Type)int.MaxValue;
+        }
+    }
 }
