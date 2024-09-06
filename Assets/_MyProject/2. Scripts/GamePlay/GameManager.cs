@@ -6,9 +6,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-    public static PlayerInputAction inputActions;
-
-    // TODO : 나중에 SkillManager로 따로 관리하기    
+    public static PlayerInputAction inputActions;    
 
     public GameObject goblin;
     public GameObject mummy;

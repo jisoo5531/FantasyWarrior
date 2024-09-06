@@ -31,7 +31,7 @@ public class PlayerUI : UIComponent
     public override void SetInitValue()
     {
         Damagable.OnHpChange += OnHpChange;
-        Damagable.OnLevelUPEvent += OnLevelUpChangeHPBar;
+        Damagable.OnChangeHPEvent += OnLevelUpChangeHPBar;
             Debug.Log("¿©±â?");
 
         if (hpBar != null)

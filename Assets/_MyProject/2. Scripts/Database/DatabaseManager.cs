@@ -19,8 +19,7 @@ public class DatabaseManager : MonoBehaviour
     private string tableName = "users";
     private string rootPassword = "1234";   // 테스트 시에 활용할 수 있지만 보안에 취약하므로 주의
 
-    // TODO : 테스트용 임시 저장
-    public CharClass playerClass;
+    // TODO : 테스트용 임시 저장    
     public UserData userData { get; private set; }
     public UserStatData userStatData { get; private set; }
 
@@ -29,8 +28,7 @@ public class DatabaseManager : MonoBehaviour
         Instance = this;
         DBConnect();
         GetUserDataTest();
-        GetUserStatDataTest();
-        GetClassTest();
+        GetUserStatDataTest();        
     }
     private void Start()
     {        
@@ -96,32 +94,6 @@ public class DatabaseManager : MonoBehaviour
         {
             DataRow row = dataSet.Tables[0].Rows[0];
             userStatData = new UserStatData(row);
-            //foreach (DataRow row in dataSet.Tables[0].Rows)
-            //{
-            //    SkillData data = new SkillData(row);               
-            //}
-        }
-        else
-        {
-            //  실패
-        }
-    }
-    // TODO : 임시 메서드
-    private void GetClassTest()
-    {
-        string query =
-            $"SELECT jobs.Job_ID\n" +
-            $"FROM userjobs\n" +
-            $"JOIN Jobs ON UserJobs.Job_ID = Jobs.Job_ID\n" +
-            $"WHERE UserJobs.User_ID = 1;";        
-        DataSet dataSet = OnSelectRequest(query);
-
-        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
-            
-        if (isGetData)
-        {
-            DataRow row = dataSet.Tables[0].Rows[0];
-            playerClass = (CharClass)int.Parse(row["Job_ID"].ToString());            
             //foreach (DataRow row in dataSet.Tables[0].Rows)
             //{
             //    SkillData data = new SkillData(row);               

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Attackable : MonoBehaviour, IAttackable
 {
+    //TODO : 레벨업 같은 스탯이 바뀌는 상황에서 이벤트로 스탯 반영하기
     public LayerMask TargetLayer { get; set; }
     public int Damage { get; set; }
     public float Range { get; set; }

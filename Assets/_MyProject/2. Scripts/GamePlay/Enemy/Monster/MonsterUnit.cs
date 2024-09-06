@@ -45,8 +45,7 @@ public class MonsterUnit : Enemy
 
     private void Start()
     {
-        GetFromDatabaseData();
-        // TODO : 몬스터 능력치 나중에 따로 데이터베이스로 관리하여 데이터 받아와야 함
+        GetFromDatabaseData();        
         damagable.Initialize(maxHp: monsterData.MaxHp, hp: monsterData.Hp);
         attackable.Initialize(damage: monsterData.Damage, range: monsterData.AttackRange);
         followable.Initialize(moveSpeed: monsterData.MoveSpeed);

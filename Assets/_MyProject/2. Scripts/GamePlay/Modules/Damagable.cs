@@ -11,8 +11,17 @@ public class Damagable : MonoBehaviour, IDamagable
 
     private bool isDeath = false;
 
+    /// <summary>
+    /// 공격을 받아 데미지를 입었을 때 발생하는 이벤트
+    /// </summary>
     public event Action<int> OnHpChange;
-    public event Action OnLevelUPEvent;
+    /// <summary>
+    /// 플레이어 레벨 업이나 몬스터가 특정 상황에서 스탯이 바뀌었을 때 발생하는 이벤트
+    /// </summary>
+    public event Action OnChangeHPEvent;
+    /// <summary>
+    /// 죽었을 때 발생하는 이벤트
+    /// </summary>
     public event Action OnDeath;
 
     public void Initialize(int maxHp, int hp)
@@ -56,6 +65,6 @@ public class Damagable : MonoBehaviour, IDamagable
         UserStatData userStatData = DatabaseManager.Instance.userStatData;
         this.MaxHp = userStatData.MaxHp;
         this.Hp = userStatData.Hp;
-        OnLevelUPEvent?.Invoke();
+        OnChangeHPEvent?.Invoke();
     }
 }
