@@ -20,7 +20,7 @@ public class PlayerUI : UIComponent
         EventHandler.skillKey.RegisterSkillKeyChange(OnChangeSkill);
     }
     private void Start()
-    {
+    {        
         for (int i = 0; i < skillIconList.Count; i++)
         {
             Sprite skillIcon = PlayerUIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];
@@ -31,12 +31,13 @@ public class PlayerUI : UIComponent
     public override void SetInitValue()
     {
         Damagable.OnHpChange += OnHpChange;
+        Damagable.OnLevelUPEvent += OnLevelUpChangeHPBar;
             Debug.Log("¿©±â?");
 
         if (hpBar != null)
         {
             hpBar.maxValue = (float)Damagable.MaxHp;
-            hpBar.value = hpBar.maxValue;
+            hpBar.value = Damagable.Hp;
 
             hpText.text = $"{Damagable.Hp} / {Damagable.MaxHp}";
         }
@@ -62,5 +63,10 @@ public class PlayerUI : UIComponent
             skillIconList[i].sprite = PlayerUIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];
             skillIconList[i].ImageTransparent(1);
         }
+    }
+    private void OnLevelUpChangeHPBar()
+    {
+        hpText.text = $"{Damagable.Hp} / {Damagable.MaxHp}";
+        hpBar.value = Damagable.Hp;
     }
 }

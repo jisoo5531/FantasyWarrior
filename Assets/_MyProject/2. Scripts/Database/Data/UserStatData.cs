@@ -39,7 +39,7 @@ public class UserStatData
             int.Parse(row["str"].ToString()),
             int.Parse(row["dex"].ToString()),
             int.Parse(row["intelligence"].ToString()),
-            int.Parse(row["luck"].ToString()),
+            int.Parse(row["luk"].ToString()),
             int.Parse(row["defense"].ToString()),
             int.Parse(row["gold"].ToString())
         )

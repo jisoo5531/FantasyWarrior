@@ -7,7 +7,8 @@ using UnityEngine;
     RequireComponent(typeof(CharacterController)), 
     RequireComponent(typeof(PlayerInput)), 
     RequireComponent(typeof(PlayerMovement)), 
-    RequireComponent(typeof(PlayerAnimation))
+    RequireComponent(typeof(PlayerAnimation)),
+    RequireComponent(typeof(PlayerStat))
 ]
 public class PlayerController : MonoBehaviour
 {    
@@ -17,6 +18,7 @@ public class PlayerController : MonoBehaviour
     protected PlayerAnimation playerAnimation;
     protected UIComponent playerUI;
     protected PlayerSkill playerSkill;
+    protected PlayerStat playerStat;
     
     protected Damagable damagable;
     protected Attackable attackable;    
@@ -27,7 +29,8 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();        
         //playerInput = GetComponent<PlayerInput>();
         playerMovement = GetComponent<PlayerMovement>();
-        playerAnimation = GetComponent<PlayerAnimation>();        
+        playerAnimation = GetComponent<PlayerAnimation>();
+        playerStat = GetComponent<PlayerStat>();
         playerUI = FindObjectOfType<PlayerUI>();
 
         damagable = gameObject.AddComponent<Damagable>();

@@ -12,6 +12,7 @@ public class Damagable : MonoBehaviour, IDamagable
     private bool isDeath = false;
 
     public event Action<int> OnHpChange;
+    public event Action OnLevelUPEvent;
     public event Action OnDeath;
 
     public void Initialize(int maxHp, int hp)
@@ -19,8 +20,16 @@ public class Damagable : MonoBehaviour, IDamagable
         this.MaxHp = maxHp;
         this.Hp = hp;
     }
+    private void Start()
+    {
+        EventHandler.playerEvent.RegisterPlayerLevelUp(OnLevelUpChangeHp);
+    }
 
-    
+    private void OnDisable()
+    {
+        EventHandler.playerEvent.UnRegisterPlayerLevelUp(OnLevelUpChangeHp);
+    }
+
     public void GetDamage(int damage)
     {
         if (isDeath)
@@ -40,5 +49,13 @@ public class Damagable : MonoBehaviour, IDamagable
         isDeath = true;
         Debug.Log("ав╬З╢ы");
         OnDeath?.Invoke();
+    }
+
+    private void OnLevelUpChangeHp()
+    {
+        UserStatData userStatData = DatabaseManager.Instance.userStatData;
+        this.MaxHp = userStatData.MaxHp;
+        this.Hp = userStatData.Hp;
+        OnLevelUPEvent?.Invoke();
     }
 }
