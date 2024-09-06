@@ -3367,7 +3367,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 252546794}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6893197390754033162}
+        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
+        m_MethodName: OnLevelUp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &252546794
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20863,7 +20875,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3aea0448cc9bff547bf707b56ed313d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerClass: 0
 --- !u!4 &1483267381
 Transform:
   m_ObjectHideFlags: 0
@@ -104016,6 +104027,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d24ef78e175d1354183e685b0cfebf4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LevelUpButton: {fileID: 252546793}
 --- !u!114 &6893197390754033164
 MonoBehaviour:
   m_ObjectHideFlags: 0
