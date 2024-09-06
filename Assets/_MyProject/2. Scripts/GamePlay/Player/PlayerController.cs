@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [
     RequireComponent(typeof(CharacterController)), 
@@ -21,8 +22,9 @@ public class PlayerController : MonoBehaviour
     protected PlayerStat playerStat;
     
     protected Damagable damagable;
-    protected Attackable attackable;    
-    
+    protected Attackable attackable;
+
+    public Button LevelUpButton;
 
     private void Awake()
     {        
@@ -79,12 +81,14 @@ public class PlayerController : MonoBehaviour
     //    EventHandler.actionEvent.UnRegisterDeath(OnDeath);
     //}
 
-    public static void OnLevelUp()
+    // TODO : 임시 버튼 클릭 플레이어 레벨 업    
+    public void OnLevelUp()
     {
-        DatabaseManager.Instance.LevelUP(LevelUpSuccess);
+        DatabaseManager.Instance.LevelUP(LevelUpSuccess);        
     }
-    private static void LevelUpSuccess()
+    private void LevelUpSuccess()
     {
+        playerStat.OnLevelUpStatChange();
         EventHandler.playerEvent.TriggerPlayerLevelUp();
     }
     private void OnHpChange(int damage)

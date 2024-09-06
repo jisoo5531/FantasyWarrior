@@ -18,16 +18,14 @@ public class PlayerStat : MonoBehaviour
     }
 
     private void Start()
-    {
-        EventHandler.playerEvent.RegisterPlayerLevelUp(OnLevelUpStatChange);
+    {        
     }
 
     private void OnDisable()
-    {
-        EventHandler.playerEvent.UnRegisterPlayerLevelUp(OnLevelUpStatChange);
+    {        
     }
 
-    private void OnLevelUpStatChange()
+    public void OnLevelUpStatChange()
     {
         UserStatData stat = DatabaseManager.Instance.userStatData;
 

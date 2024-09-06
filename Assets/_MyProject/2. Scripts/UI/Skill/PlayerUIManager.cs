@@ -16,8 +16,7 @@ public class PlayerUIManager : MonoBehaviour
     {
         Instance = this;
         Initialize();
-
-        levelUpButton.onClick.AddListener(() => { PlayerController.OnLevelUp(); });
+        
     }
     private void Start()
     {

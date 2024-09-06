@@ -23,5 +23,6 @@
 #JOIN skills ON userstats.`Level` >= skills.Unlock_Level
 #WHERE userstats.user_id = 1 AND skills.Class = 1;
 
-INSERT INTO equipmentitems (equipmentitems.Required_Level)
-VALUES (1);
+SELECT *
+FROM equipmentitems
+WHERE equipmentitems.Equipment_ID=1;
