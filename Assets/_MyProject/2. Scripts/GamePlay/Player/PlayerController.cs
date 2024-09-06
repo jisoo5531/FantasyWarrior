@@ -40,9 +40,14 @@ public class PlayerController : MonoBehaviour
 
     }
     private void Start()
-    {                
-        damagable.Initialize(maxHp: 1000, hp: 1000);
-        attackable.Initialize(damage: 10, range: 2);
+    {
+        int MaxHp = DatabaseManager.Instance.userStatData.MaxHp;
+        int Hp = DatabaseManager.Instance.userStatData.Hp;
+        int damage = DatabaseManager.Instance.userStatData.STR;
+        Debug.Log($"{MaxHp}, {Hp}, {damage}");
+        damagable.Initialize(maxHp: MaxHp, hp: Hp);
+        attackable.Initialize(damage: damage, range: 2);
+
 
         playerUI?.Initialize(damagable);        
         damagable.OnDeath += () => { Debug.Log("플레이어 죽었다."); };        

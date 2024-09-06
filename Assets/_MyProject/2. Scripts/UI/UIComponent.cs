@@ -15,11 +15,13 @@ public class UIComponent : MonoBehaviour, IHpHandler
     public void Initialize(Damagable damagable)
     {
         this.Damagable = damagable;
+        Debug.Log("¿©±ä°¡");
         SetInitValue();
     }
 
     public virtual void SetInitValue()
     {
+        
     }
     public virtual void OnHpChange(int damage)
     {        

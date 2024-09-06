@@ -31,9 +31,10 @@ public class PlayerUI : UIComponent
     public override void SetInitValue()
     {
         Damagable.OnHpChange += OnHpChange;
+            Debug.Log("¿©±â?");
 
         if (hpBar != null)
-        {            
+        {
             hpBar.maxValue = (float)Damagable.MaxHp;
             hpBar.value = hpBar.maxValue;
 

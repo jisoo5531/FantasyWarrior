@@ -13,6 +13,7 @@ public class MonsterUI : UIComponent
 
     public override void SetInitValue()
     {
+        Debug.Log("¿©±â?");
         Damagable.OnHpChange += OnHpChange;
 
         if (hpBar != null)
