@@ -56,7 +56,7 @@
     ItemDescription TEXT,
     Rarity INT
 );*/
-CREATE TABLE UserStats (
+/*CREATE TABLE UserStats (
     User_ID INT PRIMARY KEY,                -- 유저 고유 ID (Users 테이블의 외래 키)
     Level INT DEFAULT 1,                   -- 유저 레벨
     Exp INT DEFAULT 0,              -- 유저 경험치
@@ -71,5 +71,35 @@ CREATE TABLE UserStats (
     Luck INT DEFAULT 5,                    -- 행운
     Gold INT DEFAULT 0,                    -- 유저가 보유한 골드
     FOREIGN KEY (User_ID) REFERENCES Users(User_ID)  -- Users 테이블과 연관
+);*/
+
+/*CREATE TABLE EquipmentItems (
+    Equipment_ID INT PRIMARY KEY AUTO_INCREMENT, -- 장비 고유 ID
+    Item_ID INT,                                 -- Items 테이블과의 외래 키
+    Equipment_Type VARCHAR(50),                  -- 장비 유형 (예: Armor, Weapon, Accessory)
+    Required_Level INT DEFAULT 1,                -- 장비 착용에 필요한 레벨
+    Attack_Power INT DEFAULT 0,                  -- 무기의 공격력
+    Defense_Power INT DEFAULT 0,                 -- 방어구의 방어력
+    STR_Boost INT DEFAULT 0,                -- 힘을 증가시키는 값
+    DEX_Boost INT DEFAULT 0,                 -- 민첩성을 증가시키는 값
+    INT_Boost INT DEFAULT 0,            -- 지능을 증가시키는 값
+    LUK_Boost INT DEFAULT 0,            -- 운을 증가시키는 값
+    Hp_Boost INT DEFAULT 0,                  -- 체력 증가
+    Mana_Boost INT DEFAULT 0,                    -- 마나 증가
+    FOREIGN KEY (Item_ID) REFERENCES Items(Item_ID)
+);*/
+/*CREATE TABLE ConsumItems (
+    Consum_ID INT PRIMARY KEY AUTO_INCREMENT, -- 소모품 고유 ID
+    Item_ID INT,                                  -- Items 테이블과의 외래 키
+    Effect VARCHAR(255),                         -- 소모품 효과 (예: Health Recovery, Mana Recovery)
+    Recovery_Amount INT DEFAULT 0,                -- 회복량 (체력 또는 마나)
+    Duration INT DEFAULT 0,                      -- 효과 지속 시간 (버프 아이템인 경우)
+    FOREIGN KEY (Item_ID) REFERENCES Items(Item_ID)
+);*/
+CREATE TABLE OtherItems (
+    Others_ID INT PRIMARY KEY AUTO_INCREMENT, -- 기타 아이템 고유 ID
+    Item_ID INT,                                     -- Items 테이블과의 외래 키
+    Description TEXT,                          -- 아이템 용도 설명
+    FOREIGN KEY (Item_ID) REFERENCES Items(Item_ID)
 );
 
