@@ -29,7 +29,7 @@ public class InventoryManager : MonoBehaviour
     /// <para>인벤토리 데이터를 가져오는 메서드</para>
     /// 이 메서드를 실행하여 인벤토리 UI도 이벤트를 활용하여 업데이트를 진행한다.
     /// </summary>
-    private void GetDataFromDatabase()
+    public void GetDataFromDatabase()
     {
         string query =
             $"SELECT *\n" +

@@ -17,14 +17,12 @@ public class UI_EquipPanel : MonoBehaviour
     public UI_EquipSlot PendantSlot;    
     public UI_EquipSlot RingSlot;
 
-    [Header("장비 해제 버튼")]
-    public Button unEquipButton;
+        
 
     private PlayerEquipData playerEquipData;
 
     private void Awake()
-    {
-        unEquipButton.onClick.AddListener(UnEquip);
+    {        
     }
 
 
@@ -32,6 +30,7 @@ public class UI_EquipPanel : MonoBehaviour
     {
         // 플레이어가 인벤토리 아이템을 장착 시 실행할 함수
         PlayerEquipManager.Instance.OnEquipItem += SetItemToSlot;
+        PlayerEquipManager.Instance.OnAllUnEquipButtonClick += SetItemToSlot;
         SetItemToSlot();
     }
 
@@ -166,22 +165,5 @@ public class UI_EquipPanel : MonoBehaviour
     }
     #endregion
 
-    /// <summary>
-    /// 모든 장비 해제
-    /// </summary>
-    private void UnEquip()
-    {
-        string query =
-            $"UPDATE playerequipment\n" +
-            $"SET playerequipment.HeadItem_ID=NULL,\n" +
-            $"playerequipment.ArmorItem_ID=NULL,\n" +
-            $"playerequipment.GlovesItem_ID=NULL,\n" +
-            $"playerequipment.BootsItem_ID=NULL,\n" +
-            $"playerequipment.WeaponItem_ID=NULL,\n" +
-            $"playerequipment.PendantItem_ID=NULL,\n" +
-            $"playerequipment.RingItem_ID=NULL\n" +
-            $"WHERE user_id=1;";
-        _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
-        SetItemToSlot();
-    }
+    
 }

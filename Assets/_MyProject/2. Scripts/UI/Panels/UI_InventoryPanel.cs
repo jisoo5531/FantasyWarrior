@@ -51,7 +51,7 @@ public class UI_InventoryPanel : MonoBehaviour
     }
     private void Start()
     {
-        InventoryManager.Instance.OnGetItem += SetItemToSlot;
+        InventoryManager.Instance.OnGetItem += SetItemToSlot;        
         
         if (InventoryManager.Instance.inventoryDataList.Count > 0)
         {

@@ -18762,7 +18762,6 @@ MonoBehaviour:
   WeaponSlot: {fileID: 687493033}
   PendantSlot: {fileID: 621187122}
   RingSlot: {fileID: 935906528}
-  unEquipButton: {fileID: 5865002815526745606}
 --- !u!224 &1018972475 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2457785069569314770, guid: 14f007453b410d44594b54497e216d68, type: 3}
@@ -32319,6 +32318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1e4dce777ae598448a5e63feaba0889, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unEquipButton: {fileID: 5865002815526745606}
 --- !u!224 &1881121568 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2457785069569314770, guid: 14f007453b410d44594b54497e216d68, type: 3}

@@ -34,7 +34,7 @@ LEFT JOIN Items i6 ON PlayerEquipment.PendantItem_ID = i6.Item_ID
 LEFT JOIN Items i7 ON PlayerEquipment.RingItem_ID = i7.Item_ID
 WHERE PlayerEquipment.User_ID = 1;*/
 
-INSERT INTO inventory (inventory.User_ID, inventory.Item_ID)
+/*INSERT INTO inventory (inventory.User_ID, inventory.Item_ID)
 VALUES (1, 1);
 INSERT INTO inventory (inventory.User_ID, inventory.Item_ID)
 VALUES (1, 2);
@@ -47,4 +47,7 @@ VALUES (1, 6);
 INSERT INTO inventory (inventory.User_ID, inventory.Item_ID)
 VALUES (1, 7);
 INSERT INTO inventory (inventory.User_ID, inventory.Item_ID)
-VALUES (1, 8);
+VALUES (1, 8);*/
+
+INSERT INTO inventory (inventory.User_ID, inventory.Item_ID)
+VALUES (1, 1), (1, 2);
