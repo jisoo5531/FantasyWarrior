@@ -81,7 +81,7 @@ public class PlayerEquipManager : MonoBehaviour
     private void UnEquip()
     {
         int user_ID = DatabaseManager.Instance.userData.UID;
-        PlayerEquipData equipData = PlayerEquipManager.Instance.GetPlayerEquipFromDB();
+        PlayerEquipData equipData = GetPlayerEquipFromDB();
         string query =
             $"UPDATE playerequipment\n" +
             $"SET playerequipment.HeadItem_ID=NULL,\n" +

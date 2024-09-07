@@ -8,6 +8,8 @@ public class UI_EquipPanel : MonoBehaviour
     // TODO : 0909 장착 패널에서 더블 클릭하면 장비 해제 후, 인벤토리로 이동
     // 현재 모두 해제 버튼을 누르면 되게는 되어 있다.
     // 장비를 장착하면 장비의 능력대로 스탯에 반영하기
+    // TODO : 인벤토리에서 장비를 장착 시, 첫번째 칸에 있을 때 장착이 안되는 경우가 있음
+
     [Header("Slot")]
     public UI_EquipSlot HeadArmorSlot;    
     public UI_EquipSlot BodyArmorSlot;    

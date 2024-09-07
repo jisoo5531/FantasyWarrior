@@ -33,7 +33,7 @@ public class InventoryManager : MonoBehaviour
     {
         string query =
             $"SELECT *\n" +
-            $"FROM inventory";
+            $"FROM inventory;";
         DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
 
         bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
