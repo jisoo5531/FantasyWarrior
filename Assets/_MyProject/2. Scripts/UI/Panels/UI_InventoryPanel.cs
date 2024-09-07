@@ -17,6 +17,8 @@ public class UI_InventoryPanel : MonoBehaviour
     public Button OtherButton;
     public GameObject OtherContent;
 
+    private int itemID;
+
     private void Awake()
     {
         EquipButton.onClick.AddListener
@@ -50,8 +52,7 @@ public class UI_InventoryPanel : MonoBehaviour
     private void Start()
     {
         InventoryManager.Instance.OnGetItem += SetItemToSlot;
-
-        Debug.Log(InventoryManager.Instance.inventoryDataList.Count);
+        
         if (InventoryManager.Instance.inventoryDataList.Count > 0)
         {
             Debug.Log("왜 안돼?");
@@ -64,8 +65,8 @@ public class UI_InventoryPanel : MonoBehaviour
         int consumpAmount = 0;
         int otherAmount = 0;
         foreach (InventoryData item in InventoryManager.Instance.inventoryDataList)
-        {
-            int itemID = item.Item_ID;
+        {                                    
+            this.itemID = item.Item_ID;
             string itemName = InventoryManager.Instance.GetInventoryItemNameFromDB(itemID);
             Item_Type itemType = InventoryManager.Instance.GetInventoryItemTypeFromDB(itemID);
             Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
@@ -121,18 +122,18 @@ public class UI_InventoryPanel : MonoBehaviour
     {        
         Debug.Log("여기>?");
         UI_InventorySlot slot = EquipContent.transform.GetChild(index).GetComponent<UI_InventorySlot>();        
-        slot.Initialize(sprite, itemQuantity);
+        slot.Initialize(itemID, Item_Type.Equipment, sprite, itemQuantity);
     }
     private void SetItemToConsumpSlot(Sprite sprite, int itemQuantity, int index)
     {
         Debug.Log("여기>????/");
         UI_InventorySlot slot = ConsumpContent.transform.GetChild(index).GetComponent<UI_InventorySlot>();        
-        slot.Initialize(sprite, itemQuantity);
+        slot.Initialize(itemID, Item_Type.Consump, sprite, itemQuantity);
     }
     private void SetItemToOtherSlot(Sprite sprite, int itemQuantity, int index)
     {
         Debug.Log("여기>?!!!!!!");
         UI_InventorySlot slot = OtherContent.transform.GetChild(index).GetComponent<UI_InventorySlot>();        
-        slot.Initialize(sprite, itemQuantity);
+        slot.Initialize(itemID, Item_Type.Other, sprite, itemQuantity);
     }
 }

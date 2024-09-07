@@ -15,3 +15,25 @@
 #FROM users
 #JOIN skills ON users.`level` >= skills.Unlock_Level
 #WHERE users.user_id = 1 AND skills.Class = 1;
+
+/*SELECT 
+    i1.Item_Name AS HeadItem, 
+    i2.Item_Name AS ArmorItem, 
+    i3.Item_Name AS GlovesItem,
+    i4.Item_Name AS BootsItem,
+    i5.Item_Name AS WeaponItem,
+    i6.Item_Name AS PendantItem,
+    i7.Item_Name AS RingItem
+FROM PlayerEquipment
+LEFT JOIN Items i1 ON PlayerEquipment.HeadItem_ID = i1.Item_ID
+LEFT JOIN Items i2 ON PlayerEquipment.ArmorItem_ID = i2.Item_ID
+LEFT JOIN Items i3 ON PlayerEquipment.GlovesItem_ID = i3.Item_ID
+LEFT JOIN Items i4 ON PlayerEquipment.BootsItem_ID = i4.Item_ID
+LEFT JOIN Items i5 ON PlayerEquipment.WeaponItem_ID = i5.Item_ID
+LEFT JOIN Items i6 ON PlayerEquipment.PendantItem_ID = i6.Item_ID
+LEFT JOIN Items i7 ON PlayerEquipment.RingItem_ID = i7.Item_ID
+WHERE PlayerEquipment.User_ID = 1;*/
+
+UPDATE playerequipment
+SET playerequipment.HeadItem_ID=NULL
+WHERE user_id=1;

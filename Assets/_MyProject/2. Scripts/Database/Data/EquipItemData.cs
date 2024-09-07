@@ -5,10 +5,17 @@ using UnityEngine;
 
 public enum Equip_Type
 {
-    Weapon,
-    Armor,
-    Accessories
+    Head = 0,
+    Armor = 1,
+    Glove = 2,
+    Boot = 3,
+    Weapon = 4,
+    Pendant = 5,
+    Ring = 6    
 }
+/// <summary>
+/// 인벤토리에 있는 타입이 장비 아이템의 데이터
+/// </summary>
 public class EquipItemData
 {
     public int Equip_ID { get; set; }
