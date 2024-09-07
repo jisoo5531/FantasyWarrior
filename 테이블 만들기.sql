@@ -96,10 +96,29 @@
     Duration INT DEFAULT 0,                      -- 효과 지속 시간 (버프 아이템인 경우)
     FOREIGN KEY (Item_ID) REFERENCES Items(Item_ID)
 );*/
-CREATE TABLE OtherItems (
+/*CREATE TABLE OtherItems (
     Others_ID INT PRIMARY KEY AUTO_INCREMENT, -- 기타 아이템 고유 ID
     Item_ID INT,                                     -- Items 테이블과의 외래 키
     Description TEXT,                          -- 아이템 용도 설명
     FOREIGN KEY (Item_ID) REFERENCES Items(Item_ID)
+);*/
+CREATE TABLE PlayerEquipment (
+    User_ID INT,                            -- 유저 고유 ID (Users 테이블의 외래 키)
+    HeadItem_ID INT DEFAULT NULL,           -- 투구 (Helmet)
+    ArmorItem_ID INT DEFAULT NULL,          -- 갑옷 (Armor)
+    GlovesItem_ID INT DEFAULT NULL,         -- 장갑 (Gloves)
+    BootsItem_ID INT DEFAULT NULL,          -- 신발 (Boots)
+    WeaponItem_ID INT DEFAULT NULL,         -- 무기 (Weapon)
+    PendantItem_ID INT DEFAULT NULL,        -- 펜던트 (Pendant)
+    RingItem_ID INT DEFAULT NULL,           -- 반지 (Ring)
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID),  -- Users 테이블과 연관
+    FOREIGN KEY (HeadItem_ID) REFERENCES Items(Item_ID),    -- Items 테이블의 외래 키
+    FOREIGN KEY (ArmorItem_ID) REFERENCES Items(Item_ID),
+    FOREIGN KEY (GlovesItem_ID) REFERENCES Items(Item_ID),
+    FOREIGN KEY (BootsItem_ID) REFERENCES Items(Item_ID),
+    FOREIGN KEY (WeaponItem_ID) REFERENCES Items(Item_ID),
+    FOREIGN KEY (PendantItem_ID) REFERENCES Items(Item_ID),
+    FOREIGN KEY (RingItem_ID) REFERENCES Items(Item_ID)
 );
+
 

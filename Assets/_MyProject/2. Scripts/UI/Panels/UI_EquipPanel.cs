@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_EquipPanel : MonoBehaviour
 {
     // TODO : 플레이어가 아이템 장착 시 UI 반영
     // 인벤토리에서 더블 클릭 시, 장착하면서 인벤토리에 -> 장착 아이템으로
-    // 
+    //     
+    [Header("Slot")]
     public UI_EquipSlot HeadArmorSlot;    
     public UI_EquipSlot BodyArmorSlot;    
     public UI_EquipSlot GloveSlot;    
@@ -15,20 +17,171 @@ public class UI_EquipPanel : MonoBehaviour
     public UI_EquipSlot PendantSlot;    
     public UI_EquipSlot RingSlot;
 
+    [Header("장비 해제 버튼")]
+    public Button unEquipButton;
+
+    private PlayerEquipData playerEquipData;
+
+    private void Awake()
+    {
+        unEquipButton.onClick.AddListener(UnEquip);
+    }
+
+
+    private void Start()
+    {
+        // 플레이어가 인벤토리 아이템을 장착 시 실행할 함수
+        PlayerEquipManager.Instance.OnEquipItem += SetItemToSlot;
+        SetItemToSlot();
+    }
+
     /// <summary>
     /// <para>플레이어가 장착 중인 아이템에 맞춰 슬롯 UI에 세팅</para>
     /// ID는 기본적으로 1 이상의 정수. 0이면 아이템을 장착하지 않았다는 것
     /// </summary>
     private void SetItemToSlot()
     {
-        PlayerEquipData playerEquipData = PlayerEquipManager.Instance.GetPlayerEquipFromDB();
+        playerEquipData = PlayerEquipManager.Instance.GetPlayerEquipFromDB();
 
-
+        HelmetSlotSetting();
+        ArmorSlotSetting();
+        GloveSlotSetting();
+        BootsSlotSetting();
+        WeaponSlotSetting();
+        PendantSlotSetting();
+        RingSlotSetting();
+    }
+    #region 장비 슬롯 세팅
+    private void HelmetSlotSetting()
+    {
         if (playerEquipData.HeadItem_ID != 0)
         {
             string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(playerEquipData.HeadItem_ID);
             Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
+            HeadArmorSlot.Initialize(sprite);
+            Debug.Log("머리 장착함.");
         }
-        
-    }        
+        else
+        {
+            // 장비를 장착하지 않은 경우
+            Debug.Log("머리 장착하지 않음.");
+            HeadArmorSlot.Initialize();
+        }
+    }
+    private void ArmorSlotSetting()
+    {
+        if (playerEquipData.ArmorItem_ID != 0)
+        {
+            string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(playerEquipData.ArmorItem_ID);
+            Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
+            BodyArmorSlot.Initialize(sprite);
+            Debug.Log("갑옷 장착함");
+        }
+        else
+        {
+            // 장비를 장착하지 않은 경우
+            Debug.Log("갑옷 장착하지 않음.");
+            BodyArmorSlot.Initialize();
+        }
+    }
+    private void GloveSlotSetting()
+    {
+        if (playerEquipData.GloveItem_ID != 0)
+        {
+            string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(playerEquipData.GloveItem_ID);
+            Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
+            GloveSlot.Initialize(sprite);
+            Debug.Log("장갑 장착함");
+        }
+        else
+        {
+            // 장비를 장착하지 않은 경우
+            Debug.Log("장갑 장착하지 않음.");
+            GloveSlot.Initialize();
+        }
+    }
+    private void BootsSlotSetting()
+    {
+        if (playerEquipData.BootItem_ID != 0)
+        {
+            string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(playerEquipData.BootItem_ID);
+            Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
+            BootsSlot.Initialize(sprite);
+            Debug.Log("신발 장착함");
+        }
+        else
+        {
+            // 장비를 장착하지 않은 경우
+            Debug.Log("신발 장착하지 않음.");
+            BootsSlot.Initialize();
+        }
+    }
+    private void WeaponSlotSetting()
+    {
+        if (playerEquipData.WeaponItem_ID != 0)
+        {
+            string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(playerEquipData.WeaponItem_ID);
+            Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
+            WeaponSlot.Initialize(sprite);
+            Debug.Log("무기 장착함");
+        }
+        else
+        {
+            // 장비를 장착하지 않은 경우
+            Debug.Log("무기 장착하지 않음.");
+            WeaponSlot.Initialize();
+        }
+    }
+    private void PendantSlotSetting()
+    {
+        if (playerEquipData.Pendant_ID != 0)
+        {
+            string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(playerEquipData.Pendant_ID);
+            Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
+            PendantSlot.Initialize(sprite);
+            Debug.Log("목걸이 장착함");
+        }
+        else
+        {
+            // 장비를 장착하지 않은 경우
+            Debug.Log("목걸이 장착하지 않음.");
+            PendantSlot.Initialize();
+        }
+    }
+    private void RingSlotSetting()
+    {
+        if (playerEquipData.Ring_ID != 0)
+        {
+            string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(playerEquipData.Ring_ID);
+            Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
+            RingSlot.Initialize(sprite);
+            Debug.Log("반지 장착함");
+        }
+        else
+        {
+            // 장비를 장착하지 않은 경우
+            Debug.Log("반지 장착하지 않음.");
+            RingSlot.Initialize();
+        }
+    }
+    #endregion
+
+    /// <summary>
+    /// 모든 장비 해제
+    /// </summary>
+    private void UnEquip()
+    {
+        string query =
+            $"UPDATE playerequipment\n" +
+            $"SET playerequipment.HeadItem_ID=NULL,\n" +
+            $"playerequipment.ArmorItem_ID=NULL,\n" +
+            $"playerequipment.GlovesItem_ID=NULL,\n" +
+            $"playerequipment.BootsItem_ID=NULL,\n" +
+            $"playerequipment.WeaponItem_ID=NULL,\n" +
+            $"playerequipment.PendantItem_ID=NULL,\n" +
+            $"playerequipment.RingItem_ID=NULL\n" +
+            $"WHERE user_id=1;";
+        _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+        SetItemToSlot();
+    }
 }

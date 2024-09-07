@@ -5,10 +5,19 @@ using UnityEngine.UI;
 
 public class UI_EquipSlot : MonoBehaviour
 {
-    public Image itemIcon;
+    public Image itemImage;
 
-    public void Initialize(Sprite itemImage)
+    public void Initialize(Sprite sprite = null)
     {
-        this.itemIcon.sprite = itemImage;
+        Debug.Log(sprite == null);
+        if (sprite == null)
+        {            
+            this.itemImage.ImageTransparent(0);
+        }
+        else
+        {            
+            this.itemImage.sprite = sprite;
+            this.itemImage.ImageTransparent(1);
+        }
     }
 }

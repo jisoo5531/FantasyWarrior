@@ -10,6 +10,9 @@ public class InventoryManager : MonoBehaviour
     public List<InventoryData> inventoryDataList = new List<InventoryData>();
     private ItemData itemData;
 
+    /// <summary>
+    /// 아이템을 획득 시, 실행할 이벤트
+    /// </summary>
     public event Action OnGetItem;
 
     private void Awake()
@@ -17,16 +20,15 @@ public class InventoryManager : MonoBehaviour
         Instance = this;
         
     }
-    private void OnEnable()
-    {
-        
-    }
-
     private void Start()
     {
         GetDataFromDatabase();
     }
 
+    /// <summary>
+    /// <para>인벤토리 데이터를 가져오는 메서드</para>
+    /// 이 메서드를 실행하여 인벤토리 UI도 이벤트를 활용하여 업데이트를 진행한다.
+    /// </summary>
     private void GetDataFromDatabase()
     {
         string query =
@@ -59,9 +61,10 @@ public class InventoryManager : MonoBehaviour
     {
         this.itemData = itemData;
         int user_Id = DatabaseManager.Instance.userData.UID;
-        int index = FindItemIndexInventory(itemData);        
+        int index = FindItemIndexInventory(itemData);                
         if (index >= 0)
-        {            
+        {
+            // 아이템 획득 시, 인벤토리에 있는 아이템이라면
             string query =
                 $"UPDATE inventory\n" +
                 $"SET quantity={inventoryDataList[index].Quantity + amount}\n" +
@@ -70,7 +73,8 @@ public class InventoryManager : MonoBehaviour
             GetDataFromDatabase();
         }
         else
-        {            
+        {
+            // 아이템 획득 시, 인벤토리에 없는 아이템이라면
             string query =
                 $"INSERT INTO Inventory (user_id, item_id, quantity)\n" +
                 $"VALUES (1, {itemData.Item_ID}, {amount});";
@@ -78,10 +82,20 @@ public class InventoryManager : MonoBehaviour
             GetDataFromDatabase();
         }
     }
+    /// <summary>
+    /// 장비를 장착 시, 인벤토리에서 해당 아이템 사라지게 할 메서드
+    /// </summary>
+    public void EquipItemUpdateInventory(int itemID)
+    {
+        int user_ID = DatabaseManager.Instance.userData.UID;
+        string query =
+            $"DELETE FROM inventory\n" +
+            $"WHERE user_id={user_ID} AND item_ID={itemID};";
+        _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+        GetDataFromDatabase();
+    }
     private int FindItemIndexInventory(ItemData itemData)
     {        
         return inventoryDataList.FindIndex((x) => { return x.Item_ID.Equals(itemData.Item_ID); });
-    }
-
-    
+    }        
 }

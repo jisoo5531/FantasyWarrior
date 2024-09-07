@@ -6,22 +6,22 @@ using UnityEngine.UI;
 public class UI_InventoryPanel : MonoBehaviour
 {
     [Header("Equip")]
-    public Button EquipButton;
+    public Button EquipTabButton;
     public GameObject EquipContent;
 
     [Header("Consump")]
-    public Button ConsumpButton;
+    public Button ConsumpTabButton;
     public GameObject ConsumpContent;
 
     [Header("Other")]
-    public Button OtherButton;
+    public Button OtherTabButton;
     public GameObject OtherContent;
 
     private int itemID;
 
     private void Awake()
     {
-        EquipButton.onClick.AddListener
+        EquipTabButton.onClick.AddListener
             (
                 () =>
                 {
@@ -30,7 +30,7 @@ public class UI_InventoryPanel : MonoBehaviour
                     OtherContent.transform.parent.parent.gameObject.SetActive(false);
                 }
             );
-        ConsumpButton.onClick.AddListener
+        ConsumpTabButton.onClick.AddListener
             (
                 () =>
                 {
@@ -39,7 +39,7 @@ public class UI_InventoryPanel : MonoBehaviour
                     OtherContent.transform.parent.parent.gameObject.SetActive(false);
                 }
             );
-        OtherButton.onClick.AddListener
+        OtherTabButton.onClick.AddListener
             (
                 () =>
                 {
@@ -59,11 +59,18 @@ public class UI_InventoryPanel : MonoBehaviour
             SetItemToSlot();
         }        
     }
+    /// <summary>
+    /// <para>데이터베이스에 저장된 아이템들을 인벤토리 슬롯으로 추가</para>
+    /// 아이템 획득 시, 실행할 메서드
+    /// </summary>
     private void SetItemToSlot()
     {
         int equipAmount = 0;
         int consumpAmount = 0;
         int otherAmount = 0;
+        SlotClear(EquipContent);
+        SlotClear(ConsumpContent);
+        SlotClear(OtherContent);
         foreach (InventoryData item in InventoryManager.Instance.inventoryDataList)
         {                                    
             this.itemID = item.Item_ID;
@@ -87,36 +94,6 @@ public class UI_InventoryPanel : MonoBehaviour
                     break;
             }
         }
-        //for (int i = 0; i < slots.Length; i++)
-        //{
-        //    if (i >= InventoryManager.Instance.inventoryDataList.Count)
-        //    {
-        //        continue;
-        //    }
-
-        //    int itemID = InventoryManager.Instance.inventoryDataList[i].Item_ID;
-        //    string itemName = InventoryManager.Instance.GetInventoryItemNameFromDB(itemID);
-        //    Item_Type itemType = InventoryManager.Instance.GetInventoryItemTypeFromDB(itemID);
-        //    Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
-        //    int itemQuantity = InventoryManager.Instance.inventoryDataList[i].Quantity;
-
-        //    switch (itemType)
-        //    {
-        //        case Item_Type.Equipment:
-        //            SetItemToEquipSlot();
-        //            break;
-        //        case Item_Type.Consump:
-        //            SetItemToConsumpSlot();
-        //            break;
-        //        case Item_Type.Other:
-        //            SetItemToOtherSlot();
-        //            break;
-        //        default:
-        //            break;
-        //    }
-
-        //    slots[i].Initialize(sprite, itemQuantity);
-        //}
     }
     private void SetItemToEquipSlot(Sprite sprite, int itemQuantity, int index)
     {        
@@ -135,5 +112,13 @@ public class UI_InventoryPanel : MonoBehaviour
         Debug.Log("여기>?!!!!!!");
         UI_InventorySlot slot = OtherContent.transform.GetChild(index).GetComponent<UI_InventorySlot>();        
         slot.Initialize(itemID, Item_Type.Other, sprite, itemQuantity);
+    }
+    private void SlotClear(GameObject content)
+    {
+        for (int i = 0; i < content.transform.childCount; i++)
+        {
+            UI_InventorySlot slot = content.transform.GetChild(i).GetComponent<UI_InventorySlot>();
+            slot.SlotClear();
+        }
     }
 }

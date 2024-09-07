@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -8,6 +9,12 @@ public class PlayerEquipManager : MonoBehaviour
 {
     public static PlayerEquipManager Instance { get; private set; }
     public PlayerEquipData playerEquip { get; private set; }
+
+    /// <summary>
+    /// 플레이어가 장비를 장착했을 때, 발생하는 이벤트
+    /// </summary>
+    public event Action OnEquipItem;
+
     private void Awake()
     {
         Instance = this;
@@ -28,9 +35,14 @@ public class PlayerEquipManager : MonoBehaviour
             $"UPDATE playerequipment\n" +
             $"SET playerequipment.{part}={item_ID}\n" +
             $"WHERE user_id={user_ID};";
-        Debug.Log(query);
 
-        Debug.Log($"성공? : {DatabaseManager.Instance.OnInsertOrUpdateRequest(query)}");
+        if (DatabaseManager.Instance.OnInsertOrUpdateRequest(query))
+        {
+            Debug.Log("장착 성공");
+            OnEquipItem?.Invoke();
+        }        
+        //Debug.Log($"장착 성공? : {DatabaseManager.Instance.OnInsertOrUpdateRequest(query)}");
+        //DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
     }
     /// <summary>
     /// 플레이어가 장착한 장비 목록 가져오기
