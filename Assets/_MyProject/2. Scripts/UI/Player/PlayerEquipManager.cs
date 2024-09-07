@@ -35,7 +35,7 @@ public class PlayerEquipManager : MonoBehaviour
     /// <summary>
     /// 플레이어가 장착한 장비 목록 가져오기
     /// </summary>
-    public void GetPlayerEquipFromDB()
+    public PlayerEquipData GetPlayerEquipFromDB()
     {
         int user_id = DatabaseManager.Instance.userData.UID;
         string query =
@@ -49,11 +49,13 @@ public class PlayerEquipManager : MonoBehaviour
         if (isExist)
         {
             DataRow row = dataSet.Tables[0].Rows[0];
-            playerEquip = new PlayerEquipData(row);            
+            playerEquip = new PlayerEquipData(row);
+            return playerEquip;
         }
         else
         {
             // 실패
+            return null;
         }
     }
 }

@@ -83,56 +83,5 @@ public class InventoryManager : MonoBehaviour
         return inventoryDataList.FindIndex((x) => { return x.Item_ID.Equals(itemData.Item_ID); });
     }
 
-    /// <summary>
-    /// 인벤토리에 있는 특정 아이템 이름 가져오기
-    /// </summary>
-    /// <param name="itemID"></param>
-    /// <returns></returns>
-    public string GetInventoryItemNameFromDB(int itemID)
-    {
-        string query =
-            $"SELECT items.item_name\n" +
-            $"FROM items\n" +
-            $"WHERE items.Item_ID={itemID};";
-        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
-
-        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
-
-        if (isGetData)
-        {
-            DataRow row = dataSet.Tables[0].Rows[0];
-            return row["item_name"].ToString();
-        }
-        else
-        {
-            //  실패
-            return string.Empty;
-        }
-    }    
-    /// <summary>
-    /// 인벤토리에 있는 특정 아이템 타입(종류) 가져오기
-    /// </summary>
-    /// <param name="itemID"></param>
-    /// <returns></returns>
-    public Item_Type GetInventoryItemTypeFromDB(int itemID)
-    {
-        string query =
-            $"SELECT items.Item_Type\n" +
-            $"FROM items\n" +
-            $"WHERE items.item_ID={itemID};";
-        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
-
-        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
-
-        if (isGetData)
-        {
-            DataRow row = dataSet.Tables[0].Rows[0];
-            return (Item_Type)int.Parse(row["Item_Type"].ToString());
-        }
-        else
-        {
-            //  실패
-            return (Item_Type)int.MaxValue;
-        }
-    }
+    
 }

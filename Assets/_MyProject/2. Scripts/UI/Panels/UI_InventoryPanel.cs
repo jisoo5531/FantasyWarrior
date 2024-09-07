@@ -67,8 +67,8 @@ public class UI_InventoryPanel : MonoBehaviour
         foreach (InventoryData item in InventoryManager.Instance.inventoryDataList)
         {                                    
             this.itemID = item.Item_ID;
-            string itemName = InventoryManager.Instance.GetInventoryItemNameFromDB(itemID);
-            Item_Type itemType = InventoryManager.Instance.GetInventoryItemTypeFromDB(itemID);
+            string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(itemID);
+            Item_Type itemType = ItemManager.Instance.GetInventoryItemTypeFromDB(itemID);
             Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
             int itemQuantity = item.Quantity;
 
