@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class UI_EquipPanel : MonoBehaviour
 {
     // TODO : 0909. 아이템 슬롯에 커서를 올리면 아이템 정보가 나오게끔. 현재 투구만 임시로 테스트로. 다른 부위도 해주기
+    // 장비 장착 시, 스탯 반영
+    // 인벤토리 슬롯도 커서 대면 아이템 정보 뜨게끔
 
     [Header("Slot")]
     public UI_EquipSlot HeadArmorSlot;    
