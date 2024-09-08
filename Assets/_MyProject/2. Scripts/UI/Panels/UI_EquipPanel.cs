@@ -5,9 +5,7 @@ using UnityEngine.UI;
 
 public class UI_EquipPanel : MonoBehaviour
 {
-    // TODO : 0909 장착 패널에서 더블 클릭하면 장비 해제 후, 인벤토리로 이동
-    // 현재 모두 해제 버튼을 누르면 되게는 되어 있다.
-    // 장비를 장착하면 장비의 능력대로 스탯에 반영하기    
+    // TODO : 0909. 아이템 슬롯에 커서를 올리면 아이템 정보가 나오게끔. 현재 투구만 임시로 테스트로. 다른 부위도 해주기
 
     [Header("Slot")]
     public UI_EquipSlot HeadArmorSlot;    
@@ -18,12 +16,15 @@ public class UI_EquipPanel : MonoBehaviour
     public UI_EquipSlot PendantSlot;    
     public UI_EquipSlot RingSlot;
 
+    [Header("Item Info")]
+    public UI_ItemInfo HeadArmorInfo;
         
 
     private PlayerEquipData playerEquipData;
 
     private void Awake()
     {        
+
     }
 
 
@@ -58,7 +59,8 @@ public class UI_EquipPanel : MonoBehaviour
         {
             string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(playerEquipData.HeadItem_ID);
             Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
-            HeadArmorSlot.Initialize(playerEquipData.HeadItem_ID, sprite);            
+            HeadArmorSlot.Initialize(playerEquipData.HeadItem_ID, sprite, HeadArmorInfo);       
+            
         }
         else
         {

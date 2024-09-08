@@ -4,9 +4,10 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler
+public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public Image itemImage;
+    private UI_ItemInfo itemInfoWindow;
    
     /// <summary>
     /// 현재 장착 슬롯에 있는 아이템의 ID
@@ -23,7 +24,7 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler
     /// </summary>
     /// <param name="itemID"></param>
     /// <param name="sprite"></param>
-    public void Initialize(int itemID = 0, Sprite sprite = null)
+    public void Initialize(int itemID = 0, Sprite sprite = null, UI_ItemInfo itemInfo = null)
     {
         this.itemID = itemID;
         Debug.Log(sprite == null);        
@@ -32,7 +33,8 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler
             this.itemImage.ImageTransparent(0);
         }
         else
-        {            
+        {
+            this.itemInfoWindow = itemInfo;
             this.itemImage.sprite = sprite;
             this.itemImage.ImageTransparent(1);
         }
@@ -54,6 +56,32 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler
         }
     }
     /// <summary>
+    /// <para>IPointerEnterHandler 인터페이스</para>
+    /// <para>슬롯에 커서를 대면 아이템의 정보가 나오게끔</para>
+    /// </summary>
+    /// <param name="eventData"></param>
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (itemInfoWindow != null && itemID != 0)
+        {
+            itemInfoWindow.gameObject.SetActive(true);
+            itemInfoWindow.Initialize(this.itemID);
+        }   
+    }
+    /// <summary>
+    /// <para>IPointerExitHandler 인터페이스</para>
+    /// <para>슬롯에 커서를 떼면 아이템의 정보가 사라지게끔</para>
+    /// </summary>
+    /// <param name="eventData"></param>
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (itemInfoWindow != null && itemID != 0)
+        {
+            itemInfoWindow.gameObject.SetActive(false);            
+        }
+    }
+
+    /// <summary>
     /// 더블클릭했을 때, 장비 해제. 없으면 return
     /// </summary>
     private void OnMouseDoubleClick()
@@ -69,6 +97,7 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler
 
         PlayerEquipManager.Instance.UnEquip(part, this.itemID);
 
+        itemInfoWindow.gameObject.SetActive(false);
         this.itemImage.ImageTransparent(0);
         this.itemID = 0;
     }
