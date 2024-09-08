@@ -49,4 +49,3 @@ VALUES (1, 7);
 INSERT INTO inventory (inventory.User_ID, inventory.Item_ID)
 VALUES (1, 8);
 
-

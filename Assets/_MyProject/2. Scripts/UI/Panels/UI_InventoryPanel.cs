@@ -74,8 +74,7 @@ public class UI_InventoryPanel : MonoBehaviour
         SlotClear(ConsumpContent);
         SlotClear(OtherContent);
 
-        List<InventoryData> inventoryDataList = InventoryManager.Instance.GetDataFromDatabase();
-        Debug.Log($"인벤토리 아이템 개수 : {inventoryDataList}");
+        List<InventoryData> inventoryDataList = InventoryManager.Instance.GetDataFromDatabase();        
 
         foreach (InventoryData item in inventoryDataList)
         {            
@@ -102,20 +101,17 @@ public class UI_InventoryPanel : MonoBehaviour
         }
     }
     private void SetItemToEquipSlot(Sprite sprite, int itemQuantity, int index)
-    {        
-        Debug.Log("여기>?");
+    {                
         UI_InventorySlot slot = EquipContent.transform.GetChild(index).GetComponent<UI_InventorySlot>();        
         slot.Initialize(itemID, Item_Type.Equipment, sprite, itemQuantity);
     }
     private void SetItemToConsumpSlot(Sprite sprite, int itemQuantity, int index)
-    {
-        Debug.Log("여기>????/");
+    {        
         UI_InventorySlot slot = ConsumpContent.transform.GetChild(index).GetComponent<UI_InventorySlot>();        
         slot.Initialize(itemID, Item_Type.Consump, sprite, itemQuantity);
     }
     private void SetItemToOtherSlot(Sprite sprite, int itemQuantity, int index)
-    {
-        Debug.Log("여기>?!!!!!!");
+    {        
         UI_InventorySlot slot = OtherContent.transform.GetChild(index).GetComponent<UI_InventorySlot>();        
         slot.Initialize(itemID, Item_Type.Other, sprite, itemQuantity);
     }
