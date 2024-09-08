@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -91,6 +92,7 @@ public class PlayerEquipManager : MonoBehaviour
     {
         int user_ID = DatabaseManager.Instance.userData.UID;
         PlayerEquipData equipData = GetPlayerEquipFromDB();
+        
         string query =
             $"UPDATE playerequipment\n" +
             $"SET playerequipment.HeadItem_ID=NULL,\n" +
@@ -103,16 +105,56 @@ public class PlayerEquipManager : MonoBehaviour
             $"WHERE user_id=1;";
         _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
 
-        query =
-            $"INSERT INTO inventory (inventory.User_ID, inventory.Item_ID)\n" +
-            $"VALUES ({user_ID}, {equipData.HeadItem_ID})," +
-            $"({user_ID}, {equipData.ArmorItem_ID})," +
-            $"({user_ID}, {equipData.GloveItem_ID})," +
-            $"({user_ID}, {equipData.BootItem_ID})," +
-            $"({user_ID}, {equipData.WeaponItem_ID})," +
-            $"({user_ID}, {equipData.Pendant_ID})," +
-            $"({user_ID}, {equipData.Ring_ID});";
-        _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+        StringBuilder queryBuilder = new StringBuilder();
+        queryBuilder.Append("INSERT INTO inventory (inventory.User_ID, inventory.Item_ID) VALUES");
+
+        // 항목을 리스트로 구성
+        List<string> values = new List<string>();
+
+        if (equipData.HeadItem_ID != 0)
+        {
+            values.Add($"({user_ID}, {equipData.HeadItem_ID})");
+        }
+        if (equipData.ArmorItem_ID != 0)
+        {
+            values.Add($"({user_ID}, {equipData.ArmorItem_ID})");
+        }
+        if (equipData.GloveItem_ID != 0)
+        {
+            values.Add($"({user_ID}, {equipData.GloveItem_ID})");
+        }
+        if (equipData.BootItem_ID != 0)
+        {
+            values.Add($"({user_ID}, {equipData.BootItem_ID})");
+        }
+        if (equipData.WeaponItem_ID != 0)
+        {
+            values.Add($"({user_ID}, {equipData.WeaponItem_ID})");
+        }
+        if (equipData.Pendant_ID != 0)
+        {
+            values.Add($"({user_ID}, {equipData.Pendant_ID})");
+        }
+        if (equipData.Ring_ID != 0)
+        {
+            values.Add($"({user_ID}, {equipData.Ring_ID})");
+        }
+
+        // values 리스트가 비어 있지 않다면 쿼리를 생성
+        if (values.Count > 0)
+        {
+            queryBuilder.Append(string.Join(",", values));
+            queryBuilder.Append(";");
+
+            query = queryBuilder.ToString();
+            _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);            
+        }
+        else
+        {
+            // 만약 모든 아이템이 0이면 쿼리가 생성되지 않으므로 별도 처리
+            Debug.Log("아이템이 없습니다.");
+        }
+        
         
         OnAllUnEquipButtonClick?.Invoke();
     }
