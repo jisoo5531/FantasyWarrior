@@ -19,7 +19,7 @@ public class Item : MonoBehaviour
             Debug.Log("타겟 레이어 아님");
             return;
         }
-        Debug.Log("플레이어 아이템 먹었다.");
+        Debug.Log("플레이어 아이템 먹었다.");        
         InventoryManager.Instance.GetItem(itemData, 2);
 
         Destroy(gameObject);

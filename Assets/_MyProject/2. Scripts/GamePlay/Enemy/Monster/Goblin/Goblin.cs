@@ -17,6 +17,7 @@ public class Goblin : MonsterUnit
         base.OnHpChange(damage);
     }
 
+    // TODO : 몬스터가 죽었을 때 아이템, 경험치, 골드 등등 보상 떨어지게
     protected override void OnDeath()
     {
         Debug.Log("죽음?");

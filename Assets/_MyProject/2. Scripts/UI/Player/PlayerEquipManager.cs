@@ -9,6 +9,13 @@ using UnityEngine.UI;
 public class PlayerEquipManager : MonoBehaviour
 {
     public static PlayerEquipManager Instance { get; private set; }
+
+    public static readonly List<string> EquipParts = new List<string>
+    {
+        "HeadItem_ID", "ArmorItem_ID", "GlovesItem_ID",
+        "BootsItem_ID", "WeaponItem_ID", "PendantItem_ID", "RingItem_ID"
+    };
+
     public PlayerEquipData playerEquip { get; private set; }
 
     [Header("장비 해제 버튼")]
@@ -17,12 +24,13 @@ public class PlayerEquipManager : MonoBehaviour
     /// 플레이어가 장비를 장착했을 때, 발생하는 이벤트
     /// </summary>
     public event Action OnEquipItem;
+    public event Action OnUnEquipItem;
     public event Action OnAllUnEquipButtonClick;
 
     private void Awake()
     {
         Instance = this;
-        unEquipButton.onClick.AddListener(UnEquip);
+        unEquipButton.onClick.AddListener(UnEquipAll);
     }
 
     private void Start()
@@ -35,6 +43,7 @@ public class PlayerEquipManager : MonoBehaviour
     /// </summary>
     public void EquipItem(string part, int item_ID)
     {
+        Debug.Log($"아이템 ID : {item_ID}");
         int user_ID = DatabaseManager.Instance.userData.UID;
         string query =
             $"UPDATE playerequipment\n" +
@@ -78,7 +87,7 @@ public class PlayerEquipManager : MonoBehaviour
     /// <summary>
     /// 모든 장비 해제
     /// </summary>
-    private void UnEquip()
+    private void UnEquipAll()
     {
         int user_ID = DatabaseManager.Instance.userData.UID;
         PlayerEquipData equipData = GetPlayerEquipFromDB();
@@ -104,8 +113,31 @@ public class PlayerEquipManager : MonoBehaviour
             $"({user_ID}, {equipData.Pendant_ID})," +
             $"({user_ID}, {equipData.Ring_ID});";
         _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
-
-        InventoryManager.Instance.GetDataFromDatabase();
+        
         OnAllUnEquipButtonClick?.Invoke();
+    }
+    /// <summary>
+    /// 장비 슬롯에서 장비를 해제할 시, 특정 장비 해제 후, 인벤토리에 넣기
+    /// </summary>
+    /// <param name="part">해제할 부분</param>
+    /// <param name="itemID">해제할 아이템의 ID</param>
+    public void UnEquip(string part, int itemID)
+    {
+        int user_ID = DatabaseManager.Instance.userData.UID;        
+
+        string query =
+            $"UPDATE playerequipment\n" +
+            $"SET playerequipment.{part}=null\n" +
+            $"WHERE playerequipment.User_ID={user_ID};";
+        DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+
+        query =
+            $"INSERT INTO inventory (inventory.User_ID, inventory.Item_ID)\n" +
+            $"VALUES ({user_ID}, {itemID});";
+        DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+
+        //InventoryManager.Instance.EquipItemUpdateInventory
+
+        OnUnEquipItem?.Invoke();
     }
 }

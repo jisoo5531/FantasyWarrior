@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
 
+/// <summary>
+/// 장비 아이템의 부위
+/// </summary>
 public enum Equip_Type
 {
     Head = 0,
@@ -20,6 +23,9 @@ public class EquipItemData
 {
     public int Equip_ID { get; set; }
     public int Item_ID { get; set; }
+    /// <summary>
+    /// 장비 아이템의 부위
+    /// </summary>
     public Equip_Type Equip_Type { get; set; }
     public int Require_LV { get; set; }
     public int ATK_Boost { get; set; }

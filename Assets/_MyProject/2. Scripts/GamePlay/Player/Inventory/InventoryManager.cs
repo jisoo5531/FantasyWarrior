@@ -27,9 +27,8 @@ public class InventoryManager : MonoBehaviour
 
     /// <summary>
     /// <para>인벤토리 데이터를 가져오는 메서드</para>
-    /// 이 메서드를 실행하여 인벤토리 UI도 이벤트를 활용하여 업데이트를 진행한다.
     /// </summary>
-    public void GetDataFromDatabase()
+    public List<InventoryData> GetDataFromDatabase()
     {
         string query =
             $"SELECT *\n" +
@@ -45,11 +44,13 @@ public class InventoryManager : MonoBehaviour
             {
                 inventoryDataList.Add(new InventoryData(row));
             }
+            return inventoryDataList;
         }
         else
-        {            
+        {
+            return null;
         }
-        OnGetItem?.Invoke();
+        //OnGetItem?.Invoke();
     }
 
     /// <summary>
@@ -69,8 +70,7 @@ public class InventoryManager : MonoBehaviour
                 $"UPDATE inventory\n" +
                 $"SET quantity={inventoryDataList[index].Quantity + amount}\n" +
                 $"WHERE user_id={user_Id} AND item_id={itemData.Item_ID};";
-            _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
-            GetDataFromDatabase();
+            _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);            
         }
         else
         {
@@ -78,9 +78,9 @@ public class InventoryManager : MonoBehaviour
             string query =
                 $"INSERT INTO Inventory (user_id, item_id, quantity)\n" +
                 $"VALUES (1, {itemData.Item_ID}, {amount});";
-            _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
-            GetDataFromDatabase();
+            _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);            
         }
+        OnGetItem?.Invoke();
     }
     /// <summary>
     /// 장비를 장착 시, 인벤토리에서 해당 아이템 사라지게 할 메서드
@@ -91,8 +91,7 @@ public class InventoryManager : MonoBehaviour
         string query =
             $"DELETE FROM inventory\n" +
             $"WHERE user_id={user_ID} AND item_ID={itemID};";
-        _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
-        GetDataFromDatabase();
+        _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);        
     }
     private int FindItemIndexInventory(ItemData itemData)
     {        

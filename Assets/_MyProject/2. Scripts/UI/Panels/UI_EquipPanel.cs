@@ -7,8 +7,7 @@ public class UI_EquipPanel : MonoBehaviour
 {
     // TODO : 0909 장착 패널에서 더블 클릭하면 장비 해제 후, 인벤토리로 이동
     // 현재 모두 해제 버튼을 누르면 되게는 되어 있다.
-    // 장비를 장착하면 장비의 능력대로 스탯에 반영하기
-    // TODO : 인벤토리에서 장비를 장착 시, 첫번째 칸에 있을 때 장착이 안되는 경우가 있음
+    // 장비를 장착하면 장비의 능력대로 스탯에 반영하기    
 
     [Header("Slot")]
     public UI_EquipSlot HeadArmorSlot;    
@@ -59,13 +58,11 @@ public class UI_EquipPanel : MonoBehaviour
         {
             string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(playerEquipData.HeadItem_ID);
             Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
-            HeadArmorSlot.Initialize(sprite);
-            Debug.Log("머리 장착함.");
+            HeadArmorSlot.Initialize(playerEquipData.HeadItem_ID, sprite);            
         }
         else
         {
-            // 장비를 장착하지 않은 경우
-            Debug.Log("머리 장착하지 않음.");
+            // 장비를 장착하지 않은 경우            
             HeadArmorSlot.Initialize();
         }
     }
@@ -75,13 +72,11 @@ public class UI_EquipPanel : MonoBehaviour
         {
             string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(playerEquipData.ArmorItem_ID);
             Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
-            BodyArmorSlot.Initialize(sprite);
-            Debug.Log("갑옷 장착함");
+            BodyArmorSlot.Initialize(playerEquipData.ArmorItem_ID, sprite);            
         }
         else
         {
-            // 장비를 장착하지 않은 경우
-            Debug.Log("갑옷 장착하지 않음.");
+            // 장비를 장착하지 않은 경우            
             BodyArmorSlot.Initialize();
         }
     }
@@ -91,13 +86,11 @@ public class UI_EquipPanel : MonoBehaviour
         {
             string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(playerEquipData.GloveItem_ID);
             Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
-            GloveSlot.Initialize(sprite);
-            Debug.Log("장갑 장착함");
+            GloveSlot.Initialize(playerEquipData.GloveItem_ID, sprite);            
         }
         else
         {
-            // 장비를 장착하지 않은 경우
-            Debug.Log("장갑 장착하지 않음.");
+            // 장비를 장착하지 않은 경우            
             GloveSlot.Initialize();
         }
     }
@@ -107,13 +100,11 @@ public class UI_EquipPanel : MonoBehaviour
         {
             string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(playerEquipData.BootItem_ID);
             Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
-            BootsSlot.Initialize(sprite);
-            Debug.Log("신발 장착함");
+            BootsSlot.Initialize(playerEquipData.BootItem_ID, sprite);            
         }
         else
         {
-            // 장비를 장착하지 않은 경우
-            Debug.Log("신발 장착하지 않음.");
+            // 장비를 장착하지 않은 경우            
             BootsSlot.Initialize();
         }
     }
@@ -123,13 +114,11 @@ public class UI_EquipPanel : MonoBehaviour
         {
             string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(playerEquipData.WeaponItem_ID);
             Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
-            WeaponSlot.Initialize(sprite);
-            Debug.Log("무기 장착함");
+            WeaponSlot.Initialize(playerEquipData.WeaponItem_ID, sprite);            
         }
         else
         {
-            // 장비를 장착하지 않은 경우
-            Debug.Log("무기 장착하지 않음.");
+            // 장비를 장착하지 않은 경우            
             WeaponSlot.Initialize();
         }
     }
@@ -139,13 +128,11 @@ public class UI_EquipPanel : MonoBehaviour
         {
             string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(playerEquipData.Pendant_ID);
             Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
-            PendantSlot.Initialize(sprite);
-            Debug.Log("목걸이 장착함");
+            PendantSlot.Initialize(playerEquipData.Pendant_ID, sprite);            
         }
         else
         {
-            // 장비를 장착하지 않은 경우
-            Debug.Log("목걸이 장착하지 않음.");
+            // 장비를 장착하지 않은 경우            
             PendantSlot.Initialize();
         }
     }
@@ -155,13 +142,11 @@ public class UI_EquipPanel : MonoBehaviour
         {
             string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(playerEquipData.Ring_ID);
             Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
-            RingSlot.Initialize(sprite);
-            Debug.Log("반지 장착함");
+            RingSlot.Initialize(playerEquipData.Ring_ID, sprite);            
         }
         else
         {
-            // 장비를 장착하지 않은 경우
-            Debug.Log("반지 장착하지 않음.");
+            // 장비를 장착하지 않은 경우            
             RingSlot.Initialize();
         }
     }

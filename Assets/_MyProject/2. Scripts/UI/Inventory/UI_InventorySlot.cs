@@ -6,17 +6,7 @@ using TMPro;
 using UnityEngine.EventSystems;
 
 public class UI_InventorySlot : MonoBehaviour, IPointerClickHandler
-{
-    private readonly List<string> EquipParts = new List<string>
-    {
-        "HeadItem_ID", "ArmorItem_ID", "GlovesItem_ID",
-        "BootsItem_ID", "WeaponItem_ID", "PendantItem_ID", "RingItem_ID"
-    };
-
-    /// <summary>
-    /// 슬롯 버튼
-    /// </summary>
-    public Button slotButton;
+{   
     /// <summary>
     /// 슬롯 아이템 이미지
     /// </summary>
@@ -39,12 +29,10 @@ public class UI_InventorySlot : MonoBehaviour, IPointerClickHandler
     private float clickTime = 0;
 
     public void Initialize(int itemID, Item_Type item_Type, Sprite sprite, int quantity)
-    {
-        slotButton = GetComponent<Button>();
+    {        
         this.itemID = itemID;
         this.Item_Type = item_Type;
-        this.itemIcon.sprite = sprite;
-        this.slotButton.interactable = true;
+        this.itemIcon.sprite = sprite;        
         itemQuantityText.text = quantity.ToString();
         itemIcon.ImageTransparent(1);
         itemQuantityText.gameObject.SetActive(true);        
@@ -67,11 +55,18 @@ public class UI_InventorySlot : MonoBehaviour, IPointerClickHandler
         }
     }
     /// <summary>
-    /// 더블클릭했을 때 장비 아이템이면 장착
+    /// <para>더블클릭했을 때 장비 아이템이면 장착</para>
+    /// <para>기타 아이템이나 슬롯에 아무것도 없으면 return</para>
+    /// TODO : 소비 아이템의 경우도 후에 구현.
     /// </summary>
     private void OnMouseDoubleClick()
     {
+        if (this.itemID == 0)
+        {
+            return;
+        }
         Debug.Log("더블클릭했다.");
+        Debug.Log($"현재 아이템 ID : {this.itemID}");
         switch (Item_Type)
         {
             case Item_Type.Equipment:
@@ -79,7 +74,7 @@ public class UI_InventorySlot : MonoBehaviour, IPointerClickHandler
                 break;
             case Item_Type.Consump:
                 break;
-            case Item_Type.Other:
+            case Item_Type.Other:                
                 break;
             default:
                 break;
@@ -93,20 +88,18 @@ public class UI_InventorySlot : MonoBehaviour, IPointerClickHandler
     {
         EquipItemData equipItem = ItemManager.Instance.GetEquipItemFromDB(itemID);
 
-        PlayerEquipManager.Instance.EquipItem(EquipParts[(int)equipItem.Equip_Type], itemID);
-
-        SlotClear();
+        PlayerEquipManager.Instance.EquipItem(PlayerEquipManager.EquipParts[(int)equipItem.Equip_Type], itemID);        
 
         InventoryManager.Instance.EquipItemUpdateInventory(itemID);
-        this.itemID = 0;
+
+        SlotClear();
     }   
     /// <summary>
     /// 아이템이 없는 슬롯 초기화
     /// </summary>
     public void SlotClear()
-    {
-        slotButton = GetComponent<Button>();
-        this.slotButton.interactable = false;
+    {        
+        this.itemID = 0;        
         this.itemIcon.sprite = null;
         this.itemIcon.ImageTransparent(0);
         this.itemQuantityText.gameObject.SetActive(false);

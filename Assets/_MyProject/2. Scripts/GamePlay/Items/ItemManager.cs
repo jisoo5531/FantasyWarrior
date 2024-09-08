@@ -8,6 +8,9 @@ public class ItemManager : MonoBehaviour
     // TODO : 장비, 소비, 기타 아이템 정보를 받아서 특정 아이템을 장착 시, 캐릭터 스탯 반영
     public static ItemManager Instance { get; private set; }
 
+    /// <summary>
+    /// 아이템 테이블의 데이터들을 담아놓은 리스트
+    /// </summary>
     public List<ItemData> itemDataList = new List<ItemData>();
 
     private void Awake()
@@ -99,6 +102,11 @@ public class ItemManager : MonoBehaviour
     #endregion
 
     #region 장비, 소비, 기타 아이템 가져오기
+    /// <summary>
+    /// 장비 아이템 데이터 가져오기
+    /// </summary>
+    /// <param name="itemID"></param>
+    /// <returns></returns>
     public EquipItemData GetEquipItemFromDB(int itemID)
     {
         string query =

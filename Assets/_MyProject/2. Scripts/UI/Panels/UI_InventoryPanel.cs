@@ -50,8 +50,10 @@ public class UI_InventoryPanel : MonoBehaviour
             );
     }
     private void Start()
-    {
-        InventoryManager.Instance.OnGetItem += SetItemToSlot;        
+    {        
+        PlayerEquipManager.Instance.OnAllUnEquipButtonClick += SetItemToSlot;
+        PlayerEquipManager.Instance.OnUnEquipItem += SetItemToSlot;
+        InventoryManager.Instance.OnGetItem += SetItemToSlot;
         
         if (InventoryManager.Instance.inventoryDataList.Count > 0)
         {
@@ -60,8 +62,8 @@ public class UI_InventoryPanel : MonoBehaviour
         }        
     }
     /// <summary>
-    /// <para>데이터베이스에 저장된 아이템들을 인벤토리 슬롯으로 추가</para>
-    /// 아이템 획득 시, 실행할 메서드
+    /// <para>인벤토리 테이블에 저장된 아이템들을 인벤토리 슬롯으로 세팅</para>
+    /// 아이템 획득, 장비 장착, 장비 해제 등등. 인벤토리가 업데이트되면 실행.
     /// </summary>
     private void SetItemToSlot()
     {
@@ -71,8 +73,12 @@ public class UI_InventoryPanel : MonoBehaviour
         SlotClear(EquipContent);
         SlotClear(ConsumpContent);
         SlotClear(OtherContent);
-        foreach (InventoryData item in InventoryManager.Instance.inventoryDataList)
-        {                                    
+
+        List<InventoryData> inventoryDataList = InventoryManager.Instance.GetDataFromDatabase();
+        Debug.Log($"인벤토리 아이템 개수 : {inventoryDataList}");
+
+        foreach (InventoryData item in inventoryDataList)
+        {            
             this.itemID = item.Item_ID;
             string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(itemID);
             Item_Type itemType = ItemManager.Instance.GetInventoryItemTypeFromDB(itemID);
