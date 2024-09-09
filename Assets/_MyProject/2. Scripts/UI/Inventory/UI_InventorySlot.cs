@@ -6,8 +6,7 @@ using TMPro;
 using UnityEngine.EventSystems;
 
 public class UI_InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
-{
-    // TODO : 인벤토리 슬롯도 커서 대면 아이템 정보 뜨게끔
+{    
 
     private UI_ItemInfo equipitemInfoWindow;
 
@@ -22,7 +21,7 @@ public class UI_InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerEnt
     /// <summary>
     /// 현재 인벤토리 슬롯에 있는 아이템의 ID
     /// </summary>
-    private int itemID;
+    public int itemID = 0;
     /// <summary>
     /// 현재 슬롯에 있는 아이템의 종류(장비, 소비, 기타)
     /// </summary>
@@ -168,6 +167,8 @@ public class UI_InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerEnt
         PlayerEquipManager.Instance.EquipItem(PlayerEquipManager.EquipParts[(int)equipItem.Equip_Type], itemID);        
 
         InventoryManager.Instance.EquipItemUpdateInventory(itemID);
+
+        equipitemInfoWindow.gameObject.SetActive(false);
 
         SlotClear();
     }   

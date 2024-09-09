@@ -114,30 +114,37 @@ public class PlayerEquipManager : MonoBehaviour
         if (equipData.HeadItem_ID != 0)
         {
             values.Add($"({user_ID}, {equipData.HeadItem_ID})");
+            InventoryManager.Instance.AddWhichItem(equipData.HeadItem_ID);
         }
         if (equipData.ArmorItem_ID != 0)
         {
             values.Add($"({user_ID}, {equipData.ArmorItem_ID})");
+            InventoryManager.Instance.AddWhichItem(equipData.ArmorItem_ID);
         }
         if (equipData.GloveItem_ID != 0)
         {
             values.Add($"({user_ID}, {equipData.GloveItem_ID})");
+            InventoryManager.Instance.AddWhichItem(equipData.GloveItem_ID);
         }
         if (equipData.BootItem_ID != 0)
         {
             values.Add($"({user_ID}, {equipData.BootItem_ID})");
+            InventoryManager.Instance.AddWhichItem(equipData.BootItem_ID);
         }
         if (equipData.WeaponItem_ID != 0)
         {
             values.Add($"({user_ID}, {equipData.WeaponItem_ID})");
+            InventoryManager.Instance.AddWhichItem(equipData.WeaponItem_ID);
         }
         if (equipData.Pendant_ID != 0)
         {
             values.Add($"({user_ID}, {equipData.Pendant_ID})");
+            InventoryManager.Instance.AddWhichItem(equipData.Pendant_ID);
         }
         if (equipData.Ring_ID != 0)
         {
             values.Add($"({user_ID}, {equipData.Ring_ID})");
+            InventoryManager.Instance.AddWhichItem(equipData.Ring_ID);
         }
 
         // values 리스트가 비어 있지 않다면 쿼리를 생성
@@ -178,7 +185,7 @@ public class PlayerEquipManager : MonoBehaviour
             $"VALUES ({user_ID}, {itemID});";
         DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
 
-        //InventoryManager.Instance.EquipItemUpdateInventory
+        InventoryManager.Instance.AddWhichItem(itemID);
 
         OnUnEquipItem?.Invoke();
     }

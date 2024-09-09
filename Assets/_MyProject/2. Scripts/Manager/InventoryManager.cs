@@ -8,6 +8,7 @@ public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager Instance { get; private set; }
     public List<InventoryData> inventoryDataList = new List<InventoryData>();
+    public List<int> addWhichItemList = new List<int>();
     private ItemData itemData;
 
     /// <summary>
@@ -23,6 +24,11 @@ public class InventoryManager : MonoBehaviour
     private void Start()
     {
         GetDataFromDatabase();
+    }
+
+    public void AddWhichItem(int itemID)
+    {
+        addWhichItemList.Add(itemID);
     }
 
     /// <summary>
@@ -78,7 +84,8 @@ public class InventoryManager : MonoBehaviour
             string query =
                 $"INSERT INTO Inventory (user_id, item_id, quantity)\n" +
                 $"VALUES (1, {itemData.Item_ID}, {amount});";
-            _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);            
+            _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+            AddWhichItem(itemData.Item_ID);
         }
         OnGetItem?.Invoke();
     }
@@ -97,4 +104,26 @@ public class InventoryManager : MonoBehaviour
     {        
         return inventoryDataList.FindIndex((x) => { return x.Item_ID.Equals(itemData.Item_ID); });
     }        
+    public int GetItemQuantity(int itemID)
+    {
+        int user_ID = DatabaseManager.Instance.userData.UID;
+        string query =
+            $"SELECT inventory.Quantity\n" +
+            $"FROM inventory\n" +
+            $"WHERE inventory.User_ID={user_ID} AND inventory.Item_ID={itemID};";
+        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
+
+        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
+
+        if (isGetData)
+        {
+            DataRow row = dataSet.Tables[0].Rows[0];
+            return int.Parse(row["Quantity"].ToString());
+        }
+        else
+        {
+            return 0;
+        }
+
+    }
 }
