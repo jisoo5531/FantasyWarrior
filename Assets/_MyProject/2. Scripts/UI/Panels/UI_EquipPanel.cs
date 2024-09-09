@@ -20,7 +20,13 @@ public class UI_EquipPanel : MonoBehaviour
 
     [Header("Item Info")]
     public UI_ItemInfo HeadArmorInfo;
-        
+    public UI_ItemInfo BodyArmorInfo;
+    public UI_ItemInfo GloveInfo;
+    public UI_ItemInfo BootsInfo;
+    public UI_ItemInfo WeaponInfo;
+    public UI_ItemInfo PendantInfo;
+    public UI_ItemInfo RingInfo;    
+
 
     private PlayerEquipData playerEquipData;
 
@@ -76,7 +82,7 @@ public class UI_EquipPanel : MonoBehaviour
         {
             string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(playerEquipData.ArmorItem_ID);
             Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
-            BodyArmorSlot.Initialize(playerEquipData.ArmorItem_ID, sprite);            
+            BodyArmorSlot.Initialize(playerEquipData.ArmorItem_ID, sprite, BodyArmorInfo);            
         }
         else
         {
@@ -90,7 +96,7 @@ public class UI_EquipPanel : MonoBehaviour
         {
             string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(playerEquipData.GloveItem_ID);
             Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
-            GloveSlot.Initialize(playerEquipData.GloveItem_ID, sprite);            
+            GloveSlot.Initialize(playerEquipData.GloveItem_ID, sprite, GloveInfo);            
         }
         else
         {
@@ -104,7 +110,7 @@ public class UI_EquipPanel : MonoBehaviour
         {
             string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(playerEquipData.BootItem_ID);
             Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
-            BootsSlot.Initialize(playerEquipData.BootItem_ID, sprite);            
+            BootsSlot.Initialize(playerEquipData.BootItem_ID, sprite, BootsInfo);            
         }
         else
         {
@@ -118,7 +124,7 @@ public class UI_EquipPanel : MonoBehaviour
         {
             string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(playerEquipData.WeaponItem_ID);
             Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
-            WeaponSlot.Initialize(playerEquipData.WeaponItem_ID, sprite);            
+            WeaponSlot.Initialize(playerEquipData.WeaponItem_ID, sprite, WeaponInfo);            
         }
         else
         {
@@ -132,7 +138,7 @@ public class UI_EquipPanel : MonoBehaviour
         {
             string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(playerEquipData.Pendant_ID);
             Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
-            PendantSlot.Initialize(playerEquipData.Pendant_ID, sprite);            
+            PendantSlot.Initialize(playerEquipData.Pendant_ID, sprite, PendantInfo);            
         }
         else
         {
@@ -146,7 +152,7 @@ public class UI_EquipPanel : MonoBehaviour
         {
             string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(playerEquipData.Ring_ID);
             Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
-            RingSlot.Initialize(playerEquipData.Ring_ID, sprite);            
+            RingSlot.Initialize(playerEquipData.Ring_ID, sprite, RingInfo);            
         }
         else
         {
