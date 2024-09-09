@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+    // TODO : 플레이어 움직임 마우스로 해보기
     private float initSpeed = 0f;
     private float walkSpeed = 6f;
     private float runSpeed = 10f;

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class PlayerUI : UIComponent
 {
     // TODO : HP, MP, EXP, 스킬, 아이템
-
+    // TODO : HP UI 동그란 걸로 바꾸기?
     [Header("MP")]
     public Slider MpBar;
     [Header("Xp")]
