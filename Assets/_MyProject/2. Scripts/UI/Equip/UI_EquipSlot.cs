@@ -26,8 +26,7 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     /// <param name="sprite"></param>
     public void Initialize(int itemID = 0, Sprite sprite = null, UI_ItemInfo itemInfo = null)
     {
-        this.itemID = itemID;
-        Debug.Log(sprite == null);        
+        this.itemID = itemID;        
         if (itemID == 0)
         {            
             this.itemImage.ImageTransparent(0);
