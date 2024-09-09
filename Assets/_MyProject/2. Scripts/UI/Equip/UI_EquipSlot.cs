@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {
     public Image itemImage;
     private UI_ItemInfo itemInfoWindow;
@@ -66,6 +66,8 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         {
             itemInfoWindow.gameObject.SetActive(true);
             itemInfoWindow.Initialize(this.itemID);
+
+            
         }   
     }
     /// <summary>
@@ -79,6 +81,15 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         {
             itemInfoWindow.gameObject.SetActive(false);            
         }
+    }
+
+    public void OnPointerMove(PointerEventData eventData)
+    {
+        if (this.itemID == 0)
+        {
+            return;
+        }
+        itemInfoWindow.gameObject.GetComponent<RectTransform>().position = eventData.position + new Vector2(250, -250);
     }
 
     /// <summary>

@@ -4,10 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UI_EquipPanel : MonoBehaviour
-{
-    // TODO : 0909. 아이템 슬롯에 커서를 올리면 아이템 정보가 나오게끔. 현재 투구만 임시로 테스트로. 다른 부위도 해주기
-    // 장비 장착 시, 스탯 반영
-    // 인벤토리 슬롯도 커서 대면 아이템 정보 뜨게끔
+{    
+    // TODO : 장비 장착 시, 스탯 반영
+    
 
     [Header("Slot")]
     public UI_EquipSlot HeadArmorSlot;    
@@ -19,13 +18,7 @@ public class UI_EquipPanel : MonoBehaviour
     public UI_EquipSlot RingSlot;
 
     [Header("Item Info")]
-    public UI_ItemInfo HeadArmorInfo;
-    public UI_ItemInfo BodyArmorInfo;
-    public UI_ItemInfo GloveInfo;
-    public UI_ItemInfo BootsInfo;
-    public UI_ItemInfo WeaponInfo;
-    public UI_ItemInfo PendantInfo;
-    public UI_ItemInfo RingInfo;    
+    public UI_ItemInfo ItemInfo; 
 
 
     private PlayerEquipData playerEquipData;
@@ -67,7 +60,7 @@ public class UI_EquipPanel : MonoBehaviour
         {
             string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(playerEquipData.HeadItem_ID);
             Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
-            HeadArmorSlot.Initialize(playerEquipData.HeadItem_ID, sprite, HeadArmorInfo);       
+            HeadArmorSlot.Initialize(playerEquipData.HeadItem_ID, sprite, ItemInfo);       
             
         }
         else
@@ -82,7 +75,7 @@ public class UI_EquipPanel : MonoBehaviour
         {
             string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(playerEquipData.ArmorItem_ID);
             Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
-            BodyArmorSlot.Initialize(playerEquipData.ArmorItem_ID, sprite, BodyArmorInfo);            
+            BodyArmorSlot.Initialize(playerEquipData.ArmorItem_ID, sprite, ItemInfo);            
         }
         else
         {
@@ -96,7 +89,7 @@ public class UI_EquipPanel : MonoBehaviour
         {
             string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(playerEquipData.GloveItem_ID);
             Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
-            GloveSlot.Initialize(playerEquipData.GloveItem_ID, sprite, GloveInfo);            
+            GloveSlot.Initialize(playerEquipData.GloveItem_ID, sprite, ItemInfo);            
         }
         else
         {
@@ -110,7 +103,7 @@ public class UI_EquipPanel : MonoBehaviour
         {
             string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(playerEquipData.BootItem_ID);
             Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
-            BootsSlot.Initialize(playerEquipData.BootItem_ID, sprite, BootsInfo);            
+            BootsSlot.Initialize(playerEquipData.BootItem_ID, sprite, ItemInfo);            
         }
         else
         {
@@ -124,7 +117,7 @@ public class UI_EquipPanel : MonoBehaviour
         {
             string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(playerEquipData.WeaponItem_ID);
             Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
-            WeaponSlot.Initialize(playerEquipData.WeaponItem_ID, sprite, WeaponInfo);            
+            WeaponSlot.Initialize(playerEquipData.WeaponItem_ID, sprite, ItemInfo);            
         }
         else
         {
@@ -138,7 +131,7 @@ public class UI_EquipPanel : MonoBehaviour
         {
             string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(playerEquipData.Pendant_ID);
             Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
-            PendantSlot.Initialize(playerEquipData.Pendant_ID, sprite, PendantInfo);            
+            PendantSlot.Initialize(playerEquipData.Pendant_ID, sprite, ItemInfo);            
         }
         else
         {
@@ -152,7 +145,7 @@ public class UI_EquipPanel : MonoBehaviour
         {
             string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(playerEquipData.Ring_ID);
             Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
-            RingSlot.Initialize(playerEquipData.Ring_ID, sprite, RingInfo);            
+            RingSlot.Initialize(playerEquipData.Ring_ID, sprite, ItemInfo);            
         }
         else
         {

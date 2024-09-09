@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class UI_InventoryPanel : MonoBehaviour
 {
+    // TODO : 현재 장비 아이템만 커서 올릴 때 아이템 정보 나옴. 소비 아이템 또는 기타 아이템 정보 UI도 만들어서 관리
+
     [Header("Equip")]
     public Button EquipTabButton;
     public GameObject EquipContent;
@@ -16,6 +18,9 @@ public class UI_InventoryPanel : MonoBehaviour
     [Header("Other")]
     public Button OtherTabButton;
     public GameObject OtherContent;
+
+    [Header("Item Info")]
+    public UI_ItemInfo itemInfo;
 
     private int itemID;
 
@@ -103,17 +108,17 @@ public class UI_InventoryPanel : MonoBehaviour
     private void SetItemToEquipSlot(Sprite sprite, int itemQuantity, int index)
     {                
         UI_InventorySlot slot = EquipContent.transform.GetChild(index).GetComponent<UI_InventorySlot>();        
-        slot.Initialize(itemID, Item_Type.Equipment, sprite, itemQuantity);
+        slot.Initialize(itemID, Item_Type.Equipment, sprite, itemQuantity, itemInfo);
     }
     private void SetItemToConsumpSlot(Sprite sprite, int itemQuantity, int index)
     {        
         UI_InventorySlot slot = ConsumpContent.transform.GetChild(index).GetComponent<UI_InventorySlot>();        
-        slot.Initialize(itemID, Item_Type.Consump, sprite, itemQuantity);
+        slot.Initialize(itemID, Item_Type.Consump, sprite, itemQuantity, itemInfo);
     }
     private void SetItemToOtherSlot(Sprite sprite, int itemQuantity, int index)
     {        
         UI_InventorySlot slot = OtherContent.transform.GetChild(index).GetComponent<UI_InventorySlot>();        
-        slot.Initialize(itemID, Item_Type.Other, sprite, itemQuantity);
+        slot.Initialize(itemID, Item_Type.Other, sprite, itemQuantity, itemInfo);
     }
     private void SlotClear(GameObject content)
     {

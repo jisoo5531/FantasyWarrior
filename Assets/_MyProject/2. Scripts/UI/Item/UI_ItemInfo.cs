@@ -6,8 +6,14 @@ using TMPro;
 
 public class UI_ItemInfo : MonoBehaviour
 {
+    private readonly List<string> item_Type = new List<string>
+    {
+        "Head", "Armor", "Glove", "Boots", "Weapon", "Pendant", "Ring"
+    };
+
     public Image itemImage;
     public TMP_Text itemNameText;
+    public TMP_Text itemPartText;
     public TMP_Text ReqLevelText;
     public TMP_Text ATKText;    
     public TMP_Text DEFText;    
@@ -25,6 +31,7 @@ public class UI_ItemInfo : MonoBehaviour
 
         itemImage.sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
         itemNameText.text = itemName;
+        itemPartText.text = $"Part: {item_Type[(int)equipItemData.Equip_Type]}"; 
         ReqLevelText.text = $"REQ LV.: {equipItemData.Require_LV.ToString()}";
         ATKText.text = $"ATK: +{equipItemData.ATK_Boost.ToString()}";
         DEFText.text = $"DEF: +{equipItemData.DEF_Boost.ToString()}";

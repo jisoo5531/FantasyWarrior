@@ -5,8 +5,12 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 
-public class UI_InventorySlot : MonoBehaviour, IPointerClickHandler
-{   
+public class UI_InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
+{
+    // TODO : 인벤토리 슬롯도 커서 대면 아이템 정보 뜨게끔
+
+    private UI_ItemInfo equipitemInfoWindow;
+
     /// <summary>
     /// 슬롯 아이템 이미지
     /// </summary>
@@ -28,11 +32,12 @@ public class UI_InventorySlot : MonoBehaviour, IPointerClickHandler
     /// </summary>
     private float clickTime = 0;
 
-    public void Initialize(int itemID, Item_Type item_Type, Sprite sprite, int quantity)
+    public void Initialize(int itemID, Item_Type item_Type, Sprite sprite, int quantity, UI_ItemInfo itemInfo = null)
     {        
         this.itemID = itemID;
         this.Item_Type = item_Type;
-        this.itemIcon.sprite = sprite;        
+        this.itemIcon.sprite = sprite;
+        this.equipitemInfoWindow = itemInfo;
         itemQuantityText.text = quantity.ToString();
         itemIcon.ImageTransparent(1);
         itemQuantityText.gameObject.SetActive(true);        
@@ -74,12 +79,84 @@ public class UI_InventorySlot : MonoBehaviour, IPointerClickHandler
                 break;
             case Item_Type.Consump:
                 break;
-            case Item_Type.Other:                
+            case Item_Type.Other:
                 break;
             default:
                 break;
         }
     }
+    /// <summary>
+    /// <para>IPointerEnterHandler 인터페이스</para>
+    /// <para>슬롯에 커서를 대면 아이템의 정보가 나오게끔</para>
+    /// </summary>
+    /// <param name="eventData"></param>
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (equipitemInfoWindow == null || itemID == 0)
+        {
+            return;
+        }
+        switch (Item_Type)
+        {
+            case Item_Type.Equipment:
+                equipitemInfoWindow.gameObject.SetActive(true);
+                equipitemInfoWindow.Initialize(this.itemID);
+                break;
+            case Item_Type.Consump:
+                break;
+            case Item_Type.Other:
+                break;
+            default:
+                break;
+        }
+    }
+    /// <summary>
+    /// <para>IPointerExitHandler 인터페이스</para>
+    /// <para>슬롯에 커서를 떼면 아이템의 정보가 사라지게끔</para>
+    /// </summary>
+    /// <param name="eventData"></param>
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (equipitemInfoWindow == null || itemID == 0)
+        {
+            return;
+            
+        }
+        switch (Item_Type)
+        {
+            case Item_Type.Equipment:
+                equipitemInfoWindow.gameObject.SetActive(false);
+                break;
+            case Item_Type.Consump:
+                break;
+            case Item_Type.Other:
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void OnPointerMove(PointerEventData eventData)
+    {
+        if (this.itemID == 0)
+        {
+            return;
+        }
+        switch (Item_Type)
+        {
+            case Item_Type.Equipment:
+                equipitemInfoWindow.gameObject.GetComponent<RectTransform>().position = eventData.position + new Vector2(250, -250);
+                break;
+            case Item_Type.Consump:
+                break;
+            case Item_Type.Other:
+                break;
+            default:
+                break;
+        }
+        
+    }
+    
     /// <summary>
     /// <para>장비 장착</para> 
     /// 장비를 장착하면 인벤토리에서 사라지게끔.
