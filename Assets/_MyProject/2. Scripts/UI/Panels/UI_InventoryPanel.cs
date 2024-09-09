@@ -86,14 +86,13 @@ public class UI_InventoryPanel : MonoBehaviour
         Queue<UI_InventorySlot> emptyConsumpSlot = EmptySlotCheck(ConsumpContent);   
         Queue<UI_InventorySlot> emptyOtherSlot = EmptySlotCheck(OtherContent);
 
-        Debug.Log($"장비 빈 슬롯 개수 : {emptyEquipSlot.Count}");
-        Debug.Log($"소비 빈 슬롯 개수 : {emptyConsumpSlot.Count}");
-        Debug.Log($"기타 빈 슬롯 개수 : {emptyOtherSlot.Count}");
+        Debug.Log(InventoryManager.Instance.addWhichItemList.Count);
         
         List<InventoryData> inventoryDataList = InventoryManager.Instance.GetDataFromDatabase();        
         
         foreach (int itemID in InventoryManager.Instance.addWhichItemList)
-        {            
+        {
+            this.itemID = itemID;
             string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(itemID);
             Item_Type itemType = ItemManager.Instance.GetInventoryItemTypeFromDB(itemID);
             Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
@@ -116,7 +115,7 @@ public class UI_InventoryPanel : MonoBehaviour
         }
 
         // 다 더하고 난 뒤에 초기화.
-        InventoryManager.Instance.addWhichItemList.Clear();
+        InventoryManager.Instance.ClearAddWhichItemList();
     }
     private Queue<UI_InventorySlot> EmptySlotCheck(GameObject content)
     {

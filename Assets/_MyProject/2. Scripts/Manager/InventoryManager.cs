@@ -30,6 +30,10 @@ public class InventoryManager : MonoBehaviour
     {
         addWhichItemList.Add(itemID);
     }
+    public void ClearAddWhichItemList()
+    {
+        addWhichItemList = new List<int>();
+    }
 
     /// <summary>
     /// <para>인벤토리 데이터를 가져오는 메서드</para>
