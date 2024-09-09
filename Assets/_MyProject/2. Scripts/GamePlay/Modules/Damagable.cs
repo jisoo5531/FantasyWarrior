@@ -30,14 +30,20 @@ public class Damagable : MonoBehaviour, IDamagable
         this.MaxHp = maxHp;
         this.Hp = hp;
     }
-    private void Start()
+    private void Awake()
     {
-        EventHandler.playerEvent.RegisterPlayerLevelUp(OnLevelUpChangeHp);
+        UserStatManager.Instance.OnLevelUpUpdateStat += OnChangeHp;
+        PlayerEquipManager.Instance.OnEquipItem += OnChangeHp;
+        PlayerEquipManager.Instance.OnUnEquipItem += OnChangeHp;
+        PlayerEquipManager.Instance.OnAllUnEquipButtonClick += OnChangeHp;
     }
 
     private void OnDisable()
     {
-        EventHandler.playerEvent.UnRegisterPlayerLevelUp(OnLevelUpChangeHp);
+        UserStatManager.Instance.OnLevelUpUpdateStat -= OnChangeHp;
+        PlayerEquipManager.Instance.OnEquipItem -= OnChangeHp;
+        PlayerEquipManager.Instance.OnUnEquipItem -= OnChangeHp;
+        PlayerEquipManager.Instance.OnAllUnEquipButtonClick -= OnChangeHp;
     }
 
     public void GetDamage(int damage)
@@ -61,11 +67,11 @@ public class Damagable : MonoBehaviour, IDamagable
         OnDeath?.Invoke();
     }
 
-    private void OnLevelUpChangeHp()
+    private void OnChangeHp()
     {
-        UserStatData userStatData = UserStatManager.Instance.userStatData;
+        UserStatData userStatData = UserStatManager.Instance.GetUserStatDataFromDB();
         this.MaxHp = userStatData.MaxHp;
-        this.Hp = userStatData.Hp;
+        this.Hp = userStatData.Hp;        
         OnChangeHPEvent?.Invoke();
     }
 }

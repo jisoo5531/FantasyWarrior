@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     protected Damagable damagable;
     protected Attackable attackable;
 
+    // TODO : 임시 레벨업 테스트 버튼
     public Button LevelUpButton;
 
     private void Awake()
@@ -37,33 +38,45 @@ public class PlayerController : MonoBehaviour
         playerUI = FindObjectOfType<PlayerUI>();
 
         damagable = gameObject.AddComponent<Damagable>();
-        attackable = gameObject.AddComponent<Attackable>();                   
-        
+        attackable = gameObject.AddComponent<Attackable>();
+        LevelUpButton.onClick.AddListener(OnLevelUp);
         PlayerInit();        
+    }
+    // TODO : 임시 버튼 클릭 플레이어 레벨 업    
+    public void OnLevelUp()
+    {
+        playerStat.OnLevelUp();
     }
     protected virtual void PlayerInit()
     {
-
+        // override 하는 것
     }
-    private void Start()
+    private void OnEnable()
     {
-        int MaxHp = UserStatManager.Instance.userStatData.MaxHp;
-        int Hp = UserStatManager.Instance.userStatData.Hp;
-        int damage = UserStatManager.Instance.userStatData.STR;
+        damagable.OnHpChange += OnHpChange;
+        damagable.OnDeath += OnDeath;
+        PlayerEquipManager.Instance.OnEquipManagerInit += StatInit;
+    }
+     
+    /// <summary>
+    /// 플레이어의 레벨 등의 스탯 (UserStatManager), 플레이어가 착용하고 있는 장비 (PlayerEquipManager) 를 받아온 다음에 초기화
+    /// </summary>
+    private void StatInit()
+    {
+        // TODO : 플레이어 스탯에 반영 (제대로)
+        UserStatData userStatData = UserStatManager.Instance.GetUserStatDataFromDB();
+        int MaxHp = userStatData.MaxHp;
+        int Hp = userStatData.Hp;
+        int damage = userStatData.STR;
         Debug.Log($"{MaxHp}, {Hp}, {damage}");
         damagable.Initialize(maxHp: MaxHp, hp: Hp);
         attackable.Initialize(damage: damage, range: 2);
 
 
-        playerUI?.Initialize(damagable);        
-        damagable.OnDeath += () => { Debug.Log("플레이어 죽었다."); };        
-    }        
-
-    private void OnEnable()
-    {        
-        damagable.OnHpChange += OnHpChange;
-        damagable.OnDeath += OnDeath;        
+        playerUI?.Initialize(damagable);
+        damagable.OnDeath += () => { Debug.Log("플레이어 죽었다."); };
     }
+    
     
     private void FixedUpdate()
     {
@@ -73,7 +86,8 @@ public class PlayerController : MonoBehaviour
     private void OnDisable()
     {        
         damagable.OnHpChange -= OnHpChange;
-        damagable.OnDeath -= OnDeath;        
+        damagable.OnDeath -= OnDeath;
+        UserStatManager.Instance.OnInitStatManager -= StatInit;
     }
     //private void OnDestroy()
     //{
@@ -81,17 +95,7 @@ public class PlayerController : MonoBehaviour
     //    EventHandler.actionEvent.UnRegisterHpChange(OnHpChange);
     //    EventHandler.actionEvent.UnRegisterDeath(OnDeath);
     //}
-
-    // TODO : 임시 버튼 클릭 플레이어 레벨 업    
-    public void OnLevelUp()
-    {
-        //DatabaseManager.Instance.LevelUP(LevelUpSuccess);        
-    }
-    private void LevelUpSuccess()
-    {
-        playerStat.OnLevelUpStatChange();
-        EventHandler.playerEvent.TriggerPlayerLevelUp();
-    }
+    
     private void OnHpChange(int damage)
     {
         // TODO : 유닛마다 들어가는 데미지 다르게끔 (방어도? 따라)

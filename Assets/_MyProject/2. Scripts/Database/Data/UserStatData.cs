@@ -14,7 +14,7 @@ public class UserStatData
     public int UID { get; set; }
     public CharClass CharClass { get; set; }
     public int Level { get; set; }
-    public int EXP { get; set; }
+    public float EXP { get; set; }
     public int MaxHp { get; set; }
     public int Hp { get; set; }
     public int MaxMana { get; set; }
@@ -31,7 +31,7 @@ public class UserStatData
             int.Parse(row["user_id"].ToString()),
             (CharClass)int.Parse(row["class"].ToString()),
             int.Parse(row["level"].ToString()),
-            int.Parse(row["exp"].ToString()),
+            float.Parse(row["exp"].ToString()),
             int.Parse(row["maxhp"].ToString()),
             int.Parse(row["hp"].ToString()),
             int.Parse(row["maxmana"].ToString()),
@@ -45,7 +45,7 @@ public class UserStatData
         )
     { }
 
-    public UserStatData(int uID, CharClass charClass, int level, int eXP, int maxHp, int hp, int maxMana, int mana, int sTR, int dEX, int iNT, int lUK, int dEF, int gold)
+    public UserStatData(int uID, CharClass charClass, int level, float eXP, int maxHp, int hp, int maxMana, int mana, int sTR, int dEX, int iNT, int lUK, int dEF, int gold)
     {
         this.UID = uID;
         this.CharClass = charClass;
@@ -63,36 +63,107 @@ public class UserStatData
         this.Gold = gold;
     }
 }
-
+/// <summary>
+/// <para>원본의 유저 스탯값을 가지고 있는 클래스 변수</para>
+/// <para>스탯을 가지고 놀 때 이걸로 이용한다.</para>
+/// 장비 착용, 미착용 / 레벨업
+/// </summary>
 public class OriginUserStat
 {
+    #region 변수
+    /// <summary>
+    /// 레벨업으로 오르는 스탯값.
+    /// </summary>
+    public class LevelUpStat
+    {       
+        public int hpAmount = 500;
+        public int mpAmount = 150;
+        public int STRAmount = 5;
+        public int DEXAmount = 5;
+        public int INTAmount = 5;
+        public int LUKAmount = 5;
+        public int DEFAmount = 5;
+    }
+    /// <summary>
+    /// 레벨업으로 오르는 스탯값
+    /// </summary>
+    public LevelUpStat levelUpStat = new();
+
+    private int orgLv = 1;
     private int orgStr = 5;
-    private int orgDex = 5;
+    private int orgDex = 5;    
     private int orgInt = 5;
     private int orgLuk = 5;
     private int orgAtk = 5;
     private int orgDef = 5;
     private int orgMaxHP = 1000;
     private int orgMaxMP = 500;
+
+    /// <summary>
+    /// 원본 레벨
+    /// </summary>
+    public int O_Lv => orgLv;
+    /// <summary>
+    /// 원본 STR 스탯값.
+    /// </summary>
     public int O_STR => orgStr;
+    /// <summary>
+    /// 원본 DEX 스탯값.
+    /// </summary>
     public int O_DEX => orgDex;
+    /// <summary>
+    /// 원본 INT 스탯값.
+    /// </summary>
     public int O_INT => orgInt;
+    /// <summary>
+    /// 원본 LUK 스탯값.
+    /// </summary>
     public int O_LUK => orgLuk;
+    /// <summary>
+    /// 원본 ATK 스탯값.
+    /// </summary>
     public int O_ATK => orgAtk;
+    /// <summary>
+    /// 원본 DEF 스탯값.
+    /// </summary>
     public int O_DEF => orgDef;
+    /// <summary>
+    /// 원본 MaxHp 스탯값.
+    /// </summary>
     public int O_MaxHP => orgMaxHP;
+    /// <summary>
+    /// 원본 MaxMana 스탯값.
+    /// </summary>
     public int O_MaxMP => orgMaxMP;
 
-    
-    private int STR = 5;
-    private int DEX = 5;
-    private int INT = 5;
-    private int LUK = 5;
-    private int ATK = 5;
-    private int DEF = 5;
-    private int MaxHP = 1000;
-    private int MaxMP = 500;
+    public int Lv = 1;
+    public int STR = 5;
+    public int DEX = 5;
+    public int INT = 5;
+    public int LUK = 5;
+    public int ATK = 5;
+    public int DEF = 5;
+    public int MaxHP = 1000;
+    public int MaxMP = 500;    
 
+    #endregion
+
+    public OriginUserStat(int lv)
+    {
+        this.Lv = lv;
+        this.STR = orgStr + (levelUpStat.STRAmount * lv);
+        this.DEX = orgDex + (levelUpStat.DEXAmount * lv);
+        this.INT = orgInt + (levelUpStat.INTAmount * lv);
+        this.LUK = orgLuk + (levelUpStat.LUKAmount * lv);
+        this.DEF = orgDef + (levelUpStat.DEFAmount * lv);
+        this.MaxHP = orgMaxHP + (levelUpStat.hpAmount * lv);
+        this.MaxMP = orgMaxMP + (levelUpStat.mpAmount * lv);
+    }
+
+    public int UpdateLv(int amount)
+    {
+        return Lv += amount;
+    }
     public int UpdateSTR(int amount)
     {
         return STR += amount;

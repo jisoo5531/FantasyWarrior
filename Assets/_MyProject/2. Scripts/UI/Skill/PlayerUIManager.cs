@@ -20,7 +20,8 @@ public class PlayerUIManager : MonoBehaviour
     }
     private void Start()
     {
-        string folderName = $"{UserStatManager.Instance.userStatData.CharClass.ToString()}";
+        UserStatData userStatData = UserStatManager.Instance.GetUserStatDataFromDB();
+        string folderName = $"{userStatData.CharClass.ToString()}";
         foreach (var item in Resources.LoadAll<Sprite>($"{folderName}_skills"))
         {
             skillIconList.Add(item);

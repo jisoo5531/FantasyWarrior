@@ -4,13 +4,7 @@ using UnityEngine;
 
 public class PlayerStat : MonoBehaviour
 {
-    private int maxHp_Amount = 150;
-    private int maxMana_Amount = 50;
-    private int STR_Amount = 5;
-    private int DEX_Amount = 5;
-    private int INT_Amount = 5;
-    private int LUK_Amount = 5;
-    private int DEF_Amount = 2;
+    
 
     private void Awake()
     {
@@ -25,22 +19,12 @@ public class PlayerStat : MonoBehaviour
     {        
     }
 
-    public void OnLevelUpStatChange()
+    /// <summary>
+    /// 플레이어의 경험치가 100이 되었을 때 레벨업
+    /// </summary>
+    public void OnLevelUp()
     {
-        UserStatData stat = UserStatManager.Instance.userStatData;
-
-        string query =
-            $"UPDATE userstats\n" +
-            $"SET maxhp={stat.MaxHp + maxHp_Amount}," +
-            $"maxmana={stat.MaxMana + maxMana_Amount}," +
-            $"str={stat.STR + STR_Amount}," +
-            $"dex={stat.DEX + DEX_Amount}," +
-            $"Intelligence={stat.INT + INT_Amount}," +
-            $"luk={stat.LUK + LUK_Amount}," +
-            $"defense={stat.DEF + DEF_Amount};";
-        _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
-
-        //UserStatManager.Instance.GetUserStatDataTest();
-        Debug.Log("여기다");
+        UserStatManager.Instance.LevelUpUpdateStat();
+        EventHandler.playerEvent.TriggerPlayerLevelUp();
     }
 }

@@ -6,6 +6,7 @@ using TMPro;
 [System.Serializable]
 public class Status
 {
+    public TMP_Text LvText;
     public TMP_Text STRText;
     public TMP_Text DEXText;
     public TMP_Text INTText;
@@ -18,22 +19,25 @@ public class Status
 public class UI_StatPanel : MonoBehaviour
 {
     public Status statusUI;
-    private UserStatData userStatData;           
+    private UserStatData userStatData;
 
-    private void Start()
-    {
-        EventHandler.playerEvent.RegisterPlayerLevelUp(SetStat);
+    private void Awake()
+    {        
+        UserStatManager.Instance.OnLevelUpUpdateStat += SetStat;
         PlayerEquipManager.Instance.OnEquipItem += SetStat;
         PlayerEquipManager.Instance.OnUnEquipItem += SetStat;
         PlayerEquipManager.Instance.OnAllUnEquipButtonClick += SetStat;
-
+    }
+    private void OnEnable()
+    {        
         SetStat();
     }
 
     private void SetStat()
     {
-        this.userStatData = UserStatManager.Instance.GetUserStatDataFromDB();        
+        this.userStatData = UserStatManager.Instance.GetUserStatDataFromDB();
 
+        statusUI.LvText.text = userStatData.Level.ToString();
         statusUI.STRText.text = userStatData.STR.ToString();
         statusUI.DEXText.text = userStatData.DEX.ToString();
         statusUI.INTText.text = userStatData.INT.ToString();

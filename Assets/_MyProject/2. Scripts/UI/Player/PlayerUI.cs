@@ -31,8 +31,7 @@ public class PlayerUI : UIComponent
     public override void SetInitValue()
     {
         Damagable.OnHpChange += OnHpChange;
-        Damagable.OnChangeHPEvent += OnLevelUpChangeHPBar;
-            Debug.Log("여기?");
+        Damagable.OnChangeHPEvent += OnChangeHPBar;            
 
         if (hpBar != null)
         {
@@ -64,9 +63,14 @@ public class PlayerUI : UIComponent
             skillIconList[i].ImageTransparent(1);
         }
     }
-    private void OnLevelUpChangeHPBar()
+    /// <summary>
+    /// 스탯의 변화가 있을 때 사용
+    /// </summary>
+    private void OnChangeHPBar()
     {
+        Debug.Log($"최대 체력 : {Damagable.MaxHp}, 체력 : {Damagable.Hp}");
         hpText.text = $"{Damagable.Hp} / {Damagable.MaxHp}";
+        hpBar.maxValue = Damagable.MaxHp;
         hpBar.value = Damagable.Hp;
     }
 }

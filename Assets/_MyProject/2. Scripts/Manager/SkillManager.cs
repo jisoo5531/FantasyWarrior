@@ -12,8 +12,8 @@ public class SkillManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;        
-        EventHandler.playerEvent.RegisterPlayerLevelUp(OnLevelUp_UnlockSkill);
+        Instance = this;
+        UserStatManager.Instance.OnLevelUpUpdateStat += OnLevelUp_UnlockSkill;
     }
     private void Start()
     {
@@ -21,15 +21,19 @@ public class SkillManager : MonoBehaviour
 
         GetSkillFromDatabaseData();
 
+        UserStatData userStatData = UserStatManager.Instance.GetUserStatDataFromDB();
         foreach (SkillData skillData in userSkillDataList)
-        {
-            if (UserStatManager.Instance.userStatData.Level >= skillData.Unlock_Level)
+        {            
+            if (userStatData.Level >= skillData.Unlock_Level)
             {
                 userAvailableSkillList.Add(skillData);
             }
         }
     }
 
+    /// <summary>
+    /// 유저 레벨에 따라 스킬 해제를 할 수 있는 메서드
+    /// </summary>
     private void OnLevelUp_UnlockSkill()
     {
         string query =

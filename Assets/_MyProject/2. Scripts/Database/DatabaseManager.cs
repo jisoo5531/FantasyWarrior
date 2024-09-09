@@ -13,7 +13,7 @@ public class DatabaseManager : MonoBehaviour
 
     private MySqlConnection conn;           // mySql DB와 연결상태를 유지하는 객체
 
-    private string serverIP = "3.34.182.231";
+    private string serverIP = "3.34.96.187";
     private string portHum = "3306";
     private string dbName = "game";
     private string tableName = "users";
@@ -27,11 +27,7 @@ public class DatabaseManager : MonoBehaviour
     {
         Instance = this;
         DBConnect();
-        GetUserDataTest();        
-    }
-    private void Start()
-    {        
-        
+        GetUserDataTest();
     }
     public void DBConnect()
     {        
@@ -179,30 +175,30 @@ public class DatabaseManager : MonoBehaviour
 
     #region 레벨업
 
-    //public void LevelUP(Action successCallback = null)
-    //{
-    //    conn.Open();
-    //    int level = userStatData.Level;
-    //    int nextLevel = level + 1;
+    public void LevelUP(Action successCallback = null)
+    {
+        conn.Open();
+        int level = userStatData.Level;
+        int nextLevel = level + 1;
 
-    //    MySqlCommand cmd = new MySqlCommand();
-    //    cmd.Connection = conn;
-    //    cmd.CommandText = $"UPDATE userstats SET level={nextLevel} WHERE user_id={userData.UID}";
+        MySqlCommand cmd = new MySqlCommand();
+        cmd.Connection = conn;
+        cmd.CommandText = $"UPDATE userstats SET level={nextLevel} WHERE user_id={userData.UID}";
 
-    //    if (ExcuteNonQuery(cmd))
-    //    {
-    //        conn.Close();
-    //        // 쿼리가 정상적으로 실행된 경우
-    //        userStatData.Level = nextLevel;
-    //        successCallback?.Invoke();
-    //    }
-    //    else
-    //    {
-    //        // 쿼리 수행 실패
-    //    }
+        if (ExcuteNonQuery(cmd))
+        {
+            conn.Close();
+            // 쿼리가 정상적으로 실행된 경우
+            userStatData.Level = nextLevel;
+            successCallback?.Invoke();
+        }
+        else
+        {
+            // 쿼리 수행 실패
+        }
 
-        
-    //}
+
+    }
 
     #endregion
 
@@ -215,7 +211,7 @@ public class DatabaseManager : MonoBehaviour
     //    MySqlCommand cmd = new MySqlCommand();
     //    cmd.Connection = conn;
     //    cmd.CommandText = $"UPDATE {tableName} SET class={classNum} WHERE uid={data.UID}";
-        
+
     //    if (ExcuteNonQuery(cmd))
     //    {
     //        data.CharClass = changedClass;

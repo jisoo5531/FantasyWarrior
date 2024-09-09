@@ -14,8 +14,7 @@ public class UIComponent : MonoBehaviour, IHpHandler
 
     public void Initialize(Damagable damagable)
     {
-        this.Damagable = damagable;
-        Debug.Log("¿©±ä°¡");
+        this.Damagable = damagable;        
         SetInitValue();
     }
 

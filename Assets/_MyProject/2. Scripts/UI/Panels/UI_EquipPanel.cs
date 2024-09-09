@@ -18,14 +18,7 @@ public class UI_EquipPanel : MonoBehaviour
     [Header("Item Info")]
     public UI_ItemInfo ItemInfo; 
 
-
     private PlayerEquipData playerEquipData;
-
-    private void Awake()
-    {        
-
-    }
-
 
     private void Start()
     {
@@ -59,7 +52,6 @@ public class UI_EquipPanel : MonoBehaviour
             string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(playerEquipData.HeadItem_ID);
             Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
             HeadArmorSlot.Initialize(playerEquipData.HeadItem_ID, sprite, ItemInfo);       
-            
         }
         else
         {
