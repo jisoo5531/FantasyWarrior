@@ -10,6 +10,10 @@ public class Status
     public TMP_Text DEXText;
     public TMP_Text INTText;
     public TMP_Text LUKText;
+    public TMP_Text DEFText;
+    public TMP_Text ATKText;
+    public TMP_Text HPText;
+    public TMP_Text MPText;
 }
 public class UI_StatPanel : MonoBehaviour
 {
@@ -52,5 +56,8 @@ public class UI_StatPanel : MonoBehaviour
         statusUI.DEXText.text = userStatData.DEX.ToString();
         statusUI.INTText.text = userStatData.INT.ToString();
         statusUI.LUKText.text = userStatData.LUK.ToString();
+        statusUI.DEFText.text = userStatData.DEF.ToString();
+        statusUI.HPText.text = userStatData.MaxHp.ToString();
+        statusUI.MPText.text = userStatData.MaxMana.ToString();        
     }    
 }

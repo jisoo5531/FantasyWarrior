@@ -85,7 +85,7 @@ public class MonsterUnit : Enemy
     /// </summary>
     protected void GetFromDatabaseData()
     {
-        // TODO : 몬스터 쿼리문 바꾸기
+        // TODO : 몬스터 쿼리문 바꾸기 (보스 추가하면?)
         string query =
             $"SELECT *\n" +
             $"FROM monsters\n" +

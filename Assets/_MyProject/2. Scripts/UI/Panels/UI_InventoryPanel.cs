@@ -4,10 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UI_InventoryPanel : MonoBehaviour
-{
-    // TODO : 인벤토리 슬롯에서 빈 곳 먼저 아이템 세팅 되게끔
-    // TODO : 현재 장비 아이템만 커서 올릴 때 아이템 정보 나옴. 소비 아이템 또는 기타 아이템 정보 UI도 만들어서 관리
-
+{    
+    // TODO : 0910. 현재 장비 아이템만 커서 올릴 때 아이템 정보 나옴. 소비 아이템 또는 기타 아이템 정보 UI도 만들어서 관리
+    // 아이템 종류 더 많게 해서 테스트 해보기.    
     
 
     [Header("Equip")]

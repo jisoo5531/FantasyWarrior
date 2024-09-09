@@ -4,8 +4,7 @@ using System.Data;
 using UnityEngine;
 
 public class ItemManager : MonoBehaviour
-{    
-    // TODO : 장비, 소비, 기타 아이템 정보를 받아서 특정 아이템을 장착 시, 캐릭터 스탯 반영
+{        
     public static ItemManager Instance { get; private set; }
 
     /// <summary>
