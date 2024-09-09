@@ -63,3 +63,66 @@ public class UserStatData
         this.Gold = gold;
     }
 }
+
+public class OriginUserStat
+{
+    private int orgStr = 5;
+    private int orgDex = 5;
+    private int orgInt = 5;
+    private int orgLuk = 5;
+    private int orgAtk = 5;
+    private int orgDef = 5;
+    private int orgMaxHP = 1000;
+    private int orgMaxMP = 500;
+    public int O_STR => orgStr;
+    public int O_DEX => orgDex;
+    public int O_INT => orgInt;
+    public int O_LUK => orgLuk;
+    public int O_ATK => orgAtk;
+    public int O_DEF => orgDef;
+    public int O_MaxHP => orgMaxHP;
+    public int O_MaxMP => orgMaxMP;
+
+    
+    private int STR = 5;
+    private int DEX = 5;
+    private int INT = 5;
+    private int LUK = 5;
+    private int ATK = 5;
+    private int DEF = 5;
+    private int MaxHP = 1000;
+    private int MaxMP = 500;
+
+    public int UpdateSTR(int amount)
+    {
+        return STR += amount;
+    }
+    public int UpdateDEX(int amount)
+    {
+        return DEX += amount;
+    }
+    public int UpdateINT(int amount)
+    {
+        return INT += amount;
+    }
+    public int UpdateLUK(int amount)
+    {
+        return LUK += amount;
+    }
+    public int UpdateATK(int amount)
+    {
+        return ATK += amount;
+    }
+    public int UpdateDEF(int amount)
+    {
+        return DEF += amount;
+    }
+    public int UpdateHP(int amount)
+    {
+        return MaxHP += amount;
+    }
+    public int UpdateMP(int amount)
+    {
+        return MaxMP += amount;
+    }
+}

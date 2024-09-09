@@ -109,6 +109,10 @@ public class ItemManager : MonoBehaviour
     /// <returns></returns>
     public EquipItemData GetEquipItemFromDB(int itemID)
     {
+        if (itemID == 0)
+        {
+            return null;
+        }
         string query =
             $"SELECT *\n" +
             $"FROM equipmentitems\n" +

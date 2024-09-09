@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
 
+/// <summary>
+/// 플레이어가 장착하고 있는 아이템들의 데이터
+/// </summary>
 public class PlayerEquipData
 {
     public int UID { get; set; }

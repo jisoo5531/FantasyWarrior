@@ -76,8 +76,7 @@ public class UI_InventoryPanel : MonoBehaviour
         }        
     }
     /// <summary>
-    /// <para>인벤토리 테이블에 저장된 아이템들을 인벤토리 슬롯으로 세팅</para>
-    /// <para>아이템 획득, 장비 장착, 장비 해제 등등. 인벤토리가 업데이트되면 실행.</para>
+    /// <para>인벤토리 슬롯으로 세팅</para>
     /// 인벤토리에 빈 곳 먼저 세팅.
     /// </summary>
     private void SetItemToSlot()

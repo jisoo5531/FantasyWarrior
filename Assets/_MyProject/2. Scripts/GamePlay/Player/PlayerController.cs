@@ -46,9 +46,9 @@ public class PlayerController : MonoBehaviour
     }
     private void Start()
     {
-        int MaxHp = DatabaseManager.Instance.userStatData.MaxHp;
-        int Hp = DatabaseManager.Instance.userStatData.Hp;
-        int damage = DatabaseManager.Instance.userStatData.STR;
+        int MaxHp = UserStatManager.Instance.userStatData.MaxHp;
+        int Hp = UserStatManager.Instance.userStatData.Hp;
+        int damage = UserStatManager.Instance.userStatData.STR;
         Debug.Log($"{MaxHp}, {Hp}, {damage}");
         damagable.Initialize(maxHp: MaxHp, hp: Hp);
         attackable.Initialize(damage: damage, range: 2);
@@ -84,7 +84,7 @@ public class PlayerController : MonoBehaviour
     // TODO : 임시 버튼 클릭 플레이어 레벨 업    
     public void OnLevelUp()
     {
-        DatabaseManager.Instance.LevelUP(LevelUpSuccess);        
+        //DatabaseManager.Instance.LevelUP(LevelUpSuccess);        
     }
     private void LevelUpSuccess()
     {

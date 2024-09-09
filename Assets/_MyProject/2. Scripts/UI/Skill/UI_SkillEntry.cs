@@ -38,7 +38,7 @@ public class UI_SkillEntry : MonoBehaviour
     }
     public void Initialize(SkillData skillData, GameObject keySetPanel)
     {
-        UserStatData userStatData = DatabaseManager.Instance.userStatData;        
+        UserStatData userStatData = UserStatManager.Instance.userStatData;        
         this.skillData = skillData;
         this.keySetPanel = keySetPanel;
 

@@ -23,7 +23,7 @@ public class SkillManager : MonoBehaviour
 
         foreach (SkillData skillData in userSkillDataList)
         {
-            if (DatabaseManager.Instance.userStatData.Level >= skillData.Unlock_Level)
+            if (UserStatManager.Instance.userStatData.Level >= skillData.Unlock_Level)
             {
                 userAvailableSkillList.Add(skillData);
             }

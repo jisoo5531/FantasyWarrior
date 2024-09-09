@@ -62,7 +62,7 @@ public class Damagable : MonoBehaviour, IDamagable
 
     private void OnLevelUpChangeHp()
     {
-        UserStatData userStatData = DatabaseManager.Instance.userStatData;
+        UserStatData userStatData = UserStatManager.Instance.userStatData;
         this.MaxHp = userStatData.MaxHp;
         this.Hp = userStatData.Hp;
         OnChangeHPEvent?.Invoke();

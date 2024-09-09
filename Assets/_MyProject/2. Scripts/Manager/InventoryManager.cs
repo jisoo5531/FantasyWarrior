@@ -8,6 +8,9 @@ public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager Instance { get; private set; }
     public List<InventoryData> inventoryDataList = new List<InventoryData>();
+    /// <summary>
+    /// 장착한 아이템을 해제하거나 등등의 인벤토리로 아이템이 추가되는 상황에서 쓰일 리스트
+    /// </summary>
     public List<int> addWhichItemList = new List<int>();
     private ItemData itemData;
 
@@ -25,7 +28,10 @@ public class InventoryManager : MonoBehaviour
     {
         GetDataFromDatabase();
     }
-
+    /// <summary>
+    /// 인벤토리로 어떤 아이템이 추가되었는지 확인할 메서드
+    /// </summary>
+    /// <param name="itemID"></param>
     public void AddWhichItem(int itemID)
     {
         addWhichItemList.Add(itemID);

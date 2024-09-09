@@ -27,7 +27,7 @@ public class PlayerStat : MonoBehaviour
 
     public void OnLevelUpStatChange()
     {
-        UserStatData stat = DatabaseManager.Instance.userStatData;
+        UserStatData stat = UserStatManager.Instance.userStatData;
 
         string query =
             $"UPDATE userstats\n" +
@@ -40,7 +40,7 @@ public class PlayerStat : MonoBehaviour
             $"defense={stat.DEF + DEF_Amount};";
         _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
 
-        DatabaseManager.Instance.GetUserStatDataTest();
+        //UserStatManager.Instance.GetUserStatDataTest();
         Debug.Log("¿©±â´Ù");
     }
 }
