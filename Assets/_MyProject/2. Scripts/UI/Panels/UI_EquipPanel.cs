@@ -4,9 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UI_EquipPanel : MonoBehaviour
-{    
-    // TODO : 장비 장착 시, 스탯 반영
-    
+{            
 
     [Header("Slot")]
     public UI_EquipSlot HeadArmorSlot;    

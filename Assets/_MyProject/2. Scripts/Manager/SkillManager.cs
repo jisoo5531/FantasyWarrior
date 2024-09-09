@@ -62,7 +62,7 @@ public class SkillManager : MonoBehaviour
     /// <summary>
     /// 데이터베이스에서 스킬 데이터 가져오기
     /// </summary>
-    private void GetSkillFromDatabaseData()
+    private List<SkillData> GetSkillFromDatabaseData()
     {
         int userId = DatabaseManager.Instance.userData.UID;
 
@@ -83,10 +83,12 @@ public class SkillManager : MonoBehaviour
                 userSkillDataList.Add(data);
                 //skillTable.Add(data.Skill_ID - 1, data.Skill_Name);
             }
+            return userSkillDataList;
         }
         else
         {
             //  실패
+            return null;
         }
     }
     #endregion
