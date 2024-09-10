@@ -26,6 +26,10 @@ public class UserStatManager : MonoBehaviour
     /// 레벨업 시, 실행할 이벤트
     /// </summary>
     public event Action OnLevelUpUpdateStat;
+    /// <summary>
+    /// 몬스터를 잡거나 등의 경험치가 변동이 있을 때 발생
+    /// </summary>
+    public event Action OnChangeExpStat;
 
     private void Awake()
     {
@@ -35,15 +39,20 @@ public class UserStatManager : MonoBehaviour
     private void Start()
     {        
         userStatData = GetUserStatDataFromDB();
-        originUserStat = new OriginUserStat(userStatData.Level);
-        InitStat();
+        originUserStat = new OriginUserStat(userStatData);
+        StatManagerInit();
         OnInitStatManager?.Invoke();
     }
-    private void InitStat()
+    /// <summary>
+    /// 
+    /// </summary>
+    private void StatManagerInit()
     {
         int user_ID = DatabaseManager.Instance.userData.UID;
 
         int lvAmount = originUserStat.Lv;
+        int expAmount = originUserStat.Exp;
+        int maxExpAmount = originUserStat.MaxExp;
         int strAmount = originUserStat.STR;
         int dexAmount = originUserStat.DEX;
         int intAmount = originUserStat.INT;
@@ -54,6 +63,8 @@ public class UserStatManager : MonoBehaviour
         string query =
             $"UPDATE userstats\n" +
             $"SET userstats.level={lvAmount}," +
+            $"userstats.maxexp={maxExpAmount}," +
+            $"userstats.exp={expAmount}," +
             $"userstats.STR={strAmount}," +
             $"userstats.DEX={dexAmount}," +
             $"userstats.Intelligence={intAmount}," +
@@ -93,7 +104,6 @@ public class UserStatManager : MonoBehaviour
         }
     }
     
-
     /// <summary>
     /// 아이템을 장착하거나 해제할 때 유저의 스탯에 반영하는 메서드
     /// </summary>
@@ -120,8 +130,8 @@ public class UserStatManager : MonoBehaviour
             intAmount = isEquip ? originUserStat.UpdateINT(equipItemData.INT_Boost) : originUserStat.UpdateINT(-equipItemData.INT_Boost);
             lukAmount = isEquip ? originUserStat.UpdateLUK(equipItemData.LUK_Boost) : originUserStat.UpdateLUK(-equipItemData.LUK_Boost);
             defAmount = isEquip ? originUserStat.UpdateDEF(equipItemData.DEF_Boost) : originUserStat.UpdateDEF(-equipItemData.DEF_Boost);
-            hpAmount = isEquip ? originUserStat.UpdateHP(equipItemData.Hp_Boost) : originUserStat.UpdateHP(-equipItemData.Hp_Boost);
-            mpAmount = isEquip ? originUserStat.UpdateMP(equipItemData.Mp_Boost) : originUserStat.UpdateMP(-equipItemData.Mp_Boost);
+            hpAmount = isEquip ? originUserStat.UpdateMaxHP(equipItemData.Hp_Boost) : originUserStat.UpdateMaxHP(-equipItemData.Hp_Boost);
+            mpAmount = isEquip ? originUserStat.UpdateMaxMP(equipItemData.Mp_Boost) : originUserStat.UpdateMaxMP(-equipItemData.Mp_Boost);
         }
         else
         {
@@ -151,32 +161,63 @@ public class UserStatManager : MonoBehaviour
     }
     /// <summary>
     /// 레벨업 시 유저 스탯 데이터 업데이트
+    /// <para>레벨업하고 남은 경험치도 반영</para>
     /// </summary>
-    public void LevelUpUpdateStat()
+    public void LevelUpUpdateStat(int remainExp)
     {
         int user_ID = DatabaseManager.Instance.userData.UID;
 
         int lvAmount = originUserStat.UpdateLv(1);
+        int expAmount = originUserStat.Exp = remainExp;
+        int MaxExpAmount = originUserStat.UpdateMaxExp(originUserStat.levelUpStat.MaxExpAmount);
         int strAmount = originUserStat.UpdateSTR(originUserStat.levelUpStat.STRAmount);
-        int dexAmount = originUserStat.UpdateDEX(originUserStat.levelUpStat.STRAmount);
-        int intAmount = originUserStat.UpdateINT(originUserStat.levelUpStat.STRAmount);
-        int lukAmount = originUserStat.UpdateLUK(originUserStat.levelUpStat.STRAmount);
-        int defAmount = originUserStat.UpdateDEF(originUserStat.levelUpStat.STRAmount);
-        int hpAmount = originUserStat.UpdateHP(originUserStat.levelUpStat.STRAmount);
-        int mpAmount = originUserStat.UpdateMP(originUserStat.levelUpStat.STRAmount);
+        int dexAmount = originUserStat.UpdateDEX(originUserStat.levelUpStat.DEXAmount);
+        int intAmount = originUserStat.UpdateINT(originUserStat.levelUpStat.INTAmount);
+        int lukAmount = originUserStat.UpdateLUK(originUserStat.levelUpStat.LUKAmount);
+        int defAmount = originUserStat.UpdateDEF(originUserStat.levelUpStat.DEFAmount);
+        int hpAmount = originUserStat.UpdateMaxHP(originUserStat.levelUpStat.MaxhpAmount);
+        int mpAmount = originUserStat.UpdateMaxMP(originUserStat.levelUpStat.MaxmpAmount);
         string query =
             $"UPDATE userstats\n" +
-            $"SET userstats.level={lvAmount}," +
+            $"SET userstats.level={lvAmount}," +                                  
+            $"userstats.exp={expAmount}," +
+            $"userstats.maxexp={MaxExpAmount}," +
             $"userstats.STR={strAmount}," +
             $"userstats.DEX={dexAmount}," +
             $"userstats.Intelligence={intAmount}," +
             $"userstats.LuK={lukAmount}," +
             $"userstats.defense={defAmount}," +
             $"userstats.MaxHp={hpAmount}," +
-            $"userstats.MaxMana={mpAmount}\n" +
+            $"userstats.hp={hpAmount}," +
+            $"userstats.MaxMana={mpAmount}," +
+            $"userstats.mana={mpAmount}\n" +
             $"WHERE userstats.User_ID={user_ID};"; 
         _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
 
         OnLevelUpUpdateStat?.Invoke();
+        EventHandler.playerEvent.TriggerPlayerLevelUp();
+    }
+    /// <summary>
+    /// 몬스터가 죽을 때 등등의 경험치가 업데이트 되는 상황에서 호출되는 메서드
+    /// </summary>
+    /// <param name="expAmount">올라가는 경험치 양</param>
+    public void UpdateExp(int expAmount)
+    {
+        int user_ID = DatabaseManager.Instance.userData.UID;
+
+        float ExpAmount = originUserStat.UpdateExp(expAmount);
+        string query =
+            $"UPDATE userstats\n" +
+            $"SET userstats.`Exp`={ExpAmount}\n" +
+            $"WHERE user_id={user_ID};";
+        _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+
+        UserStatData userStat = GetUserStatDataFromDB();
+        
+        if (userStat.EXP >= userStat.MaxExp)
+        {
+            LevelUpUpdateStat(userStat.EXP - userStat.MaxExp);            
+        }
+        OnChangeExpStat?.Invoke();
     }
 }

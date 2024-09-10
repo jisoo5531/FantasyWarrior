@@ -38,18 +38,12 @@ public class PlayerController : MonoBehaviour
         playerUI = FindObjectOfType<PlayerUI>();
 
         damagable = gameObject.AddComponent<Damagable>();
-        attackable = gameObject.AddComponent<Attackable>();
-        LevelUpButton.onClick.AddListener(OnLevelUp);
+        attackable = gameObject.AddComponent<Attackable>();        
         PlayerInit();        
-    }
-    // TODO : 임시 버튼 클릭 플레이어 레벨 업    
-    public void OnLevelUp()
-    {
-        playerStat.OnLevelUp();
     }
     protected virtual void PlayerInit()
     {
-        // override 하는 것
+        // override
     }
     private void OnEnable()
     {

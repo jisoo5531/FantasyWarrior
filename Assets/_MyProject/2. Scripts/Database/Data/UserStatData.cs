@@ -14,7 +14,8 @@ public class UserStatData
     public int UID { get; set; }
     public CharClass CharClass { get; set; }
     public int Level { get; set; }
-    public float EXP { get; set; }
+    public int MaxExp { get; set; }
+    public int EXP { get; set; }
     public int MaxHp { get; set; }
     public int Hp { get; set; }
     public int MaxMana { get; set; }
@@ -31,7 +32,8 @@ public class UserStatData
             int.Parse(row["user_id"].ToString()),
             (CharClass)int.Parse(row["class"].ToString()),
             int.Parse(row["level"].ToString()),
-            float.Parse(row["exp"].ToString()),
+            int.Parse(row["maxexp"].ToString()),
+            int.Parse(row["exp"].ToString()),
             int.Parse(row["maxhp"].ToString()),
             int.Parse(row["hp"].ToString()),
             int.Parse(row["maxmana"].ToString()),
@@ -45,11 +47,12 @@ public class UserStatData
         )
     { }
 
-    public UserStatData(int uID, CharClass charClass, int level, float eXP, int maxHp, int hp, int maxMana, int mana, int sTR, int dEX, int iNT, int lUK, int dEF, int gold)
+    public UserStatData(int uID, CharClass charClass, int level, int maxExp, int eXP, int maxHp, int hp, int maxMana, int mana, int sTR, int dEX, int iNT, int lUK, int dEF, int gold)
     {
         this.UID = uID;
         this.CharClass = charClass;
         this.Level = level;
+        this.MaxExp = maxExp;
         this.EXP = eXP;
         this.MaxHp = maxHp;
         this.Hp = hp;
@@ -75,9 +78,10 @@ public class OriginUserStat
     /// 레벨업으로 오르는 스탯값.
     /// </summary>
     public class LevelUpStat
-    {       
-        public int hpAmount = 500;
-        public int mpAmount = 150;
+    {
+        public int MaxExpAmount = 2137;
+        public int MaxhpAmount = 500;
+        public int MaxmpAmount = 150;
         public int STRAmount = 5;
         public int DEXAmount = 5;
         public int INTAmount = 5;
@@ -90,6 +94,7 @@ public class OriginUserStat
     public LevelUpStat levelUpStat = new();
 
     private int orgLv = 1;
+    private int orgMaxExp = 100;
     private int orgStr = 5;
     private int orgDex = 5;    
     private int orgInt = 5;
@@ -107,6 +112,10 @@ public class OriginUserStat
     /// 원본 STR 스탯값.
     /// </summary>
     public int O_STR => orgStr;
+    /// <summary>
+    /// 원본 최대 경험치
+    /// </summary>
+    public int O_MaxExp => orgMaxExp;
     /// <summary>
     /// 원본 DEX 스탯값.
     /// </summary>
@@ -137,6 +146,8 @@ public class OriginUserStat
     public int O_MaxMP => orgMaxMP;
 
     public int Lv = 1;
+    public int MaxExp = 100;
+    public int Exp = 0;
     public int STR = 5;
     public int DEX = 5;
     public int INT = 5;
@@ -148,21 +159,31 @@ public class OriginUserStat
 
     #endregion
 
-    public OriginUserStat(int lv)
+    public OriginUserStat(UserStatData userStat)
     {
-        this.Lv = lv;
-        this.STR = orgStr + (levelUpStat.STRAmount * lv);
-        this.DEX = orgDex + (levelUpStat.DEXAmount * lv);
-        this.INT = orgInt + (levelUpStat.INTAmount * lv);
-        this.LUK = orgLuk + (levelUpStat.LUKAmount * lv);
-        this.DEF = orgDef + (levelUpStat.DEFAmount * lv);
-        this.MaxHP = orgMaxHP + (levelUpStat.hpAmount * lv);
-        this.MaxMP = orgMaxMP + (levelUpStat.mpAmount * lv);
+        this.Lv = userStat.Level;
+        this.Exp = userStat.EXP;
+        this.MaxExp = orgMaxExp + (levelUpStat.MaxExpAmount * Lv);
+        this.STR = orgStr + (levelUpStat.STRAmount * Lv);
+        this.DEX = orgDex + (levelUpStat.DEXAmount * Lv);
+        this.INT = orgInt + (levelUpStat.INTAmount * Lv);
+        this.LUK = orgLuk + (levelUpStat.LUKAmount * Lv);
+        this.DEF = orgDef + (levelUpStat.DEFAmount * Lv);
+        this.MaxHP = orgMaxHP + (levelUpStat.MaxhpAmount * Lv);
+        this.MaxMP = orgMaxMP + (levelUpStat.MaxmpAmount * Lv);
     }
 
     public int UpdateLv(int amount)
     {
         return Lv += amount;
+    }
+    public int UpdateExp(int amount)
+    {
+        return Exp += amount;
+    }    
+    public int UpdateMaxExp(int amount)
+    {
+        return MaxExp += amount;
     }
     public int UpdateSTR(int amount)
     {
@@ -188,11 +209,11 @@ public class OriginUserStat
     {
         return DEF += amount;
     }
-    public int UpdateHP(int amount)
+    public int UpdateMaxHP(int amount)
     {
         return MaxHP += amount;
     }
-    public int UpdateMP(int amount)
+    public int UpdateMaxMP(int amount)
     {
         return MaxMP += amount;
     }

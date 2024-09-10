@@ -24,7 +24,7 @@ public class PlayerStat : MonoBehaviour
     /// </summary>
     public void OnLevelUp()
     {
-        UserStatManager.Instance.LevelUpUpdateStat();
+        //UserStatManager.Instance.LevelUpUpdateStat();
         EventHandler.playerEvent.TriggerPlayerLevelUp();
     }
 }

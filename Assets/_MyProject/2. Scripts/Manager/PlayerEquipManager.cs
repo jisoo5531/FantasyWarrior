@@ -101,6 +101,7 @@ public class PlayerEquipManager : MonoBehaviour
             $"SET playerequipment.{part}={item_ID}\n" +
             $"WHERE user_id={user_ID};";
 
+        // 장착 성공했을 때
         if (DatabaseManager.Instance.OnInsertOrUpdateRequest(query))
         {
             Debug.Log("장착 성공");

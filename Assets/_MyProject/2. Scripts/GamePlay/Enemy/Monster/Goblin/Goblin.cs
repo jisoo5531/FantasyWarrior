@@ -4,7 +4,8 @@ using System.Data;
 using UnityEngine;
 
 public class Goblin : MonsterUnit
-{                    
+{
+    int rewardExp = 500;
     protected override void Initialize()
     {
         unitName = "Goblin";
@@ -29,6 +30,7 @@ public class Goblin : MonsterUnit
         GameObject itemObj = Instantiate(rewardItem, transform.position + new Vector3(0, 0.5f, 0), rewardItem.transform.rotation);
         Item item = itemObj.GetComponent<Item>();
         item?.Initialize(itemDataList[2]);
+        UserStatManager.Instance.UpdateExp(rewardExp);
         //item.GetComponent<Rigidbody>().AddForce(Vector3.up * 20f, ForceMode.Impulse);
 
         base.OnDeath();

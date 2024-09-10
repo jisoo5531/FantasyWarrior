@@ -32,7 +32,7 @@ public class Damagable : MonoBehaviour, IDamagable
     }
     private void Awake()
     {
-        UserStatManager.Instance.OnLevelUpUpdateStat += OnChangeHp;
+        UserStatManager.Instance.OnLevelUpUpdateStat += OnChangeHp;        
         PlayerEquipManager.Instance.OnEquipItem += OnChangeHp;
         PlayerEquipManager.Instance.OnUnEquipItem += OnChangeHp;
         PlayerEquipManager.Instance.OnAllUnEquipButtonClick += OnChangeHp;

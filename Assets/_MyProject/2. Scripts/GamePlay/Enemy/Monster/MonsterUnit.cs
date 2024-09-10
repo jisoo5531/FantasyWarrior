@@ -7,6 +7,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent)), RequireComponent(typeof(UnitAnimation))]
 public class MonsterUnit : Enemy
 {
+    // TODO : 몬스터를 잡으면 보상(경험치, 재화, 아이템) 등을 얻는다.    
     protected MonsterData monsterData;
 
     public MonsterStateMachine M_StateMachine;
