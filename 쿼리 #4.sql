@@ -23,6 +23,6 @@
 #JOIN skills ON userstats.`Level` >= skills.Unlock_Level
 #WHERE userstats.user_id = 1 AND skills.Class = 1;
 
-SELECT *
-FROM equipmentitems
-WHERE equipmentitems.Equipment_ID=1;
+SELECT userquests.`Status`
+FROM userquests
+WHERE userquests.User_ID=1 AND userquests.Quest_ID=1;

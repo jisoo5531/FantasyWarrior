@@ -120,17 +120,44 @@
     FOREIGN KEY (PendantItem_ID) REFERENCES Items(Item_ID),
     FOREIGN KEY (RingItem_ID) REFERENCES Items(Item_ID)
 );*/
-CREATE TABLE Quests (
-    QuestID INT PRIMARY KEY AUTO_INCREMENT,  -- 퀘스트 고유 ID
-    QuestName VARCHAR(100),                  -- 퀘스트 이름
-    QuestType VARCHAR(50),                   -- 퀘스트 유형 (예: Main, Side, Daily)
+/*CREATE TABLE Quests (
+    Quest_ID INT PRIMARY KEY AUTO_INCREMENT,  -- 퀘스트 고유 ID
+    Ques_tName VARCHAR(100),                  -- 퀘스트 이름
+    Quest_Type VARCHAR(50),                   -- 퀘스트 유형 (예: Main, Side, Daily)
     Description TEXT,                        -- 퀘스트 설명
-    RequiredLevel INT DEFAULT 1,             -- 퀘스트 수락에 필요한 최소 레벨
-    RewardExperience INT DEFAULT 0,          -- 보상 경험치
-    RewardGold INT DEFAULT 0,                -- 보상 금액
-    RewardItemID INT DEFAULT NULL,           -- 보상 아이템 ID (Items 테이블과 연관)
+    ReqLevel INT DEFAULT 1,             -- 퀘스트 수락에 필요한 최소 레벨
+    Reward_Exp INT DEFAULT 0,          -- 보상 경험치
+    Reward_Gold INT DEFAULT 0,                -- 보상 금액
+    RewardItem_ID INT DEFAULT NULL,           -- 보상 아이템 ID (Items 테이블과 연관)
     IsRepeatable BOOLEAN DEFAULT FALSE,      -- 반복 가능한 퀘스트인지 여부
-    FOREIGN KEY (RewardItemID) REFERENCES Items(ItemID) -- 보상 아이템과 연결
+    FOREIGN KEY (RewardItem_ID) REFERENCES Items(Item_ID) -- 보상 아이템과 연결
+);*/
+/*CREATE TABLE QuestObjectives (
+    Objective_ID INT PRIMARY KEY AUTO_INCREMENT,   -- 목표 고유 ID
+    Quest_ID INT,                                  -- 퀘스트와 연결
+    Objective_Type VARCHAR(50),                    -- 목표 유형 (예: Kill, Collect, Visit)
+    Target_ID INT,                                 -- 목표 대상의 ID (예: 적, 아이템, 장소 등과 연관)
+    ReqAmount INT DEFAULT 1,                 -- 목표 달성을 위해 필요한 수량
+    Description TEXT,                             -- 목표 설명
+    FOREIGN KEY (Quest_ID) REFERENCES Quests(Quest_ID)
+);*/
+/*CREATE TABLE UserQuests (
+    User_ID INT,                                 -- 유저 ID
+    Quest_ID INT,                                -- 퀘스트 ID
+    Status VARCHAR(50),                         -- 퀘스트 상태 (Accepted, In Progress, Completed)
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
+    FOREIGN KEY (Quest_ID) REFERENCES Quests(Quest_ID),
+    PRIMARY KEY (User_ID, Quest_ID)
+);*/
+CREATE TABLE UserQuestObjectives (
+    User_ID INT,                                 -- 유저 ID
+    Objective_ID INT,                            -- 목표 ID
+    Current_Amount INT DEFAULT 0,                -- 현재 달성된 수량
+    IsCompleted BOOLEAN DEFAULT FALSE,          -- 목표 완료 여부
+    FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
+    FOREIGN KEY (Objective_ID) REFERENCES QuestObjectives(Objective_ID),
+    PRIMARY KEY (User_ID, Objective_ID)
 );
+
 
 
