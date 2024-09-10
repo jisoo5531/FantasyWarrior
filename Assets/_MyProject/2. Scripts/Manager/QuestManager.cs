@@ -10,7 +10,7 @@ public class QuestManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        Instance = this;        
     }
 
     /// <summary>
@@ -35,6 +35,33 @@ public class QuestManager : MonoBehaviour
                 questsDataList.Add(new QuestsData(row));
             }
             return questsDataList;
+        }
+        else
+        {
+            //  실패
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// 현재 퀘스트의 상태(수락, 진행, 완료)를 가져오는 메서드
+    /// </summary>
+    /// <returns></returns>
+    public Q_Status? GetQuestStatus(int quest_ID)
+    {
+        int user_ID = DatabaseManager.Instance.userData.UID;
+        string query =
+            $"SELECT userquests.`Status`\n" +
+            $"FROM userquests\n" +
+            $"WHERE userquests.User_ID={user_ID} AND userquests.Quest_ID={quest_ID};";
+        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
+
+        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
+
+        if (isGetData)
+        {
+            DataRow row = dataSet.Tables[0].Rows[0];
+            return (Q_Status)int.Parse(row["Status"].ToString());
         }
         else
         {

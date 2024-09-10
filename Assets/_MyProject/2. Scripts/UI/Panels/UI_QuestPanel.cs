@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class UI_QuestPanel : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public GameObject QuestContent;
+    public GameObject QuestInfo;
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        List<QuestsData> questsDataList = QuestManager.Instance.GetQuestDataFromDB();        
+        foreach (QuestsData quest in questsDataList)
+        {
+            UI_QuestElement questElement =  Instantiate(QuestInfo, QuestContent.transform).GetComponent<UI_QuestElement>();
+            questElement.Initialize(quest);
+        }
     }
 }

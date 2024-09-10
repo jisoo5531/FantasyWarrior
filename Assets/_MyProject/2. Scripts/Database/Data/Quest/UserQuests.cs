@@ -28,6 +28,9 @@ public class UserQuests
         this.questStatus = questStatus;
     }
 }
+/// <summary>
+/// 현재 퀘스트가 어떤 상태인지 (수락, 진행, 완료)
+/// </summary>
 public enum Q_Status
 {
     Accepted,
