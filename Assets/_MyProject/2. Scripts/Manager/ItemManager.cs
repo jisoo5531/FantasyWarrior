@@ -10,7 +10,7 @@ public class ItemManager : MonoBehaviour
     /// <summary>
     /// 아이템 테이블의 데이터들을 담아놓은 리스트
     /// </summary>
-    public List<ItemData> itemDataList = new List<ItemData>();
+    private List<ItemData> itemDataList;
 
     private void Awake()
     {
@@ -23,8 +23,13 @@ public class ItemManager : MonoBehaviour
 
 
     #region 아이템 정보 가져오기
-    private void GetItemDataFromDatabase()
+    /// <summary>
+    /// 아이템들의 리스트를 가져오기
+    /// </summary>
+    /// <returns></returns>
+    public List<ItemData> GetItemDataFromDatabase()
     {
+        itemDataList = new List<ItemData>();
         string query =
             $"SELECT *\n" +
             $"FROM items";
@@ -39,10 +44,12 @@ public class ItemManager : MonoBehaviour
             {
                 itemDataList.Add(new ItemData(row));
             }
+            return itemDataList;
         }
         else
         {
             //  실패
+            return null;
         }
     }
 

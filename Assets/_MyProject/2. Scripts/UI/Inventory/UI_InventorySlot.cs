@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 public class UI_InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler, IPointerMoveHandler
 {    
 
-    private UI_ItemInfo equipitemInfoWindow;
+    private UI_ItemInfo itemInfoWindow;
 
     /// <summary>
     /// 슬롯 아이템 이미지
@@ -32,11 +32,12 @@ public class UI_InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerEnt
     private float clickTime = 0;
 
     public void Initialize(int itemID, Item_Type item_Type, Sprite sprite, int quantity, UI_ItemInfo itemInfo = null)
-    {        
+    {
+        Debug.Log($"ID:{itemID}, item_Type:{item_Type}");
         this.itemID = itemID;
         this.Item_Type = item_Type;
         this.itemIcon.sprite = sprite;
-        this.equipitemInfoWindow = itemInfo;
+        this.itemInfoWindow = itemInfo;
         itemQuantityText.text = quantity.ToString();
         itemIcon.ImageTransparent(1);
         itemQuantityText.gameObject.SetActive(true);        
@@ -91,23 +92,13 @@ public class UI_InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerEnt
     /// <param name="eventData"></param>
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (equipitemInfoWindow == null || itemID == 0)
+        if (itemInfoWindow == null || itemID == 0)
         {
             return;
         }
-        switch (Item_Type)
-        {
-            case Item_Type.Equipment:
-                equipitemInfoWindow.gameObject.SetActive(true);
-                equipitemInfoWindow.Initialize(this.itemID);
-                break;
-            case Item_Type.Consump:
-                break;
-            case Item_Type.Other:
-                break;
-            default:
-                break;
-        }
+
+        itemInfoWindow.gameObject.SetActive(true);
+        itemInfoWindow.Initialize(this.itemID);
     }
     /// <summary>
     /// <para>IPointerExitHandler 인터페이스</para>
@@ -116,23 +107,12 @@ public class UI_InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerEnt
     /// <param name="eventData"></param>
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (equipitemInfoWindow == null || itemID == 0)
+        if (itemInfoWindow == null || itemID == 0)
         {
             return;
             
         }
-        switch (Item_Type)
-        {
-            case Item_Type.Equipment:
-                equipitemInfoWindow.gameObject.SetActive(false);
-                break;
-            case Item_Type.Consump:
-                break;
-            case Item_Type.Other:
-                break;
-            default:
-                break;
-        }
+        itemInfoWindow.gameObject.SetActive(false);
     }
 
     public void OnPointerMove(PointerEventData eventData)
@@ -140,20 +120,8 @@ public class UI_InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerEnt
         if (this.itemID == 0)
         {
             return;
-        }
-        switch (Item_Type)
-        {
-            case Item_Type.Equipment:
-                equipitemInfoWindow.gameObject.GetComponent<RectTransform>().position = eventData.position + new Vector2(250, -250);
-                break;
-            case Item_Type.Consump:
-                break;
-            case Item_Type.Other:
-                break;
-            default:
-                break;
-        }
-        
+        }        
+        itemInfoWindow.gameObject.GetComponent<RectTransform>().position = eventData.position + new Vector2(250, -50);
     }
     
     /// <summary>
@@ -168,7 +136,7 @@ public class UI_InventorySlot : MonoBehaviour, IPointerClickHandler, IPointerEnt
 
         InventoryManager.Instance.EquipItemUpdateInventory(itemID);
 
-        equipitemInfoWindow.gameObject.SetActive(false);
+        itemInfoWindow.gameObject.SetActive(false);
 
         SlotClear();
     }   

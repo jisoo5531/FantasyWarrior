@@ -23,7 +23,8 @@ public class UI_InventoryPanel : MonoBehaviour
     public GameObject OtherContent;
 
     [Header("Item Info")]
-    public UI_ItemInfo itemInfo;
+    public UI_EquipItemInfo EquipitemInfo;
+    public UI_ConsumpOtherItemInfo OtherConsumpItemInfo;
 
     private int itemID;
 
@@ -67,8 +68,8 @@ public class UI_InventoryPanel : MonoBehaviour
         PlayerEquipManager.Instance.OnUnEquipItem += SetItemToSlot;
         InventoryManager.Instance.OnGetItem += SetItemToSlot;
 
-
-        if (InventoryManager.Instance.inventoryDataList.Count > 0)
+        List<InventoryData> inventoryDataList = InventoryManager.Instance.GetDataFromDatabase();
+        if (inventoryDataList.Count > 0)
         {
             Debug.Log("¿Ö ¾ÈµÅ?");
             SetItemToSlot_Sort();
@@ -144,8 +145,9 @@ public class UI_InventoryPanel : MonoBehaviour
         SlotClear(ConsumpContent);
         SlotClear(OtherContent);
 
-        List<InventoryData> inventoryDataList = InventoryManager.Instance.GetDataFromDatabase();        
+        List<InventoryData> inventoryDataList = InventoryManager.Instance.GetDataFromDatabase();
 
+        Debug.Log(inventoryDataList.Count);
         foreach (InventoryData item in inventoryDataList)
         {            
             this.itemID = item.Item_ID;
@@ -176,15 +178,15 @@ public class UI_InventoryPanel : MonoBehaviour
     }
     private void SetItemToEquipSlot(Sprite sprite, int itemQuantity, UI_InventorySlot slot)
     {                        
-        slot.Initialize(itemID, Item_Type.Equipment, sprite, itemQuantity, itemInfo);
+        slot.Initialize(itemID, Item_Type.Equipment, sprite, itemQuantity, EquipitemInfo);
     }
     private void SetItemToConsumpSlot(Sprite sprite, int itemQuantity, UI_InventorySlot slot)
     {                     
-        slot.Initialize(itemID, Item_Type.Consump, sprite, itemQuantity, itemInfo);
+        slot.Initialize(itemID, Item_Type.Consump, sprite, itemQuantity, OtherConsumpItemInfo);
     }
     private void SetItemToOtherSlot(Sprite sprite, int itemQuantity, UI_InventorySlot slot)
     {                        
-        slot.Initialize(itemID, Item_Type.Other, sprite, itemQuantity, itemInfo);
+        slot.Initialize(itemID, Item_Type.Other, sprite, itemQuantity, OtherConsumpItemInfo);
     }
     private void SlotClear(GameObject content)
     {

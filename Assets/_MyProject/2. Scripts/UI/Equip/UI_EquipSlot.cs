@@ -24,7 +24,7 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     /// </summary>
     /// <param name="itemID"></param>
     /// <param name="sprite"></param>
-    public void Initialize(int itemID = 0, Sprite sprite = null, UI_ItemInfo itemInfo = null)
+    public void Initialize(int itemID = 0, Sprite sprite = null, UI_EquipItemInfo itemInfo = null)
     {
         this.itemID = itemID;        
         if (itemID == 0)
@@ -63,6 +63,8 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
     {
         if (itemInfoWindow != null && itemID != 0)
         {
+            Item_Type item_Type = ItemManager.Instance.GetInventoryItemTypeFromDB(itemID);
+
             itemInfoWindow.gameObject.SetActive(true);
             itemInfoWindow.Initialize(this.itemID);
 
@@ -88,7 +90,7 @@ public class UI_EquipSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHa
         {
             return;
         }
-        itemInfoWindow.gameObject.GetComponent<RectTransform>().position = eventData.position + new Vector2(250, -250);
+        itemInfoWindow.gameObject.GetComponent<RectTransform>().position = eventData.position + new Vector2(250, -50);
     }
 
     /// <summary>
