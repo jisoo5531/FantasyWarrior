@@ -102,7 +102,7 @@
     Description TEXT,                          -- 아이템 용도 설명
     FOREIGN KEY (Item_ID) REFERENCES Items(Item_ID)
 );*/
-CREATE TABLE PlayerEquipment (
+/*CREATE TABLE PlayerEquipment (
     User_ID INT,                            -- 유저 고유 ID (Users 테이블의 외래 키)
     HeadItem_ID INT DEFAULT NULL,           -- 투구 (Helmet)
     ArmorItem_ID INT DEFAULT NULL,          -- 갑옷 (Armor)
@@ -119,6 +119,18 @@ CREATE TABLE PlayerEquipment (
     FOREIGN KEY (WeaponItem_ID) REFERENCES Items(Item_ID),
     FOREIGN KEY (PendantItem_ID) REFERENCES Items(Item_ID),
     FOREIGN KEY (RingItem_ID) REFERENCES Items(Item_ID)
+);*/
+CREATE TABLE Quests (
+    QuestID INT PRIMARY KEY AUTO_INCREMENT,  -- 퀘스트 고유 ID
+    QuestName VARCHAR(100),                  -- 퀘스트 이름
+    QuestType VARCHAR(50),                   -- 퀘스트 유형 (예: Main, Side, Daily)
+    Description TEXT,                        -- 퀘스트 설명
+    RequiredLevel INT DEFAULT 1,             -- 퀘스트 수락에 필요한 최소 레벨
+    RewardExperience INT DEFAULT 0,          -- 보상 경험치
+    RewardGold INT DEFAULT 0,                -- 보상 금액
+    RewardItemID INT DEFAULT NULL,           -- 보상 아이템 ID (Items 테이블과 연관)
+    IsRepeatable BOOLEAN DEFAULT FALSE,      -- 반복 가능한 퀘스트인지 여부
+    FOREIGN KEY (RewardItemID) REFERENCES Items(ItemID) -- 보상 아이템과 연결
 );
 
 
