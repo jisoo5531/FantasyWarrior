@@ -178,15 +178,15 @@ public class UI_InventoryPanel : MonoBehaviour
     }
     private void SetItemToEquipSlot(Sprite sprite, int itemQuantity, UI_InventorySlot slot)
     {                        
-        slot.Initialize(itemID, Item_Type.Equipment, sprite, itemQuantity, EquipitemInfo);
+        slot.Initialize(itemID, sprite, EquipitemInfo);
     }
     private void SetItemToConsumpSlot(Sprite sprite, int itemQuantity, UI_InventorySlot slot)
     {                     
-        slot.Initialize(itemID, Item_Type.Consump, sprite, itemQuantity, OtherConsumpItemInfo);
+        slot.Initialize(itemID, sprite, OtherConsumpItemInfo);
     }
     private void SetItemToOtherSlot(Sprite sprite, int itemQuantity, UI_InventorySlot slot)
     {                        
-        slot.Initialize(itemID, Item_Type.Other, sprite, itemQuantity, OtherConsumpItemInfo);
+        slot.Initialize(itemID, sprite, OtherConsumpItemInfo);
     }
     private void SlotClear(GameObject content)
     {
