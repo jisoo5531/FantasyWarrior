@@ -14584,7 +14584,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   QuestContent: {fileID: 1349845066}
-  QuestInfo: {fileID: 0}
+  QuestInfo: {fileID: 6463322003241119326, guid: cb27763a62ba68b43ac74c540240e0c7, type: 3}
 --- !u!224 &723075545 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2457785069569314770, guid: 14f007453b410d44594b54497e216d68, type: 3}
