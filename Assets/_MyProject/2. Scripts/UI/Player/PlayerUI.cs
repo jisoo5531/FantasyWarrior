@@ -16,7 +16,7 @@ public class PlayerUI : UIComponent
     public Slider ExpBar;
     public TMP_Text expText;
     [Header("Skill")]
-    public List<Image> skillIconList;
+    public List<Image> skillIconList;    
 
     private void Awake()
     {

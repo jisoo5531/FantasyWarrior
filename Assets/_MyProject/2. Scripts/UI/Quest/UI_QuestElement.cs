@@ -16,14 +16,17 @@ public class UI_QuestElement : MonoBehaviour
     public TMP_Text questNameText;
     public TMP_Text completeText;
 
+    private QuestsData quest;
+
     public void Initialize(QuestsData quest)
-    {        
+    {
+        this.quest = quest;
         questNameText.text = quest.Quest_Name;
         Q_Status? questStatus = QuestManager.Instance.GetQuestStatus(quest.Quest_ID);
         if (questStatus == null)
         {
             Debug.Log("Äù½ºÆ® ¾ÆÀÌµð Àß¸ø µÊ");
         }
-        //completeText.text 
+        completeText.text = questStatus.ToString();
     }
 }

@@ -132,15 +132,20 @@
     IsRepeatable BOOLEAN DEFAULT FALSE,      -- 반복 가능한 퀘스트인지 여부
     FOREIGN KEY (RewardItem_ID) REFERENCES Items(Item_ID) -- 보상 아이템과 연결
 );*/
-/*CREATE TABLE QuestObjectives (
-    Objective_ID INT PRIMARY KEY AUTO_INCREMENT,   -- 목표 고유 ID
-    Quest_ID INT,                                  -- 퀘스트와 연결
-    Objective_Type VARCHAR(50),                    -- 목표 유형 (예: Kill, Collect, Visit)
-    Target_ID INT,                                 -- 목표 대상의 ID (예: 적, 아이템, 장소 등과 연관)
-    ReqAmount INT DEFAULT 1,                 -- 목표 달성을 위해 필요한 수량
-    Description TEXT,                             -- 목표 설명
-    FOREIGN KEY (Quest_ID) REFERENCES Quests(Quest_ID)
-);*/
+CREATE TABLE QuestObjectives (
+    Objective_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Quest_ID INT,                                   -- 퀘스트와 연결
+    Objective_Type VARCHAR(50),                     -- 목표 유형 (Kill, Collect, Visit 등)
+    Monster_ID INT DEFAULT NULL,                    -- 몬스터와 연결
+    Item_ID INT DEFAULT NULL,                       -- 아이템과 연결
+    Location_ID INT DEFAULT NULL,                   -- 장소와 연결
+    Required_Amount INT DEFAULT 1,                  -- 목표 달성을 위해 필요한 수량
+    Description TEXT,                              -- 목표 설명
+    FOREIGN KEY (Quest_ID) REFERENCES Quests(Quest_ID),
+    FOREIGN KEY (Monster_ID) REFERENCES Monsters(Monster_ID),
+    FOREIGN KEY (Item_ID) REFERENCES Items(Item_ID)
+);
+
 /*CREATE TABLE UserQuests (
     User_ID INT,                                 -- 유저 ID
     Quest_ID INT,                                -- 퀘스트 ID
@@ -149,7 +154,7 @@
     FOREIGN KEY (Quest_ID) REFERENCES Quests(Quest_ID),
     PRIMARY KEY (User_ID, Quest_ID)
 );*/
-CREATE TABLE UserQuestObjectives (
+/*CREATE TABLE UserQuestObjectives (
     User_ID INT,                                 -- 유저 ID
     Objective_ID INT,                            -- 목표 ID
     Current_Amount INT DEFAULT 0,                -- 현재 달성된 수량
@@ -157,7 +162,7 @@ CREATE TABLE UserQuestObjectives (
     FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
     FOREIGN KEY (Objective_ID) REFERENCES QuestObjectives(Objective_ID),
     PRIMARY KEY (User_ID, Objective_ID)
-);
+);*/
 
 
 
