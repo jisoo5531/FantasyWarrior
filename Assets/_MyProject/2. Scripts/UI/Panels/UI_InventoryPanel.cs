@@ -4,9 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UI_InventoryPanel : MonoBehaviour
-{    
-    // TODO : 0910. 현재 장비 아이템만 커서 올릴 때 아이템 정보 나옴. 소비 아이템 또는 기타 아이템 정보 UI도 만들어서 관리
-    // 아이템 종류 더 많게 해서 테스트 해보기.    
+{        
+    // TODO : 아이템 종류 더 많게 해서 테스트 해보기.    
     // TODO : 인벤토리 정렬 기능 넣기
     
 
