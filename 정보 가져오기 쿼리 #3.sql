@@ -34,6 +34,5 @@ LEFT JOIN Items i6 ON PlayerEquipment.PendantItem_ID = i6.Item_ID
 LEFT JOIN Items i7 ON PlayerEquipment.RingItem_ID = i7.Item_ID
 WHERE PlayerEquipment.User_ID = 1;*/
 
-SELECT questobjectives.Objective_ID
-FROM questobjectives
-WHERE questobjectives.Quest_ID=1;
+INSERT INTO userquestobjectives (userquestobjectives.User_ID, userquestobjectives.Objective_ID)
+VALUES (1, 1);

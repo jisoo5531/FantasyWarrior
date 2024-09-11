@@ -69,13 +69,14 @@ public class UI_QuestPanel : MonoBehaviour
     /// </summary>
     private void AllQuestSetting()
     {
+        ContentClear(AllQuestContent);
         List<QuestsData> questsDataList = QuestManager.Instance.GetQuestListFromDB();
         if (questsDataList == null)
         {
             // 퀘스트가 없다면
             return;
         }
-        ContentClear(AllQuestContent);
+        
         foreach (QuestsData quest in questsDataList)        
         {            
             Q_Status? questStatus = QuestManager.Instance.GetQuestStatus(quest.Quest_ID);
@@ -93,13 +94,14 @@ public class UI_QuestPanel : MonoBehaviour
     /// </summary>
     private void InProgressQuestSetting()
     {
+        ContentClear(InProgressQuestContent);
         List<UserQuestsData> InprogressList = QuestManager.Instance.GetInProgressQuest();
         if (InprogressList == null)
         {
             // 진행중인 퀘스트 없음
             return;
         }
-        ContentClear(InProgressQuestContent);
+        
         foreach (UserQuestsData questData in InprogressList)
         {
             if (questData.questStatus == Q_Status.InProgress)
@@ -114,13 +116,14 @@ public class UI_QuestPanel : MonoBehaviour
     /// </summary>
     private void CompleteQuestSetting()
     {
+        ContentClear(CompleteQuestContent);
         List<UserQuestsData> CompletedList = QuestManager.Instance.GetCompletedQuest();
         if (CompletedList == null)
         {
             // 완료한 퀘스트 없음
             return;
         }
-        ContentClear(CompleteQuestContent);
+        
         foreach (UserQuestsData questData in CompletedList)
         {
             if (questData.questStatus == Q_Status.Completed)

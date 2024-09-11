@@ -118,7 +118,7 @@ public class MonsterUnit : Enemy
     protected virtual void OnDeath()
     {        
         unitAnim.DeathAnimPlay();
-        
+        GetComponent<Collider>().enabled = false;
         Destroy(gameObject, 3f);
     }
 }

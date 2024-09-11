@@ -12,16 +12,16 @@ public class QuestProgress : MonoBehaviour
     public int monster_Id { get; private set; }       // 타겟이 되는 몬스터 ID (없으면 0)
     public int Item_Id { get; private set; }         // 타겟이 되는 아이템 ID (없으면 0)
     public int? required_Amount { get; private set; }
-    public int current_Amount { get; private set; }
+    public int? current_Amount { get; private set; }
     public bool isGuide { get; private set; }
 
     // 생성자
-    public QuestProgress(int questId, int? requiredAmount)
+    public QuestProgress(int questId, int? currentAmount, int? requiredAmount)
     {
         this.quest_Id = questId;
         this.required_Amount = requiredAmount;
-        this.current_Amount = 0;
-        QuestObjectivesData questObjective = QuestManager.Instance.GetObjectiveData(quest_Id);
+        this.current_Amount = currentAmount;
+        QuestObjectivesData questObjective = QuestManager.Instance.GetObjectiveData(quest_ID: quest_Id);
 
         this.monster_Id = questObjective.Monster_ID;
         this.Item_Id = questObjective.Item_ID;
