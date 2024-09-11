@@ -6,14 +6,16 @@ using TMPro;
 /// Panel이 아닌 우측 상단에 보여질 게임하면서도 보여질 Quest 창
 /// </summary>
 public class UI_QuestWindow : MonoBehaviour
-{
-    // TODO : 유저가 윈도우 가이드에 체크한 것들만 윈도우에 나오게끔
+{    
     public GameObject QW_ObjectiveList;
+    [Header("Prefab")]
     public UI_QW_Objective objectiveElement;    
 
     private void Start()
     {
         UI_InprogressQuest.OnGuideButton += SetQuestWindow;
+        QuestManager.Instance.OnUpdateQuestProgress += SetQuestWindow;
+        QuestManager.Instance.OnCompleteQuest += SetQuestWindow;
         SetQuestWindow();
     }
     private void SetQuestWindow()
@@ -32,7 +34,7 @@ public class UI_QuestWindow : MonoBehaviour
             {
                 UI_QW_Objective objective = Instantiate(objectiveElement.gameObject, QW_ObjectiveList.transform).GetComponent<UI_QW_Objective>();
                 QuestsData quest = QuestManager.Instance.GetQuestData(questProgress.quest_Id);
-                objective.Initialize(quest);
+                objective.Initialize(quest, questProgress);
             }            
         }
     }

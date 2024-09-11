@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class QuestManager : MonoBehaviour
 {
+    // TODO : 현재 클라이언트에 임시로 퀘스트 진행상황을 업데이트 하는 상황.
+    // TODO : 만약 데이터베이스에 현재 상황을 저장하지 않고 종료 시, 데이터가 날라간다. 해결책 구현    
     public static QuestManager Instance { get; private set; }
     private List<QuestsData> questsDataList = new List<QuestsData>();
     private List<UserQuestsData> userQuestsList = new List<UserQuestsData>();
@@ -15,7 +17,18 @@ public class QuestManager : MonoBehaviour
     public List<QuestProgress> questProgressList = new List<QuestProgress>();
 
     public event Action OnQuestManagerInit;
+    /// <summary>
+    /// 퀘스트를 수락하면 발생하는 이벤트
+    /// </summary>
     public event Action OnAcceptQuest;
+    /// <summary>
+    /// 퀘스트가 업데이트될 때마다 발생하는 이벤트
+    /// </summary>
+    public event Action OnUpdateQuestProgress;
+    /// <summary>
+    /// 퀘스트가 완료되면 발생하는 이벤트
+    /// </summary>
+    public event Action OnCompleteQuest;
 
     private void Awake()
     {
@@ -287,23 +300,17 @@ public class QuestManager : MonoBehaviour
             }
             Debug.Log("퀘스트 대상이다.");
             questProgressList[index].UpdateProgress();
-            
-            if (questProgressList[index].IsQuestComplete())
-            {
-                // 완료됐다면
-                Debug.Log("퀘스트 완료!");
-                QuestComplete(questProgressList[index].quest_Id);
-                questProgressList.RemoveAt(index);
-            }
+           
         }
         if (itemID != 0)
         {
 
         }
+        OnUpdateQuestProgress?.Invoke();
     }
     /// <summary>
     /// 퀘스트 완료 시에 실행할 메서드
-    /// TODO : 퀘스트 완료 버튼을 눌러야 완료 처리가 되게끔
+    /// TODO : 완료 버튼을 누르면 완료 UI 뜨게
     /// </summary>
     /// <param name="quest_ID"></param>
     public void QuestComplete(int quest_ID)
@@ -314,5 +321,9 @@ public class QuestManager : MonoBehaviour
             $"SET userquests.`Status`={(int)Q_Status.Completed}\n" +
             $"WHERE userquests.User_ID={userID} AND userquests.Quest_ID={quest_ID};";
         _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+
+        int index = questProgressList.FindIndex((x) => { return x.quest_Id.Equals(quest_ID); });
+        questProgressList.RemoveAt(index);
+        OnCompleteQuest?.Invoke();
     }
 }

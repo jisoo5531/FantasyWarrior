@@ -15,9 +15,11 @@ public class UI_InprogressQuest : UI_QuestElement
 
     public static event Action OnGuideButton;
 
-    private void Awake()
+    public override void Initialize(int questID, UI_QuestInfo questInfoWindow)
     {
+        base.Initialize(questID, questInfoWindow);
         GuideButton.onClick.AddListener(OnClickGuide);
+        
     }
 
     /// <summary>

@@ -5,8 +5,9 @@ using UnityEngine.UI;
 
 public class UI_QuestPanel : MonoBehaviour
 {
-    // TODO : 0911. 퀘스트 패널과 윈도우. 진행상황이 업데이트될 때마다 UPDATE, UI도 같이 Update
-    // TODO : 어떤 몬스터를 잡았을 때, 그 몬스터에 관한 퀘스트가 있는지 판별하고 / 있으면 퀘스트 상황 업데이트 하도록
+    // TODO : 0912. 퀘스트 진행 상황 오류 해결하기. 퀘스트가 완료될 때 진행 탭에서 완료 탭으로 넘어가야 한다.
+    // 이 때, 완료탭으로 넘어가지지만 진행 탭에서 사라지지 않는 버그 발생
+    // TODO : 퀘스트 상세정보 창 만들기
 
     [Header("모든 퀘스트")]
     public Button allQuestTabButton;
@@ -18,9 +19,13 @@ public class UI_QuestPanel : MonoBehaviour
     public Button CompleteQuestButton;
     public GameObject CompleteQuestContent;
 
+    [Header("QuestInfo")]    
+    public UI_AllQuestInfo ALLQuestInfoWindow;
+    public UI_InProgressQuestInfo InProgressQuestInfoWindow;
     [Header("QuestInfo Prefab")]
-    public GameObject QuestInfo;
+    public GameObject QuestInfoPrefab;
     public GameObject InProgressQuestInfo;
+
 
     private void Awake()
     {
@@ -47,6 +52,8 @@ public class UI_QuestPanel : MonoBehaviour
     private void Start()
     {        
         QuestManager.Instance.OnAcceptQuest += QuestSet;
+        QuestManager.Instance.OnUpdateQuestProgress += QuestSet;
+        QuestManager.Instance.OnCompleteQuest += QuestSet;
 
         QuestSet();
     }
@@ -57,7 +64,9 @@ public class UI_QuestPanel : MonoBehaviour
         InProgressQuestSetting();
         CompleteQuestSetting();
     }
-
+    /// <summary>
+    /// 퀘스트 목록 세팅
+    /// </summary>
     private void AllQuestSetting()
     {
         List<QuestsData> questsDataList = QuestManager.Instance.GetQuestListFromDB();
@@ -75,10 +84,13 @@ public class UI_QuestPanel : MonoBehaviour
                 // 진행 중이거나 완료한 퀘스트는 목록에서 제외.
                 continue;
             }
-            UI_QuestElement questElement = Instantiate(QuestInfo, AllQuestContent.transform).GetComponent<UI_QuestElement>();
-            questElement.Initialize(quest.Quest_ID);
+            UI_QuestElement questElement = Instantiate(QuestInfoPrefab, AllQuestContent.transform).GetComponent<UI_QuestElement>();
+            questElement.Initialize(quest.Quest_ID, ALLQuestInfoWindow);
         }
     }
+    /// <summary>
+    /// 진행중인 퀘스트 세팅
+    /// </summary>
     private void InProgressQuestSetting()
     {
         List<UserQuestsData> InprogressList = QuestManager.Instance.GetInProgressQuest();
@@ -93,10 +105,13 @@ public class UI_QuestPanel : MonoBehaviour
             if (questData.questStatus == Q_Status.InProgress)
             {
                 UI_QuestElement questElement = Instantiate(InProgressQuestInfo, InProgressQuestContent.transform).GetComponent<UI_QuestElement>();
-                questElement.Initialize(questData.Quest_ID);
+                questElement.Initialize(questData.Quest_ID, InProgressQuestInfoWindow);
             }
         }
     }
+    /// <summary>
+    /// 완료한 퀘스트 세팅
+    /// </summary>
     private void CompleteQuestSetting()
     {
         List<UserQuestsData> CompletedList = QuestManager.Instance.GetCompletedQuest();
@@ -110,8 +125,8 @@ public class UI_QuestPanel : MonoBehaviour
         {
             if (questData.questStatus == Q_Status.Completed)
             {
-                UI_QuestElement questElement = Instantiate(QuestInfo, CompleteQuestContent.transform).GetComponent<UI_QuestElement>();
-                questElement.Initialize(questData.Quest_ID);
+                UI_QuestElement questElement = Instantiate(QuestInfoPrefab, CompleteQuestContent.transform).GetComponent<UI_QuestElement>();
+                questElement.Initialize(questData.Quest_ID, ALLQuestInfoWindow);
             }
         }
     }
