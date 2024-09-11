@@ -7,6 +7,7 @@ using TMPro;
 /// </summary>
 public class UI_QuestWindow : MonoBehaviour
 {
+    // TODO : 유저가 윈도우 가이드에 체크한 것들만 윈도우에 나오게끔
     public GameObject QW_ObjectiveList;
     public UI_QW_Objective objectiveElement;
 
@@ -17,7 +18,7 @@ public class UI_QuestWindow : MonoBehaviour
         {
             // 유저가 수행 중인 퀘스트가 없다면
             return;
-        }
+        }        
         foreach (UserQuestsData userQuest in userQuests)
         {
             UI_QW_Objective objective = Instantiate(objectiveElement.gameObject, QW_ObjectiveList.transform).GetComponent<UI_QW_Objective>();

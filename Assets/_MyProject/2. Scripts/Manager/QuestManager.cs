@@ -255,7 +255,8 @@ public class QuestManager : MonoBehaviour
             {
                 // ¿Ï·áµÆ´Ù¸é
                 Debug.Log("Äù½ºÆ® ¿Ï·á!");
-                QuestComplete(questProgressList[index].quest_Id);                
+                QuestComplete(questProgressList[index].quest_Id);
+                questProgressList.RemoveAt(index);
             }
         }
         if (itemID != 0)
