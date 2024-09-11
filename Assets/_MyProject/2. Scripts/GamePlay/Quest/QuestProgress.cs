@@ -13,6 +13,7 @@ public class QuestProgress : MonoBehaviour
     public int Item_Id { get; private set; }         // 타겟이 되는 아이템 ID (없으면 0)
     public int? required_Amount { get; private set; }
     public int current_Amount { get; private set; }
+    public bool isGuide { get; private set; }
 
     // 생성자
     public QuestProgress(int questId, int? requiredAmount)
@@ -24,6 +25,7 @@ public class QuestProgress : MonoBehaviour
 
         this.monster_Id = questObjective.Monster_ID;
         this.Item_Id = questObjective.Item_ID;
+        this.isGuide = false;
     }
 
     /// <summary>
@@ -32,6 +34,13 @@ public class QuestProgress : MonoBehaviour
     public void UpdateProgress()
     {
         current_Amount++;        
+    }
+    /// <summary>
+    /// 알림이로 등록할 것인지
+    /// </summary>
+    public void UpdateGuideOnOff(bool OnOff)
+    {
+        isGuide = OnOff;
     }
 
     // 퀘스트 완료 여부 확인
