@@ -13,24 +13,14 @@ public class Weapon : MonoBehaviour
 
     }
 
-    protected void OnTriggerEnter(Collider other)
-    {        
-        if ((targetLayer | (1 << other.gameObject.layer)) != targetLayer)
-        {
-            Debug.Log("Å¸°Ù ·¹ÀÌ¾î ¾Æ´Ô");
-            return;
-        }
-
-        if (other.TryGetComponent(out Damagable damagable))
-        {            
-            damagable.GetDamage(damage);
-        }           
+    protected virtual void OnTriggerEnter(Collider other)
+    {                
+        // override    
     }
     private void OnTriggerStay(Collider other)
     {
         if ((targetLayer | (1 << other.gameObject.layer)) != targetLayer)
-        {
-            Debug.Log("Å¸°Ù ·¹ÀÌ¾î ¾Æ´Ô");
+        {            
             return;
         }
         GetComponent<Collider>().enabled = false;

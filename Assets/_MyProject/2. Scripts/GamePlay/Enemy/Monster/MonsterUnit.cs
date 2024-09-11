@@ -47,7 +47,7 @@ public class MonsterUnit : Enemy
     private void Start()
     {
         GetFromDatabaseData();        
-        damagable.Initialize(maxHp: monsterData.MaxHp, hp: monsterData.Hp);
+        damagable.Initialize(unitID: monsterData.MonsterID, maxHp: monsterData.MaxHp, hp: monsterData.Hp);
         attackable.Initialize(damage: monsterData.Damage, range: monsterData.AttackRange);
         followable.Initialize(moveSpeed: monsterData.MoveSpeed);
         nav.speed = followable.MoveSpeed;

@@ -15,11 +15,9 @@ public class Item : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if ((targetLayer | (1 << other.gameObject.layer)) != targetLayer)
-        {
-            Debug.Log("타겟 레이어 아님");
+        {            
             return;
-        }
-        Debug.Log("플레이어 아이템 먹었다.");        
+        }            
         InventoryManager.Instance.GetItem(itemData, 2);
 
         Destroy(gameObject);

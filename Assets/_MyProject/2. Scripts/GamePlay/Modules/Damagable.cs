@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Damagable : MonoBehaviour, IDamagable
 {
+    public int Unit_ID { get; private set; }
+
     // TODO : 장비 장착, 해제 시 스탯 반영한거. 플레이어 UI에도 반영
     public int MaxHp { get; set; }
     public int Hp { get; set; }
@@ -25,8 +27,9 @@ public class Damagable : MonoBehaviour, IDamagable
     /// </summary>
     public event Action OnDeath;
 
-    public void Initialize(int maxHp, int hp)
+    public void Initialize(int unitID, int maxHp, int hp)
     {
+        this.Unit_ID = unitID;
         this.MaxHp = maxHp;
         this.Hp = hp;
     }
@@ -62,8 +65,7 @@ public class Damagable : MonoBehaviour, IDamagable
     }
     public void Death()
     {
-        isDeath = true;
-        Debug.Log("죽었다");
+        isDeath = true;        
         OnDeath?.Invoke();
     }
 

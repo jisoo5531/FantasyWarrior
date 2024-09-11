@@ -39,6 +39,10 @@ public class GameManager : MonoBehaviour
         {
             Instantiate(mummy, new Vector3(Random.Range(0, 10), 0, Random.Range(0, 10)), mummy.transform.rotation);
         }
+        if (Input.GetKeyDown(KeyCode.F12))
+        {
+            QuestManager.Instance.AcceptQuest(1);
+        }
     }
 
 

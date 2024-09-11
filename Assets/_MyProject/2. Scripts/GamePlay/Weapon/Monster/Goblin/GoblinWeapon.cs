@@ -4,9 +4,17 @@ using UnityEngine;
 
 public class GoblinWeapon : Weapon
 {
-    //protected override void OnTriggerEnter(Collider other)
-    //{
-    //    base.OnTriggerEnter(other);
-    //    Debug.Log("자식 트리거");
-    //}
+    protected override void OnTriggerEnter(Collider other)
+    {
+        if ((targetLayer | (1 << other.gameObject.layer)) != targetLayer)
+        {
+            Debug.Log("타겟 레이어 아님");
+            return;
+        }
+
+        if (other.TryGetComponent(out Damagable damagable))
+        {
+            damagable.GetDamage(damage);
+        }
+    }
 }

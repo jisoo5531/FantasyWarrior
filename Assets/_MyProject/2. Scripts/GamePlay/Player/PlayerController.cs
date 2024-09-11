@@ -57,13 +57,14 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void StatInit()
     {
+        int user_ID = DatabaseManager.Instance.userData.UID;
         // TODO : 플레이어 스탯에 반영 (제대로)
         UserStatData userStatData = UserStatManager.Instance.GetUserStatDataFromDB();
         int MaxHp = userStatData.MaxHp;
         int Hp = userStatData.Hp;
         int damage = userStatData.STR;
         Debug.Log($"{MaxHp}, {Hp}, {damage}");
-        damagable.Initialize(maxHp: MaxHp, hp: Hp);
+        damagable.Initialize(unitID: user_ID, maxHp: MaxHp, hp: Hp);
         attackable.Initialize(damage: damage, range: 2);
 
 
@@ -93,8 +94,7 @@ public class PlayerController : MonoBehaviour
     private void OnHpChange(int damage)
     {
         // TODO : 유닛마다 들어가는 데미지 다르게끔 (방어도? 따라)
-        damagable.Hp -= damage;
-        Debug.Log($"데미지 받음 {damage} 만큼");
+        damagable.Hp -= damage;        
     }
     private void OnDeath()
     {

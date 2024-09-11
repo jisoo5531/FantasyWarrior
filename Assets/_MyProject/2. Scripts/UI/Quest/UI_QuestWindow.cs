@@ -13,6 +13,11 @@ public class UI_QuestWindow : MonoBehaviour
     private void Start()
     {
         List<UserQuestsData> userQuests = QuestManager.Instance.GetUserQuest();
+        if (userQuests == null)
+        {
+            // 유저가 수행 중인 퀘스트가 없다면
+            return;
+        }
         foreach (UserQuestsData userQuest in userQuests)
         {
             UI_QW_Objective objective = Instantiate(objectiveElement.gameObject, QW_ObjectiveList.transform).GetComponent<UI_QW_Objective>();

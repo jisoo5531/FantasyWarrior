@@ -23,9 +23,6 @@ public class Goblin : MonsterUnit
     protected override void OnDeath()
     {
         List<ItemData> itemDataList = ItemManager.Instance.GetItemDataFromDatabase();
-        Debug.Log("Á×À½?");
-        Debug.Log(itemDataList == null);
-        Debug.Log(itemDataList[0].Item_Name);
         GameObject rewardItem = Resources.Load<GameObject>($"Items/{itemDataList[0].Item_Name}");
         GameObject itemObj = Instantiate(rewardItem, transform.position + new Vector3(0, 0.5f, 0), rewardItem.transform.rotation);
         Item item = itemObj.GetComponent<Item>();

@@ -38,7 +38,7 @@ public class QuestObjectivesData
             (Q_ObjectiveType)int.Parse(row["Objective_Type"].ToString()),
             int.TryParse(row["Monster_ID"]?.ToString(), out int monsterid) ? monsterid : 0,
             int.TryParse(row["Item_ID"]?.ToString(), out int itemid) ? itemid : 0,
-            int.Parse(row["ReqAmount"].ToString()),
+            int.Parse(row["Required_Amount"].ToString()),
             row["Description"].ToString()
         )
     { }
