@@ -55,7 +55,7 @@ public class UI_EquipSlot : UI_ItemSlot
         Debug.Log("더블클릭. 아이템 해제");
         Debug.Log($"현재 아이템 ID : {itemID}");
         EquipItemData equipItem = ItemManager.Instance.GetEquipItemFromDB(itemID);
-        string part = PlayerEquipManager.EquipParts[(int)equipItem.Equip_Type];
+        string part = PlayerEquipManager.Instance.EquipParts[(int)equipItem.Equip_Type];
 
         PlayerEquipManager.Instance.UnEquip(part, this.itemID);
 

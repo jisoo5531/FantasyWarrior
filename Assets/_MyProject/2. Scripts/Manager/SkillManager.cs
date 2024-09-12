@@ -20,11 +20,11 @@ public class SkillManager : MonoBehaviour
         //string query =
 
         GetSkillFromDatabaseData();
-
-        UserStatData userStatData = UserStatManager.Instance.GetUserStatDataFromDB();
+        
+        UserStatClient userStatClient = UserStatManager.Instance.userStatClient;
         foreach (SkillData skillData in userSkillDataList)
         {            
-            if (userStatData.Level >= skillData.Unlock_Level)
+            if (userStatClient.Level >= skillData.Unlock_Level)
             {
                 userAvailableSkillList.Add(skillData);
             }

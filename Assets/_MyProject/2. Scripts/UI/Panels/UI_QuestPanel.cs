@@ -47,19 +47,20 @@ public class UI_QuestPanel : MonoBehaviour
             CompleteQuestContent.transform.parent.parent.parent.gameObject.SetActive(true);
             AllQuestContent.transform.parent.parent.parent.gameObject.SetActive(false);
             InProgressQuestContent.transform.parent.parent.parent.gameObject.SetActive(false);
-        });        
+        });                
     }
     private void Start()
-    {        
+    {
+        QuestManager.Instance.OnQuestManagerInit += QuestSet;
         QuestManager.Instance.OnAcceptQuest += QuestSet;
         QuestManager.Instance.OnUpdateQuestProgress += QuestSet;
         QuestManager.Instance.OnCompleteQuest += QuestSet;
-
-        QuestSet();
+        
     }
 
     private void QuestSet()
     {
+        Debug.Log("여기?");
         AllQuestSetting();
         InProgressQuestSetting();
         CompleteQuestSetting();
@@ -70,7 +71,8 @@ public class UI_QuestPanel : MonoBehaviour
     private void AllQuestSetting()
     {
         ContentClear(AllQuestContent);
-        List<QuestsData> questsDataList = QuestManager.Instance.GetQuestListFromDB();
+        List<QuestsData> questsDataList = QuestManager.Instance.questsDataList;
+        Debug.Log(questsDataList.Count);
         if (questsDataList == null)
         {
             // 퀘스트가 없다면
@@ -96,9 +98,11 @@ public class UI_QuestPanel : MonoBehaviour
     {
         ContentClear(InProgressQuestContent);
         List<UserQuestsData> InprogressList = QuestManager.Instance.GetInProgressQuest();
+        Debug.Log(InprogressList.Count);
         if (InprogressList == null)
         {
             // 진행중인 퀘스트 없음
+            Debug.Log("진행중인 퀘스트 없다.");
             return;
         }
         

@@ -63,7 +63,7 @@ public class UI_InventorySlot : UI_ItemSlot
     {
         EquipItemData equipItem = ItemManager.Instance.GetEquipItemFromDB(itemID);
 
-        PlayerEquipManager.Instance.EquipItem(PlayerEquipManager.EquipParts[(int)equipItem.Equip_Type], itemID);        
+        PlayerEquipManager.Instance.EquipItem(PlayerEquipManager.Instance.EquipParts[(int)equipItem.Equip_Type], itemID);        
 
         InventoryManager.Instance.EquipItemUpdateInventory(itemID);
 

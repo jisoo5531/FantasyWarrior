@@ -47,9 +47,10 @@ public class PlayerController : MonoBehaviour
     }
     private void OnEnable()
     {
+        UserStatManager.Instance.OnInitStatManager += StatInit;
+        PlayerEquipManager.Instance.OnEquipManagerInit += StatInit;
         damagable.OnHpChange += OnHpChange;
         damagable.OnDeath += OnDeath;
-        PlayerEquipManager.Instance.OnEquipManagerInit += StatInit;
     }
      
     /// <summary>
@@ -58,12 +59,12 @@ public class PlayerController : MonoBehaviour
     private void StatInit()
     {
         int user_ID = DatabaseManager.Instance.userData.UID;
-        // TODO : 플레이어 스탯에 반영 (제대로)
-        UserStatData userStatData = UserStatManager.Instance.GetUserStatDataFromDB();
-        int MaxHp = userStatData.MaxHp;
-        int Hp = userStatData.Hp;
-        int damage = userStatData.STR;
-        Debug.Log($"{MaxHp}, {Hp}, {damage}");
+        // TODO : 플레이어 스탯에 반영 (제대로)        
+        UserStatClient userStatClient = UserStatManager.Instance.userStatClient;
+        int MaxHp = userStatClient.MaxHP;
+        int Hp = userStatClient.HP;
+        int damage = userStatClient.STR;
+        Debug.Log($"MaxHP : {MaxHp}, HP : {Hp}");
         damagable.Initialize(unitID: user_ID, maxHp: MaxHp, hp: Hp);
         attackable.Initialize(damage: damage, range: 2);
 
@@ -83,6 +84,7 @@ public class PlayerController : MonoBehaviour
         damagable.OnHpChange -= OnHpChange;
         damagable.OnDeath -= OnDeath;
         UserStatManager.Instance.OnInitStatManager -= StatInit;
+        PlayerEquipManager.Instance.OnEquipManagerInit -= StatInit;
     }
     //private void OnDestroy()
     //{

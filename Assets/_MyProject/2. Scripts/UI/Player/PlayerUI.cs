@@ -40,8 +40,8 @@ public class PlayerUI : UIComponent
     {
         Damagable.OnHpChange += OnHpChange;
         Damagable.OnChangeHPEvent += OnChangeHP;
-
-        UserStatData userStat = UserStatManager.Instance.GetUserStatDataFromDB();        
+        
+        UserStatClient userStatClient = UserStatManager.Instance.userStatClient;
 
         if (hpBar != null)
         {
@@ -52,17 +52,17 @@ public class PlayerUI : UIComponent
         }
         if (MpBar != null)
         {
-            MpBar.maxValue = userStat.MaxMana;
-            MpBar.value = userStat.Mana;
+            MpBar.maxValue = userStatClient.MaxMP;
+            MpBar.value = userStatClient.MP;
 
-            mpText.text = $"{userStat.Mana} / {userStat.MaxMana}";
+            mpText.text = $"{userStatClient.MP} / {userStatClient.MaxMP}";
         }
         if (ExpBar != null)
         {
-            ExpBar.maxValue = userStat.MaxExp;
-            ExpBar.value = userStat.EXP;
-            float expTextValue = Mathf.Floor((float)userStat.EXP / (float)userStat.MaxExp * 1000f) / 1000f;
-            expText.text = $"{userStat.EXP} / {userStat.MaxExp} {expTextValue}%";
+            ExpBar.maxValue = userStatClient.MaxExp;
+            ExpBar.value = userStatClient.Exp;
+            float expTextValue = Mathf.Floor((float)userStatClient.Exp / (float)userStatClient.MaxExp * 1000f) / 1000f;
+            expText.text = $"{userStatClient.Exp} / {userStatClient.MaxExp} {expTextValue}%";
         }
     }
     public override void OnHpChange(int damage)
@@ -101,22 +101,22 @@ public class PlayerUI : UIComponent
     /// 마나의 변화가 있을 때 (스킬 시전, 레벨업, 물약 사용)
     /// </summary>
     private void OnChangeMP()
-    {
-        UserStatData userStat = UserStatManager.Instance.GetUserStatDataFromDB();
-        MpBar.maxValue = userStat.MaxMana;
-        MpBar.value = userStat.Mana;
+    {        
+        UserStatClient userStatClient = UserStatManager.Instance.userStatClient;
+        MpBar.maxValue = userStatClient.MaxMP;
+        MpBar.value = userStatClient.MP;
 
-        mpText.text = $"{userStat.Mana} / {userStat.MaxMana}";
+        mpText.text = $"{userStatClient.MP} / {userStatClient.MaxMP}";
     }
     /// <summary>
     /// 경험치의 변화가 있을 때 
     /// </summary>
     private void OnChangeExp()
-    {
-        UserStatData userStat = UserStatManager.Instance.GetUserStatDataFromDB();
-        ExpBar.maxValue = userStat.MaxExp;
-        ExpBar.value = userStat.EXP;
-        float expTextValue = Mathf.Floor((float)userStat.EXP / (float)userStat.MaxExp * 1000f) / 1000f;
-        expText.text = $"{userStat.EXP} / {userStat.MaxExp} {expTextValue}%";
+    {        
+        UserStatClient userStatClient = UserStatManager.Instance.userStatClient;
+        ExpBar.maxValue = userStatClient.MaxExp;
+        ExpBar.value = userStatClient.Exp;
+        float expTextValue = Mathf.Floor((float)userStatClient.Exp / (float)userStatClient.MaxExp * 1000f) / 1000f;
+        expText.text = $"{userStatClient.Exp} / {userStatClient.MaxExp} {expTextValue}%";
     }
 }

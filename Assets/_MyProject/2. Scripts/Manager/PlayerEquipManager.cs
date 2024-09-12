@@ -11,12 +11,17 @@ public class PlayerEquipManager : MonoBehaviour
 {
     public static PlayerEquipManager Instance { get; private set; }
 
-    public static readonly List<string> EquipParts = new List<string>
+    public readonly List<string> EquipParts = new List<string>
     {
         "HeadItem_ID", "ArmorItem_ID", "GlovesItem_ID",
         "BootsItem_ID", "WeaponItem_ID", "PendantItem_ID", "RingItem_ID"
     };
-
+    /// <summary>
+    /// 유저가 장착하고 있는 장비들을 담는 리스트
+    /// <para>클라이언트에 임시로 저장해 둔다.</para>
+    /// <para>데이터베이스에 저장을 해줘야 한다.</para>
+    /// </summary>
+    public Dictionary<string, int> UserEquipTable { get; private set; }
 
     [Header("장비 해제 버튼")]
     public Button unEquipButton;
@@ -47,9 +52,18 @@ public class PlayerEquipManager : MonoBehaviour
     /// UserStatManager의 초기화 이후 초기화가 된다.
     /// </summary>
     private void Initialize()
-    {
-        GetPlayerEquipFromDB();
+    {        
         PlayerEquipData playerEquipData = GetPlayerEquipFromDB();
+        UserEquipTable = new Dictionary<string, int>
+        {
+            { EquipParts[0], playerEquipData.HeadItem_ID },
+            { EquipParts[1], playerEquipData.ArmorItem_ID },
+            { EquipParts[2], playerEquipData.GloveItem_ID },
+            { EquipParts[3], playerEquipData.BootItem_ID },
+            { EquipParts[4], playerEquipData.WeaponItem_ID },
+            { EquipParts[5], playerEquipData.Pendant_ID },
+            { EquipParts[6], playerEquipData.Ring_ID }
+        };
 
         UserStatManager.Instance.EquipItemUpdateStat(isEquip: true, playerEquipData.HeadItem_ID);
         UserStatManager.Instance.EquipItemUpdateStat(isEquip: true, playerEquipData.ArmorItem_ID);
@@ -65,7 +79,7 @@ public class PlayerEquipManager : MonoBehaviour
     /// <summary>
     /// 플레이어가 장착한 장비 목록 가져오기
     /// </summary>
-    public PlayerEquipData GetPlayerEquipFromDB()
+    private PlayerEquipData GetPlayerEquipFromDB()
     {
         int user_id = DatabaseManager.Instance.userData.UID;
         string query =
@@ -95,22 +109,10 @@ public class PlayerEquipManager : MonoBehaviour
     public void EquipItem(string part, int item_ID)
     {
         Debug.Log($"아이템 ID : {item_ID}");
-        int user_ID = DatabaseManager.Instance.userData.UID;
-        string query =
-            $"UPDATE playerequipment\n" +
-            $"SET playerequipment.{part}={item_ID}\n" +
-            $"WHERE user_id={user_ID};";
 
-        // 장착 성공했을 때
-        if (DatabaseManager.Instance.OnInsertOrUpdateRequest(query))
-        {
-            Debug.Log("장착 성공");
-            UserStatManager.Instance.EquipItemUpdateStat(isEquip: true, item_ID);
-            OnEquipItem?.Invoke();
-        }
-
-        //Debug.Log($"장착 성공? : {DatabaseManager.Instance.OnInsertOrUpdateRequest(query)}");
-        //DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+        UserEquipTable[part] = item_ID;
+        UserStatManager.Instance.EquipItemUpdateStat(isEquip: true, itemID: item_ID);
+        OnEquipItem?.Invoke();
     }
     /// <summary>
     /// <para>모든 장비 해제</para>
@@ -118,85 +120,13 @@ public class PlayerEquipManager : MonoBehaviour
     /// </summary>
     private void UnEquipAll()
     {
-        int user_ID = DatabaseManager.Instance.userData.UID;
-        PlayerEquipData equipData = GetPlayerEquipFromDB();
+        for (int i = 0; i < UserEquipTable.Count; i++)
+        {
+            int itemID = UserEquipTable[EquipParts[i]];
 
-        string query =
-            $"UPDATE playerequipment\n" +
-            $"SET playerequipment.HeadItem_ID=NULL,\n" +
-            $"playerequipment.ArmorItem_ID=NULL,\n" +
-            $"playerequipment.GlovesItem_ID=NULL,\n" +
-            $"playerequipment.BootsItem_ID=NULL,\n" +
-            $"playerequipment.WeaponItem_ID=NULL,\n" +
-            $"playerequipment.PendantItem_ID=NULL,\n" +
-            $"playerequipment.RingItem_ID=NULL\n" +
-            $"WHERE user_id=1;";
-        _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
-
-        StringBuilder queryBuilder = new StringBuilder();
-        queryBuilder.Append("INSERT INTO inventory (inventory.User_ID, inventory.Item_ID) VALUES");
-
-        // 항목을 리스트로 구성
-        List<string> values = new List<string>();
-
-        if (equipData.HeadItem_ID != 0)
-        {
-            values.Add($"({user_ID}, {equipData.HeadItem_ID})");
-            UserStatManager.Instance.EquipItemUpdateStat(isEquip: false, equipData.HeadItem_ID);
-            InventoryManager.Instance.AddWhichItem(equipData.HeadItem_ID);
+            UserStatManager.Instance.EquipItemUpdateStat(isEquip: false, itemID: itemID);
+            InventoryManager.Instance.AddWhichItem(itemID);
         }
-        if (equipData.ArmorItem_ID != 0)
-        {
-            values.Add($"({user_ID}, {equipData.ArmorItem_ID})");
-            UserStatManager.Instance.EquipItemUpdateStat(isEquip: false, equipData.ArmorItem_ID);
-            InventoryManager.Instance.AddWhichItem(equipData.ArmorItem_ID);
-        }
-        if (equipData.GloveItem_ID != 0)
-        {
-            values.Add($"({user_ID}, {equipData.GloveItem_ID})");
-            UserStatManager.Instance.EquipItemUpdateStat(isEquip: false, equipData.GloveItem_ID);
-            InventoryManager.Instance.AddWhichItem(equipData.GloveItem_ID);
-        }
-        if (equipData.BootItem_ID != 0)
-        {
-            values.Add($"({user_ID}, {equipData.BootItem_ID})");
-            UserStatManager.Instance.EquipItemUpdateStat(isEquip: false, equipData.BootItem_ID);
-            InventoryManager.Instance.AddWhichItem(equipData.BootItem_ID);
-        }
-        if (equipData.WeaponItem_ID != 0)
-        {
-            values.Add($"({user_ID}, {equipData.WeaponItem_ID})");
-            UserStatManager.Instance.EquipItemUpdateStat(isEquip: false, equipData.WeaponItem_ID);
-            InventoryManager.Instance.AddWhichItem(equipData.WeaponItem_ID);
-        }
-        if (equipData.Pendant_ID != 0)
-        {
-            values.Add($"({user_ID}, {equipData.Pendant_ID})");
-            UserStatManager.Instance.EquipItemUpdateStat(isEquip: false, equipData.Pendant_ID);
-            InventoryManager.Instance.AddWhichItem(equipData.Pendant_ID);
-        }
-        if (equipData.Ring_ID != 0)
-        {
-            values.Add($"({user_ID}, {equipData.Ring_ID})");
-            UserStatManager.Instance.EquipItemUpdateStat(isEquip: false, equipData.Ring_ID);
-            InventoryManager.Instance.AddWhichItem(equipData.Ring_ID);
-        }
-
-        // values 리스트가 비어 있지 않다면 쿼리를 생성
-        if (values.Count > 0)
-        {
-            queryBuilder.Append(string.Join(",", values));
-            queryBuilder.Append(";");
-
-            query = queryBuilder.ToString();
-            _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
-        }
-        else
-        {
-            // 만약 모든 아이템이 0이면 쿼리가 생성되지 않으므로 별도 처리
-            Debug.Log("아이템이 없습니다.");
-        }
-
 
         OnAllUnEquipButtonClick?.Invoke();
     }
@@ -210,16 +140,12 @@ public class PlayerEquipManager : MonoBehaviour
     {
         int user_ID = DatabaseManager.Instance.userData.UID;
 
-        string query =
-            $"UPDATE playerequipment\n" +
-            $"SET playerequipment.{part}=null\n" +
-            $"WHERE playerequipment.User_ID={user_ID};";
-        DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+        //query =
+        //    $"INSERT INTO inventory (inventory.User_ID, inventory.Item_ID)\n" +
+        //    $"VALUES ({user_ID}, {itemID});";
+        //DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
 
-        query =
-            $"INSERT INTO inventory (inventory.User_ID, inventory.Item_ID)\n" +
-            $"VALUES ({user_ID}, {itemID});";
-        DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+        UserEquipTable[part] = 0;
 
         UserStatManager.Instance.EquipItemUpdateStat(isEquip: false, itemID);
         InventoryManager.Instance.AddWhichItem(itemID);

@@ -19,7 +19,7 @@ public class Status
 public class UI_StatPanel : MonoBehaviour
 {
     public Status statusUI;
-    private UserStatData userStatData;
+    private UserStatClient userStatClient;
 
     private void Awake()
     {        
@@ -35,15 +35,15 @@ public class UI_StatPanel : MonoBehaviour
 
     private void SetStat()
     {
-        this.userStatData = UserStatManager.Instance.GetUserStatDataFromDB();
+        this.userStatClient = UserStatManager.Instance.userStatClient;
 
-        statusUI.LvText.text = userStatData.Level.ToString();
-        statusUI.STRText.text = userStatData.STR.ToString();
-        statusUI.DEXText.text = userStatData.DEX.ToString();
-        statusUI.INTText.text = userStatData.INT.ToString();
-        statusUI.LUKText.text = userStatData.LUK.ToString();
-        statusUI.DEFText.text = userStatData.DEF.ToString();
-        statusUI.HPText.text = userStatData.MaxHp.ToString();
-        statusUI.MPText.text = userStatData.MaxMana.ToString();        
+        statusUI.LvText.text = userStatClient.Level.ToString();
+        statusUI.STRText.text = userStatClient.STR.ToString();
+        statusUI.DEXText.text = userStatClient.DEX.ToString();
+        statusUI.INTText.text = userStatClient.INT.ToString();
+        statusUI.LUKText.text = userStatClient.LUK.ToString();
+        statusUI.DEFText.text = userStatClient.DEF.ToString();
+        statusUI.HPText.text = userStatClient.MaxHP.ToString();
+        statusUI.MPText.text = userStatClient.MaxMP.ToString();        
     }    
 }

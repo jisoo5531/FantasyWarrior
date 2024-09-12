@@ -19,9 +19,9 @@ public class PlayerUIManager : MonoBehaviour
         
     }
     private void Start()
-    {
-        UserStatData userStatData = UserStatManager.Instance.GetUserStatDataFromDB();
-        string folderName = $"{userStatData.CharClass.ToString()}";
+    {        
+        UserStatClient userStatClient = UserStatManager.Instance.userStatClient;
+        string folderName = $"{userStatClient.charClass.ToString()}";
         foreach (var item in Resources.LoadAll<Sprite>($"{folderName}_skills"))
         {
             skillIconList.Add(item);

@@ -2,15 +2,32 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using UnityEngine;
 
 public class QuestManager : MonoBehaviour
 {
-    // TODO : 현재 클라이언트에 임시로 퀘스트 진행상황을 업데이트 하는 상황.
-    // TODO : 만약 데이터베이스에 현재 상황을 저장하지 않고 종료 시, 데이터가 날라간다. 해결책 구현    
+    // TODO : DB 와 관련된 것들. 클라이언트에 임시로 저장시키기 -> 매번 DB에 접속하면 부하
     public static QuestManager Instance { get; private set; }
-    private List<QuestsData> questsDataList = new List<QuestsData>();
-    private List<UserQuestsData> userQuestsList = new List<UserQuestsData>();
+    /// <summary>
+    /// 모든 퀘스트들을 저장할 리스트
+    /// </summary>
+    public List<QuestsData> questsDataList { get; private set; }
+    /// <summary>
+    /// 퀘스트 목표의 정보들을 저장할 리스트
+    /// </summary>
+    public List<QuestObjectivesData> questObjectList { get; private set; }
+    /// <summary>
+    /// 유저가 수행중인 퀘스트들의 진행 상태들을 저장할 리스트 (게임 중 업데이트하면서 수정된다.)
+    /// <para>게임 종료 시, 저장해햐 할 것</para>
+    /// </summary>
+    public List<UserQuestsData> userQuestsList { get; private set; }
+    /// <summary>
+    /// 유저가 수행중인 퀘스트들의 진행도를 저장할 리스트 (게임 중 업데이트하면서 수정된다.)
+    /// <para>게임 종료 시, 저장해햐 할 것</para>
+    /// </summary>
+    public List<UserQuestObjectivesData> userQuestObjList { get; private set; }
+
     /// <summary>
     /// 현재 유저가 수행 중인 퀘스트 진행 상황 (클라이언트)
     /// </summary>
@@ -36,9 +53,7 @@ public class QuestManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
-        OnQuestManagerInit?.Invoke();
-
+        Instance = this;        
     }
     private void Start()
     {
@@ -52,32 +67,36 @@ public class QuestManager : MonoBehaviour
     /// </summary>
     private void Initialize()
     {
-        questProgressList = new List<QuestProgress>();
-        List<UserQuestObjectivesData> userQOList = GetUserQuestProgress();
-        if (userQOList == null)
-        {
-            // 아직 DB에 유저가 받은 퀘스트가 없다.
-            return;
-        }
-        foreach (var QO in userQOList)
-        {
-            QuestObjectivesData objective = GetObjectiveData(objectiveID: QO.ObjectiveID);
-            questProgressList.Add(new QuestProgress(objective.Quest_ID, QO.CurrentAmount, objective.ReqAmount));
-        }
-    }
+        GetQuestListFromDB();
+        GetObjectivesDataFromDB();
+        GetUserQuestObjectivesFromDB();
+        GetUserQuestsFromDB();
 
-    #region 퀘스트 정보 가져오기
+        questProgressList = new List<QuestProgress>();
+        List<UserQuestObjectivesData> userQOList = GetUserQuestObjectivesFromDB();
+        if (userQOList != null)
+        {
+            foreach (var QO in userQOList)
+            {
+                QuestObjectivesData objective = GetObjectiveData(objectiveID: QO.ObjectiveID);
+                questProgressList.Add(new QuestProgress(objective.Quest_ID, QO.CurrentAmount, objective.ReqAmount));
+            }
+        }        
+        OnQuestManagerInit?.Invoke();
+    }
+    #region 게임 시작할 때 정보 가져오기
     /// <summary>
     /// 퀘스트 리스트 가져오기
     /// </summary>
     /// <returns></returns>
-    public List<QuestsData> GetQuestListFromDB()
+    private List<QuestsData> GetQuestListFromDB()
     {
+        int user_ID = DatabaseManager.Instance.userData.UID;
         questsDataList = new List<QuestsData>();
         string query =
             $"SELECT *\n" +
             $"FROM quests\n" +
-            $"WHERE quests.Quest_ID=1;";
+            $"WHERE quests.Quest_ID={user_ID};";
         DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
 
         bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
@@ -98,43 +117,18 @@ public class QuestManager : MonoBehaviour
     }
     /// <param name="quest_ID"></param>
     /// /// <summary>
-    /// 특정 ID에 맞는 퀘스트 데이터 가져오기
+    /// 퀘스트들의 목표 정보 가져오기
     /// </summary>
     /// <param name="quest_ID"></param>
     /// <returns></returns>
-    public QuestsData GetQuestData(int quest_ID)
+    private List<QuestObjectivesData> GetObjectivesDataFromDB()
     {
+        questObjectList = new List<QuestObjectivesData>();
+
         string query =
             $"SELECT *\n" +
-            $"FROM quests\n" +
-            $"WHERE quests.Quest_ID=1;";
-        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
+            $"FROM questobjectives;";
 
-        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
-
-        if (isGetData)
-        {
-            DataRow row = dataSet.Tables[0].Rows[0];
-            return new QuestsData(row);
-        }
-        else
-        {
-            //  실패
-            return null;
-        }
-    }
-    /// <summary>
-    /// 현재 유저가 수행 중인 (Inprogress) 퀘스트들 데이터 가져오기
-    /// </summary>
-    /// <returns></returns>
-    public List<UserQuestsData> GetInProgressQuest()
-    {
-        List<UserQuestsData> inProgressQuestList = new List<UserQuestsData>();
-        int user_ID = DatabaseManager.Instance.userData.UID;
-        string query =
-            $"SELECT *\n" +
-            $"FROM userquests\n" +
-            $"WHERE userquests.User_ID={user_ID} AND userquests.status={(int)Q_Status.InProgress};";
         DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
 
         bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
@@ -143,9 +137,9 @@ public class QuestManager : MonoBehaviour
         {
             foreach (DataRow row in dataSet.Tables[0].Rows)
             {
-                inProgressQuestList.Add(new UserQuestsData(row));
+                questObjectList.Add(new QuestObjectivesData(row));
             }
-            return inProgressQuestList;
+            return questObjectList;
         }
         else
         {
@@ -154,169 +148,14 @@ public class QuestManager : MonoBehaviour
         }
     }
     /// <summary>
-    /// 유저가 완료한 퀘스트 목록 가져오기
+    /// 유저가 수행 중인 퀘스트들의 진행도 가져오기
     /// </summary>
     /// <returns></returns>
-    public List<UserQuestsData> GetCompletedQuest()
-    {
-        List<UserQuestsData> completedQuestList = new List<UserQuestsData>();
-        int user_ID = DatabaseManager.Instance.userData.UID;
-        string query =
-            $"SELECT *\n" +
-            $"FROM userquests\n" +
-            $"WHERE userquests.User_ID={user_ID} AND userquests.status={(int)Q_Status.Completed};";
-        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
-
-        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
-
-        if (isGetData)
-        {
-            foreach (DataRow row in dataSet.Tables[0].Rows)
-            {
-                completedQuestList.Add(new UserQuestsData(row));
-            }
-            return completedQuestList;
-        }
-        else
-        {
-            //  실패
-            return null;
-        }
-    }
-    /// <summary>
-    /// 현재 퀘스트의 상태(수락, 진행, 완료)를 가져오는 메서드
-    /// </summary>
-    /// <returns></returns>
-    public Q_Status? GetQuestStatus(int quest_ID)
+    private List<UserQuestObjectivesData> GetUserQuestObjectivesFromDB()
     {
         int user_ID = DatabaseManager.Instance.userData.UID;
-        string query =
-            $"SELECT userquests.`Status`\n" +
-            $"FROM userquests\n" +
-            $"WHERE userquests.User_ID={user_ID} AND userquests.Quest_ID={quest_ID};";
-        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
+        userQuestObjList = new List<UserQuestObjectivesData>();
 
-        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
-
-        if (isGetData)
-        {
-            DataRow row = dataSet.Tables[0].Rows[0];
-            return (Q_Status)int.Parse(row["Status"].ToString());
-        }
-        else
-        {
-            //  실패
-            return null;
-        }
-    }
-    /// <summary>
-    /// 목표 퀘스트 정보 가져오기 (퀘스트 ID)
-    /// </summary>
-    /// <param name="quest_ID"></param>
-    /// <returns></returns>
-    public QuestObjectivesData GetObjectiveData(int? quest_ID = null, int? objectiveID = null)
-    {
-        string query = string.Empty;
-        if (quest_ID == null && objectiveID == null)
-        {
-            return null;
-        }
-        if (quest_ID > 0)
-        {
-            query =
-            $"SELECT *\n" +
-            $"FROM questobjectives\n" +
-            $"WHERE questobjectives.Quest_ID={quest_ID};";
-        }
-        if (objectiveID > 0)
-        {
-            query =
-            $"SELECT *\n" +
-            $"FROM questobjectives\n" +
-            $"WHERE questobjectives.Objective_ID={objectiveID};";
-        }
-        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
-
-        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
-
-        if (isGetData)
-        {
-            DataRow row = dataSet.Tables[0].Rows[0];
-            return new QuestObjectivesData(row);
-        }
-        else
-        {
-            //  실패
-            return null;
-        }
-    }
-    /// <summary>
-    /// 현재 퀘스트 진행도
-    /// </summary>
-    /// <param name="quest_ID"></param>
-    /// <returns></returns>
-    public int? GetCurrentQuestProgress(int quest_ID)
-    {
-        QuestObjectivesData questObjective = GetObjectiveData(quest_ID: quest_ID);
-        int questObjID = questObjective.ObjectiveID;
-
-        int user_ID = DatabaseManager.Instance.userData.UID;
-
-        string query =
-            $"SELECT userquestobjectives.Current_Amount\n" +
-            $"FROM userquestobjectives\n" +
-            $"WHERE userquestobjectives.User_ID={user_ID} " +
-            $"AND userquestobjectives.Objective_ID={questObjID};";
-        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
-        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
-
-        if (isGetData)
-        {
-            DataRow row = dataSet.Tables[0].Rows[0];
-            return int.Parse(row["Current_Amount"].ToString());
-        }
-        else
-        {
-            //  실패
-            return null;
-        }
-    }
-    /// <summary>
-    /// 퀘스트의 완료 조건 가져오기
-    /// </summary>
-    /// <param name="quest_ID"></param>
-    /// <returns></returns>
-    public int? GetRequireCompleteQuest(int quest_ID)
-    {
-        QuestObjectivesData questObjective = GetObjectiveData(quest_ID: quest_ID);
-        int questObjID = questObjective.ObjectiveID;
-
-        string query =
-            $"SELECT questobjectives.Required_Amount\n" +
-            $"FROM questobjectives\n" +
-            $"WHERE questobjectives.Objective_ID={questObjID};";
-        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
-        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
-
-        if (isGetData)
-        {
-            DataRow row = dataSet.Tables[0].Rows[0];
-            return int.Parse(row["Required_Amount"].ToString());
-        }
-        else
-        {
-            //  실패
-            return null;
-        }
-    }
-    /// <summary>
-    /// 유저의 퀘스트 진행상황도 가져오기
-    /// </summary>
-    /// <returns></returns>
-    public List<UserQuestObjectivesData> GetUserQuestProgress()
-    {
-        int user_ID = DatabaseManager.Instance.userData.UID;
-        List<UserQuestObjectivesData> userQO_List = new List<UserQuestObjectivesData>();
         string query =
             $"SELECT *\n" +
             $"FROM userquestobjectives\n" +
@@ -328,9 +167,9 @@ public class QuestManager : MonoBehaviour
         {
             foreach (DataRow row in dataSet.Tables[0].Rows)
             {
-                userQO_List.Add(new UserQuestObjectivesData(row));
+                userQuestObjList.Add(new UserQuestObjectivesData(row));
             }
-            return userQO_List;
+            return userQuestObjList;
         }
         else
         {
@@ -338,6 +177,158 @@ public class QuestManager : MonoBehaviour
             return null;
         }
     }
+    /// <summary>
+    /// 유저가 수행 중인 퀘스트들의 진행 상태 가져오기
+    /// </summary>
+    /// <returns></returns>
+    private List<UserQuestsData> GetUserQuestsFromDB()
+    {
+        int user_ID = DatabaseManager.Instance.userData.UID;
+        userQuestsList = new List<UserQuestsData>();
+
+        string query =
+            $"SELECT *\n" +
+            $"FROM userquests\n" +
+            $"WHERE userquests.User_ID={user_ID};";
+        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
+        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
+
+        if (isGetData)
+        {
+            foreach (DataRow row in dataSet.Tables[0].Rows)
+            {
+                userQuestsList.Add(new UserQuestsData(row));
+            }
+            return userQuestsList;
+        }
+        else
+        {
+            //  실패
+            return null;
+        }
+    }
+    #endregion
+
+    #region 퀘스트 정보 가져오기
+
+    /// <summary>
+    /// 해당 ID 의 퀘스트 데이터 가져오기
+    /// </summary>
+    /// <param name="quest_ID"></param>
+    /// <returns></returns>
+    public QuestsData GetQuestData(int quest_ID)
+    {
+        if (questsDataList == null)
+        {
+            return null;
+        }
+
+        int index = questsDataList.FindIndex((x) => x.Quest_ID.Equals(quest_ID));
+        if (index >= 0)
+        {
+            return questsDataList[index];
+        }
+        return null;
+    }
+    /// <summary>
+    /// 현재 유저가 수행 중인 (Inprogress) 퀘스트들 데이터 가져오기
+    /// </summary>
+    /// <returns></returns>
+    public List<UserQuestsData> GetInProgressQuest()
+    {
+        int user_ID = DatabaseManager.Instance.userData.UID;
+        if (userQuestsList == null)
+        {
+            return null;
+        }
+        return userQuestsList.FindAll((x) => x.User_ID.Equals(user_ID) && x.questStatus.Equals(Q_Status.InProgress));
+    }
+    /// <summary>
+    /// 유저가 완료한 퀘스트 목록 가져오기
+    /// </summary>
+    /// <returns></returns>
+    public List<UserQuestsData> GetCompletedQuest()
+    {
+        int user_ID = DatabaseManager.Instance.userData.UID;
+        if (userQuestsList == null)
+        {
+            return null;
+        }        
+        return userQuestsList.FindAll((x) => x.User_ID.Equals(user_ID) && x.questStatus.Equals(Q_Status.Completed));
+    }
+    /// <summary>
+    /// 현재 퀘스트의 상태(수락, 진행, 완료)를 가져오는 메서드
+    /// </summary>
+    /// <returns></returns>
+    public Q_Status? GetQuestStatus(int quest_ID)
+    {
+        int user_ID = DatabaseManager.Instance.userData.UID;
+        if (userQuestsList == null)
+        {
+            return null;
+        }
+        int index = userQuestsList.FindIndex((x) => x.User_ID.Equals(user_ID) && x.Quest_ID.Equals(quest_ID));
+        if (index >= 0)
+        {
+            return userQuestsList[index].questStatus;
+        }
+        return null;        
+    }
+    /// <summary>
+    /// 해당 퀘스트 ID 또는 목표 ID의 목표 퀘스트 정보 가져오기
+    /// </summary>
+    /// <param name="quest_ID"></param>
+    /// <returns></returns>
+    public QuestObjectivesData GetObjectiveData(int? quest_ID = null, int? objectiveID = null)
+    {  
+        if (quest_ID > 0)
+        {
+            int index = questObjectList.FindIndex((x) => x.Quest_ID.Equals(quest_ID));
+            if (index >= 0)
+            {
+                return questObjectList[index];
+            }
+        }
+        if (objectiveID > 0)
+        {
+            int index = questObjectList.FindIndex((x) => x.Quest_ID.Equals(objectiveID));
+            if (index >= 0)
+            {
+                return questObjectList[index];
+            }            
+        }
+        return null;
+    }
+    /// <summary>
+    /// 현재 퀘스트 진행도
+    /// </summary>
+    /// <param name="quest_ID"></param>
+    /// <returns></returns>
+    public int? GetCurrentQuestProgress(int quest_ID)
+    {        
+        int index = questProgressList.FindIndex((x) => x.quest_Id.Equals(quest_ID));
+        if (index >= 0)
+        {            
+            return questProgressList[index].current_Amount;
+        }
+        return null;
+    }
+    /// <summary>
+    /// 퀘스트의 완료 조건 가져오기
+    /// </summary>
+    /// <param name="quest_ID"></param>
+    /// <returns></returns>
+    public int? GetRequireCompleteQuest(int quest_ID)
+    {
+        QuestObjectivesData questObj = GetObjectiveData(quest_ID: quest_ID);
+        int index = questObjectList.FindIndex((x) => x.ObjectiveID.Equals(questObj.ObjectiveID));
+        if (index >= 0)
+        {            
+            return questObjectList[index].ReqAmount;
+        }
+        return null;
+    }
+
     #endregion
 
     #region 퀘스트 진행상황 업데이트 (수락, 업데이트, 완료)
@@ -349,6 +340,7 @@ public class QuestManager : MonoBehaviour
     {
         int user_ID = DatabaseManager.Instance.userData.UID;
         QuestObjectivesData objectiveData = GetObjectiveData(quest_ID: quest_ID);
+
         string query =
             $"INSERT INTO userquests (userquests.User_ID, userquests.Quest_ID, userquests.`Status`)\n" +
             $"VALUES ({user_ID}, {quest_ID}, 0);";
@@ -359,9 +351,12 @@ public class QuestManager : MonoBehaviour
             $"VALUES ({user_ID}, {objectiveData.ObjectiveID});";
         _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
 
-        int? reqAmount = GetRequireCompleteQuest(quest_ID);
+        userQuestsList.Add(new UserQuestsData(user_ID, quest_ID, Q_Status.InProgress, false));
+        userQuestObjList.Add(new UserQuestObjectivesData(user_ID, objectiveData.ObjectiveID, 0, false));
 
+        int? reqAmount = GetRequireCompleteQuest(quest_ID);
         questProgressList.Add(new QuestProgress(quest_ID, 0, reqAmount));
+
         OnAcceptQuest?.Invoke();
     }
     /// <summary>
@@ -400,20 +395,30 @@ public class QuestManager : MonoBehaviour
     public void QuestComplete(int quest_ID)
     {
         int user_ID = DatabaseManager.Instance.userData.UID;
+        QuestObjectivesData objectiveData = GetObjectiveData(quest_ID: quest_ID);
+
         string query =
             $"UPDATE userquests\n" +
             $"SET userquests.`Status`={(int)Q_Status.Completed}\n" +
             $"WHERE userquests.User_ID={user_ID} AND userquests.Quest_ID={quest_ID};";
         _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
 
-        QuestObjectivesData objectiveData = GetObjectiveData(quest_ID: quest_ID);
         query =
-                $"DELETE FROM userquestobjectives\n" +
-                $"WHERE userquestobjectives.User_ID={user_ID} " +
-                $"AND userquestobjectives.Objective_ID={objectiveData.ObjectiveID};";
+            $"DELETE FROM userquestobjectives\n" +
+            $"WHERE userquestobjectives.User_ID={user_ID} " +
+            $"AND userquestobjectives.Objective_ID={objectiveData.ObjectiveID};";
         _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
 
-        int index = questProgressList.FindIndex((x) => { return x.quest_Id.Equals(quest_ID); });
+        // 퀘스트 완료 상태로 바꾸기
+        int userQuestsindex = userQuestsList.FindIndex(x => x.User_ID.Equals(user_ID) && x.Quest_ID.Equals(quest_ID));
+        userQuestsList[userQuestsindex].questStatus = Q_Status.Completed;
+
+        // 유저가 현재 수행 중인 퀘스트들의 진행도를 나타내는 리스트에서 완료한 퀘스트 삭제
+        int userQuestObjIndex = userQuestObjList.FindIndex(x => x.User_ID.Equals(user_ID) && x.ObjectiveID.Equals(objectiveData.ObjectiveID));
+        questObjectList.RemoveAt(userQuestObjIndex);
+
+        // 클라이언트에 저장된 퀘스트들의 진행도를 나타내는 리스트에서 완료한 퀘스트 삭제
+        int index = questProgressList.FindIndex(x => x.quest_Id.Equals(quest_ID));
         questProgressList.RemoveAt(index);
 
         OnCompleteQuest?.Invoke();
@@ -422,7 +427,7 @@ public class QuestManager : MonoBehaviour
 
     #region 퀘스트 저장
     /// <summary>
-    /// DB에 아직 넣지 않고 클라이언트에 임의로 저장해놓은 데이터들을 DB로 저장 
+    /// DB에 아직 넣지 않고 클라이언트에 임의로 저장해놓은 데이터들을 DB로 저장 (userquestList, userquestOBJList)
     /// <para>(게임 종료 전 또는 일정 시간마다)</para>
     /// </summary>
     public void SaveQuestProgress()
@@ -438,6 +443,7 @@ public class QuestManager : MonoBehaviour
                 $"AND userquestobjectives.Objective_ID={objectiveData.ObjectiveID};";
             _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
         }
+          
     }
     private void AutoSave()
     {

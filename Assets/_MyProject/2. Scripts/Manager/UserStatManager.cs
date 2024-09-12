@@ -15,8 +15,8 @@ public class UserStatManager : MonoBehaviour
     public readonly string MaxMP = "maxmana";
 
     public static UserStatManager Instance { get; private set; }
-    public UserStatData userStatData { get; private set; }
-    private OriginUserStat originUserStat;
+    private UserStatData userStatData;
+    public UserStatClient userStatClient;
 
     /// <summary>
     /// UserStatManager 초기화 됐을 때, 발생하는 이벤트
@@ -35,52 +35,29 @@ public class UserStatManager : MonoBehaviour
     {
         Instance = this;
     }
-
     private void Start()
-    {        
-        userStatData = GetUserStatDataFromDB();
-        originUserStat = new OriginUserStat(userStatData);
+    {          
         StatManagerInit();
-        OnInitStatManager?.Invoke();
+        InvokeRepeating("AutoSave", 300f, 300f);
     }
     /// <summary>
-    /// 
+    /// 게임 시작하면 스탯 데이터 가져오기
     /// </summary>
     private void StatManagerInit()
     {
+        userStatData = GetUserStatDataFromDB();
+        userStatClient = new UserStatClient(userStatData);
+        Debug.Log(userStatClient.MaxHP);
         int user_ID = DatabaseManager.Instance.userData.UID;
 
-        int lvAmount = originUserStat.Lv;
-        int expAmount = originUserStat.Exp;
-        int maxExpAmount = originUserStat.MaxExp;
-        int strAmount = originUserStat.STR;
-        int dexAmount = originUserStat.DEX;
-        int intAmount = originUserStat.INT;
-        int lukAmount = originUserStat.LUK;
-        int defAmount = originUserStat.DEF;
-        int hpAmount = originUserStat.MaxHP;
-        int mpAmount = originUserStat.MaxMP;
-        string query =
-            $"UPDATE userstats\n" +
-            $"SET userstats.level={lvAmount}," +
-            $"userstats.maxexp={maxExpAmount}," +
-            $"userstats.exp={expAmount}," +
-            $"userstats.STR={strAmount}," +
-            $"userstats.DEX={dexAmount}," +
-            $"userstats.Intelligence={intAmount}," +
-            $"userstats.LuK={lukAmount}," +
-            $"userstats.defense={defAmount}," +
-            $"userstats.MaxHp={hpAmount}," +
-            $"userstats.MaxMana={mpAmount}\n" +
-            $"WHERE userstats.User_ID={user_ID};";
-        _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+        OnInitStatManager?.Invoke();
     }
 
     /// <summary>
     /// 유저 스탯 가져오기
     /// </summary>
     /// <returns></returns>
-    public UserStatData GetUserStatDataFromDB()
+    private UserStatData GetUserStatDataFromDB()
     {
         int user_ID = DatabaseManager.Instance.userData.UID;
         string query =
@@ -109,55 +86,60 @@ public class UserStatManager : MonoBehaviour
     /// </summary>
     /// <param name="itemID"></param>
     public void EquipItemUpdateStat(bool isEquip, int itemID = 0)
-    {
-        Debug.Log($"아이템 ID : {itemID}, 장착하는 것이야? : {isEquip}");
+    {        
         int user_ID = DatabaseManager.Instance.userData.UID;
-
-        int strAmount = 0;
         int dexAmount = 0;
         int intAmount = 0;
         int lukAmount = 0;
         int defAmount = 0;
         int hpAmount = 0;
         int mpAmount = 0;
+
+        int strAmount;
         if (itemID != 0)
         {
             // 아이템을 장착하고 있을 때
             EquipItemData equipItemData = ItemManager.Instance.GetEquipItemFromDB(itemID);
 
-            strAmount = isEquip ? originUserStat.UpdateSTR(equipItemData.STR_Boost) : originUserStat.UpdateSTR(-equipItemData.STR_Boost);
-            dexAmount = isEquip ? originUserStat.UpdateDEX(equipItemData.DEX_Boost) : originUserStat.UpdateDEX(-equipItemData.DEX_Boost);
-            intAmount = isEquip ? originUserStat.UpdateINT(equipItemData.INT_Boost) : originUserStat.UpdateINT(-equipItemData.INT_Boost);
-            lukAmount = isEquip ? originUserStat.UpdateLUK(equipItemData.LUK_Boost) : originUserStat.UpdateLUK(-equipItemData.LUK_Boost);
-            defAmount = isEquip ? originUserStat.UpdateDEF(equipItemData.DEF_Boost) : originUserStat.UpdateDEF(-equipItemData.DEF_Boost);
-            hpAmount = isEquip ? originUserStat.UpdateMaxHP(equipItemData.Hp_Boost) : originUserStat.UpdateMaxHP(-equipItemData.Hp_Boost);
-            mpAmount = isEquip ? originUserStat.UpdateMaxMP(equipItemData.Mp_Boost) : originUserStat.UpdateMaxMP(-equipItemData.Mp_Boost);
+            strAmount = isEquip ? equipItemData.STR_Boost : -equipItemData.STR_Boost;
+            dexAmount = isEquip ? equipItemData.DEX_Boost : -equipItemData.DEX_Boost;
+            intAmount = isEquip ? equipItemData.INT_Boost : -equipItemData.INT_Boost;
+            lukAmount = isEquip ? equipItemData.LUK_Boost : -equipItemData.LUK_Boost;
+            defAmount = isEquip ? equipItemData.DEF_Boost : -equipItemData.DEF_Boost;
+            hpAmount = isEquip ? equipItemData.Hp_Boost : -equipItemData.Hp_Boost;
+            mpAmount = isEquip ? equipItemData.Mp_Boost : -equipItemData.Mp_Boost;
+            userStatClient.UpdateSTR(strAmount);
+            userStatClient.UpdateDEX(dexAmount);
+            userStatClient.UpdateINT(intAmount);
+            userStatClient.UpdateLUK(lukAmount);
+            userStatClient.UpdateDEF(defAmount);
+            userStatClient.UpdateMaxHP(hpAmount);
+            userStatClient.UpdateMaxMP(mpAmount);
         }
-        else
-        {
-            // 아이템을 장착하고 있지 않을 때
-            strAmount = originUserStat.STR;
-            dexAmount = originUserStat.DEX;
-            intAmount = originUserStat.INT;
-            lukAmount = originUserStat.LUK;
-            defAmount = originUserStat.DEF;
-            hpAmount = originUserStat.MaxHP;
-            mpAmount = originUserStat.MaxMP;
-        }
-
+        //else
+        //{
+        //    // 아이템을 장착하고 있지 않을 때
+        //    strAmount = userStatClient.STR;
+        //    dexAmount = userStatClient.DEX;
+        //    intAmount = userStatClient.INT;
+        //    lukAmount = userStatClient.LUK;
+        //    defAmount = userStatClient.DEF;
+        //    hpAmount = userStatClient.MaxHP;
+        //    mpAmount = userStatClient.MaxMP;
+        //}
         //UserStatData userStatData = GetUserStatDataFromDB();        
 
-        string query =
-            $"UPDATE userstats\n" +
-            $"SET userstats.STR={strAmount}," +
-            $"userstats.DEX={dexAmount}," +
-            $"userstats.Intelligence={intAmount}," +
-            $"userstats.LuK={lukAmount}," +
-            $"userstats.defense={defAmount}," +
-            $"userstats.MaxHp={hpAmount}," +
-            $"userstats.MaxMana={mpAmount}\n" +
-            $"WHERE userstats.User_ID={user_ID};";
-        _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+        //string query =
+        //    $"UPDATE userstats\n" +
+        //    $"SET userstats.STR={strAmount}," +
+        //    $"userstats.DEX={dexAmount}," +
+        //    $"userstats.Intelligence={intAmount}," +
+        //    $"userstats.LuK={lukAmount}," +
+        //    $"userstats.defense={defAmount}," +
+        //    $"userstats.MaxHp={hpAmount}," +
+        //    $"userstats.MaxMana={mpAmount}\n" +
+        //    $"WHERE userstats.User_ID={user_ID};";
+        //_ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
     }
     /// <summary>
     /// 레벨업 시 유저 스탯 데이터 업데이트
@@ -167,32 +149,33 @@ public class UserStatManager : MonoBehaviour
     {
         int user_ID = DatabaseManager.Instance.userData.UID;
 
-        int lvAmount = originUserStat.UpdateLv(1);
-        int expAmount = originUserStat.Exp = remainExp;
-        int MaxExpAmount = originUserStat.UpdateMaxExp(originUserStat.levelUpStat.MaxExpAmount);
-        int strAmount = originUserStat.UpdateSTR(originUserStat.levelUpStat.STRAmount);
-        int dexAmount = originUserStat.UpdateDEX(originUserStat.levelUpStat.DEXAmount);
-        int intAmount = originUserStat.UpdateINT(originUserStat.levelUpStat.INTAmount);
-        int lukAmount = originUserStat.UpdateLUK(originUserStat.levelUpStat.LUKAmount);
-        int defAmount = originUserStat.UpdateDEF(originUserStat.levelUpStat.DEFAmount);
-        int hpAmount = originUserStat.UpdateMaxHP(originUserStat.levelUpStat.MaxhpAmount);
-        int mpAmount = originUserStat.UpdateMaxMP(originUserStat.levelUpStat.MaxmpAmount);
-        string query =
-            $"UPDATE userstats\n" +
-            $"SET userstats.level={lvAmount}," +                                  
-            $"userstats.exp={expAmount}," +
-            $"userstats.maxexp={MaxExpAmount}," +
-            $"userstats.STR={strAmount}," +
-            $"userstats.DEX={dexAmount}," +
-            $"userstats.Intelligence={intAmount}," +
-            $"userstats.LuK={lukAmount}," +
-            $"userstats.defense={defAmount}," +
-            $"userstats.MaxHp={hpAmount}," +
-            $"userstats.hp={hpAmount}," +
-            $"userstats.MaxMana={mpAmount}," +
-            $"userstats.mana={mpAmount}\n" +
-            $"WHERE userstats.User_ID={user_ID};"; 
-        _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+        int lvAmount = userStatClient.UpdateLv(1);
+        int expAmount = userStatClient.Exp = remainExp;
+        int MaxExpAmount = userStatClient.UpdateMaxExp(userStatClient.levelUpStat.MaxExpAmount);
+        int strAmount = userStatClient.UpdateSTR(userStatClient.levelUpStat.STRAmount);
+        int dexAmount = userStatClient.UpdateDEX(userStatClient.levelUpStat.DEXAmount);
+        int intAmount = userStatClient.UpdateINT(userStatClient.levelUpStat.INTAmount);
+        int lukAmount = userStatClient.UpdateLUK(userStatClient.levelUpStat.LUKAmount);
+        int defAmount = userStatClient.UpdateDEF(userStatClient.levelUpStat.DEFAmount);
+        int hpAmount = userStatClient.UpdateMaxHP(userStatClient.levelUpStat.MaxhpAmount);
+        int mpAmount = userStatClient.UpdateMaxMP(userStatClient.levelUpStat.MaxmpAmount);
+        //string query =
+        //    $"UPDATE userstats\n" +
+        //    $"SET userstats.level={lvAmount}," +                                  
+        //    $"userstats.exp={expAmount}," +
+        //    $"userstats.maxexp={MaxExpAmount}," +
+        //    $"userstats.STR={strAmount}," +
+        //    $"userstats.DEX={dexAmount}," +
+        //    $"userstats.Intelligence={intAmount}," +
+        //    $"userstats.LuK={lukAmount}," +
+        //    $"userstats.defense={defAmount}," +
+        //    $"userstats.MaxHp={hpAmount}," +
+        //    $"userstats.hp={hpAmount}," +
+        //    $"userstats.MaxMana={mpAmount}," +
+        //    $"userstats.mana={mpAmount}\n" +
+        //    $"WHERE userstats.User_ID={user_ID};"; 
+        //_ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+
 
         OnLevelUpUpdateStat?.Invoke();
         EventHandler.playerEvent.TriggerPlayerLevelUp();
@@ -205,19 +188,59 @@ public class UserStatManager : MonoBehaviour
     {
         int user_ID = DatabaseManager.Instance.userData.UID;
 
-        float ExpAmount = originUserStat.UpdateExp(expAmount);
-        string query =
-            $"UPDATE userstats\n" +
-            $"SET userstats.`Exp`={ExpAmount}\n" +
-            $"WHERE user_id={user_ID};";
-        _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+        float ExpAmount = userStatClient.UpdateExp(expAmount);
+        //string query =
+        //    $"UPDATE userstats\n" +
+        //    $"SET userstats.`Exp`={ExpAmount}\n" +
+        //    $"WHERE user_id={user_ID};";
+        //_ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
 
-        UserStatData userStat = GetUserStatDataFromDB();
-        
-        if (userStat.EXP >= userStat.MaxExp)
+        //UserStatData userStat = GetUserStatDataFromDB();
+
+        //if (userStat.EXP >= userStat.MaxExp)
+        //{
+        //    LevelUpUpdateStat(userStat.EXP - userStat.MaxExp);            
+        //}
+        if (userStatClient.Exp >= userStatClient.MaxExp)
         {
-            LevelUpUpdateStat(userStat.EXP - userStat.MaxExp);            
+            LevelUpUpdateStat(userStatClient.Exp - userStatClient.MaxExp);
         }
+
         OnChangeExpStat?.Invoke();
     }
+
+    #region 스탯 저장
+    /// <summary>
+    /// DB에 아직 넣지 않고 클라이언트에 임의로 저장해놓은 데이터들을 DB로 저장 (userquestList, userquestOBJList)
+    /// <para>(게임 종료 전 또는 일정 시간마다)</para>
+    /// </summary>
+    public void SaveQuestProgress()
+    {
+        Debug.Log("Stat 저장.");
+        int user_ID = DatabaseManager.Instance.userData.UID;
+
+        string query =
+            $"UPDATE userstats\n" +
+            $"SET userstats.level={userStatClient.Level}," +
+            $"userstats.maxexp={userStatClient.MaxExp}," +
+            $"userstats.exp={userStatClient.Exp}," +
+            $"userstats.STR={userStatClient.STR}," +
+            $"userstats.DEX={userStatClient.DEX}," +
+            $"userstats.Intelligence={userStatClient.INT}," +
+            $"userstats.LuK={userStatClient.LUK}," +
+            $"userstats.defense={userStatClient.DEF}," +
+            $"userstats.MaxHp={userStatClient.MaxHP}," +
+            $"userstats.MaxMana={userStatClient.MaxMP}\n" +
+            $"WHERE userstats.User_ID={user_ID};";
+        _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+    }
+    private void AutoSave()
+    {
+        SaveQuestProgress();
+    }
+    private void OnApplicationQuit()
+    {        
+        SaveQuestProgress();
+    }
+    #endregion
 }

@@ -67,11 +67,11 @@ public class UserStatData
     }
 }
 /// <summary>
-/// <para>원본의 유저 스탯값을 가지고 있는 클래스 변수</para>
+/// <para>유저 스탯값을 가지고 있는 클래스</para>
 /// <para>스탯을 가지고 놀 때 이걸로 이용한다.</para>
 /// 장비 착용, 미착용 / 레벨업
 /// </summary>
-public class OriginUserStat
+public class UserStatClient
 {
     #region 변수
     /// <summary>
@@ -93,6 +93,7 @@ public class OriginUserStat
     /// </summary>
     public LevelUpStat levelUpStat = new();
 
+    #region 원본 스탯
     private int orgLv = 1;
     private int orgMaxExp = 100;
     private int orgStr = 5;
@@ -103,7 +104,6 @@ public class OriginUserStat
     private int orgDef = 5;
     private int orgMaxHP = 1000;
     private int orgMaxMP = 500;
-
     /// <summary>
     /// 원본 레벨
     /// </summary>
@@ -144,8 +144,10 @@ public class OriginUserStat
     /// 원본 MaxMana 스탯값.
     /// </summary>
     public int O_MaxMP => orgMaxMP;
+    #endregion
 
-    public int Lv = 1;
+    public CharClass charClass;
+    public int Level = 1;
     public int MaxExp = 100;
     public int Exp = 0;
     public int STR = 5;
@@ -155,27 +157,34 @@ public class OriginUserStat
     public int ATK = 5;
     public int DEF = 5;
     public int MaxHP = 1000;
-    public int MaxMP = 500;    
+    public int HP = 1000;
+    public int MaxMP = 500;
+    public int MP = 500;
 
     #endregion
 
-    public OriginUserStat(UserStatData userStat)
+    public UserStatClient(UserStatData userStat)
     {
-        this.Lv = userStat.Level;
+        this.charClass = userStat.CharClass;
+        this.Level = userStat.Level;
+        Debug.Log(Level);
         this.Exp = userStat.EXP;
-        this.MaxExp = orgMaxExp + (levelUpStat.MaxExpAmount * Lv);
-        this.STR = orgStr + (levelUpStat.STRAmount * Lv);
-        this.DEX = orgDex + (levelUpStat.DEXAmount * Lv);
-        this.INT = orgInt + (levelUpStat.INTAmount * Lv);
-        this.LUK = orgLuk + (levelUpStat.LUKAmount * Lv);
-        this.DEF = orgDef + (levelUpStat.DEFAmount * Lv);
-        this.MaxHP = orgMaxHP + (levelUpStat.MaxhpAmount * Lv);
-        this.MaxMP = orgMaxMP + (levelUpStat.MaxmpAmount * Lv);
+        this.MaxExp = orgMaxExp + (levelUpStat.MaxExpAmount * (Level - 1));
+        this.STR = orgStr + (levelUpStat.STRAmount * (Level - 1));
+        this.DEX = orgDex + (levelUpStat.DEXAmount * (Level - 1));
+        this.INT = orgInt + (levelUpStat.INTAmount * (Level - 1));
+        this.LUK = orgLuk + (levelUpStat.LUKAmount * (Level - 1));
+        this.DEF = orgDef + (levelUpStat.DEFAmount * (Level - 1));
+        this.MaxHP = orgMaxHP + (levelUpStat.MaxhpAmount * (Level - 1));
+        this.MaxMP = orgMaxMP + (levelUpStat.MaxmpAmount * (Level - 1));
+        this.HP = this.MaxHP;
+        this.MP = this.MaxMP;
     }
 
+    #region 스탯 업데이트 함수
     public int UpdateLv(int amount)
     {
-        return Lv += amount;
+        return Level += amount;
     }
     public int UpdateExp(int amount)
     {
@@ -213,8 +222,17 @@ public class OriginUserStat
     {
         return MaxHP += amount;
     }
+    public int UpdateHP(int amount)
+    {
+        return HP += amount;
+    }
     public int UpdateMaxMP(int amount)
     {
         return MaxMP += amount;
     }
+    public int UpdateMP(int amount)
+    {
+        return MP += amount;
+    }
+    #endregion
 }

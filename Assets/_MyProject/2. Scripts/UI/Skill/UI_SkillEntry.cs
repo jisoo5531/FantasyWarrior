@@ -37,14 +37,14 @@ public class UI_SkillEntry : MonoBehaviour
         EventHandler.playerEvent.UnRegisterPlayerLevelUp(OnLevelUp_UnlockSkill);
     }
     public void Initialize(SkillData skillData, GameObject keySetPanel)
-    {
-        UserStatData userStatData = UserStatManager.Instance.GetUserStatDataFromDB();        
+    {        
+        UserStatClient userStatClient = UserStatManager.Instance.userStatClient;
         this.skillData = skillData;
         this.keySetPanel = keySetPanel;
 
         OnLevelUp_UnlockSkill();
 
-        string folderName = $"{userStatData.CharClass.ToString()}_Skills";
+        string folderName = $"{userStatClient.charClass.ToString()}_Skills";
         skillIcon.sprite = Resources.Load<Sprite>($"{folderName}/{skillData.Icon_Name}");
         skillName.text = skillData.Skill_Name;        
     }

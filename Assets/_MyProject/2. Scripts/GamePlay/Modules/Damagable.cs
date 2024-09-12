@@ -71,9 +71,9 @@ public class Damagable : MonoBehaviour, IDamagable
 
     private void OnChangeHp()
     {
-        UserStatData userStatData = UserStatManager.Instance.GetUserStatDataFromDB();
-        this.MaxHp = userStatData.MaxHp;
-        this.Hp = userStatData.Hp;        
+        UserStatClient userStatClient = UserStatManager.Instance.userStatClient;
+        this.MaxHp = userStatClient.MaxHP;
+        this.Hp = userStatClient.HP;        
         OnChangeHPEvent?.Invoke();
     }
 }
