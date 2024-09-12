@@ -12,7 +12,8 @@ public class InventoryManager : MonoBehaviour
     /// <summary>
     /// 장착한 아이템을 해제하거나 등등의 인벤토리로 아이템이 추가되는 상황에서 쓰일 리스트
     /// </summary>
-    public List<int> addWhichItemList = new List<int>();
+    public List<AddItemClassfiy> addWhichItemList = new List<AddItemClassfiy>();
+    
     private ItemData itemData;
 
     /// <summary>
@@ -33,13 +34,13 @@ public class InventoryManager : MonoBehaviour
     /// 인벤토리로 어떤 아이템이 추가되었는지 확인할 메서드
     /// </summary>
     /// <param name="itemID"></param>
-    public void AddWhichItem(int itemID)
+    public void AddWhichItem(AddItemClassfiy addClassfiy)
     {
-        addWhichItemList.Add(itemID);
+        addWhichItemList.Add(addClassfiy);
     }
     public void ClearAddWhichItemList()
     {
-        addWhichItemList = new List<int>();
+        addWhichItemList = new();
     }
 
     /// <summary>
@@ -73,7 +74,7 @@ public class InventoryManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 아이템을 획득 시, 실행할 메서드
+    /// 몬스터를 잡고 아이템을 획득 시, 실행할 메서드
     /// </summary>
     /// <param name="itemData"></param>
     /// <param name="amount"></param>
@@ -87,16 +88,22 @@ public class InventoryManager : MonoBehaviour
         {
             // 아이템 획득 시, 인벤토리에 있는 아이템이라면
             inventoryDataList[index].Quantity += amount;
+            AddWhichItem(new AddItemClassfiy(itemData.Item_ID, amount, true));
         }
         else
         {
             // 아이템 획득 시, 인벤토리에 없는 아이템이라면
             inventoryDataList.Add(new InventoryData(user_Id, itemData.Item_ID, amount));
-            AddWhichItem(itemData.Item_ID);
+            AddWhichItem(new AddItemClassfiy(itemData.Item_ID, amount, false));
         }
         OnGetItem?.Invoke();
     }
-    public void GetItem(int item_ID, int amount)
+    /// <summary>
+    /// 장비를 벗을 때, 인벤토리로 추가
+    /// </summary>
+    /// <param name="item_ID"></param>
+    /// <param name="amount"></param>
+    public void GetItemUnEquip(int item_ID, int amount)
     {
         int user_ID = DatabaseManager.Instance.userData.UID;
         inventoryDataList.Add(new InventoryData(user_ID, item_ID, amount));
@@ -113,7 +120,7 @@ public class InventoryManager : MonoBehaviour
             inventoryDataList.RemoveAt(index);
         }
     }
-    public int GetItemQuantity(int itemID)
+    public int? GetItemQuantity(int itemID)
     {
         int user_ID = DatabaseManager.Instance.userData.UID;
 
@@ -122,7 +129,7 @@ public class InventoryManager : MonoBehaviour
         {
             return inventoryDataList[index].Quantity;
         }
-        return 0;
+        return null;
     }
     #region 인벤토리 저장
     /// <summary>
@@ -130,33 +137,40 @@ public class InventoryManager : MonoBehaviour
     /// <para>(게임 종료 전 또는 일정 시간마다)</para>
     /// </summary>
     public void SaveQuestProgress()
-    {
-        Debug.Log("장착 장비 저장.");
+    {        
         int user_ID = DatabaseManager.Instance.userData.UID;
-        var (added, removed, modified) = originInventoryList.GetDifferences(inventoryDataList);
 
-        foreach (var item in added)
-        {
-            string query =
-                $"INSERT INTO inventory (inventory.User_ID, inventory.Item_ID, inventory.Quantity)\n" +
-                $"VALUES ({user_ID}, {item.Item_ID}, {item.Quantity});";
-            _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
-        }
-        foreach (var item in removed)
-        {
-            string query =
-                $"DELETE FROM inventory\n" +
-                $"WHERE inventory.User_ID={user_ID} AND inventory.Item_ID={item.Item_ID};";
-            _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
-        }
-        foreach (var item in modified)
-        {
+        var differences = Extensions.GetDifferences(
+            originInventoryList,
+            inventoryDataList,
+            (original, updated) => original.Item_ID == updated.Item_ID,
+            (original, updated) => original.Quantity != updated.Quantity
+        );
+                
+
+        foreach (var item in differences.Modified)
+        {                        
             string query =
                 $"UPDATE inventory\n" +
                 $"SET inventory.Quantity={item.Quantity}\n" +
                 $"WHERE inventory.User_ID={user_ID} AND inventory.Item_ID={item.Item_ID};";
             _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
         }
+        foreach (var item in differences.Added)
+        {            
+            string query =
+                $"INSERT INTO inventory (inventory.User_ID, inventory.Item_ID, inventory.Quantity)\n" +
+                $"VALUES ({user_ID}, {item.Item_ID}, {item.Quantity});";            
+            _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+        }
+        foreach (var item in differences.Removed)
+        {            
+            string query =
+                $"DELETE FROM inventory\n" +
+                $"WHERE inventory.User_ID={user_ID} AND inventory.Item_ID={item.Item_ID};";
+            _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+        }
+        
     }
     private void AutoSave()
     {
@@ -167,4 +181,20 @@ public class InventoryManager : MonoBehaviour
         SaveQuestProgress();
     }
     #endregion
+}
+/// <summary>
+/// 얻은 아이템의 분류를 위한 클래스
+/// </summary>
+public class AddItemClassfiy 
+{
+    public int item_ID { get; private set; }
+    public int Amount { get; private set; }
+    public bool isExist { get; private set; }
+
+    public AddItemClassfiy(int item_ID, int amount, bool isExist)
+    {
+        this.item_ID = item_ID;
+        this.Amount = amount;
+        this.isExist = isExist;
+    }
 }

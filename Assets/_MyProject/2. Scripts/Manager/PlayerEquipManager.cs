@@ -128,12 +128,12 @@ public class PlayerEquipManager : MonoBehaviour
         for (int i = 0; i < UserEquipTable.Count; i++)
         {
             int itemID = UserEquipTable[EquipParts[i]];
-            if (itemID != 0)
+            if (itemID > 0)
             {
                 UserEquipTable[EquipParts[i]] = 0;
                 UserStatManager.Instance.EquipItemUpdateStat(isEquip: false, itemID: itemID);
-                InventoryManager.Instance.GetItem(itemID, 1);
-                InventoryManager.Instance.AddWhichItem(itemID);
+                InventoryManager.Instance.GetItemUnEquip(itemID, 1);
+                InventoryManager.Instance.AddWhichItem(new AddItemClassfiy(itemID, 1, false));
             }
         }
         OnAllUnEquipButtonClick?.Invoke();
@@ -156,8 +156,8 @@ public class PlayerEquipManager : MonoBehaviour
         UserEquipTable[part] = 0;
 
         UserStatManager.Instance.EquipItemUpdateStat(isEquip: false, itemID);
-        InventoryManager.Instance.GetItem(itemID, 1);
-        InventoryManager.Instance.AddWhichItem(itemID);
+        InventoryManager.Instance.GetItemUnEquip(itemID, 1);
+        InventoryManager.Instance.AddWhichItem(new AddItemClassfiy(itemID, 1, false));
 
         OnUnEquipItem?.Invoke();
     }
@@ -187,8 +187,9 @@ public class PlayerEquipManager : MonoBehaviour
             $"playerequipment.BootsItem_ID={boots}," +
             $"playerequipment.WeaponItem_ID={weapon}," +
             $"playerequipment.PendantItem_ID={pendant}," +
-            $"playerequipment.RingItem_ID={ring}," +
+            $"playerequipment.RingItem_ID={ring}\n" +
             $"WHERE playerequipment.User_ID={user_ID};";
+        Debug.Log(query);
         _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
     }
     private void AutoSave()

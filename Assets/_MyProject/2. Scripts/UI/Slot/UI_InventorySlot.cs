@@ -21,8 +21,12 @@ public class UI_InventorySlot : UI_ItemSlot
     {
         base.Initialize(itemID, sprite, itemInfo);
         this.Item_Type = ItemManager.Instance.GetInventoryItemTypeFromDB(itemID);
-        int quantity = InventoryManager.Instance.GetItemQuantity(itemID);
-        Debug.Log($"ID:{itemID}, item_Type:{Item_Type}");
+        int? quantity = InventoryManager.Instance.GetItemQuantity(itemID);
+        if (quantity == null)
+        {
+            Debug.Log("잘못된 ID");
+            return;
+        }        
         itemImage.ImageTransparent(1);
         itemQuantityText.text = quantity.ToString();        
         itemQuantityText.gameObject.SetActive(true);        
@@ -39,8 +43,6 @@ public class UI_InventorySlot : UI_ItemSlot
         {
             return;
         }
-        Debug.Log("더블클릭했다.");
-        Debug.Log($"현재 아이템 ID : {this.itemID}");
         switch (Item_Type)
         {
             case Item_Type.Equipment:
