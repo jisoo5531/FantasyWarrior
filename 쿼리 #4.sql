@@ -23,6 +23,4 @@
 #JOIN skills ON userstats.`Level` >= skills.Unlock_Level
 #WHERE userstats.user_id = 1 AND skills.Class = 1;
 
-UPDATE userquests
-SET userquests.`Status`={}
-WHERE userquests.User_ID={} AND userquests.Quest_ID={};
+INSERT INTO inventory (inventory.User_ID, inventory.Item_ID, inventory.Quantity)

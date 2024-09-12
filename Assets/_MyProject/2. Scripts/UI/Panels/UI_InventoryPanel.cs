@@ -67,7 +67,7 @@ public class UI_InventoryPanel : MonoBehaviour
         PlayerEquipManager.Instance.OnUnEquipItem += SetItemToSlot;
         InventoryManager.Instance.OnGetItem += SetItemToSlot;
 
-        List<InventoryData> inventoryDataList = InventoryManager.Instance.GetDataFromDatabase();
+        List<InventoryData> inventoryDataList = InventoryManager.Instance.inventoryDataList;
         if (inventoryDataList.Count > 0)
         {
             Debug.Log("¿Ö ¾ÈµÅ?");
@@ -87,7 +87,7 @@ public class UI_InventoryPanel : MonoBehaviour
 
         Debug.Log(InventoryManager.Instance.addWhichItemList.Count);
         
-        List<InventoryData> inventoryDataList = InventoryManager.Instance.GetDataFromDatabase();        
+        List<InventoryData> inventoryDataList = InventoryManager.Instance.inventoryDataList;        
         
         foreach (int itemID in InventoryManager.Instance.addWhichItemList)
         {
@@ -144,7 +144,7 @@ public class UI_InventoryPanel : MonoBehaviour
         SlotClear(ConsumpContent);
         SlotClear(OtherContent);
 
-        List<InventoryData> inventoryDataList = InventoryManager.Instance.GetDataFromDatabase();
+        List<InventoryData> inventoryDataList = InventoryManager.Instance.inventoryDataList;
 
         Debug.Log(inventoryDataList.Count);
         foreach (InventoryData item in inventoryDataList)

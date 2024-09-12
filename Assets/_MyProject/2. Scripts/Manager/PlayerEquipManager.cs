@@ -76,6 +76,11 @@ public class PlayerEquipManager : MonoBehaviour
         OnEquipManagerInit?.Invoke();
         //UserStatManager.Instance.UpdateUserStat();
     }
+    private void Start()
+    {
+        InvokeRepeating("AutoSave", 300f, 300f);
+    }
+
     /// <summary>
     /// 플레이어가 장착한 장비 목록 가져오기
     /// </summary>
@@ -123,11 +128,14 @@ public class PlayerEquipManager : MonoBehaviour
         for (int i = 0; i < UserEquipTable.Count; i++)
         {
             int itemID = UserEquipTable[EquipParts[i]];
-
-            UserStatManager.Instance.EquipItemUpdateStat(isEquip: false, itemID: itemID);
-            InventoryManager.Instance.AddWhichItem(itemID);
+            if (itemID != 0)
+            {
+                UserEquipTable[EquipParts[i]] = 0;
+                UserStatManager.Instance.EquipItemUpdateStat(isEquip: false, itemID: itemID);
+                InventoryManager.Instance.GetItem(itemID, 1);
+                InventoryManager.Instance.AddWhichItem(itemID);
+            }
         }
-
         OnAllUnEquipButtonClick?.Invoke();
     }
     /// <summary>
@@ -148,8 +156,48 @@ public class PlayerEquipManager : MonoBehaviour
         UserEquipTable[part] = 0;
 
         UserStatManager.Instance.EquipItemUpdateStat(isEquip: false, itemID);
+        InventoryManager.Instance.GetItem(itemID, 1);
         InventoryManager.Instance.AddWhichItem(itemID);
 
         OnUnEquipItem?.Invoke();
     }
+    #region 장착 장비 저장
+    /// <summary>
+    /// DB에 아직 넣지 않고 클라이언트에 임의로 저장해놓은 데이터들을 DB로 저장 (userquestList, userquestOBJList)
+    /// <para>(게임 종료 전 또는 일정 시간마다)</para>
+    /// </summary>
+    public void SaveQuestProgress()
+    {
+        Debug.Log("장착 장비 저장.");
+        int user_ID = DatabaseManager.Instance.userData.UID;
+
+        string head = UserEquipTable[EquipParts[0]] != 0 ? UserEquipTable[EquipParts[0]].ToString() : "NULL";
+        string armor = UserEquipTable[EquipParts[1]] != 0 ? UserEquipTable[EquipParts[1]].ToString() : "NULL";
+        string glove = UserEquipTable[EquipParts[2]] != 0 ? UserEquipTable[EquipParts[2]].ToString() : "NULL";
+        string boots = UserEquipTable[EquipParts[3]] != 0 ? UserEquipTable[EquipParts[3]].ToString() : "NULL";
+        string weapon = UserEquipTable[EquipParts[4]] != 0 ? UserEquipTable[EquipParts[4]].ToString() : "NULL";
+        string pendant = UserEquipTable[EquipParts[5]] != 0 ? UserEquipTable[EquipParts[5]].ToString() : "NULL";
+        string ring = UserEquipTable[EquipParts[6]] != 0 ? UserEquipTable[EquipParts[6]].ToString() : "NULL";
+
+        string query =
+            $"UPDATE playerequipment\n" +
+            $"SET playerequipment.HeadItem_ID={head}," +
+            $"playerequipment.ArmorItem_ID={armor}," +
+            $"playerequipment.GlovesItem_ID={glove}," +
+            $"playerequipment.BootsItem_ID={boots}," +
+            $"playerequipment.WeaponItem_ID={weapon}," +
+            $"playerequipment.PendantItem_ID={pendant}," +
+            $"playerequipment.RingItem_ID={ring}," +
+            $"WHERE playerequipment.User_ID={user_ID};";
+        _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+    }
+    private void AutoSave()
+    {
+        SaveQuestProgress();
+    }
+    private void OnApplicationQuit()
+    {
+        SaveQuestProgress();
+    }
+    #endregion
 }
