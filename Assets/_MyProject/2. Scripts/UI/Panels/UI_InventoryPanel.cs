@@ -66,7 +66,7 @@ public class UI_InventoryPanel : MonoBehaviour
                 }
             );
     }
-    private void Start()
+    public void InventoryPanelInit()
     {
         //PlayerEquipManager.Instance.OnAllUnEquipButtonClick += SetItemToSlot_Sort;
         //PlayerEquipManager.Instance.OnUnEquipItem += SetItemToSlot_Sort;

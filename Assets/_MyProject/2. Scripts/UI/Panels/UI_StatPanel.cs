@@ -21,8 +21,8 @@ public class UI_StatPanel : MonoBehaviour
     public Status statusUI;
     private UserStatClient userStatClient;
 
-    private void Awake()
-    {        
+    public void StatPanelInit()
+    {
         UserStatManager.Instance.OnLevelUpUpdateStat += SetStat;
         PlayerEquipManager.Instance.OnEquipItem += SetStat;
         PlayerEquipManager.Instance.OnUnEquipItem += SetStat;

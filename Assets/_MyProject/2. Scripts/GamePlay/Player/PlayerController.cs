@@ -46,9 +46,9 @@ public class PlayerController : MonoBehaviour
         // override
     }
     private void OnEnable()
-    {
-        UserStatManager.Instance.OnInitStatManager += StatInit;
-        PlayerEquipManager.Instance.OnEquipManagerInit += StatInit;
+    {        
+        EventHandler.managerEvent.RegisterStatManagerInit(StatInit);
+        EventHandler.managerEvent.RegisterEquipManagerInit(StatInit);
         damagable.OnHpChange += OnHpChange;
         damagable.OnDeath += OnDeath;
     }
@@ -82,9 +82,9 @@ public class PlayerController : MonoBehaviour
     private void OnDisable()
     {        
         damagable.OnHpChange -= OnHpChange;
-        damagable.OnDeath -= OnDeath;
-        UserStatManager.Instance.OnInitStatManager -= StatInit;
-        PlayerEquipManager.Instance.OnEquipManagerInit -= StatInit;
+        damagable.OnDeath -= OnDeath;        
+        EventHandler.managerEvent.UnRegisterStatManagerInit(StatInit);
+        EventHandler.managerEvent.UnRegisterEquipManagerInit(StatInit);
     }
     //private void OnDestroy()
     //{

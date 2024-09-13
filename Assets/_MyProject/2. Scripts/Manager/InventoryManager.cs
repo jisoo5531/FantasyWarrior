@@ -24,12 +24,17 @@ public class InventoryManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-
     }
     private void Start()
     {
-        GetDataFromDatabase();
+        InventoryManagerInit();
     }
+    private void InventoryManagerInit()
+    {
+        GetDataFromDatabase();
+        EventHandler.managerEvent.TriggerInventoryManagerInit();
+    }
+    
     /// <summary>
     /// 인벤토리로 어떤 아이템이 추가되었는지 확인할 메서드
     /// </summary>

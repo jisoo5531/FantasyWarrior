@@ -14,6 +14,14 @@ public class PanelManager : MonoBehaviour
     public UI_QuestPanel QuestPanel;
     public UI_StatPanel StatPanel;
 
+    private void Awake()
+    {
+        EventHandler.managerEvent.RegisterQuestManagerInit(QuestPanel.QuestPanelInit);
+        EventHandler.managerEvent.RegisterSkillManagerInit(SkillPanel.SkillPanelInit);
+        EventHandler.managerEvent.RegisterInventoryManagerInit(InventoryPanel.InventoryPanelInit);
+        EventHandler.managerEvent.RegisterStatManagerInit(StatPanel.StatPanelInit);
+    }
+
     private void OnEnable()
     {
         GameManager.inputActions.PlayerActions.UI_Skill.performed += OnSkill_UI;

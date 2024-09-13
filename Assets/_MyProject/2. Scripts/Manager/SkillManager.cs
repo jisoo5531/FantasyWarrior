@@ -15,20 +15,23 @@ public class SkillManager : MonoBehaviour
         Instance = this;
         UserStatManager.Instance.OnLevelUpUpdateStat += OnLevelUp_UnlockSkill;
     }
-    private void Start()
+    public void SkillManagerInit()
     {
-        //string query =
-
         GetSkillFromDatabaseData();
-        
+
         UserStatClient userStatClient = UserStatManager.Instance.userStatClient;
         foreach (SkillData skillData in userSkillDataList)
-        {            
+        {
             if (userStatClient.Level >= skillData.Unlock_Level)
             {
                 userAvailableSkillList.Add(skillData);
             }
         }
+        EventHandler.managerEvent.TriggerSkillManagerInit();
+    }
+    private void Start()
+    {
+        SkillManagerInit();        
     }
 
     /// <summary>

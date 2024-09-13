@@ -23,16 +23,15 @@ public class UI_SkillPanel : MonoBehaviour
     {
         EventHandler.skillKey.RegisterSkillKeyChange(OnChangeSkill);
     }
-
-    private void Start()
-    {        
+    public void SkillPanelInit()
+    {
         for (int i = 0; i < iconPanelList.Count; i++)
         {
             Sprite skillIcon = PlayerUIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];
             iconPanelList[i].ActionBarIcon.sprite = skillIcon;
-            iconPanelList[i].KeyIcon.sprite = skillIcon;            
+            iconPanelList[i].KeyIcon.sprite = skillIcon;
         }
-        InitSkillWindow();        
+        InitSkillWindow();
     }
     private void InitSkillWindow()
     {

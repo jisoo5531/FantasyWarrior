@@ -81,8 +81,8 @@ public class QuestManager : MonoBehaviour
                 QuestObjectivesData objective = GetObjectiveData(objectiveID: QO.ObjectiveID);
                 questProgressList.Add(new QuestProgress(objective.Quest_ID, QO.CurrentAmount, objective.ReqAmount));
             }
-        }        
-        OnQuestManagerInit?.Invoke();
+        }
+        EventHandler.managerEvent.TriggerQuestManagerInit();
     }
     #region 게임 시작할 때 정보 가져오기
     /// <summary>

@@ -19,10 +19,6 @@ public class UserStatManager : MonoBehaviour
     public UserStatClient userStatClient;
 
     /// <summary>
-    /// UserStatManager 초기화 됐을 때, 발생하는 이벤트
-    /// </summary>
-    public event Action OnInitStatManager;
-    /// <summary>
     /// 레벨업 시, 실행할 이벤트
     /// </summary>
     public event Action OnLevelUpUpdateStat;
@@ -49,8 +45,8 @@ public class UserStatManager : MonoBehaviour
         userStatClient = new UserStatClient(userStatData);
         Debug.Log(userStatClient.MaxHP);
         int user_ID = DatabaseManager.Instance.userData.UID;
-
-        OnInitStatManager?.Invoke();
+        
+        EventHandler.managerEvent.TriggerStatManagerInit();
     }
 
     /// <summary>

@@ -36,17 +36,13 @@ public class PlayerEquipManager : MonoBehaviour
     /// <summary>
     /// 모든 장비 해제 버튼을 눌렀을 때, 발생하는 이벤트
     /// </summary>
-    public event Action OnAllUnEquipButtonClick;
-    /// <summary>
-    /// PlayerEquipManager가 초기화 됐을 때, 발생하는 이벤트
-    /// </summary>
-    public event Action OnEquipManagerInit;
+    public event Action OnAllUnEquipButtonClick;    
 
     private void Awake()
     {
         Instance = this;
-        unEquipButton.onClick.AddListener(UnEquipAll);
-        UserStatManager.Instance.OnInitStatManager += Initialize;
+        unEquipButton.onClick.AddListener(UnEquipAll);        
+        EventHandler.managerEvent.RegisterStatManagerInit(Initialize);
     }
     /// <summary>
     /// UserStatManager의 초기화 이후 초기화가 된다.
@@ -72,8 +68,8 @@ public class PlayerEquipManager : MonoBehaviour
         UserStatManager.Instance.EquipItemUpdateStat(isEquip: true, playerEquipData.WeaponItem_ID);
         UserStatManager.Instance.EquipItemUpdateStat(isEquip: true, playerEquipData.Pendant_ID);
         UserStatManager.Instance.EquipItemUpdateStat(isEquip: true, playerEquipData.Ring_ID);
-
-        OnEquipManagerInit?.Invoke();
+        
+        EventHandler.managerEvent.TriggerEquipManagerInit();
         //UserStatManager.Instance.UpdateUserStat();
     }
     private void Start()
