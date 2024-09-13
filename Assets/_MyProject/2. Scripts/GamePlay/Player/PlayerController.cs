@@ -25,9 +25,6 @@ public class PlayerController : MonoBehaviour
     protected Damagable damagable;
     protected Attackable attackable;
 
-    // TODO : 임시 레벨업 테스트 버튼
-    public Button LevelUpButton;
-
     private void Awake()
     {        
         controller = GetComponent<CharacterController>();        

@@ -7,7 +7,6 @@ public class Damagable : MonoBehaviour, IDamagable
 {
     public int Unit_ID { get; private set; }
 
-    // TODO : 장비 장착, 해제 시 스탯 반영한거. 플레이어 UI에도 반영
     public int MaxHp { get; set; }
     public int Hp { get; set; }
 

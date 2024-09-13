@@ -7,7 +7,6 @@ using UnityEngine;
 
 public class QuestManager : MonoBehaviour
 {
-    // TODO : DB 와 관련된 것들. 클라이언트에 임시로 저장시키기 -> 매번 DB에 접속하면 부하
     public static QuestManager Instance { get; private set; }
     /// <summary>
     /// 모든 퀘스트들을 저장할 리스트

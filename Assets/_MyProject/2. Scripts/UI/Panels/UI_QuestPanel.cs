@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class UI_QuestPanel : MonoBehaviour
 {
-    // TODO : 0912. 퀘스트 진행 상황 오류 해결하기. 퀘스트가 완료될 때 진행 탭에서 완료 탭으로 넘어가야 한다.
-    // 이 때, 완료탭으로 넘어가지지만 진행 탭에서 사라지지 않는 버그 발생
     // TODO : 퀘스트 상세정보 창 만들기
 
     [Header("모든 퀘스트")]

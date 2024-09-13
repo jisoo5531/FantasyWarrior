@@ -71,10 +71,6 @@ public class DatabaseManager : MonoBehaviour
             //  실패
         }
     }  
-    /// <summary>
-    /// TODO : 임시
-    /// </summary>
-    
 
     #region 회원가입
 
