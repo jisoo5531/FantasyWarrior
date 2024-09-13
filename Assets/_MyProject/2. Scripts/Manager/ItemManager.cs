@@ -10,7 +10,10 @@ public class ItemManager : MonoBehaviour
     /// <summary>
     /// 아이템 테이블의 데이터들을 담아놓은 리스트
     /// </summary>
-    private List<ItemData> itemDataList;
+    public List<ItemData> itemDataList { get; private set; }
+    public List<EquipItemData> equipItemList { get; private set; }
+    public List<ConsumpItemData> consumpItemList { get; private set; }
+    public List<OtherItemData> otherItemList { get; private set; }
 
     private void Awake()
     {
@@ -18,16 +21,18 @@ public class ItemManager : MonoBehaviour
     }
     private void Start()
     {
-        GetItemDataFromDatabase();        
-    }
+        GetItemFromDB();
+        GetEquipItemFromDB();
+        GetConsumpItemFromDB();
+        GetOtherItemFromDB();
+        EventHandler.managerEvent.TriggerItemManagerInit();
+    }    
 
-
-    #region 아이템 정보 가져오기
     /// <summary>
     /// 아이템들의 리스트를 가져오기
     /// </summary>
     /// <returns></returns>
-    public List<ItemData> GetItemDataFromDatabase()
+    private List<ItemData> GetItemFromDB()
     {
         itemDataList = new List<ItemData>();
         string query =
@@ -59,53 +64,28 @@ public class ItemManager : MonoBehaviour
     /// <param name="itemID"></param>
     /// <returns></returns>
     public string GetInventoryItemNameFromDB(int itemID)
-    {
-        string query =
-            $"SELECT items.item_name\n" +
-            $"FROM items\n" +
-            $"WHERE items.Item_ID={itemID};";
-        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
-
-        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
-
-        if (isGetData)
+    {        
+        int index = itemDataList.FindIndex(x => x.Item_ID.Equals(itemID));
+        if (index >= 0)
         {
-            DataRow row = dataSet.Tables[0].Rows[0];
-            return row["item_name"].ToString();
+            return itemDataList[index].Item_Name;
         }
-        else
-        {
-            //  실패
-            return string.Empty;
-        }
+        return string.Empty;
     }
     /// <summary>
     /// 특정 아이템 타입(종류) 가져오기
     /// </summary>
     /// <param name="itemID"></param>
     /// <returns></returns>
-    public Item_Type GetInventoryItemTypeFromDB(int itemID)
+    public Item_Type? GetInventoryItemTypeFromDB(int itemID)
     {
-        string query =
-            $"SELECT items.Item_Type\n" +
-            $"FROM items\n" +
-            $"WHERE items.item_ID={itemID};";
-        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
-
-        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
-
-        if (isGetData)
+        int index = itemDataList.FindIndex(x => x.Item_ID.Equals(itemID));
+        if (index >= 0)
         {
-            DataRow row = dataSet.Tables[0].Rows[0];
-            return (Item_Type)int.Parse(row["Item_Type"].ToString());
+            return itemDataList[index].Item_Type;
         }
-        else
-        {
-            //  실패
-            return (Item_Type)int.MaxValue;
-        }
+        return null;
     }
-    #endregion
 
     #region 장비, 소비, 기타 아이템 가져오기
     /// <summary>
@@ -113,71 +93,72 @@ public class ItemManager : MonoBehaviour
     /// </summary>
     /// <param name="itemID"></param>
     /// <returns></returns>
-    public EquipItemData GetEquipItemFromDB(int itemID)
+    private void GetEquipItemFromDB()
     {
-        if (itemID == 0)
-        {
-            return null;
-        }
+        equipItemList = new List<EquipItemData>();
+
         string query =
             $"SELECT *\n" +
-            $"FROM equipmentitems\n" +
-            $"WHERE equipmentitems.item_id={itemID};";
+            $"FROM equipmentitems;";
         DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
 
         bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
 
         if (isGetData)
         {
-            DataRow row = dataSet.Tables[0].Rows[0];
-            return new EquipItemData(row);
+            foreach (DataRow row in dataSet.Tables[0].Rows)
+            {
+                equipItemList.Add(new EquipItemData(row));
+            }
+        }
+        else
+        {
+            //실패
+        }
+
+    }
+    private void GetConsumpItemFromDB()
+    {
+        consumpItemList = new List<ConsumpItemData>();
+        string query =
+            $"SELECT *\n" +
+            $"FROM consumitems;";        
+        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
+
+        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
+
+        if (isGetData)
+        {
+            foreach (DataRow row in dataSet.Tables[0].Rows)
+            {
+                consumpItemList.Add(new ConsumpItemData(row));
+            }
         }
         else
         {
             //  실패
-            return null;
         }
     }
-    public ConsumpItemData GetConsumpItemFromDB(int itemID)
+    private void GetOtherItemFromDB()
     {
+        otherItemList = new List<OtherItemData>();
         string query =
             $"SELECT *\n" +
-            $"FROM consumitems\n" +
-            $"WHERE consumitems.item_id={itemID};";        
+            $"FROM otheritems;";    
         DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
 
         bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
 
         if (isGetData)
         {
-            DataRow row = dataSet.Tables[0].Rows[0];
-            return new ConsumpItemData(row);
+            foreach (DataRow row in dataSet.Tables[0].Rows)
+            {
+                otherItemList.Add(new OtherItemData(row));
+            }
         }
         else
         {
             //  실패
-            return null;
-        }
-    }
-    public OtherItemData GetOtherItemFromDB(int itemID)
-    {
-        string query =
-            $"SELECT *\n" +
-            $"FROM otheritems\n" +
-            $"WHERE otheritems.item_id={itemID};";        
-        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
-
-        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
-
-        if (isGetData)
-        {
-            DataRow row = dataSet.Tables[0].Rows[0];
-            return new OtherItemData(row);
-        }
-        else
-        {
-            //  실패
-            return null;
         }
     }
     #endregion

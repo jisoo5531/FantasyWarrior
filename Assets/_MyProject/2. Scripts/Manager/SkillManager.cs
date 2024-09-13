@@ -20,12 +20,18 @@ public class SkillManager : MonoBehaviour
     /// 현재 유저가 보유(배운) 스킬 리스트
     /// </summary>
     public List<UserSkillData> UserSkillList { get; private set; }
+    /// <summary>
+    /// 저장할 때 비교를 위한 원본 스킬 리스트
+    /// </summary>
     public List<UserSkillData> UserSkillOrigin { get; private set; }
 
     /// <summary>
     /// 레벨업을 할때마다 스킬 언락 실행 이벤트
     /// </summary>
     public event Action OnUnlockSkillEvent;
+    /// <summary>
+    /// 스킬을 배울 때 발생하는 이벤트
+    /// </summary>
     public event Action OnLearnSkillEvent;
 
     private void Awake()
@@ -127,29 +133,6 @@ public class SkillManager : MonoBehaviour
     /// </summary>
     private void OnLevelUp_UnlockSkill()
     {
-        //string query =
-        //    $"SELECT skills.Skill_ID, skills.Skill_Name, skills.Level, skills.Damage, skills.Mana_Cost, skills.Cooltime, skills.Unlock_Level, skills.Skill_Order, skills.Class, skills.Description, skills.Icon_Name\n" +
-        //    $"FROM userstats\n" +
-        //    $"JOIN skills ON userstats.`Level` >= skills.Unlock_Level\n" +
-        //    $"WHERE userstats.user_id = 1 AND skills.Class = 1;";
-
-        //DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
-
-        //bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
-        //if (isGetData)
-        //{
-        //    userAvailableSkillList.Clear();
-        //    foreach (DataRow row in dataSet.Tables[0].Rows)
-        //    {
-        //        SkillData data = new SkillData(row);
-        //        userAvailableSkillList.Add(data);
-        //        //skillTable.Add(data.Skill_ID - 1, data.Skill_Name);
-        //    }
-        //}
-        //else
-        //{
-        //    //  실패
-        //}
         UserStatClient userStat = UserStatManager.Instance.userStatClient;
         int userLevel = userStat.Level;
         CharClass userClass = userStat.charClass;
@@ -167,6 +150,10 @@ public class SkillManager : MonoBehaviour
         UserSkillList.Add(new UserSkillData(userID, charClass, skill.Skill_ID));
         OnLearnSkillEvent?.Invoke();
     }
+    /// <summary>
+    /// 스킬 레벨업을 할 때 
+    /// </summary>
+    /// <param name="skill"></param>
     public void SkillLevelUP(SkillData skill)
     {
         int user_ID = DatabaseManager.Instance.userData.UID;

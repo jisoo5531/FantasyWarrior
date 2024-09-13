@@ -35,9 +35,7 @@ public class UI_EquipSlot : UI_ItemSlot
     public override void OnPointerEnter(PointerEventData eventData)
     {
         if (itemInfoWindow != null && itemID != 0)
-        {
-            Item_Type item_Type = ItemManager.Instance.GetInventoryItemTypeFromDB(itemID);
-
+        {            
             itemInfoWindow.gameObject.SetActive(true);
             itemInfoWindow.Initialize(this.itemID);
         }   
@@ -51,10 +49,10 @@ public class UI_EquipSlot : UI_ItemSlot
         if (this.itemID == 0)
         {
             return;
-        }
-        Debug.Log("더블클릭. 아이템 해제");
-        Debug.Log($"현재 아이템 ID : {itemID}");
-        EquipItemData equipItem = ItemManager.Instance.GetEquipItemFromDB(itemID);
+        }        
+        List<EquipItemData> equipItemDataList = ItemManager.Instance.equipItemList;       
+        EquipItemData equipItem = equipItemDataList.Find(x => x.Item_ID.Equals(this.itemID));   // 현재 슬롯에 있는 아이템
+
         string part = PlayerEquipManager.Instance.EquipParts[(int)equipItem.Equip_Type];
 
         PlayerEquipManager.Instance.UnEquip(part, this.itemID);

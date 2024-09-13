@@ -14,7 +14,7 @@ public class UI_ItemInfo : MonoBehaviour
 
     public virtual void Initialize(int itemID)
     {
-        itemDataList = ItemManager.Instance.GetItemDataFromDatabase();
+        itemDataList = ItemManager.Instance.itemDataList;
         itemData = itemDataList.Find((x) => { return x.Item_ID.Equals(itemID); });
         itemName = itemData.Item_Name;
         itemImage.sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");

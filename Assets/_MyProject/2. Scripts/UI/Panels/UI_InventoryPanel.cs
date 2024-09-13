@@ -119,7 +119,7 @@ public class UI_InventoryPanel : MonoBehaviour
         emptyOtherSlot = EmptySlotCheck(OtherContent);
 
         string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(itemID);
-        Item_Type itemType = ItemManager.Instance.GetInventoryItemTypeFromDB(itemID);
+        Item_Type? itemType = ItemManager.Instance.GetInventoryItemTypeFromDB(itemID);
         Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
 
         switch (itemType)
@@ -204,7 +204,7 @@ public class UI_InventoryPanel : MonoBehaviour
         foreach (InventoryData item in inventoryDataList)
         {
             string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(item.Item_ID);
-            Item_Type itemType = ItemManager.Instance.GetInventoryItemTypeFromDB(item.Item_ID);
+            Item_Type? itemType = ItemManager.Instance.GetInventoryItemTypeFromDB(item.Item_ID);
             Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
             int itemQuantity = item.Quantity;
 

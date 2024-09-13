@@ -128,4 +128,21 @@ public class ManagerEvent
         SkillManagerInit?.Invoke();
     }
     #endregion
+
+    #region æ∆¿Ã≈€
+    private event Action ItemManagerInit;
+
+    public void RegisterItemManagerInit(Action listener)
+    {
+        ItemManagerInit += listener;
+    }
+    public void UnRegisterItemManagerInit(Action listener)
+    {
+        ItemManagerInit -= listener;
+    }
+    public void TriggerItemManagerInit()
+    {
+        ItemManagerInit?.Invoke();
+    }
+    #endregion
 }

@@ -7,12 +7,18 @@ using UnityEngine;
 public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager Instance { get; private set; }
-    private List<InventoryData> originInventoryList;
+    /// <summary>
+    /// 게임 중에 쓰일 인벤토리 리스트
+    /// </summary>
     public List<InventoryData> inventoryDataList { get; private set; }
     /// <summary>
     /// 장착한 아이템을 해제하거나 등등의 인벤토리로 아이템이 추가되는 상황에서 쓰일 리스트
     /// </summary>
     public List<AddItemClassfiy> addWhichItemList = new List<AddItemClassfiy>();
+    /// <summary>
+    /// 저장할 때 비교를 위한 원본 인벤토리 리스트
+    /// </summary>
+    private List<InventoryData> originInventoryList;
     
     private ItemData itemData;
 

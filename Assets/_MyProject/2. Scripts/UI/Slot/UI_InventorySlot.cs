@@ -15,12 +15,12 @@ public class UI_InventorySlot : UI_ItemSlot
     /// <summary>
     /// 현재 슬롯에 있는 아이템의 종류(장비, 소비, 기타)
     /// </summary>
-    private Item_Type Item_Type;
+    private Item_Type? item_Type;
 
     public override void Initialize(int itemID, Sprite sprite = null, UI_ItemInfo itemInfo = null)
     {
         base.Initialize(itemID, sprite, itemInfo);
-        this.Item_Type = ItemManager.Instance.GetInventoryItemTypeFromDB(itemID);
+        this.item_Type = ItemManager.Instance.GetInventoryItemTypeFromDB(itemID);
         int? quantity = InventoryManager.Instance.GetItemQuantity(itemID);
         if (quantity == null)
         {
@@ -43,7 +43,7 @@ public class UI_InventorySlot : UI_ItemSlot
         {
             return;
         }
-        switch (Item_Type)
+        switch (item_Type)
         {
             case Item_Type.Equipment:
                 Equip_EquipItem();
@@ -63,7 +63,8 @@ public class UI_InventorySlot : UI_ItemSlot
     /// </summary>
     private void Equip_EquipItem()
     {
-        EquipItemData equipItem = ItemManager.Instance.GetEquipItemFromDB(itemID);
+        List<EquipItemData> equipItemDataList = ItemManager.Instance.equipItemList;
+        EquipItemData equipItem = equipItemDataList.Find(x => x.Item_ID.Equals(this.itemID));   // 현재 슬롯에 있는 아이템
 
         PlayerEquipManager.Instance.EquipItem(PlayerEquipManager.Instance.EquipParts[(int)equipItem.Equip_Type], itemID);        
 

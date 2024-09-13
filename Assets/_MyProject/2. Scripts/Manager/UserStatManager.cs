@@ -14,10 +14,11 @@ public class UserStatManager : MonoBehaviour
     public readonly string MaxHP = "maxhp";
     public readonly string MaxMP = "maxmana";
 
-    public static UserStatManager Instance { get; private set; }
-    private UserStatData userStatData;
-    public UserStatClient userStatClient;
-
+    public static UserStatManager Instance { get; private set; }    
+    /// <summary>
+    /// 게임 중에 사용할 유저 스탯을 관리하는 변수
+    /// </summary>
+    public UserStatClient userStatClient { get; private set; }
     /// <summary>
     /// 레벨업 시, 실행할 이벤트
     /// </summary>
@@ -30,10 +31,10 @@ public class UserStatManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        EventHandler.managerEvent.RegisterItemManagerInit(StatManagerInit);
     }
     private void Start()
-    {          
-        StatManagerInit();
+    {                  
         InvokeRepeating("AutoSave", 300f, 300f);
     }
     /// <summary>
@@ -41,9 +42,8 @@ public class UserStatManager : MonoBehaviour
     /// </summary>
     private void StatManagerInit()
     {
-        userStatData = GetUserStatDataFromDB();
-        userStatClient = new UserStatClient(userStatData);        
-        int user_ID = DatabaseManager.Instance.userData.UID;
+        UserStatData userStatData = GetUserStatDataFromDB();
+        userStatClient = new UserStatClient(userStatData);                
         
         EventHandler.managerEvent.TriggerStatManagerInit();
     }
@@ -90,11 +90,13 @@ public class UserStatManager : MonoBehaviour
         int hpAmount = 0;
         int mpAmount = 0;
 
+        List<EquipItemData> equipItemDataList = ItemManager.Instance.equipItemList;
+
         int strAmount;
         if (itemID != 0)
         {
             // 아이템을 장착하고 있을 때
-            EquipItemData equipItemData = ItemManager.Instance.GetEquipItemFromDB(itemID);
+            EquipItemData equipItemData = equipItemDataList.Find(x => x.Item_ID.Equals(itemID));
 
             strAmount = isEquip ? equipItemData.STR_Boost : -equipItemData.STR_Boost;
             dexAmount = isEquip ? equipItemData.DEX_Boost : -equipItemData.DEX_Boost;
@@ -111,30 +113,6 @@ public class UserStatManager : MonoBehaviour
             userStatClient.UpdateMaxHP(hpAmount);
             userStatClient.UpdateMaxMP(mpAmount);
         }
-        //else
-        //{
-        //    // 아이템을 장착하고 있지 않을 때
-        //    strAmount = userStatClient.STR;
-        //    dexAmount = userStatClient.DEX;
-        //    intAmount = userStatClient.INT;
-        //    lukAmount = userStatClient.LUK;
-        //    defAmount = userStatClient.DEF;
-        //    hpAmount = userStatClient.MaxHP;
-        //    mpAmount = userStatClient.MaxMP;
-        //}
-        //UserStatData userStatData = GetUserStatDataFromDB();        
-
-        //string query =
-        //    $"UPDATE userstats\n" +
-        //    $"SET userstats.STR={strAmount}," +
-        //    $"userstats.DEX={dexAmount}," +
-        //    $"userstats.Intelligence={intAmount}," +
-        //    $"userstats.LuK={lukAmount}," +
-        //    $"userstats.defense={defAmount}," +
-        //    $"userstats.MaxHp={hpAmount}," +
-        //    $"userstats.MaxMana={mpAmount}\n" +
-        //    $"WHERE userstats.User_ID={user_ID};";
-        //_ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
     }
     /// <summary>
     /// 레벨업 시 유저 스탯 데이터 업데이트
@@ -154,23 +132,6 @@ public class UserStatManager : MonoBehaviour
         userStatClient.UpdateDEF(userStatClient.levelUpStat.DEFAmount);
         userStatClient.UpdateMaxHP(userStatClient.levelUpStat.MaxhpAmount);
         userStatClient.UpdateMaxMP(userStatClient.levelUpStat.MaxmpAmount);
-        //string query =
-        //    $"UPDATE userstats\n" +
-        //    $"SET userstats.level={lvAmount}," +                                  
-        //    $"userstats.exp={expAmount}," +
-        //    $"userstats.maxexp={MaxExpAmount}," +
-        //    $"userstats.STR={strAmount}," +
-        //    $"userstats.DEX={dexAmount}," +
-        //    $"userstats.Intelligence={intAmount}," +
-        //    $"userstats.LuK={lukAmount}," +
-        //    $"userstats.defense={defAmount}," +
-        //    $"userstats.MaxHp={hpAmount}," +
-        //    $"userstats.hp={hpAmount}," +
-        //    $"userstats.MaxMana={mpAmount}," +
-        //    $"userstats.mana={mpAmount}\n" +
-        //    $"WHERE userstats.User_ID={user_ID};"; 
-        //_ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
-
 
         OnLevelUpUpdateStat?.Invoke();
         EventHandler.playerEvent.TriggerPlayerLevelUp();
@@ -184,18 +145,7 @@ public class UserStatManager : MonoBehaviour
         int user_ID = DatabaseManager.Instance.userData.UID;
 
         float ExpAmount = userStatClient.UpdateExp(expAmount);
-        //string query =
-        //    $"UPDATE userstats\n" +
-        //    $"SET userstats.`Exp`={ExpAmount}\n" +
-        //    $"WHERE user_id={user_ID};";
-        //_ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
 
-        //UserStatData userStat = GetUserStatDataFromDB();
-
-        //if (userStat.EXP >= userStat.MaxExp)
-        //{
-        //    LevelUpUpdateStat(userStat.EXP - userStat.MaxExp);            
-        //}
         if (userStatClient.Exp >= userStatClient.MaxExp)
         {
             LevelUpUpdateStat(userStatClient.Exp - userStatClient.MaxExp);

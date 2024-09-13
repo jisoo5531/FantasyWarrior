@@ -27,8 +27,9 @@ public class UI_EquipItemInfo : UI_ItemInfo
     public override void Initialize(int itemID)
     {
         base.Initialize(itemID);
-        EquipItemData equipItemData = ItemManager.Instance.GetEquipItemFromDB(itemID);        
-                
+        List<EquipItemData> equipItemDataList = ItemManager.Instance.equipItemList;
+        EquipItemData equipItemData = equipItemDataList.Find(x => x.Item_ID.Equals(itemID));
+
         itemPartText.text = $"Part: {itemEquipPart[(int)equipItemData.Equip_Type]}";
         ReqLevelText.text = $"REQ LV.: {equipItemData.Require_LV.ToString()}";
         ATKText.text = $"ATK: +{equipItemData.ATK_Boost.ToString()}";
