@@ -166,8 +166,7 @@ public class UserStatClient
     public UserStatClient(UserStatData userStat)
     {
         this.charClass = userStat.CharClass;
-        this.Level = userStat.Level;
-        Debug.Log(Level);
+        this.Level = userStat.Level;        
         this.Exp = userStat.EXP;
         this.MaxExp = orgMaxExp + (levelUpStat.MaxExpAmount * (Level - 1));
         this.STR = orgStr + (levelUpStat.STRAmount * (Level - 1));

@@ -57,7 +57,7 @@ public class PlayerSkill : MonoBehaviour
     {        
         playerAnimation = GetComponent<PlayerAnimation>();
 
-        List<SkillData> skillDatas = SkillManager.Instance.userSkillDataList;
+        List<SkillData> skillDatas = SkillManager.Instance.ClassSkillDataList;
 
         if (skillDatas != null)
         {

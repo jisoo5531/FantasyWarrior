@@ -27,6 +27,7 @@ public class SkillData
     public float CoolTime { get; set; }
     public int Unlock_Level { get; set; }
     public int Skill_Order { get; set; }
+    public CharClass CharClass { get; set; }
     public string Skill_Desc { get; set; }
     public string Icon_Name { get; set; }
 
@@ -40,12 +41,13 @@ public class SkillData
             float.Parse(row["cooltime"].ToString()),
             int.Parse(row["unlock_level"].ToString()),
             int.Parse(row["skill_order"].ToString()),
+            (CharClass)int.Parse(row["class"].ToString()),
             row["description"].ToString(),
             row["icon_name"].ToString()
         )
     { }
 
-    public SkillData(int skill_ID, string skill_Name, int level, int damage, int mana_Cost, float coolTime, int unlock_Level, int skill_Order, string skill_Desc, string icon_Name)
+    public SkillData(int skill_ID, string skill_Name, int level, int damage, int mana_Cost, float coolTime, int unlock_Level, int skill_Order, CharClass charClass, string skill_Desc, string icon_Name)
     {
         this.Skill_ID = skill_ID;
         this.Skill_Name = skill_Name;
@@ -55,6 +57,7 @@ public class SkillData
         this.CoolTime = coolTime;
         this.Unlock_Level = unlock_Level;
         this.Skill_Order = skill_Order;
+        this.CharClass = charClass;
         this.Skill_Desc = skill_Desc;
         this.Icon_Name = icon_Name;
     }

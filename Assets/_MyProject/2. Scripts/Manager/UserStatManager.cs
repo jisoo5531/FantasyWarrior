@@ -42,8 +42,7 @@ public class UserStatManager : MonoBehaviour
     private void StatManagerInit()
     {
         userStatData = GetUserStatDataFromDB();
-        userStatClient = new UserStatClient(userStatData);
-        Debug.Log(userStatClient.MaxHP);
+        userStatClient = new UserStatClient(userStatData);        
         int user_ID = DatabaseManager.Instance.userData.UID;
         
         EventHandler.managerEvent.TriggerStatManagerInit();
@@ -145,16 +144,16 @@ public class UserStatManager : MonoBehaviour
     {
         int user_ID = DatabaseManager.Instance.userData.UID;
 
-        int lvAmount = userStatClient.UpdateLv(1);
-        int expAmount = userStatClient.Exp = remainExp;
-        int MaxExpAmount = userStatClient.UpdateMaxExp(userStatClient.levelUpStat.MaxExpAmount);
-        int strAmount = userStatClient.UpdateSTR(userStatClient.levelUpStat.STRAmount);
-        int dexAmount = userStatClient.UpdateDEX(userStatClient.levelUpStat.DEXAmount);
-        int intAmount = userStatClient.UpdateINT(userStatClient.levelUpStat.INTAmount);
-        int lukAmount = userStatClient.UpdateLUK(userStatClient.levelUpStat.LUKAmount);
-        int defAmount = userStatClient.UpdateDEF(userStatClient.levelUpStat.DEFAmount);
-        int hpAmount = userStatClient.UpdateMaxHP(userStatClient.levelUpStat.MaxhpAmount);
-        int mpAmount = userStatClient.UpdateMaxMP(userStatClient.levelUpStat.MaxmpAmount);
+        userStatClient.UpdateLv(1);
+        userStatClient.Exp = remainExp;
+        userStatClient.UpdateMaxExp(userStatClient.levelUpStat.MaxExpAmount);
+        userStatClient.UpdateSTR(userStatClient.levelUpStat.STRAmount);
+        userStatClient.UpdateDEX(userStatClient.levelUpStat.DEXAmount);
+        userStatClient.UpdateINT(userStatClient.levelUpStat.INTAmount);
+        userStatClient.UpdateLUK(userStatClient.levelUpStat.LUKAmount);
+        userStatClient.UpdateDEF(userStatClient.levelUpStat.DEFAmount);
+        userStatClient.UpdateMaxHP(userStatClient.levelUpStat.MaxhpAmount);
+        userStatClient.UpdateMaxMP(userStatClient.levelUpStat.MaxmpAmount);
         //string query =
         //    $"UPDATE userstats\n" +
         //    $"SET userstats.level={lvAmount}," +                                  
@@ -210,7 +209,7 @@ public class UserStatManager : MonoBehaviour
     /// DB에 아직 넣지 않고 클라이언트에 임의로 저장해놓은 데이터들을 DB로 저장 (userquestList, userquestOBJList)
     /// <para>(게임 종료 전 또는 일정 시간마다)</para>
     /// </summary>
-    public void SaveQuestProgress()
+    public void SaveStat()
     {
         Debug.Log("Stat 저장.");
         int user_ID = DatabaseManager.Instance.userData.UID;
@@ -232,11 +231,11 @@ public class UserStatManager : MonoBehaviour
     }
     private void AutoSave()
     {
-        SaveQuestProgress();
+        SaveStat();
     }
     private void OnApplicationQuit()
     {        
-        SaveQuestProgress();
+        SaveStat();
     }
     #endregion
 }

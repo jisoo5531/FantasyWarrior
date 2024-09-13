@@ -71,8 +71,7 @@ public class UI_QuestPanel : MonoBehaviour
     private void AllQuestSetting()
     {
         ContentClear(AllQuestContent);
-        List<QuestsData> questsDataList = QuestManager.Instance.questsDataList;
-        Debug.Log(questsDataList.Count);
+        List<QuestsData> questsDataList = QuestManager.Instance.questsDataList;        
         if (questsDataList == null)
         {
             // 퀘스트가 없다면
@@ -97,8 +96,7 @@ public class UI_QuestPanel : MonoBehaviour
     private void InProgressQuestSetting()
     {
         ContentClear(InProgressQuestContent);
-        List<UserQuestsData> InprogressList = QuestManager.Instance.GetInProgressQuest();
-        Debug.Log(InprogressList.Count);
+        List<UserQuestsData> InprogressList = QuestManager.Instance.GetInProgressQuest();        
         if (InprogressList == null)
         {
             // 진행중인 퀘스트 없음

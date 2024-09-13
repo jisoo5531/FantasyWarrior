@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Goblin : MonsterUnit
 {
-    int rewardExp = 500;
+    int rewardExp = 1000;
     protected override void Initialize()
     {
         unitName = "Goblin";

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -7,20 +8,44 @@ public class SkillManager : MonoBehaviour
 {
     public static SkillManager Instance { get; private set; }
 
-    public List<SkillData> userSkillDataList = new List<SkillData>();
-    public List<SkillData> userAvailableSkillList = new List<SkillData>();
+    /// <summary>
+    /// 현재 유저 직업에 맞는 모든 스킬 리스트
+    /// </summary>
+    public List<SkillData> ClassSkillDataList { get; private set; }
+    /// <summary>
+    /// 현재 유저 레벨에 사용 가능한 스킬들의 리스트
+    /// </summary>
+    public List<SkillData> userAvailableSkillList { get; private set; }
+    /// <summary>
+    /// 현재 유저가 보유(배운) 스킬 리스트
+    /// </summary>
+    public List<UserSkillData> UserSkillList { get; private set; }
+    public List<UserSkillData> UserSkillOrigin { get; private set; }
+
+    /// <summary>
+    /// 레벨업을 할때마다 스킬 언락 실행 이벤트
+    /// </summary>
+    public event Action OnUnlockSkillEvent;
+    public event Action OnLearnSkillEvent;
 
     private void Awake()
     {
         Instance = this;
+
+    }
+    private void Start()
+    {
         UserStatManager.Instance.OnLevelUpUpdateStat += OnLevelUp_UnlockSkill;
+        SkillManagerInit();
     }
     public void SkillManagerInit()
     {
-        GetSkillFromDatabaseData();
+        _ = GetSkillFromDB();
+        _ = GetUserSkillFromDB();
 
+        userAvailableSkillList = new List<SkillData>();
         UserStatClient userStatClient = UserStatManager.Instance.userStatClient;
-        foreach (SkillData skillData in userSkillDataList)
+        foreach (SkillData skillData in ClassSkillDataList)
         {
             if (userStatClient.Level >= skillData.Unlock_Level)
             {
@@ -29,9 +54,72 @@ public class SkillManager : MonoBehaviour
         }
         EventHandler.managerEvent.TriggerSkillManagerInit();
     }
-    private void Start()
+    /// <summary>
+    /// 데이터베이스에서 스킬 데이터 가져오기
+    /// </summary>
+    private List<SkillData> GetSkillFromDB()
     {
-        SkillManagerInit();        
+        ClassSkillDataList = new List<SkillData>();
+
+        UserStatClient userStat = UserStatManager.Instance.userStatClient;
+        int userId = DatabaseManager.Instance.userData.UID;
+        CharClass userClass = userStat.charClass;
+
+        string query =
+            $"SELECT *\n" +
+            $"FROM skills\n" +
+            $"WHERE skills.Class={(int)userClass};";
+
+        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
+
+        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
+        if (isGetData)
+        {
+            foreach (DataRow row in dataSet.Tables[0].Rows)
+            {
+                SkillData data = new SkillData(row);
+                ClassSkillDataList.Add(data);
+                //skillTable.Add(data.Skill_ID - 1, data.Skill_Name);
+            }
+            return ClassSkillDataList;
+        }
+        else
+        {
+            //  실패
+            return null;
+        }
+    }
+    /// <summary>
+    /// 유저가 배운 스킬 목록 리스트 가져오기
+    /// </summary>
+    /// <returns></returns>
+    private List<UserSkillData> GetUserSkillFromDB()
+    {
+        UserSkillOrigin = new List<UserSkillData>();
+        UserSkillList = new List<UserSkillData>();
+
+        string query =
+            $"SELECT *\n" +
+            $"FROM userskills;";
+        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
+        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
+        if (isGetData)
+        {
+            foreach (DataRow row in dataSet.Tables[0].Rows)
+            {
+                UserSkillData data = new UserSkillData(row);
+                UserSkillOrigin.Add(data);
+                UserSkillList.Add(data);
+                //skillTable.Add(data.Skill_ID - 1, data.Skill_Name);
+            }
+            return UserSkillList;
+        }
+        else
+        {
+            //  실패
+            return null;
+        }
+
     }
 
     /// <summary>
@@ -39,64 +127,98 @@ public class SkillManager : MonoBehaviour
     /// </summary>
     private void OnLevelUp_UnlockSkill()
     {
-        string query =
-            $"SELECT skills.Skill_ID, skills.Skill_Name, skills.Level, skills.Damage, skills.Mana_Cost, skills.Cooltime, skills.Unlock_Level, skills.Skill_Order, skills.Class, skills.Description, skills.Icon_Name\n" +
-            $"FROM userstats\n" +
-            $"JOIN skills ON userstats.`Level` >= skills.Unlock_Level\n" +
-            $"WHERE userstats.user_id = 1 AND skills.Class = 1;";
+        //string query =
+        //    $"SELECT skills.Skill_ID, skills.Skill_Name, skills.Level, skills.Damage, skills.Mana_Cost, skills.Cooltime, skills.Unlock_Level, skills.Skill_Order, skills.Class, skills.Description, skills.Icon_Name\n" +
+        //    $"FROM userstats\n" +
+        //    $"JOIN skills ON userstats.`Level` >= skills.Unlock_Level\n" +
+        //    $"WHERE userstats.user_id = 1 AND skills.Class = 1;";
 
-        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
+        //DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
 
-        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
-        if (isGetData)
+        //bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
+        //if (isGetData)
+        //{
+        //    userAvailableSkillList.Clear();
+        //    foreach (DataRow row in dataSet.Tables[0].Rows)
+        //    {
+        //        SkillData data = new SkillData(row);
+        //        userAvailableSkillList.Add(data);
+        //        //skillTable.Add(data.Skill_ID - 1, data.Skill_Name);
+        //    }
+        //}
+        //else
+        //{
+        //    //  실패
+        //}
+        UserStatClient userStat = UserStatManager.Instance.userStatClient;
+        int userLevel = userStat.Level;
+        CharClass userClass = userStat.charClass;
+        userAvailableSkillList = ClassSkillDataList.FindAll(x => userLevel >= x.Unlock_Level && x.CharClass.Equals(userClass));
+        OnUnlockSkillEvent?.Invoke();
+    }
+    /// <summary>
+    /// 스킬 습득 메서드
+    /// </summary>
+    /// <param name="skillID"></param>
+    public void LearnSkill(SkillData skill)
+    {
+        int userID = DatabaseManager.Instance.userData.UID;
+        CharClass charClass = UserStatManager.Instance.userStatClient.charClass;
+        UserSkillList.Add(new UserSkillData(userID, charClass, skill.Skill_ID));
+        OnLearnSkillEvent?.Invoke();
+    }
+    public void SkillLevelUP(SkillData skill)
+    {
+        int user_ID = DatabaseManager.Instance.userData.UID;
+        int index = UserSkillList.FindIndex(x => x.User_ID.Equals(user_ID) && x.Skill_ID.Equals(skill.Skill_ID));
+        if (index >= 0)
         {
-            userAvailableSkillList.Clear();
-            foreach (DataRow row in dataSet.Tables[0].Rows)
-            {
-                SkillData data = new SkillData(row);
-                userAvailableSkillList.Add(data);
-                //skillTable.Add(data.Skill_ID - 1, data.Skill_Name);
-            }
+            UserSkillList[index].Skill_Level += 1;
         }
-        else
-        {
-            //  실패
-        }        
     }
 
-
-    #region Database
+    #region 스킬 저장
     /// <summary>
-    /// 데이터베이스에서 스킬 데이터 가져오기
+    /// DB에 아직 넣지 않고 클라이언트에 임의로 저장해놓은 데이터들을 DB로 저장 (userquestList, userquestOBJList)
+    /// <para>(게임 종료 전 또는 일정 시간마다)</para>
     /// </summary>
-    private List<SkillData> GetSkillFromDatabaseData()
+    public void SaveSkill()
     {
-        int userId = DatabaseManager.Instance.userData.UID;
+        Debug.Log("스킬 저장.");
+        int user_ID = DatabaseManager.Instance.userData.UID;
+        CharClass charClass = UserStatManager.Instance.userStatClient.charClass;
 
-        string query =
-            $"SELECT skills.Skill_ID, skills.Skill_Name, skills.Level, skills.Damage, skills.Mana_Cost, skills.Cooltime, skills.Unlock_Level, skills.Skill_Order, skills.Description, skills.Icon_Name\n" +
-            $"FROM UserSkills\n" +
-            $"JOIN Skills ON UserSkills.Skill_ID = Skills.Skill_ID\n" +
-            $"WHERE UserSkills.User_ID = {userId} AND UserSkills.Job_ID = 1;";
-
-        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
-        
-        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
-        if (isGetData)
+        var differences = Extensions.GetDifferences(
+            UserSkillOrigin,
+            UserSkillList,
+            (original, updated) => original.Skill_ID == updated.Skill_ID,
+            (original, updated) => original.Skill_Level != updated.Skill_Level
+        );        
+        foreach (var addedSkill in differences.Added)
         {
-            foreach (DataRow row in dataSet.Tables[0].Rows)
-            {
-                SkillData data = new SkillData(row);
-                userSkillDataList.Add(data);
-                //skillTable.Add(data.Skill_ID - 1, data.Skill_Name);
-            }
-            return userSkillDataList;
+            string query =
+            $"INSERT INTO userskills (userskills.User_ID, userskills.Job_ID, userskills.Skill_ID)\n" +
+            $"VALUES ({user_ID}, {(int)charClass}, {addedSkill.Skill_ID});";
+            _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
         }
-        else
+        foreach (var skill in UserSkillList)
         {
-            //  실패
-            return null;
+            string query =
+                $"UPDATE userskills\n" +
+                $"SET userskills.Skill_Level={skill.Skill_Level}\n" +
+                $"WHERE userskills.User_ID={user_ID} " +
+                $"AND userskills.Job_ID={(int)charClass} " +
+                $"AND userskills.Skill_ID={skill.Skill_ID};";            
+            _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
         }
+    }
+    private void AutoSave()
+    {
+        SaveSkill();
+    }
+    private void OnApplicationQuit()
+    {
+        SaveSkill();
     }
     #endregion
 }

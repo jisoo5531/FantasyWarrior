@@ -162,7 +162,7 @@ public class PlayerEquipManager : MonoBehaviour
     /// DB에 아직 넣지 않고 클라이언트에 임의로 저장해놓은 데이터들을 DB로 저장 (userquestList, userquestOBJList)
     /// <para>(게임 종료 전 또는 일정 시간마다)</para>
     /// </summary>
-    public void SaveQuestProgress()
+    public void SaveEquipments()
     {
         Debug.Log("장착 장비 저장.");
         int user_ID = DatabaseManager.Instance.userData.UID;
@@ -190,11 +190,11 @@ public class PlayerEquipManager : MonoBehaviour
     }
     private void AutoSave()
     {
-        SaveQuestProgress();
+        SaveEquipments();
     }
     private void OnApplicationQuit()
     {
-        SaveQuestProgress();
+        SaveEquipments();
     }
     #endregion
 }

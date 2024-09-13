@@ -23,20 +23,33 @@ public class UI_SkillPanel : MonoBehaviour
     {
         EventHandler.skillKey.RegisterSkillKeyChange(OnChangeSkill);
     }
-    public void SkillPanelInit()
+    private void SkillContentClear(GameObject content)
     {
+        for (int i = 0; i < content.transform.childCount; i++)
+        {
+            Destroy(content.transform.GetChild(i).gameObject);            
+        }
+    }
+    public void SkillPanelInit()
+    {        
+        SkillManager.Instance.OnUnlockSkillEvent += SkillWindowSetting;
+
         for (int i = 0; i < iconPanelList.Count; i++)
         {
             Sprite skillIcon = PlayerUIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];
             iconPanelList[i].ActionBarIcon.sprite = skillIcon;
             iconPanelList[i].KeyIcon.sprite = skillIcon;
         }
-        InitSkillWindow();
+        SkillWindowSetting();
     }
-    private void InitSkillWindow()
+    /// <summary>
+    /// 스킬 창에 세팅
+    /// </summary>
+    private void SkillWindowSetting()
     {
-        List<SkillData> skills = SkillManager.Instance.userSkillDataList;
+        List<SkillData> skills = SkillManager.Instance.ClassSkillDataList;
         
+        SkillContentClear(skillWindowContent);
         if (skills != null)
         {
             foreach (SkillData skillData in skills)
@@ -49,6 +62,9 @@ public class UI_SkillPanel : MonoBehaviour
         }        
     }
 
+    /// <summary>
+    /// 스킬 키세팅을 바꿀 때마다 호출하는 메서드
+    /// </summary>
     private void OnChangeSkill()
     {
         for (int i = 0; i < iconPanelList.Count; i++)
