@@ -18,8 +18,7 @@ public class UI_QuestPanel : MonoBehaviour
     public GameObject CompleteQuestContent;
 
     [Header("QuestInfo")]    
-    public UI_AllQuestInfo ALLQuestInfoWindow;
-    public UI_InProgressQuestInfo InProgressQuestInfoWindow;
+    public UI_QuestInfo QuestInfoWindow;    
     [Header("QuestInfo Prefab")]
     public GameObject QuestInfoPrefab;
     public GameObject InProgressQuestInfo;
@@ -85,7 +84,7 @@ public class UI_QuestPanel : MonoBehaviour
                 continue;
             }
             UI_QuestElement questElement = Instantiate(QuestInfoPrefab, AllQuestContent.transform).GetComponent<UI_QuestElement>();
-            questElement.Initialize(quest.Quest_ID, ALLQuestInfoWindow);
+            questElement.Initialize(quest.Quest_ID, QuestInfoWindow);
         }
     }
     /// <summary>
@@ -107,7 +106,7 @@ public class UI_QuestPanel : MonoBehaviour
             if (questData.questStatus == Q_Status.InProgress)
             {
                 UI_QuestElement questElement = Instantiate(InProgressQuestInfo, InProgressQuestContent.transform).GetComponent<UI_QuestElement>();
-                questElement.Initialize(questData.Quest_ID, InProgressQuestInfoWindow);
+                questElement.Initialize(questData.Quest_ID, QuestInfoWindow);
             }
         }
     }
@@ -129,7 +128,7 @@ public class UI_QuestPanel : MonoBehaviour
             if (questData.questStatus == Q_Status.Completed)
             {
                 UI_QuestElement questElement = Instantiate(QuestInfoPrefab, CompleteQuestContent.transform).GetComponent<UI_QuestElement>();
-                questElement.Initialize(questData.Quest_ID, ALLQuestInfoWindow);
+                questElement.Initialize(questData.Quest_ID, QuestInfoWindow);
             }
         }
     }

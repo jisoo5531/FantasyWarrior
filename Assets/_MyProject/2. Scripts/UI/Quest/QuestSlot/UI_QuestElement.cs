@@ -39,7 +39,7 @@ public class UI_QuestElement : MonoBehaviour
     /// </summary>
     protected void OnClickToOpenQuestInfoWindow()
     {
-        questInfoWindow.gameObject.SetActive(true);        
+        questInfoWindow.gameObject.SetActive(!questInfoWindow.gameObject.activeSelf);        
         questInfoWindow.Initialize(this.quest);
     }
 }
