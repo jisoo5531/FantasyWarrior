@@ -6,7 +6,6 @@ using TMPro;
 
 public class UI_QuestInfo : MonoBehaviour
 {
-    private QuestsData questData;
     [Header("Button")]
     public Button questStartButton;
     public Button questCompleteButton;
@@ -17,6 +16,8 @@ public class UI_QuestInfo : MonoBehaviour
     public TMP_Text questRewardText;
     public TMP_Text questDescText;
 
+    private QuestsData questData;
+    private Q_Status? questStatus;
 
     private void Awake()
     {
@@ -24,9 +25,10 @@ public class UI_QuestInfo : MonoBehaviour
         questCompleteButton.onClick.AddListener(OnClickCompleteButton);
     }
 
-    public void Initialize(QuestsData questData)
+    public void Initialize(QuestsData questData, Q_Status? q_Status = null)
     {
         this.questData = questData;
+        this.questStatus = q_Status;
 
         QuestInfoInit();
         CheckQuestStatus();
@@ -42,11 +44,23 @@ public class UI_QuestInfo : MonoBehaviour
         questDescText.text = this.questData.DESC;
         questRewardText.text = $"Gold : {this.questData.Reward_Gold}, EXP : {this.questData.Reward_Exp}";
     }
+    /// <summary>
+    /// 퀘스트의 상태 파악
+    /// </summary>
     private void CheckQuestStatus()
     {
+        // TODO : 텍스트 한글로 바꾸기
         List<QuestProgress> questProgressList = QuestManager.Instance.questProgressList;
+
         if (questProgressList == null)
         {
+            return;
+        }
+        if (this.questStatus == Q_Status.Completed)
+        {
+            questStatusText.text = "Completed";
+            questStartButton.interactable = false;
+            questCompleteButton.interactable = false;
             return;
         }
         int index = questProgressList.FindIndex((x) => { return x.quest_Id.Equals(questData.Quest_ID); });
@@ -70,7 +84,6 @@ public class UI_QuestInfo : MonoBehaviour
             questCompleteButton.interactable = false;
         }
     }
-
     /// <summary>
     /// 퀘스트 시작버튼을 누르면 퀘스트 시작
     /// </summary>

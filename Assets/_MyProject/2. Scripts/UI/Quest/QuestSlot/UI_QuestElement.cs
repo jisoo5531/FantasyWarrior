@@ -14,7 +14,7 @@ public class UI_QuestElement : MonoBehaviour
     protected UI_QuestInfo questInfoWindow;
 
     protected QuestsData quest;
-    
+    protected bool isInfoOpen;
 
     private void Awake()
     {
@@ -37,9 +37,9 @@ public class UI_QuestElement : MonoBehaviour
     /// <summary>
     /// 퀘스트를 클릭하여 퀘스트 상세정보 열기
     /// </summary>
-    protected void OnClickToOpenQuestInfoWindow()
+    protected virtual void OnClickToOpenQuestInfoWindow()
     {
-        questInfoWindow.gameObject.SetActive(!questInfoWindow.gameObject.activeSelf);        
-        questInfoWindow.Initialize(this.quest);
+        isInfoOpen = !questInfoWindow.gameObject.activeSelf;
+        questInfoWindow.gameObject.SetActive(isInfoOpen);                
     }
 }

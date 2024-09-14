@@ -342,9 +342,9 @@ GameObject:
   - component: {fileID: 2824261481476998432}
   - component: {fileID: 7969951222176170241}
   - component: {fileID: 740367992731369087}
-  - component: {fileID: 8921629523998111785}
+  - component: {fileID: 2649032772631383597}
   m_Layer: 5
-  m_Name: AllQuest Test
+  m_Name: CompleteQuest Info
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -474,7 +474,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8921629523998111785
+--- !u!114 &2649032772631383597
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -483,7 +483,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3814784770494569674}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a16fa6abd7cb1624d8d17892afe02a92, type: 3}
+  m_Script: {fileID: 11500000, guid: cd9651b647dc5ab46a837261f55f6819, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   questNameText: {fileID: 7138704492596122753}

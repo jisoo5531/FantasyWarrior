@@ -414,11 +414,11 @@ public class QuestManager : MonoBehaviour
 
         // 유저가 현재 수행 중인 퀘스트들의 진행도를 나타내는 리스트에서 완료한 퀘스트 삭제
         int userQuestObjIndex = userQuestObjList.FindIndex(x => x.User_ID.Equals(user_ID) && x.ObjectiveID.Equals(objectiveData.ObjectiveID));
-        questObjectList.RemoveAt(userQuestObjIndex);
+        userQuestObjList.RemoveAt(userQuestObjIndex);
 
         // 클라이언트에 저장된 퀘스트들의 진행도를 나타내는 리스트에서 완료한 퀘스트 삭제
         int index = questProgressList.FindIndex(x => x.quest_Id.Equals(quest_ID));
-        questProgressList.RemoveAt(index);
+        questProgressList.RemoveAt(index);        
 
         OnCompleteQuest?.Invoke();
     }

@@ -22,6 +22,7 @@ public class UI_QuestPanel : MonoBehaviour
     [Header("QuestInfo Prefab")]
     public GameObject QuestInfoPrefab;
     public GameObject InProgressQuestInfo;
+    public GameObject CompleteQuestInfo;
 
 
     private void Awake()
@@ -83,7 +84,7 @@ public class UI_QuestPanel : MonoBehaviour
                 // 진행 중이거나 완료한 퀘스트는 목록에서 제외.
                 continue;
             }
-            UI_QuestElement questElement = Instantiate(QuestInfoPrefab, AllQuestContent.transform).GetComponent<UI_QuestElement>();
+            UI_AllQuest questElement = Instantiate(QuestInfoPrefab, AllQuestContent.transform).GetComponent<UI_AllQuest>();
             questElement.Initialize(quest.Quest_ID, QuestInfoWindow);
         }
     }
@@ -105,7 +106,7 @@ public class UI_QuestPanel : MonoBehaviour
         {
             if (questData.questStatus == Q_Status.InProgress)
             {
-                UI_QuestElement questElement = Instantiate(InProgressQuestInfo, InProgressQuestContent.transform).GetComponent<UI_QuestElement>();
+                UI_InprogressQuest questElement = Instantiate(InProgressQuestInfo, InProgressQuestContent.transform).GetComponent<UI_InprogressQuest>();
                 questElement.Initialize(questData.Quest_ID, QuestInfoWindow);
             }
         }
@@ -127,7 +128,7 @@ public class UI_QuestPanel : MonoBehaviour
         {
             if (questData.questStatus == Q_Status.Completed)
             {
-                UI_QuestElement questElement = Instantiate(QuestInfoPrefab, CompleteQuestContent.transform).GetComponent<UI_QuestElement>();
+                UI_CompletedQuest questElement = Instantiate(CompleteQuestInfo, CompleteQuestContent.transform).GetComponent<UI_CompletedQuest>();
                 questElement.Initialize(questData.Quest_ID, QuestInfoWindow);
             }
         }

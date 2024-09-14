@@ -18,10 +18,17 @@ public class UI_InprogressQuest : UI_QuestElement
     public override void Initialize(int questID, UI_QuestInfo questInfoWindow)
     {
         base.Initialize(questID, questInfoWindow);
-        GuideButton.onClick.AddListener(OnClickGuide);
-        
+        GuideButton.onClick.AddListener(OnClickGuide);        
     }
-
+    
+    protected override void OnClickToOpenQuestInfoWindow()
+    {
+        base.OnClickToOpenQuestInfoWindow();
+        if (isInfoOpen)
+        {
+            questInfoWindow.Initialize(this.quest, Q_Status.InProgress);
+        }        
+    }
     /// <summary>
     /// 알림이 버튼을 클릭할 시
     /// </summary>
@@ -30,11 +37,11 @@ public class UI_InprogressQuest : UI_QuestElement
         isGuided = !isGuided;
         if (isGuided)
         {
-            GuideImage.ImageTransparent(1);            
+            GuideImage.ImageTransparent(1);
         }
         else
         {
-            GuideImage.ImageTransparent(0);            
+            GuideImage.ImageTransparent(0);
         }
         SetIsGuide();
         OnGuideButton?.Invoke();
