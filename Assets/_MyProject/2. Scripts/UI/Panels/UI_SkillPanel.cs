@@ -7,16 +7,22 @@ using UnityEngine.UI;
 [System.Serializable]
 public class KeySetIcon
 {    
+    /// <summary>
+    /// 스킬창에 보여질 각 스킬 이미지
+    /// </summary>
     public Image ActionBarIcon;
+    /// <summary>
+    /// 키셋 변경 창에 보일 스킬 이미지
+    /// </summary>
     public Image KeyIcon;    
 }
 public class UI_SkillPanel : MonoBehaviour
 {
     [Header("스킬")]
-    public GameObject skillWindowContent;
-    public GameObject skillInfo;
-    public GameObject keySetPanel;
-    public List<KeySetIcon> iconPanelList;
+    public GameObject skillWindowContent;   // 스킬창
+    public GameObject skillInfo;            // 각 스킬들의 스킬 정보 항목
+    public GameObject keySetPanel;          // 스킬을 장착하려고 할 때 쓰일 키셋 변경 창
+    public List<KeySetIcon> iconPanelList;  // 현재 장착한 4개의 스킬 이미지를 관리할 리스트
     public List<SkillData> skillDataList = new List<SkillData>();    
 
     private void Awake()

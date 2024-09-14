@@ -28,11 +28,7 @@ public class SkillManager : MonoBehaviour
     /// <summary>
     /// 레벨업을 할때마다 스킬 언락 실행 이벤트
     /// </summary>
-    public event Action OnUnlockSkillEvent;
-    /// <summary>
-    /// 스킬을 배울 때 발생하는 이벤트
-    /// </summary>
-    public event Action OnLearnSkillEvent;
+    public event Action OnUnlockSkillEvent;    
 
     private void Awake()
     {
@@ -147,8 +143,7 @@ public class SkillManager : MonoBehaviour
     {
         int userID = DatabaseManager.Instance.userData.UID;
         CharClass charClass = UserStatManager.Instance.userStatClient.charClass;
-        UserSkillList.Add(new UserSkillData(userID, charClass, skill.Skill_ID));
-        OnLearnSkillEvent?.Invoke();
+        UserSkillList.Add(new UserSkillData(userID, charClass, skill.Skill_ID));        
     }
     /// <summary>
     /// 스킬 레벨업을 할 때 

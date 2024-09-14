@@ -6,8 +6,7 @@ using TMPro;
 
 public class UI_QuestElement : MonoBehaviour
 {        
-    
-    
+        
     public TMP_Text questNameText;
     public TMP_Text completeText;
 
