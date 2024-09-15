@@ -24,6 +24,8 @@ public class PlayerSkill : MonoBehaviour
     protected int currentSkillNum;
     private PlayerAnimation playerAnimation;
 
+    public static event Action OnKeyBindInit;
+
     private void OnEnable()
     {        
         GameManager.inputActions.PlayerActions.Skill_1.performed += OnSkill_1;
@@ -40,18 +42,21 @@ public class PlayerSkill : MonoBehaviour
     }
 
     private void Awake()
-    {
-        Initialize();
+    {        
+        EventHandler.managerEvent.RegisterSkillManagerInit(Initialize);
     }        
 
     protected virtual void Initialize()
     {
+        SkillKeyBind userSkillKeyBind = SkillManager.Instance.UserSkillKeyBInd;
         EquipSkills = new List<int>
         {
-            //1,2,3,4
-            0,0,0,0
-            //9
+            userSkillKeyBind.Skill_1,
+            userSkillKeyBind.Skill_2,
+            userSkillKeyBind.Skill_3,
+            userSkillKeyBind.Skill_4
         };
+        OnKeyBindInit?.Invoke();
     }
     private void Start()
     {        

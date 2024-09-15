@@ -28,6 +28,7 @@ public class UI_SkillPanel : MonoBehaviour
     private void Awake()
     {
         EventHandler.skillKey.RegisterSkillKeyChange(OnChangeSkill);
+
     }
     private void SkillContentClear(GameObject content)
     {
@@ -46,10 +47,13 @@ public class UI_SkillPanel : MonoBehaviour
             if (PlayerSkill.EquipSkills[i] == 0)
             {
                 continue;
-            }
+            }            
             Sprite skillIcon = PlayerUIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];
+            Debug.Log(skillIcon.name);
             iconPanelList[i].ActionBarIcon.sprite = skillIcon;
             iconPanelList[i].KeyIcon.sprite = skillIcon;
+            iconPanelList[i].ActionBarIcon.ImageTransparent(1);
+            iconPanelList[i].KeyIcon.ImageTransparent(1);            
         }
         SkillWindowSetting();
     }

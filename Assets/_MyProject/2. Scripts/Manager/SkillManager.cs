@@ -24,6 +24,7 @@ public class SkillManager : MonoBehaviour
     /// 저장할 때 비교를 위한 원본 스킬 리스트
     /// </summary>
     public List<UserSkillData> UserSkillOrigin { get; private set; }
+    public SkillKeyBind UserSkillKeyBInd { get; private set; }
 
     /// <summary>
     /// 레벨업을 할때마다 스킬 언락 실행 이벤트
@@ -39,6 +40,8 @@ public class SkillManager : MonoBehaviour
     {
         UserStatManager.Instance.OnLevelUpUpdateStat += OnLevelUp_UnlockSkill;
 
+        UserSkillKeyBInd = GetSkillKeyBind();
+
         _ = GetSkillFromDB();
         _ = GetUserSkillFromDB();
 
@@ -53,6 +56,27 @@ public class SkillManager : MonoBehaviour
             }
         }
         EventHandler.managerEvent.TriggerSkillManagerInit();
+    }
+    private SkillKeyBind GetSkillKeyBind()
+    {
+        int user_ID = DatabaseManager.Instance.userData.UID;
+        string query =
+            $"SELECT *\n" +
+            $"FROM userskillkeybinds\n" +
+            $"WHERE userskillkeybinds.User_ID={user_ID}";
+        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
+
+        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
+        if (isGetData)
+        {
+            DataRow row = dataSet.Tables[0].Rows[0];
+            return new SkillKeyBind(row);
+        }
+        else
+        {
+            //  실패
+            return null;
+        }
     }
     /// <summary>
     /// 데이터베이스에서 스킬 데이터 가져오기
@@ -192,13 +216,31 @@ public class SkillManager : MonoBehaviour
             _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
         }
     }
+    private void SaveSkillKeyBind()
+    {
+        int user_ID = DatabaseManager.Instance.userData.UID;
+        string skill_1 = PlayerSkill.EquipSkills[0] != 0 ? PlayerSkill.EquipSkills[0].ToString() : "NULL";
+        string skill_2 = PlayerSkill.EquipSkills[1] != 0 ? PlayerSkill.EquipSkills[1].ToString() : "NULL";
+        string skill_3 = PlayerSkill.EquipSkills[2] != 0 ? PlayerSkill.EquipSkills[2].ToString() : "NULL";
+        string skill_4 = PlayerSkill.EquipSkills[3] != 0 ? PlayerSkill.EquipSkills[3].ToString() : "NULL";
+        string query =
+            $"UPDATE userskillkeybinds\n" +
+            $"SET userskillkeybinds.Skill_ID_1={skill_1}," +
+            $"userskillkeybinds.Skill_ID_2={skill_2}," +
+            $"userskillkeybinds.Skill_ID_3={skill_3}," +
+            $"userskillkeybinds.Skill_ID_4={skill_4}\n" +
+            $"WHERE userskillkeybinds.User_ID={user_ID};";
+        _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+    }
     private void AutoSave()
     {
         SaveSkill();
+        SaveSkillKeyBind();
     }
     private void OnApplicationQuit()
     {
         SaveSkill();
+        SaveSkillKeyBind();
     }
     #endregion
 }
