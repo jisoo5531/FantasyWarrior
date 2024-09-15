@@ -42,6 +42,11 @@ public class UI_SkillPanel : MonoBehaviour
 
         for (int i = 0; i < iconPanelList.Count; i++)
         {
+            // 장착한 스킬이 없다면
+            if (PlayerSkill.EquipSkills[i] == 0)
+            {
+                continue;
+            }
             Sprite skillIcon = PlayerUIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];
             iconPanelList[i].ActionBarIcon.sprite = skillIcon;
             iconPanelList[i].KeyIcon.sprite = skillIcon;

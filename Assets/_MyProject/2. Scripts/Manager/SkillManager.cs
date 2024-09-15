@@ -33,20 +33,18 @@ public class SkillManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-
-    }
-    private void Start()
-    {
-        UserStatManager.Instance.OnLevelUpUpdateStat += OnLevelUp_UnlockSkill;
-        SkillManagerInit();
+        EventHandler.managerEvent.RegisterStatManagerInit(SkillManagerInit);
     }
     public void SkillManagerInit()
     {
+        UserStatManager.Instance.OnLevelUpUpdateStat += OnLevelUp_UnlockSkill;
+
         _ = GetSkillFromDB();
         _ = GetUserSkillFromDB();
 
         userAvailableSkillList = new List<SkillData>();
         UserStatClient userStatClient = UserStatManager.Instance.userStatClient;
+        Debug.Log($"플레이어 현재 레벨 : {userStatClient.Level}");
         foreach (SkillData skillData in ClassSkillDataList)
         {
             if (userStatClient.Level >= skillData.Unlock_Level)

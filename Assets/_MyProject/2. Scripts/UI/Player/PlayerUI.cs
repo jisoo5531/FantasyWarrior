@@ -31,6 +31,11 @@ public class PlayerUI : UIComponent
     {        
         for (int i = 0; i < skillIconList.Count; i++)
         {
+            // 장착한 스킬이 없다면
+            if (PlayerSkill.EquipSkills[i] == 0)
+            {
+                continue;
+            }
             Sprite skillIcon = PlayerUIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];
             skillIconList[i].sprite = skillIcon;
         }

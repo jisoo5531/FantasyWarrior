@@ -15,26 +15,23 @@ public class PlayerUIManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        Initialize();
+        EventHandler.managerEvent.RegisterStatManagerInit(Initialize);        
         
     }
     private void Start()
     {        
+        
+    }
+
+    private void Initialize()
+    {
+
+
         UserStatClient userStatClient = UserStatManager.Instance.userStatClient;
         string folderName = $"{userStatClient.charClass.ToString()}";
         foreach (var item in Resources.LoadAll<Sprite>($"{folderName}_skills"))
         {
             skillIconList.Add(item);
         }
-    }
-
-    private void Initialize()
-    {
-        
-
-        //foreach (var item in Resources.LoadAll<Sprite>("archer_skills"))
-        //{
-        //    skillIconList.Add(item);
-        //}
     }
 }

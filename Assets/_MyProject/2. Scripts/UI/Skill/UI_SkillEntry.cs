@@ -52,11 +52,11 @@ public class UI_SkillEntry : MonoBehaviour
     private void Start()
     {
         CheckSkillLearned();
-        EventHandler.playerEvent.RegisterPlayerLevelUp(OnLevelUp_UnlockSkill);        
+        EventHandler.playerEvent.RegisterPlayerLevelUp(OnCheckSkillUnlock);        
     }
     private void OnDisable()
     {
-        EventHandler.playerEvent.UnRegisterPlayerLevelUp(OnLevelUp_UnlockSkill);
+        EventHandler.playerEvent.UnRegisterPlayerLevelUp(OnCheckSkillUnlock);
     }
     public void Initialize(SkillData skillData, GameObject keySetPanel)
     {        
@@ -64,7 +64,7 @@ public class UI_SkillEntry : MonoBehaviour
         this.skillData = skillData;
         this.keySetPanel = keySetPanel;
 
-        OnLevelUp_UnlockSkill();
+        OnCheckSkillUnlock();
 
         string folderName = $"{userStatClient.charClass.ToString()}_Skills";
         skillIcon.sprite = Resources.Load<Sprite>($"{folderName}/{skillData.Icon_Name}");
@@ -72,18 +72,20 @@ public class UI_SkillEntry : MonoBehaviour
     }
 
     /// <summary>
-    /// 레벨업에 따라 해당 스킬 잠금 해제
+    /// 스킬 배울 수 있는 레벨인지 확인
     /// </summary>
-    private void OnLevelUp_UnlockSkill()
+    private void OnCheckSkillUnlock()
     {               
         List<SkillData> availableSkillList = SkillManager.Instance.userAvailableSkillList;
         if (availableSkillList != null)
         {
             SkillData skill = availableSkillList.Find(x => x.Equals(this.skillData));
             isLockSkill = skill == null;
+            Debug.Log($"현재 스킬이 잠금? {isLockSkill}");
             LockImage.gameObject.SetActive(isLockSkill);                 
         }        
     }
+    
     /// <summary>
     /// 스킬을 유저가 이미 배웠는지 확인
     /// </summary>
@@ -95,6 +97,8 @@ public class UI_SkillEntry : MonoBehaviour
             UserSkillData userSkill = userSkillList.Find(x => x.Skill_ID.Equals(this.skillData.Skill_ID));
             bool isSkillLearned = userSkill != null;
             learnSkillButton.gameObject.SetActive(false == isSkillLearned);
+            equipButton.gameObject.SetActive(isSkillLearned);
+            skillLevelUPTestButton.gameObject.SetActive(isSkillLearned);
             equipButton.interactable = false == isLockSkill;
             learnSkillButton.interactable = false == isLockSkill;
         }
@@ -112,6 +116,7 @@ public class UI_SkillEntry : MonoBehaviour
     private void OnCLickLearnSkillButton()
     {
         SkillManager.Instance.LearnSkill(this.skillData);
+        OnCheckSkillUnlock();
         CheckSkillLearned();
     }
 }
