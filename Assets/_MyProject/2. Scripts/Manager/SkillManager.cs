@@ -8,6 +8,12 @@ public class SkillManager : MonoBehaviour
 {
     public static SkillManager Instance { get; private set; }
 
+    public void StartSkill(Skill skill)
+    {
+        StartCoroutine(skill.SkillMechanism());
+    }
+
+    #region 데이터베이스
     /// <summary>
     /// 현재 유저 직업에 맞는 모든 스킬 리스트
     /// </summary>
@@ -57,6 +63,10 @@ public class SkillManager : MonoBehaviour
         }
         EventHandler.managerEvent.TriggerSkillManagerInit();
     }
+    /// <summary>
+    /// 데이터베이스에서 유저의 키셋팅 가져오기
+    /// </summary>
+    /// <returns></returns>
     private SkillKeyBind GetSkillKeyBind()
     {
         int user_ID = DatabaseManager.Instance.userData.UID;
@@ -242,5 +252,7 @@ public class SkillManager : MonoBehaviour
         SaveSkill();
         SaveSkillKeyBind();
     }
+    #endregion
+
     #endregion
 }

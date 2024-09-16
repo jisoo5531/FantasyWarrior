@@ -7,6 +7,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerSkill : MonoBehaviour
 {
+    public List<SkillResource> skillResourceList;
+    public List<Skill> skillList;
     /// <summary>
     /// 현재 장착하고 있는 스킬
     /// </summary>

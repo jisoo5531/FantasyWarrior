@@ -4,9 +4,28 @@ using System.Data;
 using UnityEngine;
 using UnityEngine.UI;
 
+public class Skill
+{
+    public int skillDamage;
+    public Damagable damagable;
+    /// <summary>
+    /// 스킬이 들어갔을 때 들어가는 데미지 메커니즘
+    /// </summary>
+    public virtual void SkillSendDamage(Damagable damagable)
+    {
+        this.damagable = damagable;
+        // override
+
+        // 맞은 놈한테 데미지 여기서 주기        
+    }
+    public virtual IEnumerator SkillMechanism()
+    {
+        yield return null;
+    }
+}
 
 [System.Serializable]
-public class Skill
+public class SkillResource
 {    
     public enum Skill_Key
     {
@@ -19,9 +38,9 @@ public class Skill
     public List<Effect> skillEffects;
 
     public void Play(int skillNum)
-    {
+    {        
         Effect effect = skillEffects[skillNum];
-        GameObject effectObj = MonoBehaviour.Instantiate(effect.effect, effect.effectPos);
+        GameObject effectObj = MonoBehaviour.Instantiate(effect.effect, effect.effectPos);        
         MonoBehaviour.Destroy(effectObj, effect.destroyAfter);
     }
 }

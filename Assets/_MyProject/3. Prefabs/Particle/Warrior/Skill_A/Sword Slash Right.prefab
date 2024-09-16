@@ -4893,6 +4893,8 @@ GameObject:
   - component: {fileID: 8947284969411374333}
   - component: {fileID: 8997610433240827963}
   - component: {fileID: 2379877511859443237}
+  - component: {fileID: 4286425704908318994}
+  - component: {fileID: 7220782236080326128}
   m_Layer: 0
   m_Name: Sword Slash Right
   m_TagString: Untagged
@@ -8556,7 +8558,7 @@ ParticleSystem:
   CollisionModule:
     enabled: 0
     serializedVersion: 4
-    type: 0
+    type: 1
     collisionMode: 0
     colliderForce: 0
     multiplyColliderForceByParticleSize: 0
@@ -8737,7 +8739,7 @@ ParticleSystem:
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
-    collisionMessages: 0
+    collisionMessages: 1
     collidesWithDynamic: 1
     interiorCollisions: 0
   TriggerModule:
@@ -9775,6 +9777,35 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &4286425704908318994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4894247296439973570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31f585ae604da5f4bb860f55237aa948, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 500
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 64
+--- !u!65 &7220782236080326128
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4894247296439973570}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 4.51, y: 0.24, z: 4.54}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5185850816466508418
 GameObject:
   m_ObjectHideFlags: 0
