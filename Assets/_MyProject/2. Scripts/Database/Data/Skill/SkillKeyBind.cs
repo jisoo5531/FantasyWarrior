@@ -14,10 +14,10 @@ public class SkillKeyBind
     public SkillKeyBind(DataRow row) : this
         (
             int.Parse(row["User_ID"].ToString()),
-            int.TryParse(row["Skill_ID_1"].ToString(), out int skill_1) ? skill_1 : 0,
-            int.TryParse(row["Skill_ID_2"].ToString(), out int skill_2) ? skill_2 : 0,
-            int.TryParse(row["Skill_ID_3"].ToString(), out int skill_3) ? skill_3 : 0,
-            int.TryParse(row["Skill_ID_4"].ToString(), out int skill_4) ? skill_4 : 0
+            int.TryParse(row["Skill_1"].ToString(), out int skill_1) ? skill_1 : 0,
+            int.TryParse(row["Skill_2"].ToString(), out int skill_2) ? skill_2 : 0,
+            int.TryParse(row["Skill_3"].ToString(), out int skill_3) ? skill_3 : 0,
+            int.TryParse(row["Skill_4"].ToString(), out int skill_4) ? skill_4 : 0
         )
     { }
 

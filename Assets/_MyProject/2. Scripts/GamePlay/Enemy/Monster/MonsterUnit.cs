@@ -58,6 +58,12 @@ public class MonsterUnit : Enemy
     }
     private void Update()
     {
+        if (damagable.isStunned)
+        {
+            Debug.Log("얘 스턴이다. 못 움직여");
+            M_StateMachine.StateTransition(M_StateMachine.idleState);
+            return;
+        }
         M_StateMachine.Excute();
     }
     private void LateUpdate()
@@ -90,7 +96,7 @@ public class MonsterUnit : Enemy
         string query =
             $"SELECT *\n" +
             $"FROM monsters\n" +
-            $"WHERE NAME='{unitName}';";
+            $"WHERE monstername='{unitName}';";
 
         DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
 
@@ -112,8 +118,7 @@ public class MonsterUnit : Enemy
     protected virtual void OnHpChange(int damage)
     {
         // TODO : 유닛마다 들어가는 데미지 다르게끔 (방어도? 따라)
-        damagable.Hp -= damage;
-        Debug.Log($"데미지 받음 {damage} 만큼");
+        damagable.Hp -= damage;        
     }
     protected virtual void OnDeath()
     {        
@@ -139,15 +144,15 @@ public class MonsterData
     public MonsterData(DataRow row) : this
         (
             int.Parse(row["monster_id"].ToString()),
-            row["name"].ToString(),
+            row["monstername"].ToString(),
             int.Parse(row["maxhp"].ToString()),
             int.Parse(row["hp"].ToString()),
             int.Parse(row["damage"].ToString()),
             int.Parse(row["defense"].ToString()),
-            float.Parse(row["move_speed"].ToString()),
-            float.Parse(row["attack_range"].ToString()),
-            int.Parse(row["experience_reward"].ToString()),
-            int.Parse(row["gold_reward"].ToString())
+            float.Parse(row["MoveSpeed"].ToString()),
+            float.Parse(row["AttackRange"].ToString()),
+            int.Parse(row["EXP_Reward"].ToString()),
+            int.Parse(row["Gold_Reward"].ToString())
         )
     { }
 

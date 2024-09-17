@@ -83,6 +83,8 @@ public class UserStatManager : MonoBehaviour
     public void EquipItemUpdateStat(bool isEquip, int itemID = 0)
     {        
         int user_ID = DatabaseManager.Instance.userData.UID;
+        int atkAmount = 0;
+        int strAmount = 0;
         int dexAmount = 0;
         int intAmount = 0;
         int lukAmount = 0;
@@ -92,12 +94,12 @@ public class UserStatManager : MonoBehaviour
 
         List<EquipItemData> equipItemDataList = ItemManager.Instance.equipItemList;
 
-        int strAmount;
+        
         if (itemID != 0)
         {
             // 아이템을 장착하고 있을 때
             EquipItemData equipItemData = equipItemDataList.Find(x => x.Item_ID.Equals(itemID));
-
+            atkAmount = isEquip ? equipItemData.ATK_Boost : -equipItemData.ATK_Boost;
             strAmount = isEquip ? equipItemData.STR_Boost : -equipItemData.STR_Boost;
             dexAmount = isEquip ? equipItemData.DEX_Boost : -equipItemData.DEX_Boost;
             intAmount = isEquip ? equipItemData.INT_Boost : -equipItemData.INT_Boost;
@@ -105,6 +107,7 @@ public class UserStatManager : MonoBehaviour
             defAmount = isEquip ? equipItemData.DEF_Boost : -equipItemData.DEF_Boost;
             hpAmount = isEquip ? equipItemData.Hp_Boost : -equipItemData.Hp_Boost;
             mpAmount = isEquip ? equipItemData.Mp_Boost : -equipItemData.Mp_Boost;
+            userStatClient.UpdateATK(atkAmount);
             userStatClient.UpdateSTR(strAmount);
             userStatClient.UpdateDEX(dexAmount);
             userStatClient.UpdateINT(intAmount);

@@ -1050,7 +1050,7 @@ ModelImporter:
       - time: 0.0717949
         functionName: Skill_Play
         data: 
-        objectReferenceParameter: {instanceID: 0}
+        objectReferenceParameter: {fileID: 620095770565811937, guid: 7f68c200e0919104391f829bb0648058, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0

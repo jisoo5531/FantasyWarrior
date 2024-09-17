@@ -4900,6 +4900,9 @@ GameObject:
   - component: {fileID: 1813291130235156311}
   - component: {fileID: 2778909971708933846}
   - component: {fileID: 1708826681553950654}
+  - component: {fileID: 8206961291925658942}
+  - component: {fileID: 1952768828454849903}
+  - component: {fileID: 5686474241615856528}
   m_Layer: 0
   m_Name: Slash Wind Blue
   m_TagString: Untagged
@@ -9782,6 +9785,48 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!65 &8206961291925658942
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 453615834802561472}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 7.5, y: 1.5, z: 7.5}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1952768828454849903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 453615834802561472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 251e1fd577fa91a45888fb3f8372fc00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skillParticle: {fileID: 6431614598578008045}
+--- !u!114 &5686474241615856528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 453615834802561472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31f585ae604da5f4bb860f55237aa948, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skill_Order: 5
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &817366839477415861
 GameObject:
   m_ObjectHideFlags: 0

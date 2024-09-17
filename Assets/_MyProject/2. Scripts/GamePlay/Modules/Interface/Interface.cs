@@ -40,3 +40,11 @@ public interface IHpHandler
     void SetInitValue();
     void OnHpChange(int damage);
 }
+/// <summary>
+/// 상태이상 효과를 관리하는 인터페이스
+/// </summary>
+public interface IStatusEffect
+{
+    void Apply(Damagable target);
+    void Remove(Damagable target);
+}

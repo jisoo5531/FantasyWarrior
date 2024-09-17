@@ -38,6 +38,7 @@ public class UI_StatPanel : MonoBehaviour
         this.userStatClient = UserStatManager.Instance.userStatClient;
 
         statusUI.LvText.text = userStatClient.Level.ToString();
+        statusUI.ATKText.text = userStatClient.ATK.ToString();
         statusUI.STRText.text = userStatClient.STR.ToString();
         statusUI.DEXText.text = userStatClient.DEX.ToString();
         statusUI.INTText.text = userStatClient.INT.ToString();

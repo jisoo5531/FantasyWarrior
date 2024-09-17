@@ -4894,7 +4894,7 @@ GameObject:
   - component: {fileID: 8997610433240827963}
   - component: {fileID: 2379877511859443237}
   - component: {fileID: 4286425704908318994}
-  - component: {fileID: 7220782236080326128}
+  - component: {fileID: 496338430307600812}
   m_Layer: 0
   m_Name: Sword Slash Right
   m_TagString: Untagged
@@ -9789,12 +9789,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31f585ae604da5f4bb860f55237aa948, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 500
+  skill_Order: 0
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
---- !u!65 &7220782236080326128
-BoxCollider:
+--- !u!64 &496338430307600812
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -9803,9 +9803,10 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 4.51, y: 0.24, z: 4.54}
-  m_Center: {x: 0, y: 0, z: 0}
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 27831d509e842e84eaed37e1d3bff4c7, type: 3}
 --- !u!1 &5185850816466508418
 GameObject:
   m_ObjectHideFlags: 0

@@ -34,10 +34,12 @@ public class PlayerUI : UIComponent
             // 장착한 스킬이 없다면
             if (PlayerSkill.EquipSkills[i] == 0)
             {
+                skillIconList[i].ImageTransparent(0);
                 continue;
             }
             Sprite skillIcon = PlayerUIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];
             skillIconList[i].sprite = skillIcon;
+            skillIconList[i].ImageTransparent(1);
         }
     }
 

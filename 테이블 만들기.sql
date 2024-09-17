@@ -1,9 +1,15 @@
-/*CREATE TABLE Jobs (
+CREATE TABLE users(
+	User_ID INT PRIMARY KEY AUTO_INCREMENT,
+	UserName VARCHAR(255) NOT NULL,
+	Email VARCHAR(255) NOT NULL,
+	Password_Hash VARCHAR(255) NOT NULL
+);
+CREATE TABLE Jobs (
     JobID INT PRIMARY KEY AUTO_INCREMENT,
     JobName VARCHAR(255) NOT NULL,
     JobDescription TEXT
-);*/
-/*CREATE TABLE Skills (
+);
+CREATE TABLE Skills (
     Skill_ID INT PRIMARY KEY AUTO_INCREMENT,
     Skill_Name VARCHAR(255) NOT NULL,
     MaxLevel INT DEFAULT 1,
@@ -13,15 +19,15 @@
     Mana_Cost INT DEFAULT 0,
     
     Skill_Description TEXT
-);*/
-/*CREATE TABLE JobSkills (
+);
+CREATE TABLE JobSkills (
     JobSkill_ID INT PRIMARY KEY AUTO_INCREMENT,
     Job_ID INT,
     Skill_ID INT,
     FOREIGN KEY (Job_ID) REFERENCES Jobs(Job_ID),
     FOREIGN KEY (Skill_ID) REFERENCES Skills(Skill_ID)
-);*/
-/*CREATE TABLE UserJobs (
+);
+CREATE TABLE UserJobs (
     UserJob_ID INT PRIMARY KEY AUTO_INCREMENT,
     User_ID INT,
     Job_ID INT,
@@ -29,8 +35,8 @@
     Job_Experience INT DEFAULT 0,
     FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
     FOREIGN KEY (Job_ID) REFERENCES Jobs(Job_ID)
-);*/
-/*CREATE TABLE UserSkills (
+);
+CREATE TABLE UserSkills (
     UserSkill_ID INT PRIMARY KEY AUTO_INCREMENT,
     User_ID INT,
     Job_ID INT,
@@ -40,23 +46,23 @@
     FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
     FOREIGN KEY (Job_ID) REFERENCES Jobs(Job_ID),
     FOREIGN KEY (Skill_ID) REFERENCES Skills(Skill_ID)
-);*/
-/*CREATE TABLE Inventory (
+);
+CREATE TABLE Inventory (
     InventoryID INT PRIMARY KEY AUTO_INCREMENT,
     User_ID INT,
     Item_ID INT,
     Quantity INT DEFAULT 1,
     FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
     FOREIGN KEY (Item_ID) REFERENCES Items(Item_ID)
-);*/
-/*CREATE TABLE Items (
+);
+CREATE TABLE Items (
     ItemID INT PRIMARY KEY AUTO_INCREMENT,
     ItemName VARCHAR(255) NOT NULL,
     ItemType VARCHAR(100),
     ItemDescription TEXT,
     Rarity INT
-);*/
-/*CREATE TABLE UserStats (
+);
+CREATE TABLE UserStats (
     User_ID INT PRIMARY KEY,                -- 유저 고유 ID (Users 테이블의 외래 키)
     Level INT DEFAULT 1,                   -- 유저 레벨
     Exp INT DEFAULT 0,              -- 유저 경험치
@@ -71,9 +77,8 @@
     Luck INT DEFAULT 5,                    -- 행운
     Gold INT DEFAULT 0,                    -- 유저가 보유한 골드
     FOREIGN KEY (User_ID) REFERENCES Users(User_ID)  -- Users 테이블과 연관
-);*/
-
-/*CREATE TABLE EquipmentItems (
+);
+CREATE TABLE EquipmentItems (
     Equipment_ID INT PRIMARY KEY AUTO_INCREMENT, -- 장비 고유 ID
     Item_ID INT,                                 -- Items 테이블과의 외래 키
     Equipment_Type VARCHAR(50),                  -- 장비 유형 (예: Armor, Weapon, Accessory)
@@ -87,22 +92,22 @@
     Hp_Boost INT DEFAULT 0,                  -- 체력 증가
     Mana_Boost INT DEFAULT 0,                    -- 마나 증가
     FOREIGN KEY (Item_ID) REFERENCES Items(Item_ID)
-);*/
-/*CREATE TABLE ConsumItems (
+);
+CREATE TABLE ConsumItems (
     Consum_ID INT PRIMARY KEY AUTO_INCREMENT, -- 소모품 고유 ID
     Item_ID INT,                                  -- Items 테이블과의 외래 키
     Effect VARCHAR(255),                         -- 소모품 효과 (예: Health Recovery, Mana Recovery)
     Recovery_Amount INT DEFAULT 0,                -- 회복량 (체력 또는 마나)
     Duration INT DEFAULT 0,                      -- 효과 지속 시간 (버프 아이템인 경우)
     FOREIGN KEY (Item_ID) REFERENCES Items(Item_ID)
-);*/
-/*CREATE TABLE OtherItems (
+);
+CREATE TABLE OtherItems (
     Others_ID INT PRIMARY KEY AUTO_INCREMENT, -- 기타 아이템 고유 ID
     Item_ID INT,                                     -- Items 테이블과의 외래 키
     Description TEXT,                          -- 아이템 용도 설명
     FOREIGN KEY (Item_ID) REFERENCES Items(Item_ID)
-);*/
-/*CREATE TABLE PlayerEquipment (
+);
+CREATE TABLE PlayerEquipment (
     User_ID INT,                            -- 유저 고유 ID (Users 테이블의 외래 키)
     HeadItem_ID INT DEFAULT NULL,           -- 투구 (Helmet)
     ArmorItem_ID INT DEFAULT NULL,          -- 갑옷 (Armor)
@@ -119,8 +124,8 @@
     FOREIGN KEY (WeaponItem_ID) REFERENCES Items(Item_ID),
     FOREIGN KEY (PendantItem_ID) REFERENCES Items(Item_ID),
     FOREIGN KEY (RingItem_ID) REFERENCES Items(Item_ID)
-);*/
-/*CREATE TABLE Quests (
+);
+CREATE TABLE Quests (
     Quest_ID INT PRIMARY KEY AUTO_INCREMENT,  -- 퀘스트 고유 ID
     Ques_tName VARCHAR(100),                  -- 퀘스트 이름
     Quest_Type VARCHAR(50),                   -- 퀘스트 유형 (예: Main, Side, Daily)
@@ -131,7 +136,7 @@
     RewardItem_ID INT DEFAULT NULL,           -- 보상 아이템 ID (Items 테이블과 연관)
     IsRepeatable BOOLEAN DEFAULT FALSE,      -- 반복 가능한 퀘스트인지 여부
     FOREIGN KEY (RewardItem_ID) REFERENCES Items(Item_ID) -- 보상 아이템과 연결
-);*/
+);
 CREATE TABLE QuestObjectives (
     Objective_ID INT PRIMARY KEY AUTO_INCREMENT,
     Quest_ID INT,                                   -- 퀘스트와 연결
@@ -146,15 +151,15 @@ CREATE TABLE QuestObjectives (
     FOREIGN KEY (Item_ID) REFERENCES Items(Item_ID)
 );
 
-/*CREATE TABLE UserQuests (
+CREATE TABLE UserQuests (
     User_ID INT,                                 -- 유저 ID
     Quest_ID INT,                                -- 퀘스트 ID
     Status VARCHAR(50),                         -- 퀘스트 상태 (Accepted, In Progress, Completed)
     FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
     FOREIGN KEY (Quest_ID) REFERENCES Quests(Quest_ID),
     PRIMARY KEY (User_ID, Quest_ID)
-);*/
-/*CREATE TABLE UserQuestObjectives (
+);
+CREATE TABLE UserQuestObjectives (
     User_ID INT,                                 -- 유저 ID
     Objective_ID INT,                            -- 목표 ID
     Current_Amount INT DEFAULT 0,                -- 현재 달성된 수량
@@ -162,7 +167,7 @@ CREATE TABLE QuestObjectives (
     FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
     FOREIGN KEY (Objective_ID) REFERENCES QuestObjectives(Objective_ID),
     PRIMARY KEY (User_ID, Objective_ID)
-);*/
+);
 
 
 

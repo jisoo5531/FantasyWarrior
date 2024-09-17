@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SkillCollision : MonoBehaviour
-{    
-    public int damage;
-    public LayerMask targetLayer;
+{
+    public int skill_Order;
+    public LayerMask targetLayer;    
+
 
     private void OnTriggerEnter(Collider other)
-    {
+    {                
         if ((targetLayer | (1 << other.gameObject.layer)) != targetLayer)
         {
             return;
@@ -18,8 +19,9 @@ public class SkillCollision : MonoBehaviour
         if (other.TryGetComponent(out Damagable damagable))
         {
             Debug.Log("파티클 맞았다.");
-            transform.root.GetComponentInChildren<PlayerSkill>().skillList[0].SkillSendDamage(damagable);
+            transform.root.GetComponentInChildren<PlayerSkill>().skillList[skill_Order].SkillSendDamage(damagable);
             //damagable.GetDamage(damage);
+            Debug.Log("여기 되나요?");
             if (damagable.Hp <= 0)
             {
                 Debug.Log("여기 안되나?");

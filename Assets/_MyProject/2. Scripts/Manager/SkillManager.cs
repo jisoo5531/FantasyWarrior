@@ -8,9 +8,9 @@ public class SkillManager : MonoBehaviour
 {
     public static SkillManager Instance { get; private set; }
 
-    public void StartSkill(Skill skill)
+    public void StartSkill(Skill skill, Damagable damagable)
     {
-        StartCoroutine(skill.SkillMechanism());
+        StartCoroutine(skill.SkillMechanism(damagable));
     }
 
     #region 데이터베이스
@@ -235,10 +235,10 @@ public class SkillManager : MonoBehaviour
         string skill_4 = PlayerSkill.EquipSkills[3] != 0 ? PlayerSkill.EquipSkills[3].ToString() : "NULL";
         string query =
             $"UPDATE userskillkeybinds\n" +
-            $"SET userskillkeybinds.Skill_ID_1={skill_1}," +
-            $"userskillkeybinds.Skill_ID_2={skill_2}," +
-            $"userskillkeybinds.Skill_ID_3={skill_3}," +
-            $"userskillkeybinds.Skill_ID_4={skill_4}\n" +
+            $"SET userskillkeybinds.Skill_1={skill_1}," +
+            $"userskillkeybinds.Skill_2={skill_2}," +
+            $"userskillkeybinds.Skill_3={skill_3}," +
+            $"userskillkeybinds.Skill_4={skill_4}\n" +
             $"WHERE userskillkeybinds.User_ID={user_ID};";
         _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
     }

@@ -20,6 +20,7 @@ public class UserStatData
     public int Hp { get; set; }
     public int MaxMana { get; set; }
     public int Mana { get; set; }
+    public int ATK { get; set; }
     public int STR { get; set; }
     public int DEX { get; set; }
     public int INT { get; set; }
@@ -38,6 +39,7 @@ public class UserStatData
             int.Parse(row["hp"].ToString()),
             int.Parse(row["maxmana"].ToString()),
             int.Parse(row["mana"].ToString()),
+            int.Parse(row["atk"].ToString()),
             int.Parse(row["str"].ToString()),
             int.Parse(row["dex"].ToString()),
             int.Parse(row["intelligence"].ToString()),
@@ -47,7 +49,7 @@ public class UserStatData
         )
     { }
 
-    public UserStatData(int uID, CharClass charClass, int level, int maxExp, int eXP, int maxHp, int hp, int maxMana, int mana, int sTR, int dEX, int iNT, int lUK, int dEF, int gold)
+    public UserStatData(int uID, CharClass charClass, int level, int maxExp, int eXP, int maxHp, int hp, int maxMana, int mana, int aTK, int sTR, int dEX, int iNT, int lUK, int dEF, int gold)
     {
         this.UID = uID;
         this.CharClass = charClass;
@@ -58,6 +60,7 @@ public class UserStatData
         this.Hp = hp;
         this.MaxMana = maxMana;
         this.Mana = mana;
+        this.ATK = aTK;
         this.STR = sTR;
         this.DEX = dEX;
         this.INT = iNT;
@@ -82,6 +85,7 @@ public class UserStatClient
         public int MaxExpAmount = 2137;
         public int MaxhpAmount = 500;
         public int MaxmpAmount = 150;
+        public int ATKAmount = 5;
         public int STRAmount = 5;
         public int DEXAmount = 5;
         public int INTAmount = 5;
@@ -169,6 +173,7 @@ public class UserStatClient
         this.Level = userStat.Level;        
         this.Exp = userStat.EXP;
         this.MaxExp = orgMaxExp + (levelUpStat.MaxExpAmount * (Level - 1));
+        this.ATK = orgAtk + (levelUpStat.ATKAmount * (Level - 1));
         this.STR = orgStr + (levelUpStat.STRAmount * (Level - 1));
         this.DEX = orgDex + (levelUpStat.DEXAmount * (Level - 1));
         this.INT = orgInt + (levelUpStat.INTAmount * (Level - 1));

@@ -7,8 +7,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerSkill : MonoBehaviour
 {
-    public List<SkillResource> skillResourceList;
-    public List<Skill> skillList;
+    
     /// <summary>
     /// 현재 장착하고 있는 스킬
     /// </summary>
@@ -17,15 +16,24 @@ public class PlayerSkill : MonoBehaviour
     /// 전체 스킬 정보
     /// </summary>
     public Dictionary<int, string> skillTable = new Dictionary<int, string>();
-    
+
     /// <summary>
-    /// 데이터베이스 where 쿼리문
+    /// 유저 스킬의 리소스(스킬 아이콘 이미지 등)을 담는 리스트
     /// </summary>
-    protected Dictionary<string, object> whereQuery;    
+    public List<SkillResource> skillResourceList;
+    /// <summary>
+    /// 스킬들의 정보를 담고 있는 리스트
+    /// </summary>
+    public List<Skill> skillList;
 
     protected int currentSkillNum;
     private PlayerAnimation playerAnimation;
 
+    /// <summary>
+    /// 처음 게임 시작할 때 키셋 초기화가 완료되었을 때,
+    /// 키셋에 대한 정보가 필요한 다른 스크립트가
+    /// 키셋 초기화 이후에 초기화를 하기 위한 이벤트
+    /// </summary>
     public static event Action OnKeyBindInit;
 
     private void OnEnable()

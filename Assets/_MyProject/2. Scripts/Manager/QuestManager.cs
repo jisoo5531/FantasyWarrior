@@ -30,7 +30,7 @@ public class QuestManager : MonoBehaviour
     /// <summary>
     /// 현재 유저가 수행 중인 퀘스트 진행 상황 (클라이언트)
     /// </summary>
-    public List<QuestProgress> questProgressList = new List<QuestProgress>();
+    public List<QuestProgress> questProgressList { get; private set; }
 
     #region 이벤트
 
@@ -290,7 +290,7 @@ public class QuestManager : MonoBehaviour
         }
         if (objectiveID > 0)
         {
-            int index = questObjectList.FindIndex((x) => x.Quest_ID.Equals(objectiveID));
+            int index = questObjectList.FindIndex((x) => x.ObjectiveID.Equals(objectiveID));
             if (index >= 0)
             {
                 return questObjectList[index];
@@ -350,7 +350,7 @@ public class QuestManager : MonoBehaviour
             $"VALUES ({user_ID}, {objectiveData.ObjectiveID});";
         _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
 
-        userQuestsList.Add(new UserQuestsData(user_ID, quest_ID, Q_Status.InProgress, false));
+        userQuestsList.Add(new UserQuestsData(user_ID, quest_ID, Q_Status.InProgress));
         userQuestObjList.Add(new UserQuestObjectivesData(user_ID, objectiveData.ObjectiveID, 0, false));
 
         int? reqAmount = GetRequireCompleteQuest(quest_ID);

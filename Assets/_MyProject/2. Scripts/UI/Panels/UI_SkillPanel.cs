@@ -48,8 +48,7 @@ public class UI_SkillPanel : MonoBehaviour
             {
                 continue;
             }            
-            Sprite skillIcon = PlayerUIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];
-            Debug.Log(skillIcon.name);
+            Sprite skillIcon = PlayerUIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];            
             iconPanelList[i].ActionBarIcon.sprite = skillIcon;
             iconPanelList[i].KeyIcon.sprite = skillIcon;
             iconPanelList[i].ActionBarIcon.ImageTransparent(1);

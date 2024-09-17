@@ -24421,6 +24421,8 @@ GameObject:
   - component: {fileID: 8071942342665324041}
   - component: {fileID: 4751762493063746263}
   - component: {fileID: 1886934622595682376}
+  - component: {fileID: 7078059637962572495}
+  - component: {fileID: 5429199204355210967}
   m_Layer: 0
   m_Name: Prick Blue
   m_TagString: Untagged
@@ -29312,6 +29314,35 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!65 &7078059637962572495
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4829428341557164604}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.69, y: 1, z: 2.75}
+  m_Center: {x: -0.01, y: -0.26, z: 1.49}
+--- !u!114 &5429199204355210967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4829428341557164604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31f585ae604da5f4bb860f55237aa948, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skill_Order: 1
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &7734347004859422012
 GameObject:
   m_ObjectHideFlags: 0

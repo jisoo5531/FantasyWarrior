@@ -10,8 +10,12 @@ public class Damagable : MonoBehaviour, IDamagable
     public int MaxHp { get; set; }
     public int Hp { get; set; }
 
+    public bool isStunned { get; set; }
 
     private bool isDeath = false;
+
+
+    #region 이벤트
 
     /// <summary>
     /// 공격을 받아 데미지를 입었을 때 발생하는 이벤트
@@ -25,6 +29,8 @@ public class Damagable : MonoBehaviour, IDamagable
     /// 죽었을 때 발생하는 이벤트
     /// </summary>
     public event Action OnDeath;
+
+    #endregion
 
     public void Initialize(int unitID, int maxHp, int hp)
     {
@@ -46,6 +52,16 @@ public class Damagable : MonoBehaviour, IDamagable
         PlayerEquipManager.Instance.OnEquipItem -= OnChangeHp;
         PlayerEquipManager.Instance.OnUnEquipItem -= OnChangeHp;
         PlayerEquipManager.Instance.OnAllUnEquipButtonClick -= OnChangeHp;
+    }
+
+    public void ApplyStatusEffect(IStatusEffect statusEffect)
+    {
+        statusEffect.Apply(this);
+    }
+
+    public void RemoveStatusEffect(IStatusEffect statusEffect)
+    {
+        statusEffect.Remove(this);
     }
 
     public void GetDamage(int damage)

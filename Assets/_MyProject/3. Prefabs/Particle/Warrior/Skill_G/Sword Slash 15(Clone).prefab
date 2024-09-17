@@ -68467,6 +68467,8 @@ GameObject:
   - component: {fileID: 2697240962454745302}
   - component: {fileID: 1389343537994520000}
   - component: {fileID: 7217266170926863556}
+  - component: {fileID: 434442703888625140}
+  - component: {fileID: 179251698118660197}
   m_Layer: 0
   m_Name: Sword Slash 15(Clone)
   m_TagString: Untagged
@@ -73361,3 +73363,32 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!65 &434442703888625140
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9201284294886984541}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 5.3060117, y: 3.6910868, z: 13.967157}
+  m_Center: {x: 0.03551936, y: 0, z: 0}
+--- !u!114 &179251698118660197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9201284294886984541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31f585ae604da5f4bb860f55237aa948, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skill_Order: 6
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 64

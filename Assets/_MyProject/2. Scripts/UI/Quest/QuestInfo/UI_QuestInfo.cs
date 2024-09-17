@@ -63,7 +63,7 @@ public class UI_QuestInfo : MonoBehaviour
             questCompleteButton.interactable = false;
             return;
         }
-        int index = questProgressList.FindIndex((x) => { return x.quest_Id.Equals(questData.Quest_ID); });
+        int index = questProgressList.FindIndex(x => x.quest_Id.Equals(questData.Quest_ID));
         if (index >= 0)
         {
             questStartButton.interactable = false;
@@ -75,6 +75,7 @@ public class UI_QuestInfo : MonoBehaviour
             else
             {
                 questStatusText.text = "InProgress Quest";
+                questCompleteButton.interactable = false;
             }
         }
         else

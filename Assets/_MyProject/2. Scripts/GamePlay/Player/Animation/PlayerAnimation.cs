@@ -58,8 +58,7 @@ public class PlayerAnimation : MonoBehaviour
 
     #region Skill
     public void SkillAnimation(string skillName)
-    {
-        Debug.Log(skillName);
+    {        
         anim.SetTrigger(skillName);
     }
     #endregion
