@@ -1,11 +1,11 @@
-CREATE TABLE users(
+/*CREATE TABLE users(
 	User_ID INT PRIMARY KEY AUTO_INCREMENT,
 	UserName VARCHAR(255) NOT NULL,
 	Email VARCHAR(255) NOT NULL,
 	Password_Hash VARCHAR(255) NOT NULL
 );
 CREATE TABLE Jobs (
-    JobID INT PRIMARY KEY AUTO_INCREMENT,
+    Job_ID INT PRIMARY KEY AUTO_INCREMENT,
     JobName VARCHAR(255) NOT NULL,
     JobDescription TEXT
 );
@@ -47,6 +47,13 @@ CREATE TABLE UserSkills (
     FOREIGN KEY (Job_ID) REFERENCES Jobs(Job_ID),
     FOREIGN KEY (Skill_ID) REFERENCES Skills(Skill_ID)
 );
+CREATE TABLE Items (
+    Item_ID INT PRIMARY KEY AUTO_INCREMENT,
+    ItemName VARCHAR(255) NOT NULL,
+    ItemType VARCHAR(100),
+    ItemDescription TEXT,
+    Rarity INT
+);
 CREATE TABLE Inventory (
     InventoryID INT PRIMARY KEY AUTO_INCREMENT,
     User_ID INT,
@@ -54,13 +61,6 @@ CREATE TABLE Inventory (
     Quantity INT DEFAULT 1,
     FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
     FOREIGN KEY (Item_ID) REFERENCES Items(Item_ID)
-);
-CREATE TABLE Items (
-    ItemID INT PRIMARY KEY AUTO_INCREMENT,
-    ItemName VARCHAR(255) NOT NULL,
-    ItemType VARCHAR(100),
-    ItemDescription TEXT,
-    Rarity INT
 );
 CREATE TABLE UserStats (
     User_ID INT PRIMARY KEY,                -- 유저 고유 ID (Users 테이블의 외래 키)
@@ -136,7 +136,20 @@ CREATE TABLE Quests (
     RewardItem_ID INT DEFAULT NULL,           -- 보상 아이템 ID (Items 테이블과 연관)
     IsRepeatable BOOLEAN DEFAULT FALSE,      -- 반복 가능한 퀘스트인지 여부
     FOREIGN KEY (RewardItem_ID) REFERENCES Items(Item_ID) -- 보상 아이템과 연결
+);*/
+/*CREATE TABLE Monsters (
+    Monster_ID INT PRIMARY KEY AUTO_INCREMENT,  -- 몬스터 고유 ID
+    MonsterName VARCHAR(100) NOT NULL,         -- 몬스터 이름
+    MaxHp INT NOT NULL,                        -- 최대 체력
+    Hp INT NOT NULL,                           -- 현재 체력 (게임에서 동적으로 관리, DB에 저장할 필요가 없음)
+    Damage INT NOT NULL,                       -- 공격력
+    Defense INT NOT NULL,                      -- 방어력
+    MoveSpeed FLOAT NOT NULL,                  -- 이동 속도
+    AttackRange FLOAT NOT NULL,                -- 공격 범위
+    EXP_Reward INT NOT NULL,                   -- 처치 시 경험치 보상
+    Gold_Reward INT NOT NULL                   -- 처치 시 골드 보상
 );
+
 CREATE TABLE QuestObjectives (
     Objective_ID INT PRIMARY KEY AUTO_INCREMENT,
     Quest_ID INT,                                   -- 퀘스트와 연결
@@ -167,7 +180,18 @@ CREATE TABLE UserQuestObjectives (
     FOREIGN KEY (User_ID) REFERENCES Users(User_ID),
     FOREIGN KEY (Objective_ID) REFERENCES QuestObjectives(Objective_ID),
     PRIMARY KEY (User_ID, Objective_ID)
+);*/
+CREATE TABLE SkillKeyBind(
+	User_ID INT,
+	Skill_1 INT DEFAULT 0,
+	Skill_2 INT DEFAULT 0,
+	Skill_3 INT DEFAULT 0,
+	Skill_4 INT DEFAULT 0,
+	FOREIGN KEY (User_ID) REFERENCES users(User_ID),
+	FOREIGN KEY (Skill_1) REFERENCES skills(Skill_ID),
+	FOREIGN KEY (Skill_2) REFERENCES skills(Skill_ID),
+	FOREIGN KEY (Skill_3) REFERENCES skills(Skill_ID),
+	FOREIGN KEY (Skill_4) REFERENCES skills(Skill_ID)
 );
-
 
 
