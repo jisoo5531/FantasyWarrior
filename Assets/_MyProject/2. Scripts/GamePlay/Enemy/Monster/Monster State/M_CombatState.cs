@@ -12,7 +12,11 @@ public class M_CombatState : IState
     }
 
     public void Enter()
-    {        
+    {
+        if (monster.damagable.Hp <= 0)
+        {
+            return;
+        }
         //Debug.Log("Combat State Enter");
         if (false == monster.nav.isStopped)
         {
@@ -24,6 +28,10 @@ public class M_CombatState : IState
     public void Excute()
     {
         //Debug.Log("Combat State ½ÇÇà Áß");
+        if (monster.damagable.Hp <= 0)
+        {
+            return;
+        }
 
         monster.unitAnim.AttackAnimPlay();
 

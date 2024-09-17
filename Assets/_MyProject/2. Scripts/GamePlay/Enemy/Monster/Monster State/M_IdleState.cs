@@ -13,13 +13,21 @@ public class M_IdleState : IState
 
     public void Enter()
     {
+        if (monster.damagable.Hp <= 0)
+        {
+            return;
+        }
         //Debug.Log("Idle State Enter");        
-        
+
     }
     public void Excute()
     {
+        if (monster.damagable.Hp <= 0)
+        {
+            return;
+        }
         //Debug.Log("Idle State ½ÇÇà Áß");
-        
+
         if (monster.followable.DistanceToPlayer <= monster.detectionRange)
         {
             if (monster.followable.DistanceToPlayer <= monster.attackable.Range)

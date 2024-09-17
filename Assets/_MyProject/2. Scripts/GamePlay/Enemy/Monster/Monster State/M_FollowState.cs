@@ -14,6 +14,10 @@ public class M_FollowState : IState
 
     public void Enter()
     {
+        if (monster.damagable.Hp <= 0)
+        {
+            return;
+        }
         //Debug.Log("Follow State Enter");
 
         monster.nav.isStopped = false;
@@ -24,6 +28,10 @@ public class M_FollowState : IState
 
     public void Excute()
     {
+        if (monster.damagable.Hp <= 0)
+        {
+            return;
+        }
         //Debug.Log("Follow State ½ÇÇà Áß");        
         monster.nav?.SetDestination(monster.player.transform.position);
 
