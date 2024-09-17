@@ -14,9 +14,10 @@ public class UI_ItemInfo : MonoBehaviour
 
     public virtual void Initialize(int itemID)
     {
-        itemDataList = ItemManager.Instance.itemDataList;
+        itemDataList = ItemManager.Instance.itemDataList;        
         itemData = itemDataList.Find((x) => { return x.Item_ID.Equals(itemID); });
         itemName = itemData.Item_Name;
+        itemNameText.text = itemName;
         itemImage.sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
     }
 }
