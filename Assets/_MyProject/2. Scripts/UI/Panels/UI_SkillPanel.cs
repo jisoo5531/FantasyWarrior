@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 [System.Serializable]
 public class KeySetIcon
-{    
+{        
     /// <summary>
     /// 스킬창에 보여질 각 스킬 이미지
     /// </summary>
@@ -14,16 +14,24 @@ public class KeySetIcon
     /// <summary>
     /// 키셋 변경 창에 보일 스킬 이미지
     /// </summary>
-    public Image KeyIcon;    
+    public Image KeyIcon;
+
+    public KeySetIcon(Image actionBarIcon, Image keyIcon)
+    {
+        this.ActionBarIcon = actionBarIcon;
+        this.KeyIcon = keyIcon;
+    }
 }
 public class UI_SkillPanel : MonoBehaviour
 {
     [Header("스킬")]
     public GameObject skillWindowContent;   // 스킬창
-    public GameObject skillInfo;            // 각 스킬들의 스킬 정보 항목
-    public GameObject keySetPanel;          // 스킬을 장착하려고 할 때 쓰일 키셋 변경 창
+    public GameObject skillInfoPrefab;            // 각 스킬들의 스킬 정보 항목
+    public GameObject keySetPanel;          // 스킬을 장착하려고 할 때 쓰일 키셋 변경 창    
     public List<KeySetIcon> iconPanelList;  // 현재 장착한 4개의 스킬 이미지를 관리할 리스트
-    public List<SkillData> skillDataList = new List<SkillData>();    
+    public List<SkillData> skillDataList = new List<SkillData>();
+    [Header("스킬 상세정보")]
+    public GameObject SkillInfoWindow;
 
     private void Awake()
     {
@@ -68,10 +76,11 @@ public class UI_SkillPanel : MonoBehaviour
         {
             foreach (SkillData skillData in skills)
             {
-                GameObject skillInfoObj = Instantiate(skillInfo, skillWindowContent.transform);
+                GameObject skillInfoObj = Instantiate(skillInfoPrefab, skillWindowContent.transform);
                 UI_SkillEntry skillEntry = skillInfoObj.GetComponent<UI_SkillEntry>();
                                        
-                skillEntry.Initialize(skillData, keySetPanel);
+                // 각 스킬들을 담고 있는 항목
+                skillEntry.Initialize(skillData, keySetPanel, SkillInfoWindow);
             }
         }        
     }
@@ -98,5 +107,21 @@ public class UI_SkillPanel : MonoBehaviour
             iconPanelList[i].ActionBarIcon.ImageTransparent(1);
             iconPanelList[i].KeyIcon.ImageTransparent(1);
         }        
+    }
+    private void Reset()
+    {
+        skillWindowContent = GameObject.Find("SkillWindowContent");
+        keySetPanel = GameObject.Find("SkillKeySet");
+
+        //iconPanelList = new List<KeySetIcon>();
+        //for (int i = 1; i <= 4; i++)
+        //{
+        //    KeySetIcon keySetIcon = new KeySetIcon
+        //    (
+        //    GameObject.Find($"ActionBar ICON {i}").GetComponent<Image>(),
+        //    GameObject.Find($"KeySet ICON {i}").GetComponent<Image>()
+        //    );
+        //    iconPanelList.Add(keySetIcon);
+        //}
     }
 }

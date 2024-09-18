@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public GameObject goblin;
     public GameObject mummy;
     public GameObject Item;
+    public GameObject UI;
     private void Awake()
     {
         Instance = this;
@@ -42,6 +43,10 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F12))
         {
             QuestManager.Instance.AcceptQuest(1);
+        }
+        if (Input.GetKeyDown(KeyCode.F11))
+        {
+            UI.SetActive(!UI.activeSelf);
         }
     }
 
