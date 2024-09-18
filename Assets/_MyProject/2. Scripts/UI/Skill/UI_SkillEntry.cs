@@ -24,6 +24,10 @@ public class UI_SkillEntry : MonoBehaviour
     /// 아직 스킬 잠금을 해제하지 못했을 때 가려지기 위한 이미지
     /// </summary>
     public Image LockImage;
+    /// <summary>
+    /// 스킬들의 상세정보를 보여주는 상세정보 창
+    /// </summary>
+    private GameObject SkillInfoWindow;
 
     public SkillData skillData;
 
@@ -40,7 +44,8 @@ public class UI_SkillEntry : MonoBehaviour
     private bool isLockSkill = true;
 
     private void Awake()
-    {        
+    {
+        this.GetComponent<Button>().onClick.AddListener(OnClickSkillElement);
         equipButton.onClick.AddListener(() =>
             {
                 keySetPanel.gameObject.SetActive(true);
@@ -58,11 +63,12 @@ public class UI_SkillEntry : MonoBehaviour
     {
         EventHandler.playerEvent.UnRegisterPlayerLevelUp(OnCheckSkillUnlock);
     }
-    public void Initialize(SkillData skillData, GameObject keySetPanel)
-    {        
+    public void Initialize(SkillData skillData, GameObject keySetPanel, GameObject skillInfoWindow)
+    {                
         UserStatClient userStatClient = UserStatManager.Instance.userStatClient;
         this.skillData = skillData;
         this.keySetPanel = keySetPanel;
+        this.SkillInfoWindow = skillInfoWindow;
 
         OnCheckSkillUnlock();
 
@@ -118,5 +124,13 @@ public class UI_SkillEntry : MonoBehaviour
         SkillManager.Instance.LearnSkill(this.skillData);
         OnCheckSkillUnlock();
         CheckSkillLearned();
+    }
+    /// <summary>
+    /// 스킬 항목 (자기 자신)을 누르면 스킬 상세정보 창이 나오게끔
+    /// </summary>
+    private void OnClickSkillElement()
+    {
+        SkillInfoWindow.gameObject.SetActive(true);
+        SkillInfoWindow.GetComponent<UI_SkillInfoWindow>().Initialize(skillData);
     }
 }

@@ -38,11 +38,11 @@ public class W_Skill_1 : Skill
         SkillData skill = GetSkillData(1);
         if (skill != null)
         {
-            skillMultiplier = skill.Multiplier;
+            skillMultiplier = skill.Multiplier + (skill.Level * skill.Multi_Amount);
             skillHitCount = skill.HitCount;
-        }        
+        }
     }
-    
+
     /// <summary>
     /// 스킬의 메커니즘 (데미지가 어떻게 들어가는지)
     /// </summary>
@@ -54,7 +54,7 @@ public class W_Skill_1 : Skill
         SkillManager.Instance.StartSkill(this, damagable);
     }
     protected override void CalculateSkillDamage()
-    {        
+    {
         skillDamage = Mathf.RoundToInt(skillMultiplier * (userStat.ATK + userStat.STR * .5f));
         finalDamage = Random.Range(skillDamage - 100, skillDamage + 100);
     }
@@ -66,7 +66,7 @@ public class W_Skill_1 : Skill
             CalculateSkillDamage();
             damagable.GetDamage(finalDamage);
             yield return new WaitForSeconds(0.05f);
-        }        
+        }
     }
 }
 
@@ -77,11 +77,11 @@ public class W_Skill_2 : Skill
         SkillData skill = GetSkillData(2);
         if (skill != null)
         {
-            skillMultiplier = skill.Multiplier;
+            skillMultiplier = skill.Multiplier + (skill.Level * skill.Multi_Amount);
             skillHitCount = skill.HitCount;
-        }        
+        }
     }
-    
+
     /// <summary>
     /// 스킬의 메커니즘 (데미지가 어떻게 들어가는지)
     /// </summary>
@@ -93,7 +93,7 @@ public class W_Skill_2 : Skill
         SkillManager.Instance.StartSkill(this, damagable);
     }
     protected override void CalculateSkillDamage()
-    {        
+    {
         skillDamage = Mathf.RoundToInt(skillMultiplier * (userStat.ATK + userStat.STR * .5f));
         finalDamage = Random.Range(skillDamage - 100, skillDamage + 100);
     }
@@ -105,7 +105,7 @@ public class W_Skill_2 : Skill
             CalculateSkillDamage();
             damagable.GetDamage(finalDamage);
             yield return new WaitForSeconds(0.05f);
-        }        
+        }
     }
 }
 
@@ -116,11 +116,11 @@ public class W_Skill_3 : Skill
         SkillData skill = GetSkillData(3);
         if (skill != null)
         {
-            skillMultiplier = skill.Multiplier;
+            skillMultiplier = skill.Multiplier + (skill.Level * skill.Multi_Amount);
             skillHitCount = skill.HitCount;
-        }        
+        }
     }
-    
+
     /// <summary>
     /// 스킬의 메커니즘 (데미지가 어떻게 들어가는지)
     /// </summary>
@@ -132,7 +132,7 @@ public class W_Skill_3 : Skill
         SkillManager.Instance.StartSkill(this, damagable);
     }
     protected override void CalculateSkillDamage()
-    {        
+    {
         skillDamage = Mathf.RoundToInt(skillMultiplier * (userStat.ATK + userStat.STR * .5f));
         finalDamage = Random.Range(skillDamage - 100, skillDamage + 100);
     }
@@ -144,7 +144,7 @@ public class W_Skill_3 : Skill
             CalculateSkillDamage();
             damagable.GetDamage(finalDamage);
             yield return new WaitForSeconds(0.05f);
-        }        
+        }
     }
 }
 
@@ -155,11 +155,11 @@ public class W_Skill_4 : Skill
         SkillData skill = GetSkillData(4);
         if (skill != null)
         {
-            skillMultiplier = skill.Multiplier;
+            skillMultiplier = skill.Multiplier + (skill.Level * skill.Multi_Amount);
             skillHitCount = skill.HitCount;
-        }        
+        }
     }
-    
+
     /// <summary>
     /// 스킬의 메커니즘 (데미지가 어떻게 들어가는지)
     /// </summary>
@@ -171,7 +171,7 @@ public class W_Skill_4 : Skill
         SkillManager.Instance.StartSkill(this, damagable);
     }
     protected override void CalculateSkillDamage()
-    {        
+    {
         skillDamage = Mathf.RoundToInt(skillMultiplier * (userStat.ATK + userStat.STR * .5f));
         finalDamage = Random.Range(skillDamage - 100, skillDamage + 100);
     }
@@ -183,7 +183,7 @@ public class W_Skill_4 : Skill
             CalculateSkillDamage();
             damagable.GetDamage(finalDamage);
             yield return new WaitForSeconds(0.05f);
-        }        
+        }
     }
 }
 
@@ -194,11 +194,11 @@ public class W_Skill_5 : Skill
         SkillData skill = GetSkillData(5);
         if (skill != null)
         {
-            skillMultiplier = skill.Multiplier;
+            skillMultiplier = skill.Multiplier + (skill.Level * skill.Multi_Amount);
             skillHitCount = skill.HitCount;
-        }        
+        }
     }
-    
+
     /// <summary>
     /// 스킬의 메커니즘 (데미지가 어떻게 들어가는지)
     /// </summary>
@@ -210,7 +210,7 @@ public class W_Skill_5 : Skill
         SkillManager.Instance.StartSkill(this, damagable);
     }
     protected override void CalculateSkillDamage()
-    {        
+    {
         skillDamage = Mathf.RoundToInt(skillMultiplier * (userStat.ATK + userStat.STR * .5f));
         finalDamage = Random.Range(skillDamage - 100, skillDamage + 100);
     }
@@ -222,7 +222,7 @@ public class W_Skill_5 : Skill
             CalculateSkillDamage();
             damagable.GetDamage(finalDamage);
             yield return new WaitForSeconds(0.05f);
-        }        
+        }
     }
 }
 
@@ -233,11 +233,11 @@ public class W_Skill_6 : Skill
         SkillData skill = GetSkillData(6);
         if (skill != null)
         {
-            skillMultiplier = skill.Multiplier;
+            skillMultiplier = skill.Multiplier + (skill.Level * skill.Multi_Amount);
             skillHitCount = skill.HitCount;
-        }        
+        }
     }
-    
+
     /// <summary>
     /// 스킬의 메커니즘 (데미지가 어떻게 들어가는지)
     /// </summary>
@@ -249,7 +249,7 @@ public class W_Skill_6 : Skill
         SkillManager.Instance.StartSkill(this, damagable);
     }
     protected override void CalculateSkillDamage()
-    {        
+    {
         skillDamage = Mathf.RoundToInt(skillMultiplier * (userStat.ATK + userStat.STR * .5f));
         finalDamage = Random.Range(skillDamage - 100, skillDamage + 100);
     }
@@ -261,7 +261,7 @@ public class W_Skill_6 : Skill
             CalculateSkillDamage();
             damagable.GetDamage(finalDamage);
             yield return new WaitForSeconds(0.05f);
-        }        
+        }
     }
 }
 
@@ -272,11 +272,11 @@ public class W_Skill_7 : Skill
         SkillData skill = GetSkillData(7);
         if (skill != null)
         {
-            skillMultiplier = skill.Multiplier;
+            skillMultiplier = skill.Multiplier + (skill.Level * skill.Multi_Amount);
             skillHitCount = skill.HitCount;
-        }        
+        }
     }
-    
+
     /// <summary>
     /// 스킬의 메커니즘 (데미지가 어떻게 들어가는지)
     /// </summary>
@@ -288,7 +288,7 @@ public class W_Skill_7 : Skill
         SkillManager.Instance.StartSkill(this, damagable);
     }
     protected override void CalculateSkillDamage()
-    {        
+    {
         skillDamage = Mathf.RoundToInt(skillMultiplier * (userStat.ATK + userStat.STR * .5f));
         finalDamage = Random.Range(skillDamage - 100, skillDamage + 100);
     }
@@ -300,7 +300,7 @@ public class W_Skill_7 : Skill
             CalculateSkillDamage();
             damagable.GetDamage(finalDamage);
             yield return new WaitForSeconds(0.05f);
-        }        
+        }
     }
 }
 
@@ -312,12 +312,12 @@ public class W_Skill_8 : Skill
         SkillData skill = GetSkillData(8);
         if (skill != null)
         {
-            skillMultiplier = skill.Multiplier;
+            skillMultiplier = skill.Multiplier + (skill.Level * skill.Multi_Amount);
             skillHitCount = skill.HitCount;
             Status_Effect = skill.CC;
-        }        
+        }
     }
-    
+
     /// <summary>
     /// 스킬의 메커니즘 (데미지가 어떻게 들어가는지)
     /// </summary>
@@ -329,7 +329,7 @@ public class W_Skill_8 : Skill
         SkillManager.Instance.StartSkill(this, damagable);
     }
     protected override void CalculateSkillDamage()
-    {        
+    {
         skillDamage = Mathf.RoundToInt(skillMultiplier * (userStat.ATK + userStat.STR * .5f));
         finalDamage = Random.Range(skillDamage - 100, skillDamage + 100);
     }
@@ -343,7 +343,7 @@ public class W_Skill_8 : Skill
             CalculateSkillDamage();
             damagable.GetDamage(finalDamage);
             yield return new WaitForSeconds(0.05f);
-        }        
+        }
     }
 }
 
@@ -354,11 +354,11 @@ public class W_Skill_9 : Skill
         SkillData skill = GetSkillData(9);
         if (skill != null)
         {
-            skillMultiplier = skill.Multiplier;
+            skillMultiplier = skill.Multiplier + (skill.Level * skill.Multi_Amount);
             skillHitCount = skill.HitCount;
-        }        
+        }
     }
-    
+
     /// <summary>
     /// 스킬의 메커니즘 (데미지가 어떻게 들어가는지)
     /// </summary>
@@ -370,7 +370,7 @@ public class W_Skill_9 : Skill
         SkillManager.Instance.StartSkill(this, damagable);
     }
     protected override void CalculateSkillDamage()
-    {        
+    {
         skillDamage = Mathf.RoundToInt(skillMultiplier * (userStat.ATK + userStat.STR * .5f));
         finalDamage = Random.Range(skillDamage - 100, skillDamage + 100);
     }
@@ -382,6 +382,6 @@ public class W_Skill_9 : Skill
             CalculateSkillDamage();
             damagable.GetDamage(finalDamage);
             yield return new WaitForSeconds(0.05f);
-        }        
+        }
     }
 }
