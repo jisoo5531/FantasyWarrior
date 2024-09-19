@@ -145,4 +145,21 @@ public class ManagerEvent
         ItemManagerInit?.Invoke();
     }
     #endregion
+
+    #region NPC
+    private event Action NPCManagerInit;
+
+    public void RegisterNPCManagerInitInit(Action listener)
+    {
+        NPCManagerInit += listener;
+    }
+    public void UnRegisterNPCManagerInitInit(Action listener)
+    {
+        NPCManagerInit -= listener;
+    }
+    public void TriggerNPCManagerInitInit()
+    {
+        NPCManagerInit?.Invoke();
+    }
+    #endregion
 }

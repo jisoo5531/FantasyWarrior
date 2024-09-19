@@ -10,6 +10,7 @@ public class NPCDialogData
     public string dialogText { get; set; }
     public int NextDialog_ID { get; set; }
     public int Order { get; set; }
+    public DialogStatus Status { get; set; }
 
     public NPCDialogData(DataRow row) : this
         (
@@ -17,16 +18,24 @@ public class NPCDialogData
             int.Parse(row["NPC_ID"].ToString()),
             row["Text"].ToString(),
             int.Parse(row["NEXT_DIALOGUE_ID"].ToString()),
-            int.Parse(row["Dialog_Order"].ToString())
+            int.Parse(row["Dialog_Order"].ToString()),
+            (DialogStatus)int.Parse(row["Status"].ToString())
         )
     { }
 
-    public NPCDialogData(int dialog_ID, int nPC_ID, string dialogText, int nextDialog_ID, int order)
+    public NPCDialogData(int dialog_ID, int nPC_ID, string dialogText, int nextDialog_ID, int order, DialogStatus status)
     {
         this.Dialog_ID = dialog_ID;
         this.NPC_ID = nPC_ID;
         this.dialogText = dialogText;
         this.NextDialog_ID = nextDialog_ID;
         this.Order = order;
+        this.Status = status;
     }
+}
+public enum DialogStatus
+{
+    Daily,
+    QuestStart,
+    QuestEnd
 }

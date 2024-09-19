@@ -28,6 +28,8 @@ public class NPCManager : MonoBehaviour
         _ = GetNPCDataFromDB();
         _ = GetNPCDialogFromDB();
         _ = GetNPCQuestFromDB();
+
+        EventHandler.managerEvent.TriggerNPCManagerInitInit();
     }
 
     /// <summary>
@@ -45,18 +47,21 @@ public class NPCManager : MonoBehaviour
         return string.Empty;
     }
     /// <summary>
-    /// 특정 npc가 가지고 있는 퀘스트 ID를 가져오는 메서드
+    /// 특정 npc가 가지고 있는 퀘스트들의 ID를 가져오는 메서드
+    /// <para>이미 완료된 퀘스트는 가져오지 않는다.</para>
     /// </summary>
     /// <param name="NPC_ID"></param>
     /// <returns>NPC_ID가 없는 ID면 QuestID는 0이 리턴.</returns>
-    public int GetQuestIDFromNPC(int NPC_ID)
-    {
-        int index = NPCQuest_List.FindIndex(x => x.NPC_ID.Equals(NPC_ID));
-        if (index >= 0)
+    public List<int> GetQuestIDFromNPC(int NPC_ID)
+    {        
+        List<int> questsID = new List<int>();
+        Debug.Log(NPCQuest_List == null);
+        List<NPCQuestData> NPCQuestData = NPCQuest_List.FindAll(x => false == x.IsComplete && x.NPC_ID.Equals(NPC_ID));
+        foreach (NPCQuestData nPCQuest in NPCQuestData)
         {
-            return NPCQuest_List[index].Quest_ID;
+            questsID.Add(nPCQuest.Quest_ID);
         }
-        return 0;
+        return questsID;
     }    
     /// <summary>
     /// 해당 NPC의 모든 대화내용 가져오기
