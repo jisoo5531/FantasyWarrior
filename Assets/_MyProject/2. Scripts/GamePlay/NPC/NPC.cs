@@ -33,6 +33,15 @@ public class NPC : MonoBehaviour
     }
     private void Initialize()
     {
+        if (QuestManager.Instance == null)
+        {
+            Debug.Log("NULL이냐?");
+        }
+        else
+        {
+            QuestManager.Instance.OnUpdateQuestProgress += AvailableCompleteQuest;  // 퀘스트 진행상황 업데이트마다 이벤트를 호출한다.
+        }
+        
         quests_ID = NPCManager.Instance.GetQuestIDFromNPC(this.NPC_ID);
 
         List<QuestsData> allQuestList = QuestManager.Instance.questsDataList;

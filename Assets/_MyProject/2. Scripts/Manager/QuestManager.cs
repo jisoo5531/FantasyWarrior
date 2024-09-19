@@ -82,7 +82,224 @@ public class QuestManager : MonoBehaviour
             }
         }
         EventHandler.managerEvent.TriggerQuestManagerInit();
+    }    
+
+    #region 퀘스트 정보 가져오기
+
+    /// <summary>
+    /// 해당 ID 의 퀘스트 데이터 가져오기
+    /// </summary>
+    /// <param name="quest_ID"></param>
+    /// <returns></returns>
+    public QuestsData GetQuestData(int quest_ID)
+    {
+        if (questsDataList == null)
+        {
+            return null;
+        }
+
+        int index = questsDataList.FindIndex((x) => x.Quest_ID.Equals(quest_ID));
+        if (index >= 0)
+        {
+            return questsDataList[index];
+        }
+        return null;
     }
+    /// <summary>
+    /// 현재 유저가 수행 중인 (Inprogress) 퀘스트들 데이터 가져오기
+    /// </summary>
+    /// <returns></returns>
+    public List<UserQuestsData> GetInProgressQuest()
+    {
+        int user_ID = DatabaseManager.Instance.userData.UID;
+        if (userQuestsList == null)
+        {
+            return null;
+        }
+        return userQuestsList.FindAll((x) => x.User_ID.Equals(user_ID) && x.questStatus.Equals(Q_Status.InProgress));
+    }
+    /// <summary>
+    /// 유저가 완료한 퀘스트 목록 가져오기
+    /// </summary>
+    /// <returns></returns>
+    public List<UserQuestsData> GetCompletedQuest()
+    {
+        int user_ID = DatabaseManager.Instance.userData.UID;
+        if (userQuestsList == null)
+        {
+            return null;
+        }        
+        return userQuestsList.FindAll((x) => x.User_ID.Equals(user_ID) && x.questStatus.Equals(Q_Status.Completed));
+    }
+    /// <summary>
+    /// 현재 퀘스트의 상태(수락, 진행, 완료)를 가져오는 메서드
+    /// </summary>
+    /// <returns></returns>
+    public Q_Status? GetQuestStatus(int quest_ID)
+    {
+        int user_ID = DatabaseManager.Instance.userData.UID;
+        if (userQuestsList == null)
+        {
+            return null;
+        }
+        int index = userQuestsList.FindIndex((x) => x.User_ID.Equals(user_ID) && x.Quest_ID.Equals(quest_ID));
+        if (index >= 0)
+        {
+            return userQuestsList[index].questStatus;
+        }
+        return null;        
+    }
+    /// <summary>
+    /// 해당 퀘스트 ID 또는 목표 ID의 목표 퀘스트 정보 가져오기
+    /// </summary>
+    /// <param name="quest_ID"></param>
+    /// <returns></returns>
+    public QuestObjectivesData GetObjectiveData(int? quest_ID = null, int? objectiveID = null)
+    {  
+        if (quest_ID > 0)
+        {
+            int index = questObjectList.FindIndex((x) => x.Quest_ID.Equals(quest_ID));
+            if (index >= 0)
+            {
+                return questObjectList[index];
+            }
+        }
+        if (objectiveID > 0)
+        {
+            int index = questObjectList.FindIndex((x) => x.ObjectiveID.Equals(objectiveID));
+            if (index >= 0)
+            {
+                return questObjectList[index];
+            }            
+        }
+        return null;
+    }
+    /// <summary>
+    /// 현재 퀘스트 진행도
+    /// </summary>
+    /// <param name="quest_ID"></param>
+    /// <returns></returns>
+    public int? GetCurrentQuestProgress(int quest_ID)
+    {        
+        int index = questProgressList.FindIndex((x) => x.quest_Id.Equals(quest_ID));
+        if (index >= 0)
+        {            
+            return questProgressList[index].current_Amount;
+        }
+        return null;
+    }
+    /// <summary>
+    /// 퀘스트의 완료 조건 가져오기
+    /// </summary>
+    /// <param name="quest_ID"></param>
+    /// <returns></returns>
+    public int? GetRequireCompleteQuest(int quest_ID)
+    {
+        QuestObjectivesData questObj = GetObjectiveData(quest_ID: quest_ID);
+        int index = questObjectList.FindIndex((x) => x.ObjectiveID.Equals(questObj.ObjectiveID));
+        if (index >= 0)
+        {            
+            return questObjectList[index].ReqAmount;
+        }
+        return null;
+    }    
+
+    #endregion
+
+    #region 퀘스트 진행상황 업데이트 (수락, 업데이트, 완료)
+    /// <summary>
+    /// 퀘스트를 수락하면 userquests 테이블 (현재 유저가 수행 중인 퀘스트 상태)에 저장
+    /// <para>userquestobjectives 테이블에 저장 (현재 유저가 수행 중인 퀘스트 진행도)</para>
+    /// </summary>
+    public void AcceptQuest(int quest_ID)
+    {
+        int user_ID = DatabaseManager.Instance.userData.UID;
+        QuestObjectivesData objectiveData = GetObjectiveData(quest_ID: quest_ID);
+
+        string query =
+            $"INSERT INTO userquests (userquests.User_ID, userquests.Quest_ID, userquests.`Status`)\n" +
+            $"VALUES ({user_ID}, {quest_ID}, 0);";
+        _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+
+        query =
+            $"INSERT INTO userquestobjectives (userquestobjectives.User_ID, userquestobjectives.Objective_ID)\n" +
+            $"VALUES ({user_ID}, {objectiveData.ObjectiveID});";
+        _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+
+        userQuestsList.Add(new UserQuestsData(user_ID, quest_ID, Q_Status.InProgress));
+        userQuestObjList.Add(new UserQuestObjectivesData(user_ID, objectiveData.ObjectiveID, 0, false));
+
+        int? reqAmount = GetRequireCompleteQuest(quest_ID);
+        questProgressList.Add(new QuestProgress(quest_ID, 0, reqAmount));
+
+        OnAcceptQuest?.Invoke();
+    }
+    /// <summary>
+    /// 퀘스트 진척도 업데이트를 위한 메서드
+    /// <para>몬스터를 잡거나 특정 아이템을 얻었다면 이 메서드를 활용하여 업데이트</para>
+    /// <para>퀘스트 대상이 아니면 ID 가 0이다.</para>
+    /// </summary>
+    /// <param name="monsterID"></param>
+    /// <param name="item_ID"></param>
+    public void UpdateQuestProgress(int unitID = 0, int itemID = 0)
+    {
+        if (unitID != 0)
+        {
+            int index = questProgressList.FindIndex((x) => { return x.monster_Id == unitID; });
+            if (index < 0)
+            {
+                // 퀘스트 대상이 아니다.
+                Debug.Log("얘 아니다..");
+                return;
+            }
+            Debug.Log("퀘스트 대상이다.");
+            questProgressList[index].UpdateProgress();
+
+        }
+        if (itemID != 0)
+        {
+
+        }
+        OnUpdateQuestProgress?.Invoke();
+    }
+    /// <summary>
+    /// 퀘스트 완료 시에 실행할 메서드
+    /// TODO : 완료 버튼을 누르면 완료 UI 뜨게
+    /// </summary>
+    /// <param name="quest_ID"></param>
+    public void QuestComplete(int quest_ID)
+    {
+        int user_ID = DatabaseManager.Instance.userData.UID;
+        QuestObjectivesData objectiveData = GetObjectiveData(quest_ID: quest_ID);
+
+        string query =
+            $"UPDATE userquests\n" +
+            $"SET userquests.`Status`={(int)Q_Status.Completed}\n" +
+            $"WHERE userquests.User_ID={user_ID} AND userquests.Quest_ID={quest_ID};";
+        _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+
+        query =
+            $"DELETE FROM userquestobjectives\n" +
+            $"WHERE userquestobjectives.User_ID={user_ID} " +
+            $"AND userquestobjectives.Objective_ID={objectiveData.ObjectiveID};";
+        _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+
+        // 퀘스트 완료 상태로 바꾸기
+        int userQuestsindex = userQuestsList.FindIndex(x => x.User_ID.Equals(user_ID) && x.Quest_ID.Equals(quest_ID));
+        userQuestsList[userQuestsindex].questStatus = Q_Status.Completed;
+
+        // 유저가 현재 수행 중인 퀘스트들의 진행도를 나타내는 리스트에서 완료한 퀘스트 삭제
+        int userQuestObjIndex = userQuestObjList.FindIndex(x => x.User_ID.Equals(user_ID) && x.ObjectiveID.Equals(objectiveData.ObjectiveID));
+        userQuestObjList.RemoveAt(userQuestObjIndex);
+
+        // 클라이언트에 저장된 퀘스트들의 진행도를 나타내는 리스트에서 완료한 퀘스트 삭제
+        int index = questProgressList.FindIndex(x => x.quest_Id.Equals(quest_ID));
+        questProgressList.RemoveAt(index);        
+
+        OnCompleteQuest?.Invoke();
+    }
+    #endregion
+
     #region 게임 시작할 때 정보 가져오기
     /// <summary>
     /// 퀘스트 리스트 가져오기
@@ -205,222 +422,6 @@ public class QuestManager : MonoBehaviour
             //  실패
             return null;
         }
-    }
-    #endregion
-
-    #region 퀘스트 정보 가져오기
-
-    /// <summary>
-    /// 해당 ID 의 퀘스트 데이터 가져오기
-    /// </summary>
-    /// <param name="quest_ID"></param>
-    /// <returns></returns>
-    public QuestsData GetQuestData(int quest_ID)
-    {
-        if (questsDataList == null)
-        {
-            return null;
-        }
-
-        int index = questsDataList.FindIndex((x) => x.Quest_ID.Equals(quest_ID));
-        if (index >= 0)
-        {
-            return questsDataList[index];
-        }
-        return null;
-    }
-    /// <summary>
-    /// 현재 유저가 수행 중인 (Inprogress) 퀘스트들 데이터 가져오기
-    /// </summary>
-    /// <returns></returns>
-    public List<UserQuestsData> GetInProgressQuest()
-    {
-        int user_ID = DatabaseManager.Instance.userData.UID;
-        if (userQuestsList == null)
-        {
-            return null;
-        }
-        return userQuestsList.FindAll((x) => x.User_ID.Equals(user_ID) && x.questStatus.Equals(Q_Status.InProgress));
-    }
-    /// <summary>
-    /// 유저가 완료한 퀘스트 목록 가져오기
-    /// </summary>
-    /// <returns></returns>
-    public List<UserQuestsData> GetCompletedQuest()
-    {
-        int user_ID = DatabaseManager.Instance.userData.UID;
-        if (userQuestsList == null)
-        {
-            return null;
-        }        
-        return userQuestsList.FindAll((x) => x.User_ID.Equals(user_ID) && x.questStatus.Equals(Q_Status.Completed));
-    }
-    /// <summary>
-    /// 현재 퀘스트의 상태(수락, 진행, 완료)를 가져오는 메서드
-    /// </summary>
-    /// <returns></returns>
-    public Q_Status? GetQuestStatus(int quest_ID)
-    {
-        int user_ID = DatabaseManager.Instance.userData.UID;
-        if (userQuestsList == null)
-        {
-            return null;
-        }
-        int index = userQuestsList.FindIndex((x) => x.User_ID.Equals(user_ID) && x.Quest_ID.Equals(quest_ID));
-        if (index >= 0)
-        {
-            return userQuestsList[index].questStatus;
-        }
-        return null;        
-    }
-    /// <summary>
-    /// 해당 퀘스트 ID 또는 목표 ID의 목표 퀘스트 정보 가져오기
-    /// </summary>
-    /// <param name="quest_ID"></param>
-    /// <returns></returns>
-    public QuestObjectivesData GetObjectiveData(int? quest_ID = null, int? objectiveID = null)
-    {  
-        if (quest_ID > 0)
-        {
-            int index = questObjectList.FindIndex((x) => x.Quest_ID.Equals(quest_ID));
-            if (index >= 0)
-            {
-                return questObjectList[index];
-            }
-        }
-        if (objectiveID > 0)
-        {
-            int index = questObjectList.FindIndex((x) => x.ObjectiveID.Equals(objectiveID));
-            if (index >= 0)
-            {
-                return questObjectList[index];
-            }            
-        }
-        return null;
-    }
-    /// <summary>
-    /// 현재 퀘스트 진행도
-    /// </summary>
-    /// <param name="quest_ID"></param>
-    /// <returns></returns>
-    public int? GetCurrentQuestProgress(int quest_ID)
-    {        
-        int index = questProgressList.FindIndex((x) => x.quest_Id.Equals(quest_ID));
-        if (index >= 0)
-        {            
-            return questProgressList[index].current_Amount;
-        }
-        return null;
-    }
-    /// <summary>
-    /// 퀘스트의 완료 조건 가져오기
-    /// </summary>
-    /// <param name="quest_ID"></param>
-    /// <returns></returns>
-    public int? GetRequireCompleteQuest(int quest_ID)
-    {
-        QuestObjectivesData questObj = GetObjectiveData(quest_ID: quest_ID);
-        int index = questObjectList.FindIndex((x) => x.ObjectiveID.Equals(questObj.ObjectiveID));
-        if (index >= 0)
-        {            
-            return questObjectList[index].ReqAmount;
-        }
-        return null;
-    }
-
-    #endregion
-
-    #region 퀘스트 진행상황 업데이트 (수락, 업데이트, 완료)
-    /// <summary>
-    /// 퀘스트를 수락하면 userquests 테이블 (현재 유저가 수행 중인 퀘스트 상태)에 저장
-    /// <para>userquestobjectives 테이블에 저장 (현재 유저가 수행 중인 퀘스트 진행도)</para>
-    /// </summary>
-    public void AcceptQuest(int quest_ID)
-    {
-        int user_ID = DatabaseManager.Instance.userData.UID;
-        QuestObjectivesData objectiveData = GetObjectiveData(quest_ID: quest_ID);
-
-        string query =
-            $"INSERT INTO userquests (userquests.User_ID, userquests.Quest_ID, userquests.`Status`)\n" +
-            $"VALUES ({user_ID}, {quest_ID}, 0);";
-        _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
-
-        query =
-            $"INSERT INTO userquestobjectives (userquestobjectives.User_ID, userquestobjectives.Objective_ID)\n" +
-            $"VALUES ({user_ID}, {objectiveData.ObjectiveID});";
-        _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
-
-        userQuestsList.Add(new UserQuestsData(user_ID, quest_ID, Q_Status.InProgress));
-        userQuestObjList.Add(new UserQuestObjectivesData(user_ID, objectiveData.ObjectiveID, 0, false));
-
-        int? reqAmount = GetRequireCompleteQuest(quest_ID);
-        questProgressList.Add(new QuestProgress(quest_ID, 0, reqAmount));
-
-        OnAcceptQuest?.Invoke();
-    }
-    /// <summary>
-    /// 퀘스트 진척도 업데이트를 위한 메서드
-    /// <para>몬스터를 잡거나 특정 아이템을 얻었다면 이 메서드를 활용하여 업데이트</para>
-    /// <para>퀘스트 대상이 아니면 ID 가 0이다.</para>
-    /// </summary>
-    /// <param name="monsterID"></param>
-    /// <param name="item_ID"></param>
-    public void UpdateQuestProgress(int unitID = 0, int itemID = 0)
-    {
-        if (unitID != 0)
-        {
-            int index = questProgressList.FindIndex((x) => { return x.monster_Id == unitID; });
-            if (index < 0)
-            {
-                // 퀘스트 대상이 아니다.
-                Debug.Log("얘 아니다..");
-                return;
-            }
-            Debug.Log("퀘스트 대상이다.");
-            questProgressList[index].UpdateProgress();
-
-        }
-        if (itemID != 0)
-        {
-
-        }
-        OnUpdateQuestProgress?.Invoke();
-    }
-    /// <summary>
-    /// 퀘스트 완료 시에 실행할 메서드
-    /// TODO : 완료 버튼을 누르면 완료 UI 뜨게
-    /// </summary>
-    /// <param name="quest_ID"></param>
-    public void QuestComplete(int quest_ID)
-    {
-        int user_ID = DatabaseManager.Instance.userData.UID;
-        QuestObjectivesData objectiveData = GetObjectiveData(quest_ID: quest_ID);
-
-        string query =
-            $"UPDATE userquests\n" +
-            $"SET userquests.`Status`={(int)Q_Status.Completed}\n" +
-            $"WHERE userquests.User_ID={user_ID} AND userquests.Quest_ID={quest_ID};";
-        _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
-
-        query =
-            $"DELETE FROM userquestobjectives\n" +
-            $"WHERE userquestobjectives.User_ID={user_ID} " +
-            $"AND userquestobjectives.Objective_ID={objectiveData.ObjectiveID};";
-        _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
-
-        // 퀘스트 완료 상태로 바꾸기
-        int userQuestsindex = userQuestsList.FindIndex(x => x.User_ID.Equals(user_ID) && x.Quest_ID.Equals(quest_ID));
-        userQuestsList[userQuestsindex].questStatus = Q_Status.Completed;
-
-        // 유저가 현재 수행 중인 퀘스트들의 진행도를 나타내는 리스트에서 완료한 퀘스트 삭제
-        int userQuestObjIndex = userQuestObjList.FindIndex(x => x.User_ID.Equals(user_ID) && x.ObjectiveID.Equals(objectiveData.ObjectiveID));
-        userQuestObjList.RemoveAt(userQuestObjIndex);
-
-        // 클라이언트에 저장된 퀘스트들의 진행도를 나타내는 리스트에서 완료한 퀘스트 삭제
-        int index = questProgressList.FindIndex(x => x.quest_Id.Equals(quest_ID));
-        questProgressList.RemoveAt(index);        
-
-        OnCompleteQuest?.Invoke();
     }
     #endregion
 

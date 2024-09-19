@@ -1656,6 +1656,7 @@ GameObject:
   - component: {fileID: 8467024556308588453}
   - component: {fileID: 8215078060865175348}
   - component: {fileID: 4222642914966448698}
+  - component: {fileID: 2896586671870766552}
   m_Layer: 5
   m_Name: QuestDialog
   m_TagString: Untagged
@@ -1813,6 +1814,19 @@ MonoBehaviour:
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
   m_ReverseArrangement: 0
+--- !u!114 &2896586671870766552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3433536262309717921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5288e2e6463ac8148b3cf63a1e0251cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dialogNameLabel: {fileID: 8100052910495548083}
 --- !u!1 &3680403898683778538
 GameObject:
   m_ObjectHideFlags: 0
@@ -2999,8 +3013,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1. I'll buy them at a high price
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 3cd57b48cb32aa2408ee0460d689be68, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: a3063f2d22ae4ba44828c3885272eaf2, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 6cda731c3a9ffbd47b60a11c279c5a48, type: 2}
+  m_sharedMaterial: {fileID: 4182830942994119847, guid: 6cda731c3a9ffbd47b60a11c279c5a48, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

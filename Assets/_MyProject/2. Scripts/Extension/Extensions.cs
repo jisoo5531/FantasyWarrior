@@ -7,11 +7,27 @@ using UnityEngine.UI;
 
 public static class Extensions
 {
+    /// <summary>
+    /// 이미지 투명도 조절
+    /// </summary>
+    /// <param name="image"></param>
+    /// <param name="alpha"></param>
     public static void ImageTransparent(this Image image, float alpha)
     {
         Color tempColor = image.color;
         tempColor.a = alpha;
         image.color = tempColor;
+    }
+    /// <summary>
+    /// 해당 게임오브젝트의 자식들 지우기
+    /// </summary>
+    /// <param name="content"></param>
+    public static void ContentClear(this GameObject content)
+    {
+        for (int i = 0; i < content.transform.childCount; i++)
+        {
+            MonoBehaviour.Destroy(content.transform.GetChild(i).gameObject);
+        }
     }
     public static (List<T> Added, List<T> Removed, List<T> Modified) GetDifferences<T>(
         List<T> originalList,

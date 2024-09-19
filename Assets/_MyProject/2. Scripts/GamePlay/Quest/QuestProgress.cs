@@ -6,7 +6,7 @@ using UnityEngine;
 /// 클라이언트에 임시로 저장할 현재 퀘스트 진행도
 /// <para>퀘스트를 시작하면 인스턴스 생성</para>
 /// </summary>
-public class QuestProgress : MonoBehaviour
+public class QuestProgress
 {
     public int quest_Id { get; private set; }         // 퀘스트 ID
     public int monster_Id { get; private set; }       // 타겟이 되는 몬스터 ID (없으면 0)
@@ -43,7 +43,10 @@ public class QuestProgress : MonoBehaviour
         isGuide = OnOff;
     }
 
-    // 퀘스트 완료 여부 확인
+    /// <summary>
+    /// 퀘스트 완료조건을 달성하였다면
+    /// </summary>
+    /// <returns></returns>
     public bool IsQuestComplete()
     {        
         return current_Amount >= required_Amount;
