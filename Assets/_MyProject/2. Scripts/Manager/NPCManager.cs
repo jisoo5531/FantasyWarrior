@@ -31,6 +31,20 @@ public class NPCManager : MonoBehaviour
     }
 
     /// <summary>
+    /// npc 이름 가져오기
+    /// </summary>
+    /// <param name="NPC_ID"></param>
+    /// <returns></returns>
+    public string GetNPCName(int NPC_ID)
+    {
+        int index = NPC_List.FindIndex(x => x.NPC_ID.Equals(NPC_ID));
+        if (index >= 0)
+        {
+            return NPC_List[index].Name;
+        }
+        return string.Empty;
+    }
+    /// <summary>
     /// 특정 npc가 가지고 있는 퀘스트 ID를 가져오는 메서드
     /// </summary>
     /// <param name="NPC_ID"></param>
@@ -44,6 +58,21 @@ public class NPCManager : MonoBehaviour
         }
         return 0;
     }    
+    /// <summary>
+    /// 해당 NPC의 모든 대화내용 가져오기
+    /// </summary>
+    /// <param name="npc_ID"></param>
+    /// <returns></returns>
+    public List<NPCDialogData> GetDialogList(int npc_ID)
+    {
+        List<NPCDialogData> NPCDialogList = NPCDialog_List.FindAll(x => x.NPC_ID.Equals(npc_ID));
+        NPCDialogList.Sort(compareDialogOrder);
+        return NPCDialogList;
+    }
+    private int compareDialogOrder(NPCDialogData a, NPCDialogData b)
+    {
+        return a.Order < b.Order ? -1 : 1;
+    }
 
     #region NPC 정보 DB에서 가져오기
 
