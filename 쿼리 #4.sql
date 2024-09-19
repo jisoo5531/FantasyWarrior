@@ -24,4 +24,4 @@
 #WHERE userstats.user_id = 1 AND skills.Class = 1;
 
 SELECT *
-FROM userskills;
+FROM npc_quests;
