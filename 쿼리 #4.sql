@@ -25,3 +25,4 @@
 
 SELECT *
 FROM npc_quests;
+

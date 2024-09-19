@@ -181,7 +181,7 @@ CREATE TABLE UserQuestObjectives (
     FOREIGN KEY (Objective_ID) REFERENCES QuestObjectives(Objective_ID),
     PRIMARY KEY (User_ID, Objective_ID)
 );*/
-CREATE TABLE SkillKeyBind(
+/*CREATE TABLE SkillKeyBind(
 	User_ID INT,
 	Skill_1 INT DEFAULT 0,
 	Skill_2 INT DEFAULT 0,
@@ -192,6 +192,26 @@ CREATE TABLE SkillKeyBind(
 	FOREIGN KEY (Skill_2) REFERENCES skills(Skill_ID),
 	FOREIGN KEY (Skill_3) REFERENCES skills(Skill_ID),
 	FOREIGN KEY (Skill_4) REFERENCES skills(Skill_ID)
+);*/
+/*CREATE TABLE NPCs (
+    NPC_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(100) NOT NULL,
+    Location VARCHAR(100),
+    Description TEXT
+);*/
+/*CREATE TABLE NPCDialogue (
+    Dialogue_ID INT PRIMARY KEY AUTO_INCREMENT,
+    NPC_ID INT,
+    Text TEXT NOT NULL,
+    NEXT_DIALOGUE_ID INT, -- 다음 대화 ID (선택적)
+    FOREIGN KEY (NPC_ID) REFERENCES NPCs(NPC_ID)
+);*/
+CREATE TABLE NPC_Quests (
+    NPC_ID INT,
+    Quest_ID INT,
+    PRIMARY KEY (NPC_ID, Quest_ID),
+    FOREIGN KEY (NPC_ID) REFERENCES NPCs(NPC_ID),
+    FOREIGN KEY (Quest_ID) REFERENCES Quests(Quest_ID)
 );
 
 
