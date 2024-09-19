@@ -12,6 +12,11 @@ public class UI_NPCDialogue : MonoBehaviour
     [Header("텍스트")]
     public TMP_Text NPC_NameText;
     public TMP_Text DialogueText;
+    [Header("대화 선택창")]
+    public GameObject DialogSelctContent;
+    public GameObject dialogDailyPrefab;
+    public GameObject dialogEndPrefab;
+    public GameObject dialogQuestPrefab;
     [Header("버튼")]
     public Button prevButton;
     public Button nextButton;
@@ -107,7 +112,21 @@ public class UI_NPCDialogue : MonoBehaviour
     /// 대화 진행
     /// </summary>
     private void StartDialogue()
-    {        
+    {
+        DialogSelctContent.SetActive(true);
+        StartCoroutine(SelectDialog());
+        
+    }
+    /// <summary>
+    /// 대화 선택 창에서 원하는 대화 선택 후, 진행
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator SelectDialog()
+    {
+        while (true)
+        {
+
+        }
         StartCoroutine(InprogressDialogue());
     }
     IEnumerator InprogressDialogue()
@@ -140,6 +159,21 @@ public class UI_NPCDialogue : MonoBehaviour
         gameObject.SetActive(false);
     }
     #endregion
+    
+    /// <summary>
+    /// 일상 대화 클릭
+    /// </summary>
+    private void OnClickDailyDialog()
+    {
+
+    }
+    /// <summary>
+    /// 대화 종료 클릭
+    /// </summary>
+    private void OnClickEndDialog()
+    {
+
+    }
 
     /// <summary>
     /// 이전 버튼 클릭
