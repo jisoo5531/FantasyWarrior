@@ -54,8 +54,7 @@ public class NPCManager : MonoBehaviour
     /// <returns>NPC_ID가 없는 ID면 QuestID는 0이 리턴.</returns>
     public List<int> GetQuestIDFromNPC(int NPC_ID)
     {        
-        List<int> questsID = new List<int>();
-        Debug.Log(NPCQuest_List[0].IsComplete);
+        List<int> questsID = new List<int>();        
         List<NPCQuestData> NPCQuestData = NPCQuest_List.FindAll(x => false == x.IsComplete && x.NPC_ID == NPC_ID);
         foreach (NPCQuestData nPCQuest in NPCQuestData)
         {

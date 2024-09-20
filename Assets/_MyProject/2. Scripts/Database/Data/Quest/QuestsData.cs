@@ -25,7 +25,7 @@ public class QuestsData
             row["Description"].ToString(),
             int.Parse(row["Reward_Exp"].ToString()),
             int.Parse(row["Reward_Gold"].ToString()),
-            int.Parse(row["RewardItem_ID"].ToString()),
+            int.TryParse(row["RewardItem_ID"].ToString(), out int rewarditem) ? rewarditem : 0,
             bool.Parse(row["IsRepeatable"].ToString())
         )
     { }

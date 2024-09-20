@@ -153,9 +153,13 @@ public class UI_NPCDialogue : MonoBehaviour
         dialogQuestsButton = new();
         Debug.Log($"퀘스트 몇개? : {questID_List.Count}");
         foreach (int questID in questID_List)
-        {            
-            QuestsData questData = QuestManager.Instance.GetQuestData(questID);            
+        {
+            Debug.Log($"현재 퀘스트 ID : {questID}");
+            QuestsData questData = QuestManager.Instance.GetQuestData(questID);
+            Debug.Log($"얘가 null? {questData == null}");
             UI_DialogSelectElement dialogSelectElement = Instantiate(dialogQuestPrefab, DialogSelectContent.transform).GetComponent<UI_DialogSelectElement>();
+            Debug.Log(questData.Quest_Name);
+            Debug.Log(dialogSelectElement == null);
             dialogSelectElement.Initialize(questData.Quest_Name);
             dialogQuestsButton.Add(dialogSelectElement.GetComponent<Button>());
         }
@@ -205,7 +209,7 @@ public class UI_NPCDialogue : MonoBehaviour
         Debug.Log($"지금 무슨 상태? : {status}");
         while (true)
         {
-            prevButton.gameObject.SetActive(dialogIndex < dialogList.Count - 1);
+            prevButton.gameObject.SetActive(dialogIndex < dialogList.Count - 1 && dialogIndex > 0);
             nextButton.gameObject.SetActive(dialogIndex < dialogList.Count - 1);
 
             switch (status)
@@ -298,6 +302,7 @@ public class UI_NPCDialogue : MonoBehaviour
     /// </summary>
     private void OnClickPrevDialog()
     {
+        if (dialogIndex <= 0) return;
         isPrevDialog = true;
         dialogIndex--;
     }
@@ -305,7 +310,7 @@ public class UI_NPCDialogue : MonoBehaviour
     /// 다음 버튼 클릭
     /// </summary>
     private void OnClickNextDialog()
-    {
+    {        
         isNextDialog = true;
         dialogIndex++;
     }

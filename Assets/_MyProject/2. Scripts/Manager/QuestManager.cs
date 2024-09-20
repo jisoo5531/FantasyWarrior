@@ -98,7 +98,7 @@ public class QuestManager : MonoBehaviour
             return null;
         }
 
-        int index = questsDataList.FindIndex((x) => x.Quest_ID.Equals(quest_ID));
+        int index = questsDataList.FindIndex((x) => x.Quest_ID == quest_ID);
         if (index >= 0)
         {
             return questsDataList[index];
@@ -308,13 +308,11 @@ public class QuestManager : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     private List<QuestsData> GetQuestListFromDB()
-    {
-        int user_ID = DatabaseManager.Instance.userData.UID;
+    {        
         questsDataList = new List<QuestsData>();
         string query =
             $"SELECT *\n" +
-            $"FROM quests\n" +
-            $"WHERE quests.Quest_ID={user_ID};";
+            $"FROM quests;";            
         DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
 
         bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
