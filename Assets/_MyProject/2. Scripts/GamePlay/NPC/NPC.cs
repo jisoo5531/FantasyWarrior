@@ -82,6 +82,13 @@ public class NPC : MonoBehaviour
                 completeQuestIcon.GetComponent<Image>().ImageTransparent(0.25f);
             }
         }
+        // 대화 연계 퀘스트 리스트 확인
+        foreach (var talkList in NPCManager.Instance.talkNpcQuestList)
+        {
+            isAnyCompleteQuest = talkList.NPC_ID == this.NPC_ID;
+            isAnyUserQuest = !isAnyCompleteQuest;
+            if (isAnyCompleteQuest) break;
+        }
 
         startQuestIcon.SetActive(isAnyUserQuest);
         completeQuestIcon.SetActive(isAnyCompleteQuest);

@@ -83,9 +83,7 @@ public class UI_NPCDialogue : MonoBehaviour
         completeQuestButton.onClick.AddListener(OnClickCompleteQuestButton);
     }
     public void Initialize()
-    {
-        this.questID_List = NPCManager.Instance.GetQuestIDFromNPC(this.NPC_ID);
-
+    {        
         DialogClassify();
         Debug.Log($"{dailyDialogList.Count}, {questStartDL_List.Count}, {questEndDL_List.Count}");
 
@@ -95,6 +93,7 @@ public class UI_NPCDialogue : MonoBehaviour
     private void OnEnable()
     {
         GameManager.inputActions.PlayerActions.DialogProgress.performed += OnPressNextDialog;
+        this.questID_List = NPCManager.Instance.GetQuestIDFromNPC(this.NPC_ID);
 
         this.quest_ID = 0;
         isNextDialog = false;
@@ -151,18 +150,27 @@ public class UI_NPCDialogue : MonoBehaviour
     {
         DialogSelectContent.ContentClear();
         dialogQuestsButton = new();
-        Debug.Log($"퀘스트 몇개? : {questID_List.Count}");
+        
+        #region 이 NPC의 퀘스트 확인
         foreach (int questID in questID_List)
-        {
-            Debug.Log($"현재 퀘스트 ID : {questID}");
-            QuestsData questData = QuestManager.Instance.GetQuestData(questID);
-            Debug.Log($"얘가 null? {questData == null}");
-            UI_DialogSelectElement dialogSelectElement = Instantiate(dialogQuestPrefab, DialogSelectContent.transform).GetComponent<UI_DialogSelectElement>();
-            Debug.Log(questData.Quest_Name);
-            Debug.Log(dialogSelectElement == null);
+        {            
+            QuestsData questData = QuestManager.Instance.GetQuestData(questID);            
+            UI_DialogSelectElement dialogSelectElement = Instantiate(dialogQuestPrefab, DialogSelectContent.transform).GetComponent<UI_DialogSelectElement>();            
             dialogSelectElement.Initialize(questData.Quest_Name);
             dialogQuestsButton.Add(dialogSelectElement.GetComponent<Button>());
         }
+        #endregion
+
+        #region 연계 퀘스트 확인
+        // 만약 퀘스트가 말 전달 형식의 퀘스트여서 이 npc에게 왔다면
+        foreach (NPCTalkQuestData tempNPCQuest in NPCManager.Instance.talkNpcQuestList)
+        {
+            QuestsData questData = QuestManager.Instance.GetQuestData(tempNPCQuest.Quest_ID);
+            UI_DialogSelectElement dialogSelectElement = Instantiate(dialogQuestPrefab, DialogSelectContent.transform).GetComponent<UI_DialogSelectElement>();
+            dialogSelectElement.Initialize(questData.Quest_Name);
+            dialogQuestsButton.Add(dialogSelectElement.GetComponent<Button>());
+        }
+        #endregion
         dialogDailyButton = Instantiate(dialogDailyPrefab, DialogSelectContent.transform).GetComponent<Button>();
         dialogEndButton =  Instantiate(dialogEndPrefab, DialogSelectContent.transform).GetComponent<Button>();
 
@@ -187,22 +195,32 @@ public class UI_NPCDialogue : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     private void SelectDialog(DialogStatus status, int quest_ID = 0)
-    {        
+    {
+        List<NPCDialogData> dialogList = new List<NPCDialogData>();
         switch (status)
         {
             case DialogStatus.Daily:
-                StartCoroutine(InprogressDialogue(dailyDialogList, DialogStatus.Daily));
+                dialogList = dailyDialogList.FindAll(x => x.Quest_ID == quest_ID);
+                StartCoroutine(InprogressDialogue(dialogList, DialogStatus.Daily));
                 break;
             case DialogStatus.QuestStart:
-                StartCoroutine(InprogressDialogue(questStartDL_List, DialogStatus.QuestStart));
+                dialogList = questStartDL_List.FindAll(x => x.Quest_ID == quest_ID);
+                StartCoroutine(InprogressDialogue(dialogList, DialogStatus.QuestStart));
                 break;
             case DialogStatus.QuestEnd:
-                StartCoroutine(InprogressDialogue(questEndDL_List, DialogStatus.QuestEnd));
+                dialogList = questEndDL_List.FindAll(x => x.Quest_ID == quest_ID);
+                StartCoroutine(InprogressDialogue(dialogList, DialogStatus.QuestEnd));
                 break;
             default:
                 break;
         }        
     }
+    /// <summary>
+    /// 대화 내용에 맞춰서 대화 내용 진행
+    /// </summary>
+    /// <param name="dialogList">진행할 대화</param>
+    /// <param name="status">이 대화가 퀘스트 시작 / 끝 / 일상 대화인지</param>
+    /// <returns></returns>
     private IEnumerator InprogressDialogue(List<NPCDialogData> dialogList, DialogStatus status)
     {
         dialogIndex = 0;
@@ -261,27 +279,47 @@ public class UI_NPCDialogue : MonoBehaviour
     /// </summary>
     /// <param name="num"></param>
     private void OnClickQuestDialog(int num)
-    {        
-        this.quest_ID = questID_List[num];
-        List<QuestProgress> userQuestList = QuestManager.Instance.questProgressList;        
-        QuestProgress userQuest = userQuestList.Find(x => x.quest_Id == this.quest_ID);        
-        if (userQuest == null)
+    {
+        if (num < questID_List.Count)
         {
-            Debug.Log("혹시 null?");
-            // 현재 유저가 해당 퀘스트를 받지 않았다면
-            SelectDialog(DialogStatus.QuestStart, questID_List[num]);
+            this.quest_ID = questID_List[num];
+
+            List<QuestProgress> userQuestList = QuestManager.Instance.questProgressList;
+            QuestProgress userQuest = userQuestList.Find(x => x.quest_Id == this.quest_ID);
+            if (userQuest == null)
+            {
+                Debug.Log("혹시 null?");
+                // 현재 유저가 해당 퀘스트를 받지 않았다면
+                SelectDialog(DialogStatus.QuestStart, questID_List[num]);
+            }
+            else
+            {
+                // 현재 유저가 해당 퀘스트를 수행 중이라면
+                if (userQuest.IsQuestComplete())
+                {
+                    // 해당 퀘스트가 완료 가능하다면
+                    SelectDialog(DialogStatus.QuestEnd, questID_List[num]);
+                }
+            }
         }
         else
         {
-            // 현재 유저가 해당 퀘스트를 수행 중이라면
-            if (userQuest.IsQuestComplete())
+            List<NPCTalkQuestData> talkList = NPCManager.Instance.talkNpcQuestList;
+            // 이 NPC한테 온 대화 퀘스트 있는지 확인
+            NPCTalkQuestData talkQuest = talkList.Find(x => x.NPC_ID == this.NPC_ID);
+            
+            if (talkQuest != null)
             {
-                // 해당 퀘스트가 완료 가능하다면
-                SelectDialog(DialogStatus.QuestEnd, questID_List[num]);
+                // 해당되는 퀘스트가 있으면
+                this.quest_ID = talkQuest.Quest_ID;
+                // 해당 퀘스트의 완료 대화 진행.
+                SelectDialog(DialogStatus.QuestEnd, talkQuest.Quest_ID);
             }            
-        }        
+        }          
     }
-    
+
+    #region Click / Press Listener
+
     /// <summary>
     /// 일상 대화 클릭
     /// </summary>
@@ -290,7 +328,7 @@ public class UI_NPCDialogue : MonoBehaviour
         SelectDialog(DialogStatus.Daily);        
     }
     /// <summary>
-    /// 대화 종료 클릭
+    /// 대화 종료 Goodbye 클릭
     /// </summary>
     private void OnClickEndDialog()
     {
@@ -351,5 +389,6 @@ public class UI_NPCDialogue : MonoBehaviour
         isNextDialog = true;
         isNextDialog = context.ReadValueAsButton();
         dialogIndex++;
-    }    
+    }
+    #endregion
 }

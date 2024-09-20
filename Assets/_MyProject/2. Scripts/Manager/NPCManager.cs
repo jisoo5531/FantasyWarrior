@@ -9,15 +9,21 @@ public class NPCManager : MonoBehaviour
     /// <summary>
     /// NPC들의 정보를 담고있는 리스트
     /// </summary>
-    public List<NPCData> NPC_List { get; set; }
+    public List<NPCData> NPC_List { get; private set; }
     /// <summary>
     /// NPC들의 대화 내용을 담고 있는 리스트
     /// </summary>
-    public List<NPCDialogData> NPCDialog_List { get; set; }
+    public List<NPCDialogData> NPCDialog_List { get; private set; }
     /// <summary>
     /// NPC들이 어떤 퀘스트를 갖고 있는지에 대한 리스트
     /// </summary>
-    public List<NPCQuestData> NPCQuest_List { get; set; }
+    public List<NPCQuestData> NPCQuest_List { get; private set; }
+    /// <summary>
+    /// 연계 퀘스트 등의 임시로 추가하거나 그런 것들을 위한 리스트
+    /// </summary>
+    public List<NPCTalkQuestData> talkNpcQuestList { get; private set; }
+
+    private List<NPCTalkQuestData> orgTalkQuestList;
 
     private void Awake()
     {
@@ -28,6 +34,7 @@ public class NPCManager : MonoBehaviour
         _ = GetNPCDataFromDB();
         _ = GetNPCDialogFromDB();
         _ = GetNPCQuestFromDB();
+        _ = GetTalkQuestDataFromDB();
 
         EventHandler.managerEvent.TriggerNPCManagerInitInit();
     }
@@ -61,7 +68,7 @@ public class NPCManager : MonoBehaviour
             questsID.Add(nPCQuest.Quest_ID);
         }
         return questsID;
-    }    
+    }        
     /// <summary>
     /// 해당 NPC의 모든 대화내용 가져오기
     /// </summary>
@@ -76,6 +83,26 @@ public class NPCManager : MonoBehaviour
     private int compareDialogOrder(NPCDialogData a, NPCDialogData b)
     {
         return a.Order < b.Order ? -1 : 1;
+    }    
+    /// <summary>
+    /// 퀘스트 수락 시 또는 그 외 상황에서 대화 연계 퀘스트 데이터 리스트에 추가
+    /// </summary>
+    /// <param name="talkQuest"></param>
+    public void AddTalkQuest(NPCTalkQuestData talkQuest)
+    {
+        talkNpcQuestList.Add(talkQuest);
+    }
+    /// <summary>
+    /// 퀘스트 완료 시 또는 그 외 상황에서 이제 필요없으면 제거
+    /// </summary>
+    /// <param name="quest_ID"></param>
+    public void RemoveTalkQuest(int quest_ID)
+    {
+        int talkQuestIndex = talkNpcQuestList.FindIndex(x => x.Quest_ID == quest_ID);
+        if (talkQuestIndex >= 0)
+        {
+            talkNpcQuestList.RemoveAt(talkQuestIndex);
+        }        
     }
 
     #region NPC 정보 DB에서 가져오기
@@ -163,6 +190,35 @@ public class NPCManager : MonoBehaviour
             return null;
         }
     }
+    /// <summary>
+    /// 대화 연계 퀘스트 데이터 가져오기
+    /// </summary>
+    /// <returns></returns>
+    private List<NPCTalkQuestData> GetTalkQuestDataFromDB()
+    {
+        orgTalkQuestList = new List<NPCTalkQuestData>();
+        talkNpcQuestList = new List<NPCTalkQuestData>();
+        string query =
+            $"SELECT *" +
+            $"FROM npc_talkquests;";
+        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
+        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
+
+        if (isGetData)
+        {
+            foreach (DataRow row in dataSet.Tables[0].Rows)
+            {
+                orgTalkQuestList.Add(new NPCTalkQuestData(row));
+                talkNpcQuestList.Add(new NPCTalkQuestData(row));
+            }
+            return talkNpcQuestList;
+        }
+        else
+        {
+            //  실패
+            return null;
+        }
+    }
 
     #endregion
 
@@ -177,6 +233,7 @@ public class NPCManager : MonoBehaviour
         {
             NPCQuest_List[index].IsComplete = true;
         }
+
     }
 
     /// <summary>
@@ -194,7 +251,31 @@ public class NPCManager : MonoBehaviour
             }            
             string query =
                 $"UPDATE npc_quests\n" +
-                $"SET npc_quests.IsComplete='{checkComplete}';";
+                $"SET npc_quests.IsComplete='{checkComplete}'\n" +
+                $"WHERE npc_quests.Quest_ID={npcQuest.Quest_ID};";
+            _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+        }
+
+        // 임시 대화 연계 퀘스트를 저장하기 위한
+        // 말을 전하러 가야하는 퀘스트를 받고 저장을 하지 않으면 안되기 때문에
+        var differences = Extensions.GetDifferences(
+            orgTalkQuestList,
+            talkNpcQuestList,
+            (original, updated) => original.NPC_ID == updated.NPC_ID && original.Quest_ID == updated.Quest_ID
+        );
+        foreach (var talkQuest in differences.Added)
+        {
+            string query =
+                $"INSERT INTO npc_talkquests(npc_talkquests.NPC_ID, npc_talkquests.Quest_ID)\n" +
+                $"VALUES ({talkQuest.NPC_ID}, {talkQuest.Quest_ID});";
+            _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+        }
+        foreach (var talkQuest in differences.Removed)
+        {
+            string query =
+                $"DELETE FROM npc_talkquests\n" +
+                $"WHERE npc_talkquests.NPC_ID={talkQuest.NPC_ID} AND " +
+                $"npc_talkquests.Quest_ID={talkQuest.Quest_ID};";
             _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
         }
     }

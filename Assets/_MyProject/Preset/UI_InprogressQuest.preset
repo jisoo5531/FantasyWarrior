@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!181963792 &2655988077585873504
+Preset:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI_InprogressQuest
+  m_TargetType:
+    m_NativeTypeID: 114
+    m_ManagedTypePPtr: {fileID: 11500000, guid: 2e1afcb693d78f344b6c2e40fada19d7, type: 3}
+    m_ManagedTypeFallback: 
+  m_Properties:
+  - target: {fileID: 0}
+    propertyPath: m_Enabled
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorHideFlags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorClassIdentifier
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: questNameText
+    value: 
+    objectReference: {fileID: 3177556989168413307, guid: fa6cc58d0d817c84e9fa82f9130a62b6, type: 3}
+  - target: {fileID: 0}
+    propertyPath: completeText
+    value: 
+    objectReference: {fileID: 8476782547928386049, guid: fa6cc58d0d817c84e9fa82f9130a62b6, type: 3}
+  - target: {fileID: 0}
+    propertyPath: GuideButton
+    value: 
+    objectReference: {fileID: 8574244225944528667, guid: fa6cc58d0d817c84e9fa82f9130a62b6, type: 3}
+  - target: {fileID: 0}
+    propertyPath: GuideImage
+    value: 
+    objectReference: {fileID: 829242255405666200, guid: fa6cc58d0d817c84e9fa82f9130a62b6, type: 3}
+  - target: {fileID: 0}
+    propertyPath: isGuided
+    value: 0
+    objectReference: {fileID: 0}
+  m_ExcludedProperties: []

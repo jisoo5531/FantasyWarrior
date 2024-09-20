@@ -31,6 +31,7 @@ public class QuestManager : MonoBehaviour
     /// 현재 유저가 수행 중인 퀘스트 진행 상황 (클라이언트)
     /// </summary>
     public List<QuestProgress> questProgressList { get; private set; }
+    
 
     #region 이벤트
 
@@ -203,6 +204,20 @@ public class QuestManager : MonoBehaviour
         }
         return null;
     }    
+    /// <summary>
+    /// 퀘스트 목표가 어떤 타입인지 가져오기 (몬스터 잡기, 아이템 수집, 말 걸기 등)
+    /// </summary>
+    /// <param name="quest_ID"></param>
+    /// <returns></returns>
+    public Q_ObjectiveType? GetObjectiveType(int quest_ID)
+    {
+        QuestObjectivesData objectiveData = questObjectList.Find(x => x.Quest_ID == quest_ID);
+        if (objectiveData != null)
+        {
+            return objectiveData.ObjectiveType;
+        }
+        return null;
+    }
 
     #endregion
 
@@ -231,6 +246,15 @@ public class QuestManager : MonoBehaviour
 
         int? reqAmount = GetRequireCompleteQuest(quest_ID);
         questProgressList.Add(new QuestProgress(quest_ID, 0, reqAmount));
+        
+        if (objectiveData.ObjectiveType == Q_ObjectiveType.Talk)
+        {
+            // 만약 이 퀘스트가 단순히 말 전달 연계 퀘스트 종류라면
+            int npcID = objectiveData.NPC_ID;
+
+            NPCManager.Instance.AddTalkQuest(new NPCTalkQuestData(npcID, quest_ID));            
+        }
+        
 
         OnAcceptQuest?.Invoke();
     }
@@ -272,12 +296,14 @@ public class QuestManager : MonoBehaviour
         int user_ID = DatabaseManager.Instance.userData.UID;
         QuestObjectivesData objectiveData = GetObjectiveData(quest_ID: quest_ID);
 
+        // 유저가 받은 퀘스트 완료 상태로 변경
         string query =
             $"UPDATE userquests\n" +
             $"SET userquests.`Status`={(int)Q_Status.Completed}\n" +
             $"WHERE userquests.User_ID={user_ID} AND userquests.Quest_ID={quest_ID};";
         _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
 
+        // 유저 퀘스트 목표 삭제
         query =
             $"DELETE FROM userquestobjectives\n" +
             $"WHERE userquestobjectives.User_ID={user_ID} " +
@@ -296,7 +322,11 @@ public class QuestManager : MonoBehaviour
 
         // 클라이언트에 저장된 퀘스트들의 진행도를 나타내는 리스트에서 완료한 퀘스트 삭제
         int index = questProgressList.FindIndex(x => x.quest_Id.Equals(quest_ID));
-        questProgressList.RemoveAt(index);        
+        questProgressList.RemoveAt(index);
+
+        // 클라이언트에 저장한 임시 대화 퀘스트 목록에서 삭제
+        NPCManager.Instance.RemoveTalkQuest(quest_ID);
+        
 
         OnCompleteQuest?.Invoke();
     }
@@ -443,7 +473,6 @@ public class QuestManager : MonoBehaviour
                 $"AND userquestobjectives.Objective_ID={objectiveData.ObjectiveID};";
             _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
         }
-          
     }
     private void AutoSave()
     {

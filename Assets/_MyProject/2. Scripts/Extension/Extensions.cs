@@ -33,7 +33,7 @@ public static class Extensions
         List<T> originalList,
         List<T> newList,
         Func<T, T, bool> areEqual,
-        Func<T, T, bool> isModified)
+        Func<T, T, bool> isModified = null)
     {
         // 추가된 항목 찾기
         var added = newList
@@ -45,10 +45,16 @@ public static class Extensions
             .Where(originalItem => !newList.Any(newItem => areEqual(originalItem, newItem)))
             .ToList();
 
+        if (isModified == null)
+        {
+            return (added, removed, null);
+        }
+
         // 수정된 항목 찾기
         var modified = newList
             .Where(newItem => originalList.Any(originalItem => areEqual(originalItem, newItem) && isModified(originalItem, newItem)))
             .ToList();
+
 
         return (added, removed, modified);
     }

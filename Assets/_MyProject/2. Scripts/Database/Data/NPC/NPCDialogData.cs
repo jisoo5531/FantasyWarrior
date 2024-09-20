@@ -7,6 +7,7 @@ public class NPCDialogData
 {
     public int Dialog_ID { get; set; }
     public int NPC_ID { get; set; }
+    public int Quest_ID { get; set; }
     public string dialogText { get; set; }
     public int NextDialog_ID { get; set; }
     public int Order { get; set; }
@@ -16,6 +17,7 @@ public class NPCDialogData
         (
             int.Parse(row["Dialogue_ID"].ToString()),
             int.Parse(row["NPC_ID"].ToString()),
+            int.Parse(row["Quest_ID"].ToString()),
             row["Text"].ToString(),
             int.Parse(row["NEXT_DIALOGUE_ID"].ToString()),
             int.Parse(row["Dialog_Order"].ToString()),
@@ -23,10 +25,11 @@ public class NPCDialogData
         )
     { }
 
-    public NPCDialogData(int dialog_ID, int nPC_ID, string dialogText, int nextDialog_ID, int order, DialogStatus status)
+    public NPCDialogData(int dialog_ID, int nPC_ID, int quest_ID, string dialogText, int nextDialog_ID, int order, DialogStatus status)
     {
         this.Dialog_ID = dialog_ID;
         this.NPC_ID = nPC_ID;
+        this.Quest_ID = quest_ID;
         this.dialogText = dialogText;
         this.NextDialog_ID = nextDialog_ID;
         this.Order = order;
