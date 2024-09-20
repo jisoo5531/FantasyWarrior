@@ -17,9 +17,9 @@ public class NPCDialogData
         (
             int.Parse(row["Dialogue_ID"].ToString()),
             int.Parse(row["NPC_ID"].ToString()),
-            int.Parse(row["Quest_ID"].ToString()),
+            int.TryParse(row["Quest_ID"].ToString(), out int questid) ? questid : 0,
             row["Text"].ToString(),
-            int.Parse(row["NEXT_DIALOGUE_ID"].ToString()),
+            int.TryParse(row["NEXT_DIALOGUE_ID"].ToString(), out int nextDL_ID) ? nextDL_ID : 0,
             int.Parse(row["Dialog_Order"].ToString()),
             (DialogStatus)int.Parse(row["Status"].ToString())
         )

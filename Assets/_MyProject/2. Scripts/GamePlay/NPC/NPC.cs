@@ -85,11 +85,13 @@ public class NPC : MonoBehaviour
         // 대화 연계 퀘스트 리스트 확인
         foreach (var talkList in NPCManager.Instance.talkNpcQuestList)
         {
-            isAnyCompleteQuest = talkList.NPC_ID == this.NPC_ID;
-            isAnyUserQuest = !isAnyCompleteQuest;
-            if (isAnyCompleteQuest) break;
+            if (talkList.NPC_ID == this.NPC_ID)
+            {
+                isAnyCompleteQuest = true;
+                isAnyUserQuest = false;
+                break;
+            }
         }
-
         startQuestIcon.SetActive(isAnyUserQuest);
         completeQuestIcon.SetActive(isAnyCompleteQuest);
     }

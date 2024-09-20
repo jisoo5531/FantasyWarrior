@@ -165,6 +165,10 @@ public class UI_NPCDialogue : MonoBehaviour
         // 만약 퀘스트가 말 전달 형식의 퀘스트여서 이 npc에게 왔다면
         foreach (NPCTalkQuestData tempNPCQuest in NPCManager.Instance.talkNpcQuestList)
         {
+            if (tempNPCQuest.NPC_ID != this.NPC_ID)
+            {
+                continue;
+            }
             QuestsData questData = QuestManager.Instance.GetQuestData(tempNPCQuest.Quest_ID);
             UI_DialogSelectElement dialogSelectElement = Instantiate(dialogQuestPrefab, DialogSelectContent.transform).GetComponent<UI_DialogSelectElement>();
             dialogSelectElement.Initialize(questData.Quest_Name);
@@ -268,7 +272,10 @@ public class UI_NPCDialogue : MonoBehaviour
         EndDialogue();
     }
     private void EndDialogue()
-    {        
+    {
+        rejectQuestButton.gameObject.SetActive(false);
+        acceptQuestButton.gameObject.SetActive(false);
+        completeQuestButton.gameObject.SetActive(false);
         gameObject.SetActive(false);
     }
     #endregion
