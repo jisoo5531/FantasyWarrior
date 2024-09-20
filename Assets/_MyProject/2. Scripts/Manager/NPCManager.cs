@@ -55,8 +55,8 @@ public class NPCManager : MonoBehaviour
     public List<int> GetQuestIDFromNPC(int NPC_ID)
     {        
         List<int> questsID = new List<int>();
-        Debug.Log(NPCQuest_List == null);
-        List<NPCQuestData> NPCQuestData = NPCQuest_List.FindAll(x => false == x.IsComplete && x.NPC_ID.Equals(NPC_ID));
+        Debug.Log(NPCQuest_List[0].IsComplete);
+        List<NPCQuestData> NPCQuestData = NPCQuest_List.FindAll(x => false == x.IsComplete && x.NPC_ID == NPC_ID);
         foreach (NPCQuestData nPCQuest in NPCQuestData)
         {
             questsID.Add(nPCQuest.Quest_ID);
@@ -166,4 +166,45 @@ public class NPCManager : MonoBehaviour
     }
 
     #endregion
+
+    /// <summary>
+    /// npc의 퀘스트를 클리어 할 때 호출
+    /// </summary>
+    /// <param name="quest_ID"></param>
+    public void NPCQuestComplete(int quest_ID)
+    {
+        int index = NPCQuest_List.FindIndex(x => x.Quest_ID == quest_ID);
+        if (index >= 0)
+        {
+            NPCQuest_List[index].IsComplete = true;
+        }
+    }
+
+    /// <summary>
+    /// DB에 아직 넣지 않고 클라이언트에 임의로 저장해놓은 데이터들을 DB로 저장 (npcQuestList)
+    /// <para>(게임 종료 전 또는 일정 시간마다)</para>
+    /// </summary>
+    public void SaveQuestProgress()
+    {        
+        foreach (NPCQuestData npcQuest in NPCQuest_List)
+        {
+            string checkComplete = "false";
+            if (npcQuest.IsComplete)
+            {
+                checkComplete = "true";
+            }            
+            string query =
+                $"UPDATE npc_quests\n" +
+                $"SET npc_quests.IsComplete='{checkComplete}';";
+            _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+        }
+    }
+    private void AutoSave()
+    {
+        SaveQuestProgress();
+    }
+    private void OnApplicationQuit()
+    {        
+        SaveQuestProgress();
+    }
 }

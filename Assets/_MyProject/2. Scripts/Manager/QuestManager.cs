@@ -284,6 +284,8 @@ public class QuestManager : MonoBehaviour
             $"AND userquestobjectives.Objective_ID={objectiveData.ObjectiveID};";
         _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
 
+        NPCManager.Instance.NPCQuestComplete(quest_ID);
+
         // 퀘스트 완료 상태로 바꾸기
         int userQuestsindex = userQuestsList.FindIndex(x => x.User_ID.Equals(user_ID) && x.Quest_ID.Equals(quest_ID));
         userQuestsList[userQuestsindex].questStatus = Q_Status.Completed;

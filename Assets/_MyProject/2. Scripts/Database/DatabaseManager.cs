@@ -13,7 +13,7 @@ public class DatabaseManager : MonoBehaviour
 
     private MySqlConnection conn;           // mySql DB와 연결상태를 유지하는 객체
 
-    private string serverIP = "3.38.179.205";
+    private string serverIP = "54.180.140.48";
     private string portHum = "3306";
     private string dbName = "game";
     private string tableName = "users";

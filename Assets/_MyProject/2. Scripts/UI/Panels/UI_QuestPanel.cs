@@ -48,8 +48,7 @@ public class UI_QuestPanel : MonoBehaviour
         });        
     }    
     public void QuestPanelInit()
-    {
-        Debug.Log("초기화 됐나?");
+    {        
         QuestSet();
         QuestManager.Instance.OnAcceptQuest += QuestSet;
         QuestManager.Instance.OnUpdateQuestProgress += QuestSet;
@@ -57,8 +56,7 @@ public class UI_QuestPanel : MonoBehaviour
     }
 
     private void QuestSet()
-    {
-        Debug.Log("여기?");
+    {        
         AllQuestSetting();
         InProgressQuestSetting();
         CompleteQuestSetting();
