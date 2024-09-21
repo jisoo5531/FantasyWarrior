@@ -18,6 +18,7 @@ TagManager:
   - LookAt
   - Concrete
   - Interactable
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -27,7 +28,7 @@ TagManager:
   - UI
   - Ememy
   - Player
-  - 
+  - Ground
   - 
   - 
   - 

@@ -6,7 +6,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Rock Monster LP
+  m_Name: Rock Monster Test
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: idle
@@ -1578,13 +1578,13 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 110209264}
-    m_Position: {x: 20, y: -40, z: 0}
+    m_Position: {x: -140, y: -100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 110236294}
     m_Position: {x: 264, y: -36, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 110213682}
-    m_Position: {x: 216, y: 96, z: 0}
+    m_Position: {x: 70, y: 90, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 110296686}
     m_Position: {x: 600, y: -156, z: 0}
@@ -1602,16 +1602,16 @@ AnimatorStateMachine:
     m_Position: {x: 600, y: 36, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 110211800}
-    m_Position: {x: 816, y: 36, z: 0}
+    m_Position: {x: 950, y: 250, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 110291298}
-    m_Position: {x: 1032, y: 36, z: 0}
+    m_Position: {x: 960, y: 50, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 110221386}
     m_Position: {x: 600, y: 84, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 110266490}
-    m_Position: {x: 600, y: 132, z: 0}
+    m_Position: {x: 600, y: 130, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 110281030}
     m_Position: {x: 600, y: 180, z: 0}
@@ -1623,7 +1623,7 @@ AnimatorStateMachine:
     m_Position: {x: 600, y: 276, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 110200636}
-    m_Position: {x: 912, y: -96, z: 0}
+    m_Position: {x: 900, y: -200, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 110211562}
     m_Position: {x: 460, y: 330, z: 0}
@@ -1647,7 +1647,7 @@ AnimatorStateMachine:
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 290, y: 290, z: 0}
-  m_EntryPosition: {x: 50, y: 120, z: 0}
+  m_EntryPosition: {x: -170, y: 150, z: 0}
   m_ExitPosition: {x: 804, y: 444, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 110209264}
