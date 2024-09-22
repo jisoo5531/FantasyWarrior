@@ -26,10 +26,10 @@ public class Goblin : MonsterUnit
 
         Dictionary<int, ItemData> item_Dict = ItemManager.Instance.Item_Dict;
 
-        GameObject rewardItem = Resources.Load<GameObject>($"Items/{item_Dict[7].Item_Name}");
+        GameObject rewardItem = Resources.Load<GameObject>($"Items/{item_Dict[8].Item_Name}");
         GameObject itemObj = Instantiate(rewardItem, transform.position + new Vector3(0, 0.5f, 0), rewardItem.transform.rotation);
         Item item = itemObj.GetComponent<Item>();
-        item?.Initialize(item_Dict[0]);
+        item?.Initialize(item_Dict[1]);
         UserStatManager.Instance.UpdateExp(rewardExp);
         //item.GetComponent<Rigidbody>().AddForce(Vector3.up * 20f, ForceMode.Impulse);
 

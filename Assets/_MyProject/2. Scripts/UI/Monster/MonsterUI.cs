@@ -17,7 +17,7 @@ public class MonsterUI : UIComponent
     public override void SetInitValue()
     {
         Debug.Log("¿©±â?");
-        Damagable.OnHpChange += OnHpChange;
+        Damagable.OnTakeDamage += OnHpChange;
 
         if (hpBar != null)
         {            

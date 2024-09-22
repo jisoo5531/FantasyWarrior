@@ -66,12 +66,13 @@ public class PlayerSkill : MonoBehaviour
             userSkillKeyBind.Skill_3,
             userSkillKeyBind.Skill_4
         };
+        Debug.Log($"{userSkillKeyBind.Skill_1}, {userSkillKeyBind.Skill_2}, {userSkillKeyBind.Skill_3}, {userSkillKeyBind.Skill_4}");
         OnKeyBindInit?.Invoke();
-    }
-    private void Start()
-    {        
-        playerAnimation = GetComponent<PlayerAnimation>();
 
+        SkillTableInitialize();
+    }
+    private void SkillTableInitialize()
+    {
         List<SkillData> skillDatas = SkillManager.Instance.ClassSkillDataList;
 
         if (skillDatas != null)
@@ -80,8 +81,12 @@ public class PlayerSkill : MonoBehaviour
             {
                 SkillData skillData = skillDatas[i];
                 skillTable.Add(i + 1, skillData.Skill_Name);
-            }            
+            }
         }
+    }
+    private void Start()
+    {        
+        playerAnimation = GetComponent<PlayerAnimation>();        
     }
 
     

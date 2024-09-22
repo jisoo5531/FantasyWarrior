@@ -88,6 +88,8 @@ public class ItemManager : MonoBehaviour
     /// <returns></returns>
     public string GetInventoryItemNameFromDB(int itemID)
     {
+        Debug.Log($"¹ºµ¥ : {itemID}");
+        Debug.Log(Item_Dict == null);
         if (Item_Dict.TryGetValue(itemID, out ItemData item))
         {
             return item.Item_Name;
@@ -118,12 +120,11 @@ public class ItemManager : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     private void GetItemFromDB()
-    {
+    {        
         Item_Dict = new Dictionary<int, ItemData>();
         string query =
             $"SELECT *\n" +
-            $"FROM items";
-
+            $"FROM items;";
         DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
 
         bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;

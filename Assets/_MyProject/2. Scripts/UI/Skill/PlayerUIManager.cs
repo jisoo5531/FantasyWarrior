@@ -25,8 +25,6 @@ public class PlayerUIManager : MonoBehaviour
 
     private void Initialize()
     {
-
-
         UserStatClient userStatClient = UserStatManager.Instance.userStatClient;
         string folderName = $"{userStatClient.charClass.ToString()}";
         foreach (var item in Resources.LoadAll<Sprite>($"{folderName}_skills"))

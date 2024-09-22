@@ -18,7 +18,7 @@ public class UI_HPBar
         this.hpBar = slider;
         this.hpText = hpText;
 
-        damagable.OnHpChange += OnHpChange;        
+        damagable.OnTakeDamage += OnHpChange;        
 
         SetInitValue();
     }

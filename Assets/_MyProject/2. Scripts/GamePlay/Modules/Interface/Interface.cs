@@ -18,7 +18,7 @@ public interface IAttackable
 }
 public interface IDamagable
 {
-    event Action<int> OnHpChange;
+    event Action<int> OnTakeDamage;
     event Action OnDeath;
     int MaxHp { get; set; }
     int Hp { get; set; }

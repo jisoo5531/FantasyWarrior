@@ -46,7 +46,7 @@ public class PlayerController : MonoBehaviour
     {        
         EventHandler.managerEvent.RegisterStatManagerInit(StatInit);
         EventHandler.managerEvent.RegisterEquipManagerInit(StatInit);
-        damagable.OnHpChange += OnHpChange;
+        damagable.OnTakeDamage += OnHpChange;
         damagable.OnDeath += OnDeath;
     }
      
@@ -77,7 +77,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnDisable()
     {        
-        damagable.OnHpChange -= OnHpChange;
+        damagable.OnTakeDamage -= OnHpChange;
         damagable.OnDeath -= OnDeath;        
         EventHandler.managerEvent.UnRegisterStatManagerInit(StatInit);
         EventHandler.managerEvent.UnRegisterEquipManagerInit(StatInit);

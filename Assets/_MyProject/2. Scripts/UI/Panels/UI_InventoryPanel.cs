@@ -36,8 +36,10 @@ public class UI_InventoryPanel : MonoBehaviour
     private Queue<UI_InventorySlot> emptyConsumpSlot = new();
     private Queue<UI_InventorySlot> emptyOtherSlot = new();
 
+    private bool isInit = false;
+
     private void Awake()
-    {
+    {        
         EquipTabButton.onClick.AddListener
             (
                 () =>
@@ -70,11 +72,7 @@ public class UI_InventoryPanel : MonoBehaviour
     {
         //PlayerEquipManager.Instance.OnAllUnEquipButtonClick += SetItemToSlot_Sort;
         //PlayerEquipManager.Instance.OnUnEquipItem += SetItemToSlot_Sort;
-        //InventoryManager.Instance.OnGetItem += SetItemToSlot_Sort;
-
-        PlayerEquipManager.Instance.OnAllUnEquipButtonClick += SetItemToSlot;
-        PlayerEquipManager.Instance.OnUnEquipItem += SetItemToSlot;
-        InventoryManager.Instance.OnGetItem += SetItemToSlot;
+        //InventoryManager.Instance.OnGetItem += SetItemToSlot_Sort;        
 
         List<InventoryData> inventoryDataList = InventoryManager.Instance.inventoryDataList;
         if (inventoryDataList.Count > 0)
@@ -86,6 +84,24 @@ public class UI_InventoryPanel : MonoBehaviour
             //SetItemToSlot();
         }
     }
+    private void OnEnable()
+    {
+        if (false == isInit)
+        {
+            InventoryPanelInit();
+        }        
+        //PlayerEquipManager.Instance.OnAllUnEquipButtonClick += SetItemToSlot;
+        //PlayerEquipManager.Instance.OnUnEquipItem += SetItemToSlot;
+        //InventoryManager.Instance.OnGetItem += SetItemToSlot;
+        SetItemToSlot();        
+    }
+    private void OnDisable()
+    {
+        //PlayerEquipManager.Instance.OnAllUnEquipButtonClick -= SetItemToSlot;
+        //PlayerEquipManager.Instance.OnUnEquipItem -= SetItemToSlot;
+        //InventoryManager.Instance.OnGetItem -= SetItemToSlot;
+    }
+    
     /// <summary>
     /// <para>인벤토리 슬롯으로 세팅</para>
     /// 인벤토리에 빈 곳 먼저 세팅.

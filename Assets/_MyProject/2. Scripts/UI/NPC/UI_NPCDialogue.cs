@@ -113,8 +113,7 @@ public class UI_NPCDialogue : MonoBehaviour
 
         isNextDialog = false;
         isPrevDialog = false;
-        isDialogEnd = false;
-        playerUI.SetActive(false);
+        isDialogEnd = false;        
         quest_ID = 0;
     }
     /// <summary>
@@ -148,6 +147,7 @@ public class UI_NPCDialogue : MonoBehaviour
     /// </summary>
     private void StartDialogue()
     {
+        playerUI.SetActive(false);
         DialogSelectContent.SetActive(true);
         SelectDialogInit();
     }

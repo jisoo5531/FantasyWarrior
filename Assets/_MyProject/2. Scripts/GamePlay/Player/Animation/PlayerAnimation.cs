@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerAnimation : MonoBehaviour
 {
-    public Animator anim;
+    [HideInInspector] public Animator anim;
     private bool isRun = false;
     public Dictionary<int, string> skillTable;
     public List<int> equipSkills;

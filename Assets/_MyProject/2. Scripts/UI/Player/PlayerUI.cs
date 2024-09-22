@@ -20,32 +20,21 @@ public class PlayerUI : UIComponent
 
     private void Awake()
     {
-        EventHandler.skillKey.RegisterSkillKeyChange(OnChangeSkill);
+        EventHandler.skillKey.RegisterSkillKeyChange(OnChangeSkillKeyBind);        
+    }
+    private void Start()
+    {
         PlayerEquipManager.Instance.OnEquipItem += OnChangeMP;
         PlayerEquipManager.Instance.OnUnEquipItem += OnChangeMP;
         PlayerEquipManager.Instance.OnAllUnEquipButtonClick += OnChangeMP;
         UserStatManager.Instance.OnLevelUpUpdateStat += OnChangeMP;
         UserStatManager.Instance.OnChangeExpStat += OnChangeExp;
-    }
-    private void Start()
-    {        
-        for (int i = 0; i < skillIconList.Count; i++)
-        {
-            // 장착한 스킬이 없다면
-            if (PlayerSkill.EquipSkills[i] == 0)
-            {
-                skillIconList[i].ImageTransparent(0);
-                continue;
-            }
-            Sprite skillIcon = PlayerUIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];
-            skillIconList[i].sprite = skillIcon;
-            skillIconList[i].ImageTransparent(1);
-        }
+        OnChangeSkillKeyBind();
     }
 
     public override void SetInitValue()
     {
-        Damagable.OnHpChange += OnHpChange;
+        Damagable.OnTakeDamage += OnHpChange;
         Damagable.OnChangeHPEvent += OnChangeHP;
         
         UserStatClient userStatClient = UserStatManager.Instance.userStatClient;
@@ -78,10 +67,11 @@ public class PlayerUI : UIComponent
         hpText.text = $"{Damagable.Hp} / {Damagable.MaxHp}";
     }
 
-    private void OnChangeSkill()
-    {
+    private void OnChangeSkillKeyBind()
+    {        
         for (int i = 0; i < skillIconList.Count; i++)
         {
+            Debug.Log(PlayerSkill.EquipSkills[i]);
             if (PlayerSkill.EquipSkills[i] == 0)
             {
                 skillIconList[i].sprite = null;

@@ -38,6 +38,12 @@ public class MonsterUnit : Enemy
         nav = GetComponent<NavMeshAgent>();        
     }
 
+    private void OnEnable()
+    {
+        Initialize();
+        damagable.OnTakeDamage += OnHpChange;
+        damagable.OnDeath += OnDeath;
+    }
     protected virtual void Initialize()
     {        
         this.monsterData = MonsterManager.Instance.GetMonsterData(monsterID);
@@ -65,15 +71,10 @@ public class MonsterUnit : Enemy
     {
         followable.CalculateDistance(transform.position, player.transform.position);
     }    
-    private void OnEnable()
-    {
-        Initialize();
-        damagable.OnHpChange += OnHpChange;
-        damagable.OnDeath += OnDeath;    
-    }
+    
     private void OnDisable()
     {        
-        damagable.OnHpChange -= OnHpChange;
+        damagable.OnTakeDamage -= OnHpChange;
         damagable.OnDeath -= OnDeath;
     }
     //private void OnDestroy()

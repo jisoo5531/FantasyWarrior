@@ -8,7 +8,6 @@ public class WarriorSkill : PlayerSkill
     protected override void Initialize()
     {
         List<SkillData> skillInfoList = SkillManager.Instance.ClassSkillDataList;
-        base.Initialize();
         skillList = new List<Skill>
         {
             new W_Skill_1(),
@@ -21,6 +20,7 @@ public class WarriorSkill : PlayerSkill
             new W_Skill_8(),
             new W_Skill_9()
         };
+        base.Initialize();
     }
     public void Skill_Attack()
     {

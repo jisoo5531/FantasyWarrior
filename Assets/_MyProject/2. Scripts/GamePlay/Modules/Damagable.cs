@@ -20,7 +20,7 @@ public class Damagable : MonoBehaviour, IDamagable
     /// <summary>
     /// 공격을 받아 데미지를 입었을 때 발생하는 이벤트
     /// </summary>
-    public event Action<int> OnHpChange;
+    public event Action<int> OnTakeDamage;
     /// <summary>
     /// 플레이어 레벨 업이나 몬스터가 특정 상황에서 스탯이 바뀌었을 때 발생하는 이벤트
     /// </summary>
@@ -40,7 +40,11 @@ public class Damagable : MonoBehaviour, IDamagable
     }
     private void Awake()
     {
-        UserStatManager.Instance.OnLevelUpUpdateStat += OnChangeHp;        
+        
+    }
+    private void Start()
+    {
+        UserStatManager.Instance.OnLevelUpUpdateStat += OnChangeHp;
         PlayerEquipManager.Instance.OnEquipItem += OnChangeHp;
         PlayerEquipManager.Instance.OnUnEquipItem += OnChangeHp;
         PlayerEquipManager.Instance.OnAllUnEquipButtonClick += OnChangeHp;
@@ -69,14 +73,13 @@ public class Damagable : MonoBehaviour, IDamagable
         if (isDeath)
         {
             return;
-        }
-
-        OnHpChange?.Invoke(damage);
-
+        }        
         if (Hp <= 0)
-        {                        
+        {
+            Hp = 0;            
             Death();
         }
+        OnTakeDamage?.Invoke(damage);
     }
     public void Death()
     {
