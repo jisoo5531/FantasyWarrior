@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -21,7 +22,7 @@ public class QuestData
         (  
             int.Parse(row["Quest_ID"].ToString()),
             row["Quest_Name"].ToString(),
-            (QuestType)int.Parse(row["Quest_Type"].ToString()),
+            (QuestType)Enum.Parse(typeof(QuestType), row["Quest_Type"].ToString()),            
             row["Description"].ToString(),
             int.Parse(row["Reward_Exp"].ToString()),
             int.Parse(row["Reward_Gold"].ToString()),
