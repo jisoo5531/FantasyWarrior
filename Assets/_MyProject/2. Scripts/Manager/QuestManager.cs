@@ -9,13 +9,15 @@ public class QuestManager : MonoBehaviour
 {
     public static QuestManager Instance { get; private set; }
     /// <summary>
-    /// 모든 퀘스트들을 저장할 리스트
+    /// 모든 퀘스트를 저장할 딕셔너리
+    /// <para>첫번째 요소의 key는 퀘스트의 id가 된다.</para>
     /// </summary>
-    public List<QuestsData> questsDataList { get; private set; }
+    public Dictionary<int, QuestData> questDict { get; private set; }
     /// <summary>
-    /// 퀘스트 목표의 정보들을 저장할 리스트
+    /// 퀘스트 목표의 정보들을 저장할 딕셔너리
+    /// <para>Key는 오브젝트의 ID</para>
     /// </summary>
-    public List<QuestObjectivesData> questObjectList { get; private set; }
+    public Dictionary<int, QuestObjectiveData> questObjectDict { get; private set; }
     /// <summary>
     /// 유저가 수행중인 퀘스트들의 진행 상태들을 저장할 리스트 (게임 중 업데이트하면서 수정된다.)
     /// <para>게임 종료 시, 저장해햐 할 것</para>
@@ -31,7 +33,7 @@ public class QuestManager : MonoBehaviour
     /// 현재 유저가 수행 중인 퀘스트 진행 상황 (클라이언트)
     /// </summary>
     public List<QuestProgress> questProgressList { get; private set; }
-    
+
 
     #region 이벤트
 
@@ -53,7 +55,7 @@ public class QuestManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;        
+        Instance = this;
     }
     private void Start()
     {
@@ -78,12 +80,12 @@ public class QuestManager : MonoBehaviour
         {
             foreach (var QO in userQOList)
             {
-                QuestObjectivesData objective = GetObjectiveData(objectiveID: QO.ObjectiveID);
+                QuestObjectiveData objective = GetObjectiveData(QO.ObjectiveID);
                 questProgressList.Add(new QuestProgress(objective.Quest_ID, QO.CurrentAmount, objective.ReqAmount));
             }
         }
         EventHandler.managerEvent.TriggerQuestManagerInit();
-    }    
+    }
 
     #region 퀘스트 정보 가져오기
 
@@ -92,17 +94,11 @@ public class QuestManager : MonoBehaviour
     /// </summary>
     /// <param name="quest_ID"></param>
     /// <returns></returns>
-    public QuestsData GetQuestData(int quest_ID)
+    public QuestData GetQuestData(int quest_ID)
     {
-        if (questsDataList == null)
+        if (questDict.TryGetValue(quest_ID, out QuestData quest))
         {
-            return null;
-        }
-
-        int index = questsDataList.FindIndex((x) => x.Quest_ID == quest_ID);
-        if (index >= 0)
-        {
-            return questsDataList[index];
+            return quest;
         }
         return null;
     }
@@ -129,7 +125,7 @@ public class QuestManager : MonoBehaviour
         if (userQuestsList == null)
         {
             return null;
-        }        
+        }
         return userQuestsList.FindAll((x) => x.User_ID.Equals(user_ID) && x.questStatus.Equals(Q_Status.Completed));
     }
     /// <summary>
@@ -148,30 +144,18 @@ public class QuestManager : MonoBehaviour
         {
             return userQuestsList[index].questStatus;
         }
-        return null;        
+        return null;
     }
     /// <summary>
     /// 해당 퀘스트 ID 또는 목표 ID의 목표 퀘스트 정보 가져오기
     /// </summary>
     /// <param name="quest_ID"></param>
     /// <returns></returns>
-    public QuestObjectivesData GetObjectiveData(int? quest_ID = null, int? objectiveID = null)
-    {  
-        if (quest_ID > 0)
+    public QuestObjectiveData GetObjectiveData(int objectiveID)
+    {
+        if (questObjectDict.TryGetValue(objectiveID, out QuestObjectiveData objectiveData))
         {
-            int index = questObjectList.FindIndex((x) => x.Quest_ID.Equals(quest_ID));
-            if (index >= 0)
-            {
-                return questObjectList[index];
-            }
-        }
-        if (objectiveID > 0)
-        {
-            int index = questObjectList.FindIndex((x) => x.ObjectiveID.Equals(objectiveID));
-            if (index >= 0)
-            {
-                return questObjectList[index];
-            }            
+            return objectiveData;
         }
         return null;
     }
@@ -181,10 +165,10 @@ public class QuestManager : MonoBehaviour
     /// <param name="quest_ID"></param>
     /// <returns></returns>
     public int? GetCurrentQuestProgress(int quest_ID)
-    {        
+    {
         int index = questProgressList.FindIndex((x) => x.quest_Id.Equals(quest_ID));
         if (index >= 0)
-        {            
+        {
             return questProgressList[index].current_Amount;
         }
         return null;
@@ -195,15 +179,13 @@ public class QuestManager : MonoBehaviour
     /// <param name="quest_ID"></param>
     /// <returns></returns>
     public int? GetRequireCompleteQuest(int quest_ID)
-    {
-        QuestObjectivesData questObj = GetObjectiveData(quest_ID: quest_ID);
-        int index = questObjectList.FindIndex((x) => x.ObjectiveID.Equals(questObj.ObjectiveID));
-        if (index >= 0)
-        {            
-            return questObjectList[index].ReqAmount;
+    {        
+        if (questObjectDict.TryGetValue(quest_ID, out QuestObjectiveData objectiveData))
+        {
+            return objectiveData.ReqAmount;
         }
         return null;
-    }    
+    }
     /// <summary>
     /// 퀘스트 목표가 어떤 타입인지 가져오기 (몬스터 잡기, 아이템 수집, 말 걸기 등)
     /// </summary>
@@ -211,8 +193,7 @@ public class QuestManager : MonoBehaviour
     /// <returns></returns>
     public Q_ObjectiveType? GetObjectiveType(int quest_ID)
     {
-        QuestObjectivesData objectiveData = questObjectList.Find(x => x.Quest_ID == quest_ID);
-        if (objectiveData != null)
+        if (questObjectDict.TryGetValue(quest_ID, out QuestObjectiveData objectiveData))
         {
             return objectiveData.ObjectiveType;
         }
@@ -229,7 +210,7 @@ public class QuestManager : MonoBehaviour
     public void AcceptQuest(int quest_ID)
     {
         int user_ID = DatabaseManager.Instance.userData.UID;
-        QuestObjectivesData objectiveData = GetObjectiveData(quest_ID: quest_ID);
+        QuestObjectiveData objectiveData = GetObjectiveData(quest_ID);
 
         string query =
             $"INSERT INTO userquests (userquests.User_ID, userquests.Quest_ID, userquests.`Status`)\n" +
@@ -246,15 +227,15 @@ public class QuestManager : MonoBehaviour
 
         int? reqAmount = GetRequireCompleteQuest(quest_ID);
         questProgressList.Add(new QuestProgress(quest_ID, 0, reqAmount));
-        
+
         if (objectiveData.ObjectiveType == Q_ObjectiveType.Talk)
         {
             // 만약 이 퀘스트가 단순히 말 전달 연계 퀘스트 종류라면
             int npcID = objectiveData.NPC_ID;
 
-            NPCManager.Instance.AddTalkQuest(new NPCTalkQuestData(npcID, quest_ID));            
+            NPCManager.Instance.AddTalkQuest(new NPCTalkQuestData(npcID, quest_ID));
         }
-        
+
 
         OnAcceptQuest?.Invoke();
     }
@@ -279,12 +260,14 @@ public class QuestManager : MonoBehaviour
             Debug.Log("퀘스트 대상이다.");
             questProgressList[index].UpdateProgress();
 
+            OnUpdateQuestProgress?.Invoke();
         }
         if (itemID != 0)
         {
 
+            OnUpdateQuestProgress?.Invoke();
         }
-        OnUpdateQuestProgress?.Invoke();
+
     }
     /// <summary>
     /// 퀘스트 완료 시에 실행할 메서드
@@ -294,7 +277,7 @@ public class QuestManager : MonoBehaviour
     public void QuestComplete(int quest_ID)
     {
         int user_ID = DatabaseManager.Instance.userData.UID;
-        QuestObjectivesData objectiveData = GetObjectiveData(quest_ID: quest_ID);
+        QuestObjectiveData objectiveData = GetObjectiveData(quest_ID);
 
         // 유저가 받은 퀘스트 완료 상태로 변경
         string query =
@@ -326,7 +309,7 @@ public class QuestManager : MonoBehaviour
 
         // 클라이언트에 저장한 임시 대화 퀘스트 목록에서 삭제
         NPCManager.Instance.RemoveTalkQuest(quest_ID);
-        
+
 
         OnCompleteQuest?.Invoke();
     }
@@ -337,12 +320,12 @@ public class QuestManager : MonoBehaviour
     /// 퀘스트 리스트 가져오기
     /// </summary>
     /// <returns></returns>
-    private List<QuestsData> GetQuestListFromDB()
-    {        
-        questsDataList = new List<QuestsData>();
+    private void GetQuestListFromDB()
+    {
+        questDict = new Dictionary<int, QuestData>();
         string query =
             $"SELECT *\n" +
-            $"FROM quests;";            
+            $"FROM quests;";
         DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
 
         bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
@@ -351,14 +334,13 @@ public class QuestManager : MonoBehaviour
         {
             foreach (DataRow row in dataSet.Tables[0].Rows)
             {
-                questsDataList.Add(new QuestsData(row));
+                int id = int.Parse(row["Quest_ID"].ToString());
+                questDict.Add(id, new QuestData(row));
             }
-            return questsDataList;
         }
         else
         {
             //  실패
-            return null;
         }
     }
     /// <param name="quest_ID"></param>
@@ -367,9 +349,9 @@ public class QuestManager : MonoBehaviour
     /// </summary>
     /// <param name="quest_ID"></param>
     /// <returns></returns>
-    private List<QuestObjectivesData> GetObjectivesDataFromDB()
+    private void GetObjectivesDataFromDB()
     {
-        questObjectList = new List<QuestObjectivesData>();
+        questObjectDict = new Dictionary<int, QuestObjectiveData>();
 
         string query =
             $"SELECT *\n" +
@@ -383,14 +365,13 @@ public class QuestManager : MonoBehaviour
         {
             foreach (DataRow row in dataSet.Tables[0].Rows)
             {
-                questObjectList.Add(new QuestObjectivesData(row));
+                int id = int.Parse(row["Objective_ID"].ToString());
+                questObjectDict.Add(id, new QuestObjectiveData(row));
             }
-            return questObjectList;
         }
         else
         {
-            //  실패
-            return null;
+            //  실패            
         }
     }
     /// <summary>
@@ -465,7 +446,7 @@ public class QuestManager : MonoBehaviour
         int user_ID = DatabaseManager.Instance.userData.UID;
         foreach (QuestProgress questProgress in questProgressList)
         {
-            QuestObjectivesData objectiveData = GetObjectiveData(quest_ID: questProgress.quest_Id);
+            QuestObjectiveData objectiveData = GetObjectiveData(questProgress.quest_Id);
             string query =
                 $"UPDATE userquestobjectives\n" +
                 $"SET userquestobjectives.Current_Amount={questProgress.current_Amount}\n" +

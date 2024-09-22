@@ -21,7 +21,7 @@ public class QuestProgress
         this.quest_Id = questId;
         this.required_Amount = requiredAmount;
         this.current_Amount = currentAmount;
-        QuestObjectivesData questObjective = QuestManager.Instance.GetObjectiveData(quest_ID: quest_Id);
+        QuestObjectiveData questObjective = QuestManager.Instance.GetObjectiveData(quest_Id);
 
         this.monster_Id = questObjective.Monster_ID;
         this.Item_Id = questObjective.Item_ID;

@@ -12,7 +12,7 @@ public class UI_QuestElement : MonoBehaviour
 
     protected UI_QuestInfo questInfoWindow;
 
-    protected QuestsData quest;
+    protected QuestData quest;
     protected bool isInfoOpen;
 
     private void Awake()

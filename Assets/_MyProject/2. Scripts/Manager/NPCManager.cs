@@ -5,11 +5,12 @@ using UnityEngine;
 
 public class NPCManager : MonoBehaviour
 {
-    public static NPCManager Instance { get; private set; }
+    public static NPCManager Instance { get; private set; }    
     /// <summary>
-    /// NPC들의 정보를 담고있는 리스트
+    /// npc들의 정보를 담고있는 딕셔너리
+    /// <para>key는 npc의 ID</para>
     /// </summary>
-    public List<NPCData> NPC_List { get; private set; }
+    public Dictionary<int, NPCData> NPC_Dict { get; private set; }
     /// <summary>
     /// NPC들의 대화 내용을 담고 있는 리스트
     /// </summary>
@@ -17,7 +18,7 @@ public class NPCManager : MonoBehaviour
     /// <summary>
     /// NPC들이 어떤 퀘스트를 갖고 있는지에 대한 리스트
     /// </summary>
-    public List<NPCQuestData> NPCQuest_List { get; private set; }
+    public List<NPCQuestData> NPCQuest_List { get; private set; }    
     /// <summary>
     /// 연계 퀘스트 등의 임시로 추가하거나 그런 것들을 위한 리스트
     /// </summary>
@@ -31,10 +32,10 @@ public class NPCManager : MonoBehaviour
     }
     private void Start()
     {
-        _ = GetNPCDataFromDB();
-        _ = GetNPCDialogFromDB();
-        _ = GetNPCQuestFromDB();
-        _ = GetTalkQuestDataFromDB();
+        GetNPCDataFromDB();
+        GetNPCDialogFromDB();
+        GetNPCQuestFromDB();
+        GetTalkQuestDataFromDB();
 
         EventHandler.managerEvent.TriggerNPCManagerInitInit();
     }
@@ -46,10 +47,9 @@ public class NPCManager : MonoBehaviour
     /// <returns></returns>
     public string GetNPCName(int NPC_ID)
     {
-        int index = NPC_List.FindIndex(x => x.NPC_ID.Equals(NPC_ID));
-        if (index >= 0)
+        if (NPC_Dict.TryGetValue(NPC_ID, out NPCData nPCData))
         {
-            return NPC_List[index].Name;
+            return nPCData.Name;
         }
         return string.Empty;
     }
@@ -75,7 +75,7 @@ public class NPCManager : MonoBehaviour
     /// <param name="npc_ID"></param>
     /// <returns></returns>
     public List<NPCDialogData> GetDialogList(int npc_ID)
-    {
+    {        
         List<NPCDialogData> NPCDialogList = NPCDialog_List.FindAll(x => x.NPC_ID.Equals(npc_ID));
         NPCDialogList.Sort(compareDialogOrder);
         return NPCDialogList;
@@ -111,9 +111,9 @@ public class NPCManager : MonoBehaviour
     /// NPC 리스트 가져오기
     /// </summary>
     /// <returns></returns>
-    private List<NPCData> GetNPCDataFromDB()
-    {
-        NPC_List = new List<NPCData>();
+    private void GetNPCDataFromDB()
+    {        
+        NPC_Dict = new Dictionary<int, NPCData>();
         string query =
             $"SELECT *\n" +
             $"FROM npcs;";
@@ -123,22 +123,21 @@ public class NPCManager : MonoBehaviour
         if (isGetData)
         {
             foreach (DataRow row in dataSet.Tables[0].Rows)
-            {
-                NPC_List.Add(new NPCData(row));
+            {                
+                int id = int.Parse(row["NPC_ID"].ToString());
+                NPC_Dict.Add(id, new NPCData(row));
             }
-            return NPC_List;
         }
         else
         {
             //  실패
-            return null;
         }
     }    
     /// <summary>
     /// NPC 대화 내용 리스트 가져오기
     /// </summary>
     /// <returns></returns>
-    private List<NPCDialogData> GetNPCDialogFromDB()
+    private void GetNPCDialogFromDB()
     {
         NPCDialog_List = new List<NPCDialogData>();
 
@@ -154,19 +153,17 @@ public class NPCManager : MonoBehaviour
             {
                 NPCDialog_List.Add(new NPCDialogData(row));
             }
-            return NPCDialog_List;
         }
         else
         {
             //  실패
-            return null;
         }
     }
     /// <summary>
     /// NPC 가 어떤 퀘스트를 줄 것인지에 대한 데이터 가져오기
     /// </summary>
     /// <returns></returns>
-    private List<NPCQuestData> GetNPCQuestFromDB()
+    private void GetNPCQuestFromDB()
     {
         NPCQuest_List = new List<NPCQuestData>();
 
@@ -182,19 +179,17 @@ public class NPCManager : MonoBehaviour
             {
                 NPCQuest_List.Add(new NPCQuestData(row));
             }
-            return NPCQuest_List;
         }
         else
         {
             //  실패
-            return null;
         }
     }
     /// <summary>
     /// 대화 연계 퀘스트 데이터 가져오기
     /// </summary>
     /// <returns></returns>
-    private List<NPCTalkQuestData> GetTalkQuestDataFromDB()
+    private void GetTalkQuestDataFromDB()
     {
         orgTalkQuestList = new List<NPCTalkQuestData>();
         talkNpcQuestList = new List<NPCTalkQuestData>();
@@ -211,12 +206,10 @@ public class NPCManager : MonoBehaviour
                 orgTalkQuestList.Add(new NPCTalkQuestData(row));
                 talkNpcQuestList.Add(new NPCTalkQuestData(row));
             }
-            return talkNpcQuestList;
         }
         else
         {
             //  실패
-            return null;
         }
     }
 

@@ -33,7 +33,7 @@ public class UI_QuestWindow : MonoBehaviour
             if (questProgress.isGuide)
             {
                 UI_QW_Objective objective = Instantiate(objectiveElement.gameObject, QW_ObjectiveList.transform).GetComponent<UI_QW_Objective>();
-                QuestsData quest = QuestManager.Instance.GetQuestData(questProgress.quest_Id);
+                QuestData quest = QuestManager.Instance.GetQuestData(questProgress.quest_Id);
                 objective.Initialize(quest, questProgress);
             }            
         }

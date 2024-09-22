@@ -20,7 +20,7 @@ public class NPC : MonoBehaviour
     /// <summary>
     /// 이 npc가 줄 퀘스트들
     /// </summary>
-    private List<QuestsData> npcQuestList = new List<QuestsData>();
+    private List<QuestData> npcQuestList = new List<QuestData>();
 
     private void Awake()
     {

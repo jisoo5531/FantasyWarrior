@@ -168,7 +168,7 @@ public class UI_NPCDialogue : MonoBehaviour
         #region 이 NPC의 퀘스트 확인
         foreach (int questID in questID_List)
         {
-            QuestsData questData = QuestManager.Instance.GetQuestData(questID);
+            QuestData questData = QuestManager.Instance.GetQuestData(questID);
             UI_DialogSelectElement dialogSelectElement = Instantiate(dialogQuestPrefab, DialogSelectContent.transform).GetComponent<UI_DialogSelectElement>();
             dialogSelectElement.Initialize(questData.Quest_Name);
             dialogQuestsButton.Add(dialogSelectElement.GetComponent<Button>());
@@ -182,7 +182,7 @@ public class UI_NPCDialogue : MonoBehaviour
             {
                 continue;
             }
-            QuestsData questData = QuestManager.Instance.GetQuestData(tempNPCQuest.Quest_ID);
+            QuestData questData = QuestManager.Instance.GetQuestData(tempNPCQuest.Quest_ID);
             UI_DialogSelectElement dialogSelectElement = Instantiate(dialogQuestPrefab, DialogSelectContent.transform).GetComponent<UI_DialogSelectElement>();
             dialogSelectElement.Initialize(questData.Quest_Name);
             dialogQuestsButton.Add(dialogSelectElement.GetComponent<Button>());

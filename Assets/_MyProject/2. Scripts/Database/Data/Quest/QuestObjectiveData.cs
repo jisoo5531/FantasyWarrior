@@ -6,7 +6,7 @@ using UnityEngine;
 /// <summary>
 /// 퀘스트 목표 정보
 /// </summary>
-public class QuestObjectivesData
+public class QuestObjectiveData
 {
     /// <summary>
     /// 목표 고유 ID
@@ -35,7 +35,7 @@ public class QuestObjectivesData
     /// </summary>
     public string DESC { get; set; }
 
-    public QuestObjectivesData(DataRow row) : this
+    public QuestObjectiveData(DataRow row) : this
         (
             int.Parse(row["Objective_ID"].ToString()),
             int.Parse(row["Quest_ID"].ToString()),
@@ -48,7 +48,7 @@ public class QuestObjectivesData
         )
     { }
 
-    public QuestObjectivesData(int objectiveID, int quest_ID, Q_ObjectiveType objectiveType, int monster_ID, int item_ID, int nPC_ID, int reqAmount, string dESC)
+    public QuestObjectiveData(int objectiveID, int quest_ID, Q_ObjectiveType objectiveType, int monster_ID, int item_ID, int nPC_ID, int reqAmount, string dESC)
     {
         this.ObjectiveID = objectiveID;
         this.Quest_ID = quest_ID;

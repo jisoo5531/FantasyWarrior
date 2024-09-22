@@ -16,7 +16,7 @@ public class UI_QuestInfo : MonoBehaviour
     public TMP_Text questRewardText;
     public TMP_Text questDescText;
 
-    private QuestsData questData;
+    private QuestData questData;
     private Q_Status? questStatus;
 
     private void Awake()
@@ -25,7 +25,7 @@ public class UI_QuestInfo : MonoBehaviour
         questCompleteButton.onClick.AddListener(OnClickCompleteButton);
     }
 
-    public void Initialize(QuestsData questData, Q_Status? q_Status = null)
+    public void Initialize(QuestData questData, Q_Status? q_Status = null)
     {
         this.questData = questData;
         this.questStatus = q_Status;
@@ -37,8 +37,9 @@ public class UI_QuestInfo : MonoBehaviour
     }
     private void QuestInfoInit()
     {
-        List<QuestObjectivesData> questObjList = QuestManager.Instance.questObjectList;
-        QuestObjectivesData questOBJ = questObjList.Find(x => x.Quest_ID.Equals(this.questData.Quest_ID));  // 현재 퀘스트의 목표 정보
+        Dictionary<int, QuestObjectiveData> questObjDict = QuestManager.Instance.questObjectDict;        
+        QuestObjectiveData questOBJ = questObjDict[this.questData.Quest_ID];   // 현재 퀘스트의 목표 정보
+
         questNameLabel.text = this.questData.Quest_Name;        
         questReqText.text = questOBJ.ReqAmount.ToString();
         questDescText.text = this.questData.DESC;

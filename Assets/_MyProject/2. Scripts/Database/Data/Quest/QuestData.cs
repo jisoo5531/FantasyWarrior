@@ -6,7 +6,7 @@ using UnityEngine;
 /// <summary>
 /// 퀘스트를 관리하는 정보
 /// </summary>
-public class QuestsData
+public class QuestData
 {
     public int Quest_ID { get; set; }
     public string Quest_Name { get; set; }
@@ -17,7 +17,7 @@ public class QuestsData
     public int RewardItemID { get; set; }    
     public bool IsRepeatable { get; set; }
 
-    public QuestsData(DataRow row) : this
+    public QuestData(DataRow row) : this
         (  
             int.Parse(row["Quest_ID"].ToString()),
             row["Quest_Name"].ToString(),
@@ -29,7 +29,7 @@ public class QuestsData
             bool.Parse(row["IsRepeatable"].ToString())
         )
     { }
-    public QuestsData(int quest_ID, string quest_Name, QuestType questType, string dESC, int reward_Exp, int reward_Gold, int rewardItemID, bool isRepeatable)
+    public QuestData(int quest_ID, string quest_Name, QuestType questType, string dESC, int reward_Exp, int reward_Gold, int rewardItemID, bool isRepeatable)
     {
         this.Quest_ID = quest_ID;
         this.Quest_Name = quest_Name;

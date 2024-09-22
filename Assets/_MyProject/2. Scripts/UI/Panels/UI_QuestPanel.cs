@@ -66,24 +66,24 @@ public class UI_QuestPanel : MonoBehaviour
     /// </summary>
     private void AllQuestSetting()
     {
-        ContentClear(AllQuestContent);
-        List<QuestsData> questsDataList = QuestManager.Instance.questsDataList;        
-        if (questsDataList == null)
+        ContentClear(AllQuestContent);        
+        Dictionary<int, QuestData> questDict = QuestManager.Instance.questDict;         
+        if (questDict == null)
         {
             // 퀘스트가 없다면
             return;
         }
         
-        foreach (QuestsData quest in questsDataList)        
-        {            
-            Q_Status? questStatus = QuestManager.Instance.GetQuestStatus(quest.Quest_ID);
+        foreach (var quest in questDict)        
+        {                        
+            Q_Status? questStatus = QuestManager.Instance.GetQuestStatus(quest.Key);
             if (questStatus == Q_Status.Completed || questStatus == Q_Status.InProgress)
             {
                 // 진행 중이거나 완료한 퀘스트는 목록에서 제외.
                 continue;
             }
             UI_AllQuest questElement = Instantiate(QuestInfoPrefab, AllQuestContent.transform).GetComponent<UI_AllQuest>();
-            questElement.Initialize(quest.Quest_ID, QuestInfoWindow);
+            questElement.Initialize(quest.Key, QuestInfoWindow);
         }
     }
     /// <summary>
