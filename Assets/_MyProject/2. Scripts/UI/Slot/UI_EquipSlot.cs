@@ -49,9 +49,8 @@ public class UI_EquipSlot : UI_ItemSlot
         if (this.itemID == 0)
         {
             return;
-        }        
-        List<EquipItemData> equipItemDataList = ItemManager.Instance.equipItemList;       
-        EquipItemData equipItem = equipItemDataList.Find(x => x.Item_ID.Equals(this.itemID));   // 현재 슬롯에 있는 아이템
+        }                
+        EquipItemData equipItem = ItemManager.Instance.GetEquipItemData(this.itemID);
 
         string part = PlayerEquipManager.Instance.EquipParts[(int)equipItem.Equip_Type];
 

@@ -8,12 +8,25 @@ public class ItemManager : MonoBehaviour
     public static ItemManager Instance { get; private set; }
 
     /// <summary>
-    /// 아이템 테이블의 데이터들을 담아놓은 리스트
+    /// 아이템 데이터들을 담아놓은 딕셔너리
+    /// <para>key는 아이템 ID</para>
     /// </summary>
-    public List<ItemData> itemDataList { get; private set; }
-    public List<EquipItemData> equipItemList { get; private set; }
-    public List<ConsumpItemData> consumpItemList { get; private set; }
-    public List<OtherItemData> otherItemList { get; private set; }
+    public Dictionary<int, ItemData> Item_Dict { get; private set; }
+    /// <summary>
+    /// 장비 아이템 데이터들을 담아놓은 딕셔너리
+    /// <para>key는 아이템 ID</para>
+    /// </summary>
+    private Dictionary<int, EquipItemData> EquipItem_Dict;
+    /// <summary>
+    /// 소비 아이템 데이터들을 담아놓은 딕셔너리
+    /// <para>key는 아이템 ID</para>
+    /// </summary>
+    private Dictionary<int, ConsumpItemData> ConsumpItem_Dict;
+    /// <summary>
+    /// 기타 아이템 데이터들을 담아놓은 딕셔너리
+    /// <para>key는 아이템 ID</para>
+    /// </summary>
+    private Dictionary<int, OtherItemData> OtherItem_Dict;
 
     private void Awake()
     {
@@ -26,36 +39,46 @@ public class ItemManager : MonoBehaviour
         GetConsumpItemFromDB();
         GetOtherItemFromDB();
         EventHandler.managerEvent.TriggerItemManagerInit();
-    }    
+    }
 
     /// <summary>
-    /// 아이템들의 리스트를 가져오기
+    /// 해당 장비 아이템의 정보 가져오기
     /// </summary>
+    /// <param name="item_ID"></param>
     /// <returns></returns>
-    private List<ItemData> GetItemFromDB()
+    public EquipItemData GetEquipItemData(int item_ID)
     {
-        itemDataList = new List<ItemData>();
-        string query =
-            $"SELECT *\n" +
-            $"FROM items";
-
-        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
-
-        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
-
-        if (isGetData)
-        {            
-            foreach (DataRow row in dataSet.Tables[0].Rows)
-            {
-                itemDataList.Add(new ItemData(row));
-            }
-            return itemDataList;
-        }
-        else
+        if (EquipItem_Dict.TryGetValue(item_ID, out EquipItemData equipItem))
         {
-            //  실패
-            return null;
+            return equipItem;
         }
+        return null;
+    }
+    /// <summary>
+    /// 소비 아이템 정보 가져오기
+    /// </summary>
+    /// <param name="item_ID"></param>
+    /// <returns></returns>
+    public ConsumpItemData GetConsumpItemData(int item_ID)
+    {
+        if (ConsumpItem_Dict.TryGetValue(item_ID, out ConsumpItemData consumpItem))
+        {
+            return consumpItem;
+        }
+        return null;
+    }
+    /// <summary>
+    /// 기타 아이템 정보 가져오기
+    /// </summary>
+    /// <param name="item_ID"></param>
+    /// <returns></returns>
+    public OtherItemData GetOtherItemData(int item_ID)
+    {
+        if (OtherItem_Dict.TryGetValue(item_ID, out OtherItemData otherItem))
+        {
+            return otherItem;
+        }
+        return null;
     }
 
     /// <summary>
@@ -64,11 +87,10 @@ public class ItemManager : MonoBehaviour
     /// <param name="itemID"></param>
     /// <returns></returns>
     public string GetInventoryItemNameFromDB(int itemID)
-    {        
-        int index = itemDataList.FindIndex(x => x.Item_ID.Equals(itemID));
-        if (index >= 0)
+    {
+        if (Item_Dict.TryGetValue(itemID, out ItemData item))
         {
-            return itemDataList[index].Item_Name;
+            return item.Item_Name;
         }
         return string.Empty;
     }
@@ -79,23 +101,54 @@ public class ItemManager : MonoBehaviour
     /// <returns></returns>
     public Item_Type? GetInventoryItemTypeFromDB(int itemID)
     {
-        int index = itemDataList.FindIndex(x => x.Item_ID.Equals(itemID));
-        if (index >= 0)
+        if (Item_Dict.TryGetValue(itemID, out ItemData item))
         {
-            return itemDataList[index].Item_Type;
+            return item.Item_Type;
         }
         return null;
     }
 
-    #region 장비, 소비, 기타 아이템 가져오기
+
+
+
+
+    #region DB
+    /// <summary>
+    /// 아이템들의 리스트를 가져오기
+    /// </summary>
+    /// <returns></returns>
+    private void GetItemFromDB()
+    {
+        Item_Dict = new Dictionary<int, ItemData>();
+        string query =
+            $"SELECT *\n" +
+            $"FROM items";
+
+        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
+
+        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
+
+        if (isGetData)
+        {
+            foreach (DataRow row in dataSet.Tables[0].Rows)
+            {
+                int id = int.Parse(row["Item_ID"].ToString());
+                Item_Dict.Add(id, new ItemData(row));
+            }
+        }
+        else
+        {
+            //  실패            
+        }
+    }
     /// <summary>
     /// 장비 아이템 데이터 가져오기
     /// </summary>
     /// <param name="itemID"></param>
     /// <returns></returns>
     private void GetEquipItemFromDB()
-    {
-        equipItemList = new List<EquipItemData>();
+    {        
+        EquipItem_Dict = new Dictionary<int, EquipItemData>();
 
         string query =
             $"SELECT *\n" +
@@ -108,18 +161,18 @@ public class ItemManager : MonoBehaviour
         {
             foreach (DataRow row in dataSet.Tables[0].Rows)
             {
-                equipItemList.Add(new EquipItemData(row));
+                int id = int.Parse(row["Item_ID"].ToString());
+                EquipItem_Dict.Add(id, new EquipItemData(row));                
             }
         }
         else
         {
             //실패
         }
-
     }
     private void GetConsumpItemFromDB()
-    {
-        consumpItemList = new List<ConsumpItemData>();
+    {        
+        ConsumpItem_Dict = new Dictionary<int, ConsumpItemData>();
         string query =
             $"SELECT *\n" +
             $"FROM consumitems;";        
@@ -131,7 +184,8 @@ public class ItemManager : MonoBehaviour
         {
             foreach (DataRow row in dataSet.Tables[0].Rows)
             {
-                consumpItemList.Add(new ConsumpItemData(row));
+                int id = int.Parse(row["Item_ID"].ToString());
+                ConsumpItem_Dict.Add(id, new ConsumpItemData(row));                
             }
         }
         else
@@ -140,8 +194,8 @@ public class ItemManager : MonoBehaviour
         }
     }
     private void GetOtherItemFromDB()
-    {
-        otherItemList = new List<OtherItemData>();
+    {        
+        OtherItem_Dict = new Dictionary<int, OtherItemData>();
         string query =
             $"SELECT *\n" +
             $"FROM otheritems;";    
@@ -153,7 +207,8 @@ public class ItemManager : MonoBehaviour
         {
             foreach (DataRow row in dataSet.Tables[0].Rows)
             {
-                otherItemList.Add(new OtherItemData(row));
+                int id = int.Parse(row["Item_ID"].ToString());
+                OtherItem_Dict.Add(id, new OtherItemData(row));                
             }
         }
         else

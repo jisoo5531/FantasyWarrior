@@ -63,8 +63,7 @@ public class UI_InventorySlot : UI_ItemSlot
     /// </summary>
     private void Equip_EquipItem()
     {
-        List<EquipItemData> equipItemDataList = ItemManager.Instance.equipItemList;
-        EquipItemData equipItem = equipItemDataList.Find(x => x.Item_ID.Equals(this.itemID));   // 현재 슬롯에 있는 아이템
+        EquipItemData equipItem = ItemManager.Instance.GetEquipItemData(this.itemID);   // 현재 슬롯에 있는 아이템
 
         PlayerEquipManager.Instance.EquipItem(PlayerEquipManager.Instance.EquipParts[(int)equipItem.Equip_Type], itemID);        
 

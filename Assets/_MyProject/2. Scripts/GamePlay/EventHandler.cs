@@ -149,17 +149,34 @@ public class ManagerEvent
     #region NPC
     private event Action NPCManagerInit;
 
-    public void RegisterNPCManagerInitInit(Action listener)
+    public void RegisterNPCManagerInit(Action listener)
     {
         NPCManagerInit += listener;
     }
-    public void UnRegisterNPCManagerInitInit(Action listener)
+    public void UnRegisterNPCManagerInit(Action listener)
     {
         NPCManagerInit -= listener;
     }
-    public void TriggerNPCManagerInitInit()
+    public void TriggerNPCManagerInit()
     {
         NPCManagerInit?.Invoke();
+    }
+    #endregion
+
+    #region ∏ÛΩ∫≈Õ
+    private event Action MonsteranagerInit;
+
+    public void RegisterMonsteranagerInit(Action listener)
+    {
+        MonsteranagerInit += listener;
+    }
+    public void UnRegisterMonsteranagerInit(Action listener)
+    {
+        MonsteranagerInit -= listener;
+    }
+    public void TriggerMonsteranagerInit()
+    {
+        MonsteranagerInit?.Invoke();
     }
     #endregion
 }

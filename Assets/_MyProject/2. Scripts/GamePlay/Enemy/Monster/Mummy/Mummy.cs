@@ -6,7 +6,7 @@ public class Mummy : MonsterUnit
 {
     protected override void Initialize()
     {
-        unitName = "Mummy";
+        //monsterID = "Mummy";
         base.Initialize();
                       
     }

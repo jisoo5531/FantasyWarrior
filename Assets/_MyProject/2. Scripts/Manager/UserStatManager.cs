@@ -91,14 +91,12 @@ public class UserStatManager : MonoBehaviour
         int defAmount = 0;
         int hpAmount = 0;
         int mpAmount = 0;
-
-        List<EquipItemData> equipItemDataList = ItemManager.Instance.equipItemList;
-
+        
         
         if (itemID != 0)
         {
             // 아이템을 장착하고 있을 때
-            EquipItemData equipItemData = equipItemDataList.Find(x => x.Item_ID.Equals(itemID));
+            EquipItemData equipItemData = ItemManager.Instance.GetEquipItemData(itemID);
             atkAmount = isEquip ? equipItemData.ATK_Boost : -equipItemData.ATK_Boost;
             strAmount = isEquip ? equipItemData.STR_Boost : -equipItemData.STR_Boost;
             dexAmount = isEquip ? equipItemData.DEX_Boost : -equipItemData.DEX_Boost;

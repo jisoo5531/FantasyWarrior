@@ -37,7 +37,7 @@ public class NPCManager : MonoBehaviour
         GetNPCQuestFromDB();
         GetTalkQuestDataFromDB();
 
-        EventHandler.managerEvent.TriggerNPCManagerInitInit();
+        EventHandler.managerEvent.TriggerNPCManagerInit();
     }
 
     /// <summary>
