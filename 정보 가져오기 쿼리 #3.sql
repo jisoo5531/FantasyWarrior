@@ -34,5 +34,5 @@ LEFT JOIN Items i6 ON PlayerEquipment.PendantItem_ID = i6.Item_ID
 LEFT JOIN Items i7 ON PlayerEquipment.RingItem_ID = i7.Item_ID
 WHERE PlayerEquipment.User_ID = 1;*/
 
-INSERT INTO skills (skills.Skill_Name)
-VALUES ('W_Skill_1');
+ALTER TABLE quests
+MODIFY COLUMN Quest_Type ENUM('Main', 'Side', 'Daily');

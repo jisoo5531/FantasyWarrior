@@ -67,5 +67,6 @@ public enum Q_ObjectiveType
 {
     Kill,
     Collect,
-    Talk
+    Talk,
+    Visit
 }

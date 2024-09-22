@@ -5,7 +5,10 @@ using UnityEngine;
 
 public class NPCManager : MonoBehaviour
 {
-    public static NPCManager Instance { get; private set; }    
+    public static NPCManager Instance { get; private set; }
+
+    public List<GameObject> NPCList;
+
     /// <summary>
     /// npc들의 정보를 담고있는 딕셔너리
     /// <para>key는 npc의 ID</para>

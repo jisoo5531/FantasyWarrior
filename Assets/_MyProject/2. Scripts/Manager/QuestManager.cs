@@ -49,7 +49,7 @@ public class QuestManager : MonoBehaviour
     /// <summary>
     /// 퀘스트가 완료되면 발생하는 이벤트
     /// </summary>
-    public event Action OnCompleteQuest;
+    public event Action OnCompleteQuest;    
 
     #endregion
 

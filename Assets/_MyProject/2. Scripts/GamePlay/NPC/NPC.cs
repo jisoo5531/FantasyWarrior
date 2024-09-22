@@ -39,9 +39,7 @@ public class NPC : MonoBehaviour
         QuestManager.Instance.OnAcceptQuest += CheckQuestStatus;
         QuestManager.Instance.OnUpdateQuestProgress += CheckQuestStatus;  // 퀘스트 진행상황 업데이트마다 이벤트를 호출한다.
         QuestManager.Instance.OnCompleteQuest += CheckQuestStatus;
-
-        
-        CheckQuestStatus();
+                
 
         //이 npc의 대화창 초기화
         nPCDialogue.Initialize();

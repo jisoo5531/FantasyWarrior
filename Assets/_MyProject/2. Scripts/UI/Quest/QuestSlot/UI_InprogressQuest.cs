@@ -6,7 +6,14 @@ using UnityEngine.UI;
 
 public class UI_InprogressQuest : UI_QuestElement
 {
+    /// <summary>
+    /// 인게임 퀘스트 윈도우에 빠른 알림으로 등록하기 위한 버튼
+    /// </summary>
     public Button GuideButton;
+    /// <summary>
+    /// 네비 화살표를 설정할 것인지에 대한 버튼
+    /// </summary>
+    public Button NavGuideButton;
     public Image GuideImage;
     /// <summary>
     /// 게임 상의 가이드로 띄울 것인지 여부를 확인할 변수
@@ -58,5 +65,16 @@ public class UI_InprogressQuest : UI_QuestElement
             return;
         }
         questProgressList[index].UpdateGuideOnOff(isGuided);
+    }
+    /// <summary>
+    /// 길찾기 서비스 버튼을 클릭할 때
+    /// </summary>
+    private void OnClickNavQuestButton()
+    {
+        QuestObjectiveData objectiveData = QuestManager.Instance.GetObjectiveData(this.quest.Quest_ID);
+        //if (objectiveData.)
+        //{
+
+        //}
     }
 }

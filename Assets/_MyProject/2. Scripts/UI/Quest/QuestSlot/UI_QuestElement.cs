@@ -12,6 +12,9 @@ public class UI_QuestElement : MonoBehaviour
 
     protected UI_QuestInfo questInfoWindow;
 
+    /// <summary>
+    /// 해당 항목에 있는 퀘스트 정보
+    /// </summary>
     protected QuestData quest;
     protected bool isInfoOpen;
 

@@ -6,7 +6,12 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-    public static PlayerInputAction inputActions;    
+    public static PlayerInputAction inputActions;
+
+    /// <summary>
+    /// 현재 플레이어가 있는 장소의 ID
+    /// </summary>
+    public int currentLocationID;
 
     public GameObject goblin;
     public GameObject mummy;
