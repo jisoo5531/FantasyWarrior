@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class DirectionArrow : MonoBehaviour
@@ -6,6 +7,11 @@ public class DirectionArrow : MonoBehaviour
     public Transform player;       // 플레이어의 Transform
     public Transform target;       // 목표 지점의 Transform
     public RectTransform arrowUI;  // 화살표 이미지의 RectTransform
+
+    private void Awake()
+    {
+        EventHandler.questNavEvent.RegisterQuestNav(OnSetQuestNavTarget);
+    }
     private void Start()
     {
         
@@ -22,5 +28,31 @@ public class DirectionArrow : MonoBehaviour
 
         // 화살표 UI를 각도에 맞춰 회전
         arrowUI.rotation = Quaternion.Euler(0, 0, -angle);
+    }
+    private void OnSetQuestNavTarget(QuestData quest)
+    {        
+        int quest_ID = quest.Quest_ID;
+        
+        SetTarget(quest_ID);
+    }
+    private void SetTarget(int quest_ID)
+    {
+        List<QuestProgress> questProgress = QuestManager.Instance.questProgressList;
+        Debug.Log(quest_ID);
+        int index = questProgress.FindIndex(x => x.quest_Id == quest_ID);
+        Debug.Log(questProgress[index].NPC_Id);
+        if (questProgress[index].monster_Id != 0)
+        {
+            
+        }
+        else if (questProgress[index].NPC_Id != 0)
+        {
+            NPC npc = LocationManger.Instance.NPC_List.Find(x => x.NPC_ID == questProgress[index].NPC_Id);
+            Debug.Log(npc.name);
+            if (npc != null)
+            {
+                target = npc.transform;
+            }            
+        }
     }
 }

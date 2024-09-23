@@ -40,8 +40,11 @@ public class UI_QuestInfo : MonoBehaviour
         Dictionary<int, QuestObjectiveData> questObjDict = QuestManager.Instance.questObjectDict;        
         QuestObjectiveData questOBJ = questObjDict[this.questData.Quest_ID];   // 현재 퀘스트의 목표 정보
 
+        int? reqAmount = QuestManager.Instance.GetRequireComplete(this.questData.Quest_ID);
+        string reqAmountText = reqAmount != null ? reqAmount.ToString() : string.Empty;
+
         questNameLabel.text = this.questData.Quest_Name;        
-        questReqText.text = questOBJ.ReqAmount.ToString();
+        questReqText.text = reqAmountText;
         questDescText.text = this.questData.DESC;
         questRewardText.text = $"Gold : {this.questData.Reward_Gold}, EXP : {this.questData.Reward_Exp}";
     }

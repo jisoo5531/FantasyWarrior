@@ -1,18 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System.Data;
 
-public class QuestObj_KillData : MonoBehaviour
+public class QuestObj_KillData
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public int Quest_ID { get; set; }
+    public int Monster_ID { get; set; }
+    public int KillAmount { get; set; }
 
-    // Update is called once per frame
-    void Update()
+    public QuestObj_KillData(DataRow row) : this
+        (
+            int.Parse(row["Quest_ID"].ToString()),
+            int.Parse(row["Monster_ID"].ToString()),
+            int.Parse(row["Kill_Count"].ToString())
+        )
+    { }
+    public QuestObj_KillData(int quest_ID, int monster_ID, int killAmount)
     {
-        
+        Quest_ID = quest_ID;
+        Monster_ID = monster_ID;
+        KillAmount = killAmount;
     }
 }

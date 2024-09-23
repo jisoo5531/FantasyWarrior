@@ -18,6 +18,9 @@ public class QuestManager : MonoBehaviour
     /// <para>Key는 오브젝트의 ID</para>
     /// </summary>
     public Dictionary<int, QuestObjectiveData> questObjectDict { get; private set; }
+    public Dictionary<int, Questobj_CollectData> questObjCollect_Dict { get; private set; }
+    public Dictionary<int, QuestObj_KillData> questObjKill_Dict { get; private set; }
+    public Dictionary<int, QuestObj_TalkData> questObjTalk_Dict { get; private set; }
     /// <summary>
     /// 유저가 수행중인 퀘스트들의 진행 상태들을 저장할 리스트 (게임 중 업데이트하면서 수정된다.)
     /// <para>게임 종료 시, 저장해햐 할 것</para>
@@ -62,7 +65,7 @@ public class QuestManager : MonoBehaviour
         Instance = this;
     }
     private void Start()
-    {        
+    {
 
         // 5분마다 자동 저장
         InvokeRepeating("AutoSave", 300f, 300f);
@@ -76,21 +79,23 @@ public class QuestManager : MonoBehaviour
         GetObjectivesDataFromDB();
         GetUserQuestObjectivesFromDB();
         GetUserQuestsFromDB();
+        GetQuestObjKill();
+        GetQuestObjTalk();
+        GetQuestObjCollect();
 
         questProgressList = new List<QuestProgress>();
         List<UserQuestObjectivesData> userQOList = GetUserQuestObjectivesFromDB();
         if (userQOList != null)
         {
+            Debug.Log("여긴 되냐?");
             foreach (var QO in userQOList)
             {
                 QuestObjectiveData objective = GetObjectiveData(QO.ObjectiveID);
-                questProgressList.Add(new QuestProgress(objective.Quest_ID, QO.CurrentAmount, objective.ReqAmount));
+                questProgressList.Add(new QuestProgress(objective.Quest_ID));
             }
         }
         //EventHandler.managerEvent.TriggerQuestManagerInit();
     }
-
-    #region 퀘스트 정보 가져오기
 
     /// <summary>
     /// 해당 ID 의 퀘스트 데이터 가져오기
@@ -105,6 +110,101 @@ public class QuestManager : MonoBehaviour
         }
         return null;
     }
+
+
+    #region 퀘스트의 목표 정보 (obj)
+
+    /// <summary>
+    /// 해당 퀘스트 ID 또는 목표 ID의 목표 퀘스트 정보 가져오기
+    /// </summary>
+    /// <param name="quest_ID"></param>
+    /// <returns></returns>
+    public QuestObjectiveData GetObjectiveData(int objectiveID)
+    {
+        if (questObjectDict.TryGetValue(objectiveID, out QuestObjectiveData objectiveData))
+        {
+            return objectiveData;
+        }
+        return null;
+    }
+    /// <summary>
+    /// 해당 ID의 처치 퀘스트 정보 가져오기
+    /// </summary>
+    /// <param name="quest_Id"></param>
+    /// <returns></returns>
+    public QuestObj_KillData GetKillQuestInfo(int quest_Id)
+    {
+        if (questObjKill_Dict.TryGetValue(quest_Id, out QuestObj_KillData killQuest))
+        {
+            return killQuest;
+        }
+        return null;
+    }
+    /// <summary>
+    /// 해당 ID의 수집 퀘스트 정보 가져오기
+    /// </summary>
+    /// <param name="quest_Id"></param>
+    /// <returns></returns>
+    public Questobj_CollectData GetCollectQuestInfo(int quest_Id)
+    {
+        if (questObjCollect_Dict.TryGetValue(quest_Id, out Questobj_CollectData collectQuest))
+        {
+            return collectQuest;
+        }
+        return null;
+    }
+    /// <summary>
+    /// 해당 ID의 대화 퀘스트 정보 가져오기
+    /// </summary>
+    /// <param name="quest_Id"></param>
+    /// <returns></returns>
+    public QuestObj_TalkData GetTalkQuestInfo(int quest_Id)
+    {
+        if (questObjTalk_Dict.TryGetValue(quest_Id, out QuestObj_TalkData talkQuest))
+        {            
+            return talkQuest;
+        }
+        return null;
+    }
+    /// <summary>
+    /// 퀘스트 목표가 어떤 타입인지 가져오기 (몬스터 잡기, 아이템 수집, 말 걸기 등)
+    /// </summary>
+    /// <param name="quest_ID"></param>
+    /// <returns></returns>
+    public Q_ObjectiveType? GetObjectiveType(int quest_ID)
+    {
+        if (questObjectDict.TryGetValue(quest_ID, out QuestObjectiveData objectiveData))
+        {
+            return objectiveData.ObjectiveType;
+        }
+        return null;
+    }
+    /// <summary>
+    /// 해당 퀘스트의 완료 조건 수량 가져오기
+    /// </summary>
+    /// <param name="quest_ID"></param>
+    /// <returns></returns>
+    public int? GetRequireComplete(int quest_ID)
+    {
+        Q_ObjectiveType questType = GetObjectiveData(quest_ID).ObjectiveType;
+        if (questType == Q_ObjectiveType.Kill)
+        {
+            return GetKillQuestInfo(quest_ID).KillAmount;
+        }
+        else if (questType == Q_ObjectiveType.Collect)
+        {
+            return GetCollectQuestInfo(quest_ID).CollectAmount;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    #endregion
+
+    #region 유저의 퀘스트 진행상황
+
     /// <summary>
     /// 현재 유저가 수행 중인 (Inprogress) 퀘스트들 데이터 가져오기
     /// </summary>
@@ -149,19 +249,7 @@ public class QuestManager : MonoBehaviour
         }
         return null;
     }
-    /// <summary>
-    /// 해당 퀘스트 ID 또는 목표 ID의 목표 퀘스트 정보 가져오기
-    /// </summary>
-    /// <param name="quest_ID"></param>
-    /// <returns></returns>
-    public QuestObjectiveData GetObjectiveData(int objectiveID)
-    {
-        if (questObjectDict.TryGetValue(objectiveID, out QuestObjectiveData objectiveData))
-        {
-            return objectiveData;
-        }
-        return null;
-    }
+
     /// <summary>
     /// 현재 퀘스트 진행도
     /// </summary>
@@ -176,34 +264,9 @@ public class QuestManager : MonoBehaviour
         }
         return null;
     }
-    /// <summary>
-    /// 퀘스트의 완료 조건 가져오기
-    /// </summary>
-    /// <param name="quest_ID"></param>
-    /// <returns></returns>
-    public int? GetRequireCompleteQuest(int quest_ID)
-    {        
-        if (questObjectDict.TryGetValue(quest_ID, out QuestObjectiveData objectiveData))
-        {
-            return objectiveData.ReqAmount;
-        }
-        return null;
-    }
-    /// <summary>
-    /// 퀘스트 목표가 어떤 타입인지 가져오기 (몬스터 잡기, 아이템 수집, 말 걸기 등)
-    /// </summary>
-    /// <param name="quest_ID"></param>
-    /// <returns></returns>
-    public Q_ObjectiveType? GetObjectiveType(int quest_ID)
-    {
-        if (questObjectDict.TryGetValue(quest_ID, out QuestObjectiveData objectiveData))
-        {
-            return objectiveData.ObjectiveType;
-        }
-        return null;
-    }
 
     #endregion
+
 
     #region 퀘스트 진행상황 업데이트 (수락, 업데이트, 완료)
     /// <summary>
@@ -214,7 +277,7 @@ public class QuestManager : MonoBehaviour
     {
         int user_ID = DatabaseManager.Instance.userData.UID;
         QuestObjectiveData objectiveData = GetObjectiveData(quest_ID);
-        
+
         string query =
             $"INSERT INTO userquests (userquests.User_ID, userquests.Quest_ID, userquests.`Status`)\n" +
             $"VALUES ({user_ID}, {quest_ID}, '{Q_Status.InProgress.ToString()}');";
@@ -228,13 +291,13 @@ public class QuestManager : MonoBehaviour
         userQuestsList.Add(new UserQuestsData(user_ID, quest_ID, Q_Status.InProgress));
         userQuestObjList.Add(new UserQuestObjectivesData(user_ID, objectiveData.ObjectiveID, 0, false));
 
-        int? reqAmount = GetRequireCompleteQuest(quest_ID);
-        questProgressList.Add(new QuestProgress(quest_ID, 0, reqAmount));
+        questProgressList.Add(new QuestProgress(quest_ID, 0));
 
         if (objectiveData.ObjectiveType == Q_ObjectiveType.Talk)
         {
             // 만약 이 퀘스트가 단순히 말 전달 연계 퀘스트 종류라면
-            int npcID = objectiveData.NPC_ID;
+
+            int npcID = GetTalkQuestInfo(objectiveData.Quest_ID).NPC_ID;
 
             NPCManager.Instance.AddTalkQuest(new NPCTalkQuestData(npcID, quest_ID));
         }
@@ -349,18 +412,18 @@ public class QuestManager : MonoBehaviour
     private void GetReward(int quest_ID)
     {
         QuestData quest = GetQuestData(quest_ID);
-        
+
         if (quest.RewardItemID != 0)
         {
             ItemData reward_Item = ItemManager.Instance.GetItemData(quest.RewardItemID);
             InventoryManager.Instance.GetItem(reward_Item, quest.RewardItem_Amount);
-        }        
+        }
     }
     #endregion
 
     #endregion
 
-    #region 게임 시작할 때 정보 가져오기
+    #region 게임 시작할 때 정보 가져오기 (DB)
     /// <summary>
     /// 퀘스트 리스트 가져오기
     /// </summary>
@@ -477,6 +540,81 @@ public class QuestManager : MonoBehaviour
         {
             //  실패
             return null;
+        }
+    }
+    /// <summary>
+    /// 퀘스트 목표 정보 가져오기 (몬스터 처치)
+    /// </summary>
+    private void GetQuestObjKill()
+    {
+        questObjKill_Dict = new Dictionary<int, QuestObj_KillData>();
+        string query =
+            $"SELECT *\n" +
+            $"FROM quest_kill;";
+        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
+        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
+
+        if (isGetData)
+        {
+            foreach (DataRow row in dataSet.Tables[0].Rows)
+            {
+                int id = int.Parse(row["Quest_ID"].ToString());
+                questObjKill_Dict.Add(id, new QuestObj_KillData(row));
+            }
+        }
+        else
+        {
+            //  실패
+        }
+    }
+    /// <summary>
+    /// 퀘스트 목표 정보 가져오기 (아이템 수집)
+    /// </summary>
+    private void GetQuestObjCollect()
+    {
+        questObjCollect_Dict = new Dictionary<int, Questobj_CollectData>();
+        string query =
+            $"SELECT *\n" +
+            $"FROM quest_collect;";
+        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
+        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
+
+        if (isGetData)
+        {
+            foreach (DataRow row in dataSet.Tables[0].Rows)
+            {
+                int id = int.Parse(row["Quest_ID"].ToString());
+                questObjCollect_Dict.Add(id, new Questobj_CollectData(row));
+            }
+        }
+        else
+        {
+            //  실패
+        }
+    }
+    /// <summary>
+    /// 퀘스트 목표 정보 가져오기 (대화)
+    /// </summary>
+    private void GetQuestObjTalk()
+    {
+        questObjTalk_Dict = new Dictionary<int, QuestObj_TalkData>();
+        string query =
+            $"SELECT *\n" +
+            $"FROM quest_talk;";
+        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
+        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
+
+        if (isGetData)
+        {
+            foreach (DataRow row in dataSet.Tables[0].Rows)
+            {
+                int id = int.Parse(row["Quest_ID"].ToString());
+                questObjTalk_Dict.Add(id, new QuestObj_TalkData(row));
+            }
+        }
+        else
+        {
+            //  실패
         }
     }
     #endregion

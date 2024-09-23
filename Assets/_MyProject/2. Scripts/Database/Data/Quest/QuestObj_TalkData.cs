@@ -1,18 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System.Data;
 
-public class QuestObj_TalkData : MonoBehaviour
+public class QuestObj_TalkData
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public int Quest_ID { get; set; }
+    public int NPC_ID { get; set; }
 
-    // Update is called once per frame
-    void Update()
+    public QuestObj_TalkData(DataRow row) : this
+        (
+            int.Parse(row["Quest_ID"].ToString()),
+            int.Parse(row["NPC_ID"].ToString())
+        )
+    { }
+    public QuestObj_TalkData(int quest_ID, int nPC_ID)
     {
-        
+        Quest_ID = quest_ID;
+        NPC_ID = nPC_ID;
     }
 }

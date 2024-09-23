@@ -6,6 +6,7 @@ public static class EventHandler
     public static SkillKeyEvent skillKey = new();
     public static PlayerEvent playerEvent = new();
     public static ManagerEvent managerEvent = new();
+    public static QuestNavEvent questNavEvent = new();
 }
 public class PlayerEvent
 {
@@ -179,4 +180,20 @@ public class ManagerEvent
         MonsteranagerInit?.Invoke();
     }
     #endregion
+}
+public class QuestNavEvent
+{
+    private event Action<QuestData> OnQuestNav;    
+    public void RegisterQuestNav(Action<QuestData> listener)
+    {        
+        OnQuestNav += listener;
+    }
+    public void UnRegisterQuestNav(Action<QuestData> listener)
+    {
+        OnQuestNav -= listener;
+    }
+    public void TriggerQuestNav(QuestData quest)
+    {
+        OnQuestNav?.Invoke(quest);
+    }
 }

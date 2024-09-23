@@ -15,22 +15,6 @@ public class QuestObjectiveData
     public int Quest_ID { get; set; }
     public Q_ObjectiveType ObjectiveType { get; set; }
     /// <summary>
-    /// 대상이 되는 몬스터 ID
-    /// </summary>
-    public int Monster_ID { get; set; }
-    /// <summary>
-    /// 대상이 되는 아이템 ID
-    /// </summary>
-    public int Item_ID { get; set; }
-    /// <summary>
-    /// 대상이 되는 NPC ID
-    /// </summary>
-    public int NPC_ID { get; set; }
-    /// <summary>
-    /// 얼만큼의 수량 또는 얼마나 해야 하는지
-    /// </summary>
-    public int ReqAmount { get; set; }
-    /// <summary>
     /// 목표 설명
     /// </summary>
     public string DESC { get; set; }
@@ -40,23 +24,15 @@ public class QuestObjectiveData
             int.Parse(row["Objective_ID"].ToString()),
             int.Parse(row["Quest_ID"].ToString()),
             (Q_ObjectiveType)System.Enum.Parse(typeof(Q_ObjectiveType), row["Objective_Type"].ToString()),            
-            int.TryParse(row["Monster_ID"]?.ToString(), out int monsterid) ? monsterid : 0,
-            int.TryParse(row["Item_ID"]?.ToString(), out int itemid) ? itemid : 0,
-            int.TryParse(row["NPC_ID"]?.ToString(), out int npcid) ? npcid : 0,
-            int.Parse(row["Required_Amount"].ToString()),
             row["Description"].ToString()
         )
     { }
 
-    public QuestObjectiveData(int objectiveID, int quest_ID, Q_ObjectiveType objectiveType, int monster_ID, int item_ID, int nPC_ID, int reqAmount, string dESC)
+    public QuestObjectiveData(int objectiveID, int quest_ID, Q_ObjectiveType objectiveType, string dESC)
     {
         this.ObjectiveID = objectiveID;
         this.Quest_ID = quest_ID;
         this.ObjectiveType = objectiveType;
-        this.Monster_ID = monster_ID;
-        this.Item_ID = item_ID;
-        this.NPC_ID = nPC_ID;
-        this.ReqAmount = reqAmount;
         this.DESC = dESC;
     }
 }
