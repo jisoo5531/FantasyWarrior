@@ -34,11 +34,15 @@ public class ItemManager : MonoBehaviour
     }
     private void Start()
     {
+        
+        //EventHandler.managerEvent.TriggerItemManagerInit();
+    }
+    public void Initialize()
+    {
         GetItemFromDB();
         GetEquipItemFromDB();
         GetConsumpItemFromDB();
         GetOtherItemFromDB();
-        EventHandler.managerEvent.TriggerItemManagerInit();
     }
 
     /// <summary>

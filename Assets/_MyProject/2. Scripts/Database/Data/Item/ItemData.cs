@@ -27,9 +27,9 @@ public class ItemData
         (
             int.Parse(row["item_id"].ToString()),
             row["item_name"].ToString(),
-            (Item_Type)int.Parse(row["item_type"].ToString()),
-            row["item_description"].ToString(),
-            (Rarity)int.Parse(row["rarity"].ToString())
+            (Item_Type)System.Enum.Parse(typeof(Item_Type), row["item_type"].ToString()),            
+            row["item_description"].ToString(),            
+            (Rarity)System.Enum.Parse(typeof(Rarity), row["rarity"].ToString())
         )
     { }
     public ItemData(int item_ID, string item_Name, Item_Type item_Type, string item_Description, Rarity rarity)

@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
-        
+        ManagerInit();
     }
 
     private void Update()
@@ -56,5 +56,16 @@ public class GameManager : MonoBehaviour
     }
 
     
-    
+    private void ManagerInit()
+    {
+        ItemManager.Instance.Initialize();
+        InventoryManager.Instance.Initialize();
+        UserStatManager.Instance.Initialize();
+        PlayerEquipManager.Instance.Initialize();
+        SkillManager.Instance.Initialize();
+        QuestManager.Instance.Initialize();
+        PlayerUIManager.Instance.Initialize();
+        NPCManager.Instance.Initialize();
+        MonsterManager.Instance.Initialize();
+    }
 }

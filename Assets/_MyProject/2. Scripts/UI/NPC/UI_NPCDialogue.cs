@@ -126,7 +126,7 @@ public class UI_NPCDialogue : MonoBehaviour
         {
             switch (dialog.Status)
             {
-                case DialogStatus.Daily:
+                case DialogStatus.Talk:
                     dailyDialogList.Add(dialog);
                     break;
                 case DialogStatus.QuestStart:
@@ -217,9 +217,9 @@ public class UI_NPCDialogue : MonoBehaviour
         
         switch (status)
         {
-            case DialogStatus.Daily:
+            case DialogStatus.Talk:
                 dialogList = dailyDialogList.FindAll(x => x.Quest_ID == quest_ID);                
-                StartCoroutine(InprogressDialogue(dialogList, DialogStatus.Daily));
+                StartCoroutine(InprogressDialogue(dialogList, DialogStatus.Talk));
                 break;
             case DialogStatus.QuestStart:
                 dialogList = questStartDL_List.FindAll(x => x.Quest_ID == quest_ID);
@@ -338,7 +338,7 @@ public class UI_NPCDialogue : MonoBehaviour
     /// </summary>
     private void OnClickDailyDialog()
     {
-        SelectDialog(DialogStatus.Daily);
+        SelectDialog(DialogStatus.Talk);
     }
     /// <summary>
     /// 대화 종료 Goodbye 클릭

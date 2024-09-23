@@ -46,13 +46,19 @@ public class UI_QuestPanel : MonoBehaviour
             AllQuestContent.transform.parent.parent.parent.gameObject.SetActive(false);
             InProgressQuestContent.transform.parent.parent.parent.gameObject.SetActive(false);
         });        
-    }    
-    public void QuestPanelInit()
-    {        
-        QuestSet();
+    }
+    private void OnEnable()
+    {
         QuestManager.Instance.OnAcceptQuest += QuestSet;
         QuestManager.Instance.OnUpdateQuestProgress += QuestSet;
         QuestManager.Instance.OnCompleteQuest += QuestSet;
+        QuestSet();
+    }
+    private void OnDisable()
+    {
+        QuestManager.Instance.OnAcceptQuest -= QuestSet;
+        QuestManager.Instance.OnUpdateQuestProgress -= QuestSet;
+        QuestManager.Instance.OnCompleteQuest -= QuestSet;
     }
 
     private void QuestSet()

@@ -19,9 +19,12 @@ public class MonsterManager : MonoBehaviour
     }
 
     private void Start()
+    {        
+        //EventHandler.managerEvent.TriggerMonsteranagerInit();
+    }
+    public void Initialize()
     {
         GetMonsterDataFromDB();
-        EventHandler.managerEvent.TriggerMonsteranagerInit();
     }
 
     /// <summary>

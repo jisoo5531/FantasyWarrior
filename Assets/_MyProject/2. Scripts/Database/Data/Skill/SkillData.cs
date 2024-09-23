@@ -48,9 +48,9 @@ public class SkillData
             int.Parse(row["mana_cost"].ToString()),
             float.Parse(row["cooltime"].ToString()),
             int.Parse(row["unlock_level"].ToString()),
-            (Status_Effect)int.Parse(row["CC"].ToString()),
-            int.Parse(row["skill_order"].ToString()),
-            (CharClass)int.Parse(row["class"].ToString()),
+            (Status_Effect)System.Enum.Parse(typeof(Status_Effect), row["CC"].ToString()),            
+            int.Parse(row["skill_order"].ToString()),            
+            (CharClass)System.Enum.Parse(typeof(CharClass), row["class"].ToString()),
             row["description"].ToString(),
             row["Skill_Info"].ToString(),
             row["icon_name"].ToString()

@@ -39,7 +39,7 @@ public class QuestObjectiveData
         (
             int.Parse(row["Objective_ID"].ToString()),
             int.Parse(row["Quest_ID"].ToString()),
-            (Q_ObjectiveType)int.Parse(row["Objective_Type"].ToString()),
+            (Q_ObjectiveType)System.Enum.Parse(typeof(Q_ObjectiveType), row["Objective_Type"].ToString()),            
             int.TryParse(row["Monster_ID"]?.ToString(), out int monsterid) ? monsterid : 0,
             int.TryParse(row["Item_ID"]?.ToString(), out int itemid) ? itemid : 0,
             int.TryParse(row["NPC_ID"]?.ToString(), out int npcid) ? npcid : 0,

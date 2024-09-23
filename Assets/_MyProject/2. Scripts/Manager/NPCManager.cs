@@ -35,12 +35,15 @@ public class NPCManager : MonoBehaviour
     }
     private void Start()
     {
+        
+        //EventHandler.managerEvent.TriggerNPCManagerInit();
+    }
+    public void Initialize()
+    {
         GetNPCDataFromDB();
         GetNPCDialogFromDB();
         GetNPCQuestFromDB();
         GetTalkQuestDataFromDB();
-
-        EventHandler.managerEvent.TriggerNPCManagerInit();
     }
 
     /// <summary>

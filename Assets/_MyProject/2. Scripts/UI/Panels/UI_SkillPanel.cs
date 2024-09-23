@@ -45,6 +45,10 @@ public class UI_SkillPanel : MonoBehaviour
             Destroy(content.transform.GetChild(i).gameObject);            
         }
     }
+    private void OnEnable()
+    {
+        SkillPanelInit();
+    }
     public void SkillPanelInit()
     {        
         SkillManager.Instance.OnUnlockSkillEvent += SkillWindowSetting;

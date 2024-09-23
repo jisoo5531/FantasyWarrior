@@ -58,8 +58,7 @@ public class QuestManager : MonoBehaviour
         Instance = this;
     }
     private void Start()
-    {
-        Initialize();
+    {        
 
         // 5분마다 자동 저장
         InvokeRepeating("AutoSave", 300f, 300f);
@@ -67,7 +66,7 @@ public class QuestManager : MonoBehaviour
     /// <summary>
     /// 게임이 시작하면 저장되어 있던 데이터 가져오기
     /// </summary>
-    private void Initialize()
+    public void Initialize()
     {
         GetQuestListFromDB();
         GetObjectivesDataFromDB();
@@ -84,7 +83,7 @@ public class QuestManager : MonoBehaviour
                 questProgressList.Add(new QuestProgress(objective.Quest_ID, QO.CurrentAmount, objective.ReqAmount));
             }
         }
-        EventHandler.managerEvent.TriggerQuestManagerInit();
+        //EventHandler.managerEvent.TriggerQuestManagerInit();
     }
 
     #region 퀘스트 정보 가져오기
@@ -211,10 +210,10 @@ public class QuestManager : MonoBehaviour
     {
         int user_ID = DatabaseManager.Instance.userData.UID;
         QuestObjectiveData objectiveData = GetObjectiveData(quest_ID);
-
+        
         string query =
             $"INSERT INTO userquests (userquests.User_ID, userquests.Quest_ID, userquests.`Status`)\n" +
-            $"VALUES ({user_ID}, {quest_ID}, 0);";
+            $"VALUES ({user_ID}, {quest_ID}, '{Q_Status.InProgress.ToString()}');";
         _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
 
         query =
@@ -282,7 +281,7 @@ public class QuestManager : MonoBehaviour
         // 유저가 받은 퀘스트 완료 상태로 변경
         string query =
             $"UPDATE userquests\n" +
-            $"SET userquests.`Status`={(int)Q_Status.Completed}\n" +
+            $"SET userquests.`Status`={Q_Status.Completed}\n" +
             $"WHERE userquests.User_ID={user_ID} AND userquests.Quest_ID={quest_ID};";
         _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
 

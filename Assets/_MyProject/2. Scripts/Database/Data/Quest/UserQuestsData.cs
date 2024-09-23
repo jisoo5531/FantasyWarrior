@@ -17,7 +17,7 @@ public class UserQuestsData
         (
             int.Parse(row["User_ID"].ToString()),
             int.Parse(row["Quest_ID"].ToString()),
-            (Q_Status)int.Parse(row["Status"].ToString())      
+            (Q_Status)System.Enum.Parse(typeof(Q_Status), row["Status"].ToString())            
         )
     { }
 

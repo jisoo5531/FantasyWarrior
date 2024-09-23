@@ -27,10 +27,11 @@ public class UI_StatPanel : MonoBehaviour
         PlayerEquipManager.Instance.OnEquipItem += SetStat;
         PlayerEquipManager.Instance.OnUnEquipItem += SetStat;
         PlayerEquipManager.Instance.OnAllUnEquipButtonClick += SetStat;
+        SetStat();
     }
     private void OnEnable()
-    {        
-        SetStat();
+    {
+        StatPanelInit();
     }
 
     private void SetStat()

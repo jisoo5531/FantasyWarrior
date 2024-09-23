@@ -20,7 +20,8 @@ public class PlayerUI : UIComponent
 
     private void Awake()
     {
-        EventHandler.skillKey.RegisterSkillKeyChange(OnChangeSkillKeyBind);        
+        EventHandler.skillKey.RegisterSkillKeyChange(OnChangeSkillKeyBind);
+        PlayerSkill.OnKeyBindInit += OnChangeSkillKeyBind;
     }
     private void Start()
     {
@@ -28,8 +29,7 @@ public class PlayerUI : UIComponent
         PlayerEquipManager.Instance.OnUnEquipItem += OnChangeMP;
         PlayerEquipManager.Instance.OnAllUnEquipButtonClick += OnChangeMP;
         UserStatManager.Instance.OnLevelUpUpdateStat += OnChangeMP;
-        UserStatManager.Instance.OnChangeExpStat += OnChangeExp;
-        OnChangeSkillKeyBind();
+        UserStatManager.Instance.OnChangeExpStat += OnChangeExp;        
     }
 
     public override void SetInitValue()

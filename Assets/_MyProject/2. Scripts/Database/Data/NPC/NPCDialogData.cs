@@ -21,7 +21,7 @@ public class NPCDialogData
             row["Text"].ToString(),
             int.TryParse(row["NEXT_DIALOGUE_ID"].ToString(), out int nextDL_ID) ? nextDL_ID : 0,
             int.Parse(row["Dialog_Order"].ToString()),
-            (DialogStatus)int.Parse(row["Status"].ToString())
+            (DialogStatus)System.Enum.Parse(typeof(DialogStatus), row["Status"].ToString())            
         )
     { }
 
@@ -38,7 +38,7 @@ public class NPCDialogData
 }
 public enum DialogStatus
 {
-    Daily,
+    Talk,
     QuestStart,
     QuestEnd
 }

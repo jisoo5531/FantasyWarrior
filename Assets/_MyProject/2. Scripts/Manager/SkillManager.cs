@@ -40,9 +40,9 @@ public class SkillManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        EventHandler.managerEvent.RegisterStatManagerInit(SkillManagerInit);
+        //EventHandler.managerEvent.RegisterStatManagerInit(SkillManagerInit);
     }
-    public void SkillManagerInit()
+    public void Initialize()
     {
         UserStatManager.Instance.OnLevelUpUpdateStat += OnLevelUp_UnlockSkill;
 
@@ -61,7 +61,7 @@ public class SkillManager : MonoBehaviour
                 userAvailableSkillList.Add(skillData);
             }
         }
-        EventHandler.managerEvent.TriggerSkillManagerInit();
+        //EventHandler.managerEvent.TriggerSkillManagerInit();
     }
     /// <summary>
     /// 데이터베이스에서 유저의 키셋팅 가져오기
@@ -111,6 +111,8 @@ public class SkillManager : MonoBehaviour
         {
             foreach (DataRow row in dataSet.Tables[0].Rows)
             {
+                           
+                Debug.Log($"{(Status_Effect)System.Enum.Parse(typeof(Status_Effect), row["CC"].ToString())}");
                 SkillData data = new SkillData(row);
                 ClassSkillDataList.Add(data);
                 //skillTable.Add(data.Skill_ID - 1, data.Skill_Name);

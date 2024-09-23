@@ -15,7 +15,7 @@ public class PlayerUIManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        EventHandler.managerEvent.RegisterStatManagerInit(Initialize);        
+        //EventHandler.managerEvent.RegisterStatManagerInit(Initialize);        
         
     }
     private void Start()
@@ -23,7 +23,7 @@ public class PlayerUIManager : MonoBehaviour
         
     }
 
-    private void Initialize()
+    public void Initialize()
     {
         UserStatClient userStatClient = UserStatManager.Instance.userStatClient;
         string folderName = $"{userStatClient.charClass.ToString()}";

@@ -51,10 +51,12 @@ public class PlayerSkill : MonoBehaviour
         GameManager.inputActions.PlayerActions.Skill_4.performed -= OnSkill_4;
     }
 
-    private void Awake()
-    {        
-        EventHandler.managerEvent.RegisterSkillManagerInit(Initialize);
+    private void Start()
+    {
+        Initialize();
+        playerAnimation = GetComponent<PlayerAnimation>();
     }        
+    
 
     protected virtual void Initialize()
     {
@@ -83,10 +85,6 @@ public class PlayerSkill : MonoBehaviour
                 skillTable.Add(i + 1, skillData.Skill_Name);
             }
         }
-    }
-    private void Start()
-    {        
-        playerAnimation = GetComponent<PlayerAnimation>();        
     }
 
     

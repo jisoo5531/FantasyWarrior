@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -31,7 +32,7 @@ public class UserStatData
     public UserStatData(DataRow row) : this
         (
             int.Parse(row["user_id"].ToString()),
-            (CharClass)int.Parse(row["class"].ToString()),
+            (CharClass)Enum.Parse(typeof(CharClass), row["class"].ToString()),            
             int.Parse(row["level"].ToString()),
             int.Parse(row["maxexp"].ToString()),
             int.Parse(row["exp"].ToString()),

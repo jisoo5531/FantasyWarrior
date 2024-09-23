@@ -31,7 +31,7 @@ public class UserStatManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        EventHandler.managerEvent.RegisterItemManagerInit(StatManagerInit);
+        EventHandler.managerEvent.RegisterItemManagerInit(Initialize);
     }
     private void Start()
     {                  
@@ -40,12 +40,12 @@ public class UserStatManager : MonoBehaviour
     /// <summary>
     /// 게임 시작하면 스탯 데이터 가져오기
     /// </summary>
-    private void StatManagerInit()
+    public void Initialize()
     {
         UserStatData userStatData = GetUserStatDataFromDB();
         userStatClient = new UserStatClient(userStatData);                
         
-        EventHandler.managerEvent.TriggerStatManagerInit();
+        //EventHandler.managerEvent.TriggerStatManagerInit();
     }
 
     /// <summary>

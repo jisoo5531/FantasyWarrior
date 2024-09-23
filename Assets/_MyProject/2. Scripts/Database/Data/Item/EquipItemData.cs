@@ -41,7 +41,7 @@ public class EquipItemData
         (
             int.Parse(row["equipment_id"].ToString()),
             int.Parse(row["item_id"].ToString()),
-            (Equip_Type)int.Parse(row["equipment_type"].ToString()),
+            (Equip_Type)System.Enum.Parse(typeof(Equip_Type), row["equipment_type"].ToString()),            
             int.Parse(row["Required_Level"].ToString()),
             int.Parse(row["Attack_Boost"].ToString()),
             int.Parse(row["Defense_Boost"].ToString()),

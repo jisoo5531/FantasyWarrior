@@ -42,12 +42,12 @@ public class PlayerEquipManager : MonoBehaviour
     {
         Instance = this;
         unEquipButton.onClick.AddListener(UnEquipAll);        
-        EventHandler.managerEvent.RegisterStatManagerInit(Initialize);
+        //EventHandler.managerEvent.RegisterStatManagerInit(Initialize);
     }
     /// <summary>
     /// UserStatManager의 초기화 이후 초기화가 된다.
     /// </summary>
-    private void Initialize()
+    public void Initialize()
     {        
         PlayerEquipData playerEquipData = GetPlayerEquipFromDB();
         UserEquipTable = new Dictionary<string, int>
@@ -69,7 +69,7 @@ public class PlayerEquipManager : MonoBehaviour
         UserStatManager.Instance.EquipItemUpdateStat(isEquip: true, playerEquipData.Pendant_ID);
         UserStatManager.Instance.EquipItemUpdateStat(isEquip: true, playerEquipData.Ring_ID);
         
-        EventHandler.managerEvent.TriggerEquipManagerInit();
+        //EventHandler.managerEvent.TriggerEquipManagerInit();
         //UserStatManager.Instance.UpdateUserStat();
     }
     private void Start()

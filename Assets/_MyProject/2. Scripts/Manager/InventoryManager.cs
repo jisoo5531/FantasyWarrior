@@ -33,12 +33,12 @@ public class InventoryManager : MonoBehaviour
     }
     private void Start()
     {
-        InventoryManagerInit();
+        Initialize();
     }
-    private void InventoryManagerInit()
+    public void Initialize()
     {
         GetDataFromDatabase();
-        EventHandler.managerEvent.TriggerInventoryManagerInit();
+        //EventHandler.managerEvent.TriggerInventoryManagerInit();
     }
     
     /// <summary>
