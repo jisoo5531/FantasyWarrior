@@ -49,7 +49,11 @@ public class QuestManager : MonoBehaviour
     /// <summary>
     /// 퀘스트가 완료되면 발생하는 이벤트
     /// </summary>
-    public event Action OnCompleteQuest;    
+    public event Action OnCompleteQuest;
+    /// <summary>
+    /// 퀘스트 완료 후, 보상 분배
+    /// </summary>
+    public event Action<QuestData> OnGetQuestReward;
 
     #endregion
 
@@ -263,11 +267,20 @@ public class QuestManager : MonoBehaviour
         }
         if (itemID != 0)
         {
-
+            int index = questProgressList.FindIndex((x) => { return x.Item_Id == itemID; });
+            if (index < 0)
+            {
+                // 퀘스트 대상이 아니다.
+                Debug.Log("얘 아니다..");
+                return;
+            }
+            Debug.Log("퀘스트 대상이다.");
+            questProgressList[index].UpdateProgress();
             OnUpdateQuestProgress?.Invoke();
         }
 
     }
+    #region 퀘스트 완료
     /// <summary>
     /// 퀘스트 완료 시에 실행할 메서드
     /// TODO : 완료 버튼을 누르면 완료 UI 뜨게
@@ -275,13 +288,28 @@ public class QuestManager : MonoBehaviour
     /// <param name="quest_ID"></param>
     public void QuestComplete(int quest_ID)
     {
+        QuestCompleteQuery(quest_ID);
+        SetUserQuestData(quest_ID);
+        GetReward(quest_ID);
+
+        // 클라이언트에 저장한 임시 대화 퀘스트 목록에서 삭제
+        NPCManager.Instance.RemoveTalkQuest(quest_ID);
+
+        OnCompleteQuest?.Invoke();
+    }
+    /// <summary>
+    /// DB에 퀘스트 완료문 쿼리문 날리기
+    /// </summary>
+    /// <param name="quest_ID"></param>
+    private void QuestCompleteQuery(int quest_ID)
+    {
         int user_ID = DatabaseManager.Instance.userData.UID;
         QuestObjectiveData objectiveData = GetObjectiveData(quest_ID);
 
         // 유저가 받은 퀘스트 완료 상태로 변경
         string query =
             $"UPDATE userquests\n" +
-            $"SET userquests.`Status`={Q_Status.Completed}\n" +
+            $"SET userquests.`Status`='{Q_Status.Completed}'\n" +
             $"WHERE userquests.User_ID={user_ID} AND userquests.Quest_ID={quest_ID};";
         _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
 
@@ -293,7 +321,15 @@ public class QuestManager : MonoBehaviour
         _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
 
         NPCManager.Instance.NPCQuestComplete(quest_ID);
-
+    }
+    /// <summary>
+    /// 유저의 퀘스트 진행 상황 업데이트
+    /// </summary>
+    /// <param name="quest_ID"></param>
+    private void SetUserQuestData(int quest_ID)
+    {
+        int user_ID = DatabaseManager.Instance.userData.UID;
+        QuestObjectiveData objectiveData = GetObjectiveData(quest_ID);
         // 퀘스트 완료 상태로 바꾸기
         int userQuestsindex = userQuestsList.FindIndex(x => x.User_ID.Equals(user_ID) && x.Quest_ID.Equals(quest_ID));
         userQuestsList[userQuestsindex].questStatus = Q_Status.Completed;
@@ -305,13 +341,23 @@ public class QuestManager : MonoBehaviour
         // 클라이언트에 저장된 퀘스트들의 진행도를 나타내는 리스트에서 완료한 퀘스트 삭제
         int index = questProgressList.FindIndex(x => x.quest_Id.Equals(quest_ID));
         questProgressList.RemoveAt(index);
-
-        // 클라이언트에 저장한 임시 대화 퀘스트 목록에서 삭제
-        NPCManager.Instance.RemoveTalkQuest(quest_ID);
-
-
-        OnCompleteQuest?.Invoke();
     }
+    /// <summary>
+    /// 퀘스트 완료 후, 퀘스트 보상 수령
+    /// </summary>
+    /// <param name="quest_ID"></param>
+    private void GetReward(int quest_ID)
+    {
+        QuestData quest = GetQuestData(quest_ID);
+        
+        if (quest.RewardItemID != 0)
+        {
+            ItemData reward_Item = ItemManager.Instance.GetItemData(quest.RewardItemID);
+            InventoryManager.Instance.GetItem(reward_Item, quest.RewardItem_Amount);
+        }        
+    }
+    #endregion
+
     #endregion
 
     #region 게임 시작할 때 정보 가져오기

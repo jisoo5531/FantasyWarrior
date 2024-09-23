@@ -19,13 +19,26 @@ public class InventoryManager : MonoBehaviour
     /// 저장할 때 비교를 위한 원본 인벤토리 리스트
     /// </summary>
     private List<InventoryData> originInventoryList;
-    
+    /// <summary>
+    /// 현재 유저가 어떤 제작 도구 데이터들을 가지고 있는지에 대한 리스트
+    /// </summary>
+    private List<UserCraftToolData> userCraftToolList;
+    /// <summary>
+    /// 현재 유저가 어떤 제작 도구 데이터들을 가지고 있는지에 대한 리스트를 클라이언트에 임시로 저장
+    /// <para>인게임에서 사용할</para>
+    /// </summary>
+    public List<UserCraftToolData> userCraftToolClient { get; private set; }
+
     private ItemData itemData;
 
     /// <summary>
     /// 아이템을 획득 시, 실행할 이벤트
     /// </summary>
     public event Action OnGetItem;
+    /// <summary>
+    /// 제작도구를 획득 시, 실행할 이벤트
+    /// </summary>
+    public event Action OnGetCraftItem;
 
     private void Awake()
     {
@@ -38,6 +51,7 @@ public class InventoryManager : MonoBehaviour
     public void Initialize()
     {
         GetDataFromDatabase();
+        GetUserCraftItemFromDB();        
         //EventHandler.managerEvent.TriggerInventoryManagerInit();
     }
     
@@ -53,39 +67,9 @@ public class InventoryManager : MonoBehaviour
     {
         addWhichItemList = new();
     }
-
+    
     /// <summary>
-    /// <para>인벤토리 데이터를 가져오는 메서드</para>
-    /// </summary>
-    private List<InventoryData> GetDataFromDatabase()
-    {
-        originInventoryList = new List<InventoryData>();
-        inventoryDataList = new List<InventoryData>();
-        string query =
-            $"SELECT *\n" +
-            $"FROM inventory;";
-        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
-
-        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
-
-        if (isGetData)
-        {
-            foreach (DataRow row in dataSet.Tables[0].Rows)
-            {
-                originInventoryList.Add(new InventoryData(row));
-                inventoryDataList.Add(new InventoryData(row));
-            }
-            return inventoryDataList;
-        }
-        else
-        {
-            return null;
-        }
-        //OnGetItem?.Invoke();
-    }
-
-    /// <summary>
-    /// 몬스터를 잡고 아이템을 획득 시, 실행할 메서드
+    /// 아이템을 획득 시, 실행할 메서드
     /// </summary>
     /// <param name="itemData"></param>
     /// <param name="amount"></param>
@@ -107,7 +91,30 @@ public class InventoryManager : MonoBehaviour
             inventoryDataList.Add(new InventoryData(user_Id, itemData.Item_ID, amount));
             AddWhichItem(new AddItemClassfiy(itemData.Item_ID, amount, false));
         }
+        CheckGetCraftTool(itemData.Item_ID);
         OnGetItem?.Invoke();
+    }
+    /// <summary>
+    /// 얻은 아이템이 제작도구인지 확인
+    /// </summary>
+    /// <param name="item_ID"></param>
+    public void CheckGetCraftTool(int item_ID)
+    {
+        CraftToolData craftTool = ItemManager.Instance.GetCraftToolData(item_ID);
+        if (craftTool == null) return;
+
+        AddCraftItem(craftTool);
+    }
+    /// <summary>
+    /// 제작도구를 얻었을 때 유저가 가지고 있는 제작도구 리스트(usercraftList)에 추가
+    /// </summary>
+    private void AddCraftItem(CraftToolData craftTool)
+    {
+        int user_ID = DatabaseManager.Instance.userData.UID;
+        int index = userCraftToolClient.FindIndex(x => x.CreftType.Equals(craftTool.CreftType));
+        userCraftToolClient[index].Item_ID = craftTool.Item_ID;
+
+        OnGetCraftItem?.Invoke();
     }
     /// <summary>
     /// 장비를 벗을 때, 인벤토리로 추가
@@ -142,6 +149,69 @@ public class InventoryManager : MonoBehaviour
         }
         return null;
     }
+
+    #region DB
+    /// <summary>
+    /// <para>인벤토리 데이터를 가져오는 메서드</para>
+    /// </summary>
+    private List<InventoryData> GetDataFromDatabase()
+    {
+        originInventoryList = new List<InventoryData>();
+        inventoryDataList = new List<InventoryData>();
+        string query =
+            $"SELECT *\n" +
+            $"FROM inventory;";
+        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
+
+        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
+
+        if (isGetData)
+        {
+            foreach (DataRow row in dataSet.Tables[0].Rows)
+            {
+                originInventoryList.Add(new InventoryData(row));
+                inventoryDataList.Add(new InventoryData(row));
+            }
+            return inventoryDataList;
+        }
+        else
+        {
+            return null;
+        }
+        //OnGetItem?.Invoke();
+    }
+    /// <summary>
+    /// 유저가 보유한 제작도구들을 가져오기
+    /// <para>동시에 클라이언트에 임시로 저장하는 것도 같이</para>
+    /// </summary>
+    private void GetUserCraftItemFromDB()
+    {
+        int user_ID = DatabaseManager.Instance.userData.UID;
+        userCraftToolList = new List<UserCraftToolData>();
+        userCraftToolClient = new List<UserCraftToolData>();
+        string query =
+            $"SELECT *\n" +
+            $"FROM usercrafttools\n" +
+            $"WHERE usercrafttools.User_ID={user_ID}";
+        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
+
+        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
+
+        if (isGetData)
+        {
+            foreach (DataRow row in dataSet.Tables[0].Rows)
+            {
+                userCraftToolList.Add(new UserCraftToolData(row));
+                userCraftToolClient.Add(new UserCraftToolData(row));
+            }
+        }
+        else
+        {
+            //  실패
+        }
+    }
+    #endregion
+
     #region 인벤토리 저장
     /// <summary>
     /// DB에 아직 넣지 않고 클라이언트에 임의로 저장해놓은 데이터들을 DB로 저장 (userquestList, userquestOBJList)
@@ -180,16 +250,36 @@ public class InventoryManager : MonoBehaviour
                 $"DELETE FROM inventory\n" +
                 $"WHERE inventory.User_ID={user_ID} AND inventory.Item_ID={item.Item_ID};";
             _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+        }        
+    }
+    public void SaveUserCraftTool()
+    {
+        int user_ID = DatabaseManager.Instance.userData.UID;
+
+        var differences = Extensions.GetDifferences(
+            userCraftToolList,
+            userCraftToolClient,
+            (original, updated) => original.User_ID == updated.User_ID,
+            (original, updated) => original.Item_ID != updated.Item_ID
+        );
+        foreach (var craft in differences.Modified)
+        {
+            string query =
+                $"UPDATE usercrafttools\n" +
+                $"SET usercrafttools.Item_ID={craft.Item_ID}\n" +
+                $"WHERE usercrafttools.User_ID={user_ID};";
+            _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
         }
-        
     }
     private void AutoSave()
     {
         SaveInventory();
+        SaveUserCraftTool();
     }
     private void OnApplicationQuit()
     {
         SaveInventory();
+        SaveUserCraftTool();
     }
     #endregion
 }

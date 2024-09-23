@@ -18,7 +18,7 @@ public class PanelManager : MonoBehaviour
     {
         //EventHandler.managerEvent.RegisterQuestManagerInit(QuestPanel.QuestPanelInit);        
         //EventHandler.managerEvent.RegisterStatManagerInit(StatPanel.StatPanelInit);
-        PlayerSkill.OnKeyBindInit += SkillPanel.SkillPanelInit;
+        PlayerSkill.OnKeyBindInit += SkillPanel.SkillPanelInit;        
     }
 
     private void OnEnable()

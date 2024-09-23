@@ -16,6 +16,7 @@ public class QuestData
     public int Reward_Exp { get; set; }    
     public int Reward_Gold { get; set; }    
     public int RewardItemID { get; set; }    
+    public int RewardItem_Amount { get; set; }
     public bool IsRepeatable { get; set; }
 
     public QuestData(DataRow row) : this
@@ -27,10 +28,12 @@ public class QuestData
             int.Parse(row["Reward_Exp"].ToString()),
             int.Parse(row["Reward_Gold"].ToString()),
             int.TryParse(row["RewardItem_ID"].ToString(), out int rewarditem) ? rewarditem : 0,
+            int.Parse(row["RewardItem_Amount"].ToString()),
             bool.Parse(row["IsRepeatable"].ToString())
         )
     { }
-    public QuestData(int quest_ID, string quest_Name, QuestType questType, string dESC, int reward_Exp, int reward_Gold, int rewardItemID, bool isRepeatable)
+
+    public QuestData(int quest_ID, string quest_Name, QuestType questType, string dESC, int reward_Exp, int reward_Gold, int rewardItemID, int rewardItem_Amount, bool isRepeatable)
     {
         this.Quest_ID = quest_ID;
         this.Quest_Name = quest_Name;
@@ -39,6 +42,7 @@ public class QuestData
         this.Reward_Exp = reward_Exp;
         this.Reward_Gold = reward_Gold;
         this.RewardItemID = rewardItemID;
+        this.RewardItem_Amount = rewardItem_Amount;
         this.IsRepeatable = isRepeatable;
     }
 }

@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     public GameObject mummy;
     public GameObject Item;
     public GameObject UI;
+
+    public Transform player;
     private void Awake()
     {
         Instance = this;
@@ -39,7 +41,7 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F1))
         {
-            Instantiate(goblin, new Vector3(Random.Range(0, 10), 0, Random.Range(0, 10)), goblin.transform.rotation);
+            Instantiate(goblin, player.position + new Vector3(Random.Range(0, 10), 0, Random.Range(0, 10)), goblin.transform.rotation);
         }
         else if (Input.GetKeyDown(KeyCode.F2))
         {

@@ -36,7 +36,7 @@ public class UI_SkillPanel : MonoBehaviour
     private void Awake()
     {
         EventHandler.skillKey.RegisterSkillKeyChange(OnChangeSkill);
-
+        
     }
     private void SkillContentClear(GameObject content)
     {
@@ -44,10 +44,6 @@ public class UI_SkillPanel : MonoBehaviour
         {
             Destroy(content.transform.GetChild(i).gameObject);            
         }
-    }
-    private void OnEnable()
-    {
-        SkillPanelInit();
     }
     public void SkillPanelInit()
     {        

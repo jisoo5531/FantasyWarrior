@@ -13,9 +13,8 @@ public class UI_ItemInfo : MonoBehaviour
     protected string itemName;
 
     public virtual void Initialize(int itemID)
-    {
-        item_Dict = ItemManager.Instance.Item_Dict;
-        itemData = item_Dict[itemID];
+    {                
+        itemData = ItemManager.Instance.GetItemData(itemID);
         itemName = itemData.Item_Name;
         itemNameText.text = itemName;
         itemImage.sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");

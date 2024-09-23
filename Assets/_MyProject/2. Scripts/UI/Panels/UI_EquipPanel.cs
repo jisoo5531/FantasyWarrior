@@ -14,17 +14,11 @@ public class UI_EquipPanel : MonoBehaviour
 
     private Dictionary<string, int> userEquip;
 
-    private void OnEnable()
+    private void Start()
     {
+        PlayerEquipManager.Instance.OnEquipItem += SetItemToSlot;
+        PlayerEquipManager.Instance.OnAllUnEquipButtonClick += SetItemToSlot;
         SetItemToSlot();
-        //PlayerEquipManager.Instance.OnEquipItem += SetItemToSlot;
-        //PlayerEquipManager.Instance.OnAllUnEquipButtonClick += SetItemToSlot;
-    }
-    private void OnDisable()
-    {
-        // 플레이어가 인벤토리 아이템을 장착 시 실행할 함수
-        //PlayerEquipManager.Instance.OnEquipItem -= SetItemToSlot;
-        //PlayerEquipManager.Instance.OnAllUnEquipButtonClick -= SetItemToSlot;
     }
 
     /// <summary>

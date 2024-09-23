@@ -33,6 +33,13 @@ public class UI_StatPanel : MonoBehaviour
     {
         StatPanelInit();
     }
+    private void OnDisable()
+    {
+        UserStatManager.Instance.OnLevelUpUpdateStat -= SetStat;
+        PlayerEquipManager.Instance.OnEquipItem -= SetStat;
+        PlayerEquipManager.Instance.OnUnEquipItem -= SetStat;
+        PlayerEquipManager.Instance.OnAllUnEquipButtonClick -= SetStat;
+    }
 
     private void SetStat()
     {

@@ -11,7 +11,7 @@ public class ItemManager : MonoBehaviour
     /// 아이템 데이터들을 담아놓은 딕셔너리
     /// <para>key는 아이템 ID</para>
     /// </summary>
-    public Dictionary<int, ItemData> Item_Dict { get; private set; }
+    private Dictionary<int, ItemData> Item_Dict;
     /// <summary>
     /// 장비 아이템 데이터들을 담아놓은 딕셔너리
     /// <para>key는 아이템 ID</para>
@@ -27,6 +27,13 @@ public class ItemManager : MonoBehaviour
     /// <para>key는 아이템 ID</para>
     /// </summary>
     private Dictionary<int, OtherItemData> OtherItem_Dict;
+    /// <summary>
+    /// 제작도구 데이터들을 담아놓은 딕셔너리
+    /// <para>key는 아이템 ID</para>
+    /// </summary>
+    private Dictionary<int, CraftToolData> craftTool_Dict;
+    
+
 
     private void Awake()
     {
@@ -43,8 +50,22 @@ public class ItemManager : MonoBehaviour
         GetEquipItemFromDB();
         GetConsumpItemFromDB();
         GetOtherItemFromDB();
+        GetCraftItemFromDB();        
     }
 
+    /// <summary>
+    /// 해당 ID의 아이템 정보 가져오기
+    /// </summary>
+    /// <param name="item_ID"></param>
+    /// <returns></returns>
+    public ItemData GetItemData(int item_ID)
+    {
+        if (Item_Dict.TryGetValue(item_ID, out ItemData item))
+        {
+            return item;
+        }
+        return null;
+    }
     /// <summary>
     /// 해당 장비 아이템의 정보 가져오기
     /// </summary>
@@ -113,10 +134,21 @@ public class ItemManager : MonoBehaviour
         }
         return null;
     }
-
-
-
-
+    /// <summary>
+    /// 해당 id의 제작 도구 가져오기
+    /// <para>해당 ID의 제작도구가 없으면 null</para>
+    /// </summary>
+    /// <param name="item_ID"></param>
+    /// <returns></returns>
+    public CraftToolData GetCraftToolData(int item_ID)
+    {
+        if (craftTool_Dict.TryGetValue(item_ID, out CraftToolData craftTool))
+        {
+            return craftTool;
+        }
+        return null;
+    }
+    
 
     #region DB
     /// <summary>
@@ -214,6 +246,29 @@ public class ItemManager : MonoBehaviour
             {
                 int id = int.Parse(row["Item_ID"].ToString());
                 OtherItem_Dict.Add(id, new OtherItemData(row));                
+            }
+        }
+        else
+        {
+            //  실패
+        }
+    }    
+    private void GetCraftItemFromDB()
+    {
+        craftTool_Dict = new Dictionary<int, CraftToolData>();        
+        string query =
+            $"SELECT *\n" +
+            $"FROM crafttools;";
+        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
+
+        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
+
+        if (isGetData)
+        {
+            foreach (DataRow row in dataSet.Tables[0].Rows)
+            {
+                int id = int.Parse(row["Item_ID"].ToString());
+                craftTool_Dict.Add(id, new CraftToolData(row));                
             }
         }
         else

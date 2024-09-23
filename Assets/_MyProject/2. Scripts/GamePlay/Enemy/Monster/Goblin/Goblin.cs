@@ -23,13 +23,13 @@ public class Goblin : MonsterUnit
     protected override void OnDeath()
     {
         nav.enabled = false;
+        
+        ItemData rewardItem = ItemManager.Instance.GetItemData(8);
 
-        Dictionary<int, ItemData> item_Dict = ItemManager.Instance.Item_Dict;
-
-        GameObject rewardItem = Resources.Load<GameObject>($"Items/{item_Dict[8].Item_Name}");
-        GameObject itemObj = Instantiate(rewardItem, transform.position + new Vector3(0, 0.5f, 0), rewardItem.transform.rotation);
+        GameObject rewardItemOBJ = Resources.Load<GameObject>($"Items/{rewardItem.Item_Name}");
+        GameObject itemObj = Instantiate(rewardItemOBJ, transform.position + new Vector3(0, 0.5f, 0), rewardItemOBJ.transform.rotation);
         Item item = itemObj.GetComponent<Item>();
-        item?.Initialize(item_Dict[1]);
+        item?.Initialize(ItemManager.Instance.GetItemData(1));
         UserStatManager.Instance.UpdateExp(rewardExp);
         //item.GetComponent<Rigidbody>().AddForce(Vector3.up * 20f, ForceMode.Impulse);
 
