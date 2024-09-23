@@ -193,7 +193,7 @@ CREATE TABLE UserQuestObjectives (
 	FOREIGN KEY (Skill_3) REFERENCES skills(Skill_ID),
 	FOREIGN KEY (Skill_4) REFERENCES skills(Skill_ID)
 );*/
-CREATE TABLE NPCs (
+/*CREATE TABLE NPCs (
     NPC_ID INT PRIMARY KEY AUTO_INCREMENT,
     Name VARCHAR(100) NOT NULL,
     Location VARCHAR(100),
@@ -219,6 +219,48 @@ CREATE TABLE NPC_TalkQuests(
 	PRIMARY KEY (NPC_ID, Quest_ID),
 	FOREIGN KEY (NPC_ID) REFERENCES npcs(NPC_ID),
 	FOREIGN KEY (Quest_ID) REFERENCES quests(Quest_ID)
-);
+);*/
+/*CREATE TABLE crafttools(	
+	Tool_ID INT PRIMARY KEY AUTO_INCREMENT,
+	Item_ID INT
+);*/
+/*CREATE TABLE Locations (
+    LocationID INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(255) NOT NULL
+);*/
+/*CREATE TABLE Location_NPC (
+    Location_ID INT,
+    NPC_ID INT,
+    FOREIGN KEY (Location_ID) REFERENCES Locations(Location_ID),
+    FOREIGN KEY (NPC_ID) REFERENCES NPCs(NPC_ID)
+);*/
 
+/*CREATE TABLE Location_Monster (
+    Location_ID INT,
+    Monster_ID INT,
+    FOREIGN KEY (Location_ID) REFERENCES Locations(Location_ID),
+    FOREIGN KEY (Monster_ID) REFERENCES Monsters(Monster_ID)
+);*/
+/*CREATE TABLE Quest_Kill (
+    Quest_ID INT,
+    Monster_ID INT,
+    Kill_Count INT,
+    PRIMARY KEY (Quest_ID, Monster_ID),
+    FOREIGN KEY (Quest_ID) REFERENCES Quests(Quest_ID)
+);*/
+
+/*CREATE TABLE Quest_Collect (
+    Quest_ID INT,
+    Item_ID INT,
+    Collect_Count INT,
+    PRIMARY KEY (Quest_ID, Item_ID),
+    FOREIGN KEY (Quest_ID) REFERENCES Quests(Quest_ID)
+);*/
+
+CREATE TABLE Quest_Talk (
+    Quest_ID INT,
+    NPC_ID INT,
+    PRIMARY KEY (Quest_ID, NPC_ID),
+    FOREIGN KEY (Quest_ID) REFERENCES Quests(Quest_ID)
+);
 
