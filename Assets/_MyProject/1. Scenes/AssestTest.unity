@@ -357,7 +357,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc958f0fb33612144824eb0ce82aa69a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: 10
+  jumpForce: 25
   groundCheckDistance: 7
   maxJumpHeight: 10
   fallMultiplier: 2.5
@@ -863,7 +863,7 @@ MonoBehaviour:
           m_DissipationMode: 2
           m_DissipationDistance: 100
           m_PropagationSpeed: 343
-        Velocity: {x: 5, y: 5, z: 5}
+        Velocity: {x: 10, y: 10, z: 10}
         ClearImpulseOnStop: 0
     - rid: 5029740619696177157
       type: {class: MMF_Particles, ns: MoreMountains.Feedbacks, asm: MoreMountains.Feedbacks}
