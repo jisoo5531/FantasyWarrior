@@ -55,6 +55,7 @@ public class QuestProgress
         QuestObj_TalkData talkQuest = QuestManager.Instance.GetTalkQuestInfo(this.quest_Id);        
         if (talkQuest != null)
         {
+            
             this.NPC_Id = talkQuest.NPC_ID;
         }        
     }
