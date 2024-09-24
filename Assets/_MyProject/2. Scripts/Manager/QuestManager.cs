@@ -630,9 +630,10 @@ public class QuestManager : MonoBehaviour
         foreach (QuestProgress questProgress in questProgressList)
         {
             QuestObjectiveData objectiveData = GetObjectiveData(questProgress.quest_Id);
+            int? current_Amount = questProgress.current_Amount != null ? questProgress.current_Amount : 0;            
             string query =
                 $"UPDATE userquestobjectives\n" +
-                $"SET userquestobjectives.Current_Amount={questProgress.current_Amount}\n" +
+                $"SET userquestobjectives.Current_Amount={current_Amount}\n" + 
                 $"WHERE userquestobjectives.User_ID={user_ID} " +
                 $"AND userquestobjectives.Objective_ID={objectiveData.ObjectiveID};";
             _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);

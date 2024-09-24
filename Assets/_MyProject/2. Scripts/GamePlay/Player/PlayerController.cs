@@ -43,13 +43,15 @@ public class PlayerController : MonoBehaviour
         // override
     }
     private void OnEnable()
-    {        
-        EventHandler.managerEvent.RegisterStatManagerInit(StatInit);
-        EventHandler.managerEvent.RegisterEquipManagerInit(StatInit);
+    {            
         damagable.OnTakeDamage += OnHpChange;
         damagable.OnDeath += OnDeath;
     }
-     
+    private void Start()
+    {
+        StatInit();
+    }
+
     /// <summary>
     /// 플레이어의 레벨 등의 스탯 (UserStatManager), 플레이어가 착용하고 있는 장비 (PlayerEquipManager) 를 받아온 다음에 초기화
     /// </summary>

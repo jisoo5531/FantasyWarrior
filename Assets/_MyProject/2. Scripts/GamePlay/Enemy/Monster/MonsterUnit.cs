@@ -65,7 +65,10 @@ public class MonsterUnit : Enemy
             M_StateMachine.StateTransition(M_StateMachine.idleState);
             return;
         }
-        M_StateMachine.Excute();
+        if (damagable.Hp > 0)
+        {
+            M_StateMachine.Excute();
+        }        
     }
     private void LateUpdate()
     {

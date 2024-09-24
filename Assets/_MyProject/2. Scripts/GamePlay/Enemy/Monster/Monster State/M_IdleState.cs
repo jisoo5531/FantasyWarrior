@@ -13,7 +13,7 @@ public class M_IdleState : IState
 
     public void Enter()
     {
-        if (monster.damagable.Hp <= 0)
+        if (monster.damagable.Hp <= 0 || monster == null)
         {
             return;
         }
@@ -22,7 +22,7 @@ public class M_IdleState : IState
     }
     public void Excute()
     {
-        if (monster.damagable.Hp <= 0)
+        if (monster.damagable.Hp <= 0 || monster == null)
         {
             return;
         }

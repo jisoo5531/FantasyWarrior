@@ -13,7 +13,7 @@ public class M_CombatState : IState
 
     public void Enter()
     {
-        if (monster.damagable.Hp <= 0)
+        if (monster.damagable.Hp <= 0 || monster == null)
         {
             return;
         }
@@ -28,10 +28,6 @@ public class M_CombatState : IState
     public void Excute()
     {
         //Debug.Log("Combat State ½ÇÇà Áß");
-        if (monster.damagable.Hp <= 0)
-        {
-            return;
-        }
 
         monster.unitAnim.AttackAnimPlay();
 

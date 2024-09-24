@@ -10,8 +10,7 @@ public class Fishing : Craft
 
         playerAnim.SetBool("Fishing", true);
         yield return new WaitForSeconds(actionTime);
-        playerAnim.SetBool("Fishing", false);
-        actionTime = 2f;
+        playerAnim.SetBool("Fishing", false);        
         yield return base.ActionCoroutine();
     }
 

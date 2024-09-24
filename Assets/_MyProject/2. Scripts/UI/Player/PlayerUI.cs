@@ -15,11 +15,15 @@ public class PlayerUI : UIComponent
     [Header("Xp")]
     public Slider ExpBar;
     public TMP_Text expText;
+    [Header("Level")]
+    public TMP_Text LevelText;
+    public Animator LevelAnim;
     [Header("Skill")]
     public List<Image> skillIconList;    
 
     private void Awake()
     {
+        EventHandler.playerEvent.RegisterPlayerLevelUp(OnLevelUp);
         EventHandler.skillKey.RegisterSkillKeyChange(OnChangeSkillKeyBind);
         PlayerSkill.OnKeyBindInit += OnChangeSkillKeyBind;
     }
@@ -38,7 +42,7 @@ public class PlayerUI : UIComponent
         Damagable.OnChangeHPEvent += OnChangeHP;
         
         UserStatClient userStatClient = UserStatManager.Instance.userStatClient;
-
+        LevelText.text = userStatClient.Level.ToString();
         if (hpBar != null)
         {
             hpBar.maxValue = (float)Damagable.MaxHp;
@@ -67,6 +71,14 @@ public class PlayerUI : UIComponent
         hpText.text = $"{Damagable.Hp} / {Damagable.MaxHp}";
     }
 
+    /// <summary>
+    /// 플레이어가 레벨업할 때
+    /// </summary>
+    private void OnLevelUp()
+    {
+        LevelText.text = UserStatManager.Instance.userStatClient.Level.ToString();
+        LevelAnim.SetTrigger("LevelUp");
+    }
     private void OnChangeSkillKeyBind()
     {        
         for (int i = 0; i < skillIconList.Count; i++)

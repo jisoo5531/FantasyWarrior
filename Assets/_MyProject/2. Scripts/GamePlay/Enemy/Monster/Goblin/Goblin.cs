@@ -22,8 +22,7 @@ public class Goblin : MonsterUnit
     // TODO : 아이템 랜덤하게?
     protected override void OnDeath()
     {
-        nav.enabled = false;
-        
+        nav.isStopped = true;
         ItemData rewardItem = ItemManager.Instance.GetItemData(8);
 
         GameObject rewardItemOBJ = Resources.Load<GameObject>($"Items/{rewardItem.Item_Name}");
