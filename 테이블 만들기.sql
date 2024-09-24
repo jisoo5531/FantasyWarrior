@@ -257,10 +257,27 @@ CREATE TABLE NPC_TalkQuests(
     FOREIGN KEY (Quest_ID) REFERENCES Quests(Quest_ID)
 );*/
 
-CREATE TABLE Quest_Talk (
+/*CREATE TABLE Quest_Talk (
     Quest_ID INT,
     NPC_ID INT,
     PRIMARY KEY (Quest_ID, NPC_ID),
     FOREIGN KEY (Quest_ID) REFERENCES Quests(Quest_ID)
+);*/
+CREATE TABLE npc_shop (
+    npc_shop_id INT PRIMARY KEY AUTO_INCREMENT,  -- 고유 NPC 상점 ID
+    npc_id INT,                                  -- NPC의 고유 ID (참조)           -- NPC 상점 이름
+    location_id INT,                             -- NPC 상점이 위치한 장소의 ID (참조)
+    FOREIGN KEY (npc_id) REFERENCES npcs(npc_id), -- npc 테이블 참조
+    FOREIGN KEY (location_id) REFERENCES locations(location_id)  -- location 테이블 참조
 );
+CREATE TABLE npc_shop_items (
+    npc_shop_item_id INT PRIMARY KEY AUTO_INCREMENT,  -- 고유 NPC 상점 아이템 ID
+    npc_shop_id INT,                                  -- NPC 상점 ID (참조)
+    item_id INT,                                      -- 아이템 ID (참조)
+    price INT NOT NULL,                    -- 아이템 가격
+    stock INT DEFAULT 0,                              -- 재고 수량
+    FOREIGN KEY (npc_shop_id) REFERENCES npc_shop(npc_shop_id),  -- npc_shop 테이블 참조
+    FOREIGN KEY (item_id) REFERENCES items(item_id)  -- items 테이블 참조
+);
+
 
