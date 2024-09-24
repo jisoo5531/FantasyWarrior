@@ -9,8 +9,12 @@ public class Fishing : Craft
     {
 
         playerAnim.SetBool("Fishing", true);
+        OnProgressBar(this.actionTime);     
+        
         yield return new WaitForSeconds(actionTime);
+
         playerAnim.SetBool("Fishing", false);        
+
         yield return base.ActionCoroutine();
     }
 

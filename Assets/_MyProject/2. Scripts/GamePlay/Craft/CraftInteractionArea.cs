@@ -53,7 +53,8 @@ public class CraftInteractionArea : MonoBehaviour
     private void OnInteractFishing(InputAction.CallbackContext context)
     {
         if (true == InteractAction.activeSelf)
-        {            
+        {
+            InteractAction.SetActive(false);
             craft.Action();
         }
     }
