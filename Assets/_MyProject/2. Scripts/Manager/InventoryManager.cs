@@ -36,6 +36,10 @@ public class InventoryManager : MonoBehaviour
     /// </summary>
     public event Action OnGetItem;
     /// <summary>
+    /// 아이템 획득 시, 아이템 데이터와 같이 넘겨주기
+    /// </summary>
+    public event Action<ItemData> OnGetItemData;
+    /// <summary>
     /// 제작도구를 획득 시, 실행할 이벤트
     /// </summary>
     public event Action OnGetCraftItem;
@@ -92,6 +96,7 @@ public class InventoryManager : MonoBehaviour
             AddWhichItem(new AddItemClassfiy(itemData.Item_ID, amount, false));
         }
         CheckGetCraftTool(itemData.Item_ID);
+        OnGetItemData?.Invoke(itemData);
         OnGetItem?.Invoke();
     }
     /// <summary>

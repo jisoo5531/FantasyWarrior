@@ -54,6 +54,10 @@ public class QuestManager : MonoBehaviour
     /// </summary>
     public event Action OnCompleteQuest;
     /// <summary>
+    /// 퀘스트가 완료되면 플레이어 퀘스트 완료 UI에 전달용.
+    /// </summary>
+    public event Action<QuestData> OnCompleteQuestData;
+    /// <summary>
     /// 퀘스트 완료 후, 보상 분배
     /// </summary>
     public event Action<QuestData> OnGetQuestReward;
@@ -345,6 +349,13 @@ public class QuestManager : MonoBehaviour
     }
     #region 퀘스트 완료
     /// <summary>
+    /// 퀘스트 완료 안내가 나온 뒤에 완료 보상 등을 얻기 위해
+    /// </summary>
+    public void TriggerGetReward(int questID)
+    {
+        GetReward(questID);
+    }
+    /// <summary>
     /// 퀘스트 완료 시에 실행할 메서드
     /// TODO : 완료 버튼을 누르면 완료 UI 뜨게
     /// </summary>
@@ -352,13 +363,12 @@ public class QuestManager : MonoBehaviour
     public void QuestComplete(int quest_ID)
     {
         QuestCompleteQuery(quest_ID);
-        SetUserQuestData(quest_ID);
-        GetReward(quest_ID);
+        SetUserQuestData(quest_ID);        
 
         // 클라이언트에 저장한 임시 대화 퀘스트 목록에서 삭제
         NPCManager.Instance.RemoveTalkQuest(quest_ID);
-
         OnCompleteQuest?.Invoke();
+        OnCompleteQuestData?.Invoke(GetQuestData(quest_ID));        
     }
     /// <summary>
     /// DB에 퀘스트 완료문 쿼리문 날리기
