@@ -38,11 +38,21 @@ public class UI_ShopPanel : MonoBehaviour
     }
 
     
-    public void Initialize(int npcID)
+    public void Initialize(int npcID, ShopDL_Type BuyOrSell)
     {
         this.npc_ID = npcID;
         SetPlayerGold();
-        SetShopItemList();
+
+        switch (BuyOrSell)
+        {
+            case ShopDL_Type.Buy:
+                SetShopItemList();
+                break;
+            case ShopDL_Type.Sell:
+                break;
+            default:
+                break;
+        }        
     }
     private void SetPlayerGold()
     {

@@ -35,4 +35,4 @@ LEFT JOIN Items i7 ON PlayerEquipment.RingItem_ID = i7.Item_ID
 WHERE PlayerEquipment.User_ID = 1;*/
 
 SELECT *
-FROM quest_talk;
+FROM npc_shop_items;

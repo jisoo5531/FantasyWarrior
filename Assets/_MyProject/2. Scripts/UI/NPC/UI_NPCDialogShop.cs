@@ -25,7 +25,7 @@ public class UI_NPCDialogShop : UI_NPCDialogue
     private void OnClickBuyButton()
     {
         Debug.Log("물건 사자");
-        shopPanel.Initialize(this.NPC_ID);
+        shopPanel.Initialize(this.NPC_ID, ShopDL_Type.Buy);
         shopPanel.gameObject.SetActive(true);
         gameObject.SetActive(false);
         playerUI.SetActive(false);
@@ -36,5 +36,11 @@ public class UI_NPCDialogShop : UI_NPCDialogue
     private void OnClickSellButton()
     {
         Debug.Log("물건 팔자");
+        shopPanel.Initialize(this.NPC_ID, ShopDL_Type.Sell);
     }
+}
+public enum ShopDL_Type
+{
+    Buy,
+    Sell
 }
