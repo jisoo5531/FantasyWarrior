@@ -70,5 +70,6 @@ public class GameManager : MonoBehaviour
         NPCManager.Instance.Initialize();
         MonsterManager.Instance.Initialize();
         LocationManger.Instance.Initialize();
+        ShopManager.Instance.Initialize();
     }
 }

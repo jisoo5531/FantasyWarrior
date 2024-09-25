@@ -1,0 +1,128 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using UnityEngine;
+
+public class ShopManager : MonoBehaviour
+{
+    public static ShopManager Instance { get; private set; }
+
+    /// <summary>
+    /// 상점 데이터들을 담는 딕셔너리
+    /// <para>key는 상점의 ID</para>
+    /// </summary>
+    private Dictionary<int, NPC_ShopData> Shop_Dict;
+    /// <summary>
+    /// 위와 같은 상점 데이터들을 담는 딕셔너리
+    /// <para>key는 npc의 ID</para>
+    /// </summary>
+    private Dictionary<int, NPC_ShopData> npc_Shop_Dict;
+    /// <summary>
+    /// 각 상점에서 어떤 물품을 파는지에 대한 정보를 담는 딕셔너리
+    /// <para>key는 상점 아이템의 ID</para>
+    /// </summary>
+    private Dictionary<int, NPC_Shop_Item_Data> Shop_Item_Dict;
+    /// <summary>
+    /// 각 상점에서 어떤 물품을 파는지에 대한 정보를 담는 리스트
+    /// </summary>
+    private List<NPC_Shop_Item_Data> Shop_Item_List;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+    public void Initialize()
+    {
+        GetShopDataFromDB();
+        GetShopItemListFromDB();
+    }
+    /// <summary>
+    /// 해당 npc가 어떤 상점을 운영하는지의 정보를 가져오기
+    /// </summary>
+    /// <param name="npcShop_Id"></param>
+    /// <returns></returns>
+    public NPC_ShopData GetShopData_NpcShop(int npcId)
+    {
+        if (npc_Shop_Dict.TryGetValue(npcId, out NPC_ShopData shop))
+        {
+            return shop;
+        }
+        return null;
+    }
+    /// <summary>
+    /// 해당 npc 상점의 아이템 리스트 가져오기
+    /// </summary>
+    /// <param name="npcID"></param>
+    /// <returns></returns>
+    public List<NPC_Shop_Item_Data> GetShopItemList(int npcID)
+    {
+        NPC_ShopData shop = GetShopData_NpcShop(npcID);
+        Debug.Log($"얘 null? : {shop == null}");
+        return Shop_Item_List.FindAll(x => x.NPC_Shop_ID == shop.NPC_Shop_ID);
+    }
+    
+
+    #region DB
+
+    /// <summary>
+    /// 모든 상점 데이터 가져오기    
+    /// </summary>
+    private void GetShopDataFromDB()
+    {
+        Shop_Dict = new Dictionary<int, NPC_ShopData>();
+        npc_Shop_Dict = new Dictionary<int, NPC_ShopData>();
+        string query =
+            $"SELECT *\n" +
+            $"FROM npc_shop;";
+        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
+
+        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
+
+        if (isGetData)
+        {
+            foreach (DataRow row in dataSet.Tables[0].Rows)
+            {
+                int shopID = int.Parse(row["npc_shop_id"].ToString());
+                int npcID = int.Parse(row["npc_id"].ToString());
+                Shop_Dict.Add(shopID, new NPC_ShopData(row));
+                npc_Shop_Dict.Add(npcID, new NPC_ShopData(row));
+            }
+        }
+        else
+        {
+            //  실패
+        }
+    }
+    /// <summary>
+    /// 각 상점에서 어떤 물품을 파는지에 대한 정보 가져오기
+    /// </summary>
+    private void GetShopItemListFromDB()
+    {
+        Shop_Item_Dict = new Dictionary<int, NPC_Shop_Item_Data>();
+        Shop_Item_List = new List<NPC_Shop_Item_Data>();        
+
+        string query =
+            $"SELECT *\n" +
+            $"FROM npc_shop_items;";
+        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
+        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
+
+        if (isGetData)
+        {
+            foreach (DataRow row in dataSet.Tables[0].Rows)
+            {
+                int shopItemID = int.Parse(row["npc_shop_item_id"].ToString());                
+                Shop_Item_Dict.Add(shopItemID, new NPC_Shop_Item_Data(row));
+                Shop_Item_List.Add(new NPC_Shop_Item_Data(row));
+            }
+        }
+        else
+        {
+            //  실패
+        }
+    }
+
+    #endregion
+}

@@ -9,6 +9,9 @@ public class UI_NPCDialogShop : UI_NPCDialogue
     public GameObject dialogShopBuyPrefab;
     public GameObject dialogShopSellPrefab;
 
+    [Header("상점창")]
+    public UI_ShopPanel shopPanel;
+
     protected override void SelectDialogInit()
     {
         base.SelectDialogInit();
@@ -22,6 +25,10 @@ public class UI_NPCDialogShop : UI_NPCDialogue
     private void OnClickBuyButton()
     {
         Debug.Log("물건 사자");
+        shopPanel.Initialize(this.NPC_ID);
+        shopPanel.gameObject.SetActive(true);
+        gameObject.SetActive(false);
+        playerUI.SetActive(false);
     }
     /// <summary>
     /// 상점에서 물건 팔기 버튼을 클릭하면
