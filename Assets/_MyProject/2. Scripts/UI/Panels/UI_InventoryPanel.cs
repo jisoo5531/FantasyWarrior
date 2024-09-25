@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UI_InventoryPanel : MonoBehaviour
 {
@@ -25,6 +26,9 @@ public class UI_InventoryPanel : MonoBehaviour
     [Header("Item Info")]
     public UI_EquipItemInfo EquipitemInfo;
     public UI_ConsumpOtherItemInfo OtherConsumpItemInfo;
+
+    [Header("Gold")]    
+    public TMP_Text goldText;
 
     private int itemID;
     /// <summary>
@@ -79,6 +83,7 @@ public class UI_InventoryPanel : MonoBehaviour
         PlayerEquipManager.Instance.OnAllUnEquipButtonClick += SetItemToSlot;
         PlayerEquipManager.Instance.OnUnEquipItem += SetItemToSlot;
         InventoryManager.Instance.OnGetItem += SetItemToSlot;
+        InventoryManager.Instance.OnGetItem += SetPlayerGold;
 
 
         List<InventoryData> inventoryDataList = InventoryManager.Instance.inventoryDataList;
@@ -90,12 +95,17 @@ public class UI_InventoryPanel : MonoBehaviour
             SetItemToSlot_Sort();
             //SetItemToSlot();
         }
-    }
-    private void OnEnable()
-    {
-              
+        SetPlayerGold();
     }
     
+    /// <summary>
+    /// 유저가 소유한 골드 보유량 세팅
+    /// </summary>
+    private void SetPlayerGold()
+    {
+        goldText.text = UserStatManager.Instance.userStatClient.Gold.ToString();
+    }
+
     /// <summary>
     /// <para>인벤토리 슬롯으로 세팅</para>
     /// 인벤토리에 빈 곳 먼저 세팅.

@@ -112,9 +112,7 @@ public class ItemManager : MonoBehaviour
     /// <param name="itemID"></param>
     /// <returns></returns>
     public string GetInventoryItemNameFromDB(int itemID)
-    {
-        Debug.Log($"¹ºµ¥ : {itemID}");
-        Debug.Log(Item_Dict == null);
+    {                
         if (Item_Dict.TryGetValue(itemID, out ItemData item))
         {
             return item.Item_Name;

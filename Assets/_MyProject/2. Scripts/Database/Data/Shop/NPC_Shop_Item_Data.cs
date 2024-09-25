@@ -2,7 +2,7 @@ using System.Data;
 
 public class NPC_Shop_Item_Data
 {
-    public int NPC_Shop_Item_Order { get; set; }
+    public int NPC_Shop_Item_ID { get; set; }
     public int NPC_Shop_ID { get; set; }
     public int Item_ID { get; set; }
     public int Price { get; set; }
@@ -19,7 +19,7 @@ public class NPC_Shop_Item_Data
     { }
     public NPC_Shop_Item_Data(int nPC_Shop_Item_Order, int nPC_Shop_ID, int item_ID, int price, int stock)
     {
-        this.NPC_Shop_Item_Order = nPC_Shop_Item_Order;
+        this.NPC_Shop_Item_ID = nPC_Shop_Item_Order;
         this.NPC_Shop_ID = nPC_Shop_ID;
         this.Item_ID = item_ID;
         this.Price = price;

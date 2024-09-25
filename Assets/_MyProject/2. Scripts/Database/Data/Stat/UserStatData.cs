@@ -109,6 +109,7 @@ public class UserStatClient
     private int orgDef = 5;
     private int orgMaxHP = 1000;
     private int orgMaxMP = 500;
+    private int orgGold = 0;
     /// <summary>
     /// 원본 레벨
     /// </summary>
@@ -149,6 +150,10 @@ public class UserStatClient
     /// 원본 MaxMana 스탯값.
     /// </summary>
     public int O_MaxMP => orgMaxMP;
+    /// <summary>
+    /// 원본 소지 골드
+    /// </summary>
+    public int O_Gold => orgGold;
     #endregion
 
     public CharClass charClass;
@@ -165,6 +170,7 @@ public class UserStatClient
     public int HP = 1000;
     public int MaxMP = 500;
     public int MP = 500;
+    public int Gold = 1000;
 
     #endregion
 
@@ -184,6 +190,7 @@ public class UserStatClient
         this.MaxMP = orgMaxMP + (levelUpStat.MaxmpAmount * (Level - 1));
         this.HP = this.MaxHP;
         this.MP = this.MaxMP;
+        this.Gold = userStat.Gold;
     }
 
     #region 스탯 업데이트 함수
@@ -238,6 +245,10 @@ public class UserStatClient
     public int UpdateMP(int amount)
     {
         return MP += amount;
+    }
+    public int UpdateGold(int amount)
+    {
+        return Gold += amount;
     }
     #endregion
 }

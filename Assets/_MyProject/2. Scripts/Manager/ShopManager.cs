@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -62,7 +63,33 @@ public class ShopManager : MonoBehaviour
         Debug.Log($"얘 null? : {shop == null}");
         return Shop_Item_List.FindAll(x => x.NPC_Shop_ID == shop.NPC_Shop_ID);
     }
-    
+    /// <summary>
+    /// 상점에서 아이템을 살 때 호출
+    /// </summary>
+    public void BuyItem(int shopItemID, Action BuySuccess, Action BuyFailure)
+    {
+        if (Shop_Item_Dict.TryGetValue(shopItemID, out NPC_Shop_Item_Data shopItem))
+        {
+            if (false == UserStatManager.Instance.UseGold(shopItem.Price))
+            {
+                // 돈이 부족해 못 사는 경우엔                
+                BuyFailure?.Invoke();
+            }
+            else
+            {
+                Debug.Log("아이템 성공적으로 샀다.");
+                ItemData item = ItemManager.Instance.GetItemData(shopItem.Item_ID);
+                // TODO : 대량으로 사들일 경우엔 수량 변수로 변경
+                InventoryManager.Instance.GetItem(item, 1);
+                BuySuccess?.Invoke();
+            }
+            //shopItem.Price
+        }
+        else
+        {
+            Debug.Log("없어?");
+        }
+    }
 
     #region DB
 

@@ -49,6 +49,20 @@ public class UserStatManager : MonoBehaviour
     }
 
     /// <summary>
+    /// 골드를 사용할 때 호출
+    /// </summary>
+    public bool UseGold(int amount)
+    {
+        if (userStatClient.Gold < amount)
+        {
+            // 돈이 부족하다면
+            return false;
+        }
+        userStatClient.Gold -= amount;
+        return true;
+    }
+
+    /// <summary>
     /// 유저 스탯 가져오기
     /// </summary>
     /// <returns></returns>
@@ -176,7 +190,8 @@ public class UserStatManager : MonoBehaviour
             $"userstats.LuK={userStatClient.LUK}," +
             $"userstats.defense={userStatClient.DEF}," +
             $"userstats.MaxHp={userStatClient.MaxHP}," +
-            $"userstats.MaxMana={userStatClient.MaxMP}\n" +
+            $"userstats.MaxMana={userStatClient.MaxMP}," +
+            $"userstats.gold={userStatClient.Gold}\n" +
             $"WHERE userstats.User_ID={user_ID};";
         _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
     }

@@ -13,6 +13,9 @@ public class PanelManager : MonoBehaviour
     public UI_SkillPanel SkillPanel;
     public UI_QuestPanel QuestPanel;
     public UI_StatPanel StatPanel;
+    public UI_ShopPanel ShopPanel;
+
+    private bool IsShopPanel = false;
 
     private void Awake()
     {
@@ -39,7 +42,24 @@ public class PanelManager : MonoBehaviour
     private void OnSkill_UI(InputAction.CallbackContext context)
     {
         SkillPanel.gameObject.SetActive(!SkillPanel.gameObject.activeSelf);
-        playerUI.gameObject.SetActive(!SkillPanel.gameObject.activeSelf);
+        if (ShopPanel.gameObject.activeSelf)
+        {
+            IsShopPanel = true;
+        }
+        if (IsShopPanel)
+        {
+            if (false == SkillPanel.gameObject.activeSelf)
+            {
+                IsShopPanel = false;
+            }
+            ShopPanel.gameObject.SetActive(!SkillPanel.gameObject.activeSelf);
+        }
+        else
+        {
+            playerUI.gameObject.SetActive(!SkillPanel.gameObject.activeSelf);
+        }
+
+                
         InventoryPanel.gameObject.SetActive(false);
         QuestPanel.gameObject.SetActive(false);
         StatPanel.gameObject.SetActive(false);
@@ -47,7 +67,23 @@ public class PanelManager : MonoBehaviour
     private void OnInventory_UI(InputAction.CallbackContext context)
     {
         InventoryPanel.gameObject.SetActive(!InventoryPanel.gameObject.activeSelf);
-        playerUI.gameObject.SetActive(!InventoryPanel.gameObject.activeSelf);
+        if (ShopPanel.gameObject.activeSelf)
+        {
+            IsShopPanel = true;
+        }
+        if (IsShopPanel)
+        {
+            if (false == InventoryPanel.gameObject.activeSelf)
+            {
+                IsShopPanel = false;
+            }
+            ShopPanel.gameObject.SetActive(!InventoryPanel.gameObject.activeSelf);
+        }
+        else
+        {
+            playerUI.gameObject.SetActive(!InventoryPanel.gameObject.activeSelf);
+        }       
+        
         SkillPanel.gameObject.SetActive(false);
         QuestPanel.gameObject.SetActive(false);
         StatPanel.gameObject.SetActive(false);
@@ -55,7 +91,23 @@ public class PanelManager : MonoBehaviour
     private void OnQuest_UI(InputAction.CallbackContext context)
     {
         QuestPanel.gameObject.SetActive(!QuestPanel.gameObject.activeSelf);
-        playerUI.gameObject.SetActive(!QuestPanel.gameObject.activeSelf);
+        if (ShopPanel.gameObject.activeSelf)
+        {
+            IsShopPanel = true;
+        }
+        if (IsShopPanel)
+        {
+            if (false == QuestPanel.gameObject.activeSelf)
+            {
+                IsShopPanel = false;
+            }
+            ShopPanel.gameObject.SetActive(!QuestPanel.gameObject.activeSelf);
+        }
+        else
+        {
+            playerUI.gameObject.SetActive(!QuestPanel.gameObject.activeSelf);
+        }
+                
         SkillPanel.gameObject.SetActive(false);
         InventoryPanel.gameObject.SetActive(false);
         StatPanel.gameObject.SetActive(false);
@@ -63,7 +115,23 @@ public class PanelManager : MonoBehaviour
     private void OnStat_UI(InputAction.CallbackContext context)
     {
         StatPanel.gameObject.SetActive(!StatPanel.gameObject.activeSelf);
-        playerUI.gameObject.SetActive(!StatPanel.gameObject.activeSelf);
+        if (ShopPanel.gameObject.activeSelf)
+        {
+            IsShopPanel = true;
+        }
+        if (IsShopPanel)
+        {
+            if (false == StatPanel.gameObject.activeSelf)
+            {
+                IsShopPanel = false;
+            }
+            ShopPanel.gameObject.SetActive(!StatPanel.gameObject.activeSelf);
+        }
+        else
+        {
+            playerUI.gameObject.SetActive(!StatPanel.gameObject.activeSelf);
+        }
+                
         SkillPanel.gameObject.SetActive(false);
         InventoryPanel.gameObject.SetActive(false);
         QuestPanel.gameObject.SetActive(false);
