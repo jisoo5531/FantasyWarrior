@@ -37,6 +37,9 @@ public class UI_NPCDialogShop : UI_NPCDialogue
     {
         Debug.Log("¹°°Ç ÆÈÀÚ");
         shopPanel.Initialize(this.NPC_ID, ShopDL_Type.Sell);
+        shopPanel.gameObject.SetActive(true);
+        gameObject.SetActive(false);
+        playerUI.SetActive(false);
     }
 }
 public enum ShopDL_Type

@@ -10,18 +10,20 @@ public class UI_InventoryPanel : MonoBehaviour
     // TODO : 아이템 종류 더 많게 해서 테스트 해보기.    
     // TODO : 인벤토리 정렬 기능 넣기
 
+    public List<Button> tabButtonList;
+    public List<GameObject> itemContentList;
 
     [Header("Equip")]
     public Button EquipTabButton;
-    public GameObject EquipContent;
+    private GameObject EquipContent;
 
     [Header("Consump")]
     public Button ConsumpTabButton;
-    public GameObject ConsumpContent;
+    private GameObject ConsumpContent;
 
     [Header("Other")]
     public Button OtherTabButton;
-    public GameObject OtherContent;
+    private GameObject OtherContent;
 
     [Header("Item Info")]
     public UI_EquipItemInfo EquipitemInfo;
@@ -42,34 +44,15 @@ public class UI_InventoryPanel : MonoBehaviour
     
 
     private void Awake()
-    {        
-        EquipTabButton.onClick.AddListener
-            (
-                () =>
-                {
-                    EquipContent.transform.parent.parent.gameObject.SetActive(true);
-                    ConsumpContent.transform.parent.parent.gameObject.SetActive(false);
-                    OtherContent.transform.parent.parent.gameObject.SetActive(false);
-                }
-            );
-        ConsumpTabButton.onClick.AddListener
-            (
-                () =>
-                {
-                    ConsumpContent.transform.parent.parent.gameObject.SetActive(true);
-                    EquipContent.transform.parent.parent.gameObject.SetActive(false);
-                    OtherContent.transform.parent.parent.gameObject.SetActive(false);
-                }
-            );
-        OtherTabButton.onClick.AddListener
-            (
-                () =>
-                {
-                    OtherContent.transform.parent.parent.gameObject.SetActive(true);
-                    ConsumpContent.transform.parent.parent.gameObject.SetActive(false);
-                    EquipContent.transform.parent.parent.gameObject.SetActive(false);
-                }
-            );
+    {
+        this.EquipContent = itemContentList[0];
+        this.ConsumpContent = itemContentList[1];
+        this.OtherContent = itemContentList[2];
+        for (int i = 0; i < tabButtonList.Count; i++)
+        {
+            int index = i;
+            tabButtonList[index].onClick.AddListener(() => OnClickItemtabButton(index));
+        }
     }
     private void Start()
     {
@@ -215,9 +198,9 @@ public class UI_InventoryPanel : MonoBehaviour
         int equipAmount = 0;
         int consumpAmount = 0;
         int otherAmount = 0;
-        SlotClear(EquipContent);
-        SlotClear(ConsumpContent);
-        SlotClear(OtherContent);
+        SlotClear(itemContentList[0]);
+        SlotClear(itemContentList[1]);
+        SlotClear(itemContentList[2]);
 
         List<InventoryData> inventoryDataList = InventoryManager.Instance.inventoryDataList;
 
@@ -247,6 +230,13 @@ public class UI_InventoryPanel : MonoBehaviour
                     break;
             }
         }
+    }
+    private void OnClickItemtabButton(int index)
+    {
+        for (int i = 0; i < itemContentList.Count; i++)
+        {
+            itemContentList[i].transform.parent.parent.gameObject.SetActive(i == index);
+        }        
     }
     private void SetItemToEquipSlot(int itemID, Sprite sprite, UI_InventorySlot slot)
     {
