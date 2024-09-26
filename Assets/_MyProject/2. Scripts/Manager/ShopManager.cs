@@ -53,6 +53,19 @@ public class ShopManager : MonoBehaviour
         return null;
     }
     /// <summary>
+    /// 해당 상점 아이템ID의 상점에서 파는 아이템 정보 가져오기
+    /// </summary>
+    /// <param name="shopItemID"></param>
+    /// <returns></returns>
+    public NPC_Shop_Item_Data GetShopItem(int shopItemID)
+    {
+        if (Shop_Item_Dict.TryGetValue(shopItemID, out NPC_Shop_Item_Data shopItem))
+        {
+            return shopItem;
+        }
+        return null;
+    }
+    /// <summary>
     /// 해당 npc 상점의 아이템 리스트 가져오기
     /// </summary>
     /// <param name="npcID"></param>
@@ -66,11 +79,11 @@ public class ShopManager : MonoBehaviour
     /// <summary>
     /// 상점에서 아이템을 살 때 호출
     /// </summary>
-    public void BuyItem(int shopItemID, Action BuySuccess, Action BuyFailure)
+    public void BuyItem(int shopItemID, int amount, Action BuySuccess, Action BuyFailure)
     {
         if (Shop_Item_Dict.TryGetValue(shopItemID, out NPC_Shop_Item_Data shopItem))
         {
-            if (false == UserStatManager.Instance.UseGold(shopItem.Price))
+            if (false == UserStatManager.Instance.UseGold(shopItem.Price * amount))
             {
                 // 돈이 부족해 못 사는 경우엔                
                 BuyFailure?.Invoke();
@@ -89,6 +102,16 @@ public class ShopManager : MonoBehaviour
         {
             Debug.Log("없어?");
         }
+    }
+    /// <summary>
+    /// 상점에 아이템을 팔 때 호출
+    /// </summary>
+    public void SellItem(ItemData item, int amount, Action successSell)
+    {
+        UserStatManager.Instance.GetGold(item.SellPrice * amount);
+        InventoryManager.Instance.SubtractItem(item, amount);
+
+        successSell?.Invoke();
     }
 
     #region DB

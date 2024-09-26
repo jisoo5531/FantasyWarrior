@@ -43,6 +43,14 @@ public class InventoryManager : MonoBehaviour
     /// 제작도구를 획득 시, 실행할 이벤트
     /// </summary>
     public event Action OnGetCraftItem;
+    /// <summary>
+    /// 인벤토리에서 아이템이 일정수량 빠졌을 때 실행
+    /// </summary>
+    public event Action<ItemData> OnSubtractItem;
+    /// <summary>
+    /// 인벤토리에서 아이템이 삭제되었을 때 실행
+    /// </summary>
+    public event Action<ItemData> OnDeleteItem;
 
     private void Awake()
     {
@@ -58,7 +66,16 @@ public class InventoryManager : MonoBehaviour
         GetUserCraftItemFromDB();        
         //EventHandler.managerEvent.TriggerInventoryManagerInit();
     }
-    
+    /// <summary>
+    /// 해당 유저의 인벤토리에 있는 아이템ID의 정보 가져오기
+    /// </summary>
+    /// <param name="userID"></param>
+    /// <param name="itemID"></param>
+    /// <returns></returns>
+    public InventoryData GetInventoryItem(int userID, int itemID)
+    {
+        return inventoryDataList.Find(x => x.User_ID == userID && x.Item_ID == itemID);
+    }
     /// <summary>
     /// 인벤토리로 어떤 아이템이 추가되었는지 확인할 메서드
     /// </summary>
@@ -70,8 +87,40 @@ public class InventoryManager : MonoBehaviour
     public void ClearAddWhichItemList()
     {
         addWhichItemList = new();
+    }    
+    /// <summary>
+    /// 아이템을 인벤토리에서 삭제
+    /// </summary>
+    /// <param name="itemID"></param>
+    public void DeleteItem(int itemID)
+    {
+        int user_ID = DatabaseManager.Instance.userData.UID;
+        int index = inventoryDataList.FindIndex(x => x.User_ID.Equals(user_ID) && x.Item_ID.Equals(itemID));
+        if (index >= 0)
+        {
+            inventoryDataList.RemoveAt(index);
+            OnDeleteItem?.Invoke(ItemManager.Instance.GetItemData(itemID));
+        }
     }
-    
+    /// <summary>
+    /// 수량만큼 인벤토리에서 아이템 빼기
+    /// </summary>
+    /// <param name="item"></param>
+    /// <param name="amount"></param>
+    public void SubtractItem(ItemData item, int amount)
+    {
+        int user_ID = DatabaseManager.Instance.userData.UID;
+        int index = inventoryDataList.FindIndex(x => x.User_ID == user_ID && x.Item_ID == item.Item_ID);
+        inventoryDataList[index].Quantity -= amount;
+
+        if (inventoryDataList[index].Quantity == 0)
+        {
+            // 삭제
+            DeleteItem(inventoryDataList[index].Item_ID);
+            return;
+        }
+        OnSubtractItem?.Invoke(item);
+    }
     /// <summary>
     /// 아이템을 획득 시, 실행할 메서드
     /// </summary>
@@ -98,7 +147,7 @@ public class InventoryManager : MonoBehaviour
         CheckGetCraftTool(itemData.Item_ID);
         OnGetItemData?.Invoke(itemData);
         OnGetItem?.Invoke();
-    }
+    }    
     /// <summary>
     /// 얻은 아이템이 제작도구인지 확인
     /// </summary>
@@ -136,12 +185,7 @@ public class InventoryManager : MonoBehaviour
     /// </summary>
     public void EquipItemUpdateInventory(int itemID)
     {
-        int user_ID = DatabaseManager.Instance.userData.UID;
-        int index = inventoryDataList.FindIndex(x => x.User_ID.Equals(user_ID) && x.Item_ID.Equals(itemID));
-        if (index >= 0)
-        {
-            inventoryDataList.RemoveAt(index);
-        }
+        DeleteItem(itemID);
     }
     public int? GetItemQuantity(int itemID)
     {

@@ -22,6 +22,7 @@ public class ItemData
     public Item_Type Item_Type { get; set; }
     public string Item_Description { get; set; }
     public Rarity Rarity { get; set; }
+    public int SellPrice { get; set; }
 
     public ItemData(DataRow row) : this
         (
@@ -29,15 +30,18 @@ public class ItemData
             row["item_name"].ToString(),
             (Item_Type)System.Enum.Parse(typeof(Item_Type), row["item_type"].ToString()),            
             row["item_description"].ToString(),            
-            (Rarity)System.Enum.Parse(typeof(Rarity), row["rarity"].ToString())
+            (Rarity)System.Enum.Parse(typeof(Rarity), row["rarity"].ToString()),
+            int.Parse(row["Sell_Price"].ToString())
         )
     { }
-    public ItemData(int item_ID, string item_Name, Item_Type item_Type, string item_Description, Rarity rarity)
+
+    public ItemData(int item_ID, string item_Name, Item_Type item_Type, string item_Description, Rarity rarity, int sellPrice)
     {
-        this.Item_ID = item_ID;
-        this.Item_Name = item_Name;
-        this.Item_Type = item_Type;
-        this.Item_Description = item_Description;
-        this.Rarity = rarity;
+        Item_ID = item_ID;
+        Item_Name = item_Name;
+        Item_Type = item_Type;
+        Item_Description = item_Description;
+        Rarity = rarity;
+        SellPrice = sellPrice;
     }
 }

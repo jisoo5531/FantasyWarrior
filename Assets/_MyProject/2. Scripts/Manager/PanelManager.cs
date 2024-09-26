@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class PanelManager : MonoBehaviour
 {
+    public static PanelManager Instance { get; private set; }
+
     [Header("PlayerUI")]
     public PlayerUI playerUI;
     [Header("Panel")]
@@ -19,6 +21,7 @@ public class PanelManager : MonoBehaviour
 
     private void Awake()
     {
+        Instance = this;
         //EventHandler.managerEvent.RegisterQuestManagerInit(QuestPanel.QuestPanelInit);        
         //EventHandler.managerEvent.RegisterStatManagerInit(StatPanel.StatPanelInit);
         PlayerSkill.OnKeyBindInit += SkillPanel.SkillPanelInit;        

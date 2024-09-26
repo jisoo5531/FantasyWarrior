@@ -58,8 +58,16 @@ public class UserStatManager : MonoBehaviour
             // 돈이 부족하다면
             return false;
         }
-        userStatClient.Gold -= amount;
+        userStatClient.UpdateGold(-amount);
         return true;
+    }
+    /// <summary>
+    /// 골드을 얻을 때 호출
+    /// </summary>
+    /// <param name="amount"></param>
+    public void GetGold(int amount)
+    {
+        userStatClient.UpdateGold(amount);
     }
 
     /// <summary>

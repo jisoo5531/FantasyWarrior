@@ -6,30 +6,48 @@ using TMPro;
 using UnityEngine.EventSystems;
 
 public class UI_InventorySlot : UI_ItemSlot
-{    
+{
 
     /// <summary>
     /// 슬롯 아이템 수량을 위한 텍스트
     /// </summary>
-    public TMP_Text itemQuantityText;    
+    public TMP_Text itemQuantityText;
+
+    private int item_ID;
     /// <summary>
     /// 현재 슬롯에 있는 아이템의 종류(장비, 소비, 기타)
     /// </summary>
     private Item_Type? item_Type;
+    private int? itemQuantity;
 
     public override void Initialize(int itemID, Sprite sprite = null, UI_ItemInfo itemInfo = null)
     {
+        this.item_ID = itemID;
         base.Initialize(itemID, sprite, itemInfo);
         this.item_Type = ItemManager.Instance.GetInventoryItemTypeFromDB(itemID);
-        int? quantity = InventoryManager.Instance.GetItemQuantity(itemID);
-        if (quantity == null)
+        itemQuantity = InventoryManager.Instance.GetItemQuantity(itemID);
+        if (itemQuantity == null)
         {
             Debug.Log("잘못된 ID");
             return;
-        }        
+        }
         itemImage.ImageTransparent(1);
-        itemQuantityText.text = quantity.ToString();        
-        itemQuantityText.gameObject.SetActive(true);        
+        itemQuantityText.text = itemQuantity.ToString();
+        itemQuantityText.gameObject.SetActive(true);
+    }
+    private void Start()
+    {
+        InventoryManager.Instance.OnSubtractItem += UpdateQuantityText;
+        InventoryManager.Instance.OnDeleteItem += EventSlotClear;
+    }
+    private void UpdateQuantityText(ItemData item)
+    {
+        if (item_ID == 0 || this.item_ID != item.Item_ID)
+        {
+            return;
+        }
+        int userID = DatabaseManager.Instance.userData.UID;
+        itemQuantityText.text = InventoryManager.Instance.GetInventoryItem(userID, item.Item_ID).Quantity.ToString();
     }
 
     /// <summary>
@@ -56,7 +74,7 @@ public class UI_InventorySlot : UI_ItemSlot
                 break;
         }
     }
-    
+
     /// <summary>
     /// <para>장비 장착</para> 
     /// 장비를 장착하면 인벤토리에서 사라지게끔.
@@ -65,20 +83,27 @@ public class UI_InventorySlot : UI_ItemSlot
     {
         EquipItemData equipItem = ItemManager.Instance.GetEquipItemData(this.itemID);   // 현재 슬롯에 있는 아이템
 
-        PlayerEquipManager.Instance.EquipItem(PlayerEquipManager.Instance.EquipParts[(int)equipItem.Equip_Type], itemID);        
+        PlayerEquipManager.Instance.EquipItem(PlayerEquipManager.Instance.EquipParts[(int)equipItem.Equip_Type], itemID);
 
         InventoryManager.Instance.EquipItemUpdateInventory(itemID);
 
         itemInfoWindow.gameObject.SetActive(false);
 
         SlotClear();
-    }   
+    }
+    public void EventSlotClear(ItemData item)
+    {
+        this.itemID = 0;
+        this.itemImage.sprite = null;
+        this.itemImage.ImageTransparent(0);
+        this.itemQuantityText.gameObject.SetActive(false);
+    }
     /// <summary>
     /// 아이템이 없는 슬롯 초기화
     /// </summary>
     public void SlotClear()
-    {        
-        this.itemID = 0;        
+    {
+        this.itemID = 0;
         this.itemImage.sprite = null;
         this.itemImage.ImageTransparent(0);
         this.itemQuantityText.gameObject.SetActive(false);

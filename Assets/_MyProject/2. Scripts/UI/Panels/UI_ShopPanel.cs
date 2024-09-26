@@ -25,10 +25,14 @@ public class UI_ShopPanel : MonoBehaviour
     public GameObject SellWindow;
     public List<Button> itemTabButtonList;
     public List<GameObject> itemContentList;
+    public UI_ShopSellItemInfo sellItemInfo;
     private GameObject EquipContent;
     private GameObject ConsumpContent;
-    private GameObject OtherContent;    
+    private GameObject OtherContent;
 
+    [Header("구매 / 판매 수량 UI")]
+    public UI_BuyAmount UI_BuyAmount;
+    public UI_SellAmount uI_SellAmount;    
     [Header("상점 나가기 버튼")]
     public Button ShopExitButton;
     [Header("소지 골드")]
@@ -36,33 +40,29 @@ public class UI_ShopPanel : MonoBehaviour
     [Header("플레이어 UI")]
     public GameObject PlayerUI;
 
-    private void Awake()
+    private void Start()
+    {
+        
+    }
+    private void ButtonInitialize()
     {
         this.EquipContent = itemContentList[0];
         this.ConsumpContent = itemContentList[1];
         this.OtherContent = itemContentList[2];
         ShopExitButton.onClick.AddListener(OnClickExitShopButton);
-        ButtonInitialize();        
-    }
-    private void ButtonInitialize()
-    {
+        
         for (int i = 0; i < itemTabButtonList.Count; i++)
         {
             int index = i;
             itemTabButtonList[i].onClick.AddListener(() => OnClickItemTabButton(index));
         }
-    }
-
-    private void Start()
-    {
-        
-    }
-
+    }    
     
     public void Initialize(int npcID, ShopDL_Type BuyOrSell)
     {
         this.npc_ID = npcID;
         SetPlayerGold();
+        ButtonInitialize();
 
         switch (BuyOrSell)
         {
@@ -78,8 +78,9 @@ public class UI_ShopPanel : MonoBehaviour
                 break;
             default:
                 break;
-        }        
-    }
+        }
+        
+    }    
     
     #region 구매
     private void SetShopItemList()
@@ -92,20 +93,20 @@ public class UI_ShopPanel : MonoBehaviour
         foreach (var shopItem in shopItemList)
         {
             UI_ShopItemBuyPrefab ui_ShopItem = Instantiate(shopItemPrefab, shopItemListContent.transform).GetComponent<UI_ShopItemBuyPrefab>();
-            ui_ShopItem.Initialize(shopItem, OnSuccessBuy, OnFailureBuy);
+            ui_ShopItem.Initialize(shopItem);
         }
     }
     /// <summary>
-    /// 아이템 사는 것을 성공했을 때의 콜백함수
+    /// 아이템 사거나 파는 것을 성공했을 때 플레이어 소지금 변경
     /// </summary>
-    private void OnSuccessBuy()
+    public void OnSuccessBuySell()
     {
         SetPlayerGold();
     }
     /// <summary>
     /// 아이템 사는 것을 실패했을 때의 콜백함수
     /// </summary>
-    private void OnFailureBuy()
+    public void OnFailureBuy()
     {
         Debug.Log("아이템 사는 것 실패");
         Warining_NOMoney.SetActive(false);
@@ -131,8 +132,7 @@ public class UI_ShopPanel : MonoBehaviour
             ItemData item = ItemManager.Instance.GetItemData(invenItem.Item_ID);
             string itemName = item.Item_Name;
             Item_Type? itemType = item.Item_Type;
-            Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
-            int itemQuantity = invenItem.Quantity;
+            Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");            
 
             UI_ShopSellItemSlot slot = null;
             switch (itemType)
@@ -146,6 +146,7 @@ public class UI_ShopPanel : MonoBehaviour
                     SetItemToSlot(invenItem, sprite, slot);
                     break;
                 case Item_Type.Other:
+                    Debug.Log(OtherContent == null);
                     slot = OtherContent.transform.GetChild(otherAmount++).GetComponent<UI_ShopSellItemSlot>();
                     SetItemToSlot(invenItem, sprite, slot);
                     break;

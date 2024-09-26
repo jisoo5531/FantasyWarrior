@@ -16,22 +16,19 @@ public class UI_ShopItemBuyPrefab : MonoBehaviour
     public Button ItemInfoButton;
 
     private NPC_Shop_Item_Data shopItem;
-
-    private Action successBuy;
-    private Action failureBuy;
+    private ItemData itemData;
 
     private void Awake()
     {
         Debug.Log("되지?");
         ItemInfoButton.onClick.AddListener(OnClickItemInfoButton);
     }
-    public void Initialize(NPC_Shop_Item_Data item, Action success, Action failure)
+    public void Initialize(NPC_Shop_Item_Data item)
     {
         this.shopItem = item;
-        this.successBuy = success;
-        this.failureBuy = failure;
 
         ItemData itemInfo = ItemManager.Instance.GetItemData(item.Item_ID);
+        this.itemData = itemInfo;
         itemIcon.sprite = Resources.Load<Sprite>($"Items/Icon/{itemInfo.Item_Name}");
         itemNameText.text = itemInfo.Item_Name;
         itemPriceText.text = item.Price.ToString();
@@ -41,8 +38,10 @@ public class UI_ShopItemBuyPrefab : MonoBehaviour
     /// </summary>
     private void OnClickItemInfoButton()
     {
-        // TODO : 임시 아이템 사기
-        ShopManager.Instance.BuyItem(this.shopItem.NPC_Shop_Item_ID, successBuy, failureBuy);
+        // TODO : 임시 아이템 사기        
+        PanelManager.Instance.ShopPanel.UI_BuyAmount.SetUI_Buy(this.shopItem.NPC_Shop_Item_ID);
+        PanelManager.Instance.ShopPanel.UI_BuyAmount.gameObject.SetActive(true);
+        //ShopManager.Instance.BuyItem(this.shopItem.NPC_Shop_Item_ID, successBuy, failureBuy);
         Debug.Log("상점 아이템 상세정보 나오자.");
     }        
 }
