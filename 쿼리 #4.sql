@@ -23,7 +23,5 @@
 #JOIN skills ON userstats.`Level` >= skills.Unlock_Level
 #WHERE userstats.user_id = 1 AND skills.Class = 1;
 
-UPDATE usercrafttools
-SET usercrafttools.Item_ID={}
-WHERE usercrafttools.User_ID={};
-
+SELECT *
+FROM craftingrecipes;

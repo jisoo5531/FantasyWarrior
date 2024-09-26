@@ -280,7 +280,7 @@ CREATE TABLE npc_shop_items (
     FOREIGN KEY (item_id) REFERENCES items(item_id)  -- items 테이블 참조
 );*/
 
-CREATE TABLE CraftingRecipes (
+/*CREATE TABLE CraftingRecipes (
     Recipe_ID INT PRIMARY KEY AUTO_INCREMENT,
     Crafted_Item_ID INT,  -- 제작할 아이템
     FOREIGN KEY (Crafted_Item_ID) REFERENCES Items(Item_ID),
@@ -293,5 +293,19 @@ CREATE TABLE RecipeMaterials (
     FOREIGN KEY (Recipe_ID) REFERENCES CraftingRecipes(Recipe_ID),
     FOREIGN KEY (Material_Item_ID) REFERENCES Items(Item_ID),
     PRIMARY KEY (Recipe_ID, Material_Item_ID)  -- 레시피와 재료의 복합 기본키
-);
+);*/
+/*CREATE TABLE Blacksmiths (
+    Blacksmith_ID INT PRIMARY KEY,
+    Blacksmith_Name VARCHAR(255),
+    Location_ID INT,  -- 대장장이가 위치한 장소 (외래 키)
+    Description TEXT
+);*/
+CREATE TABLE BlacksmithRecipe
+(
+	Blacksmith_ID INT,
+	Recipe_ID INT,
+	Cost INT
+)
+
+
 
