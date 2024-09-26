@@ -226,8 +226,7 @@ public class InventoryManager : MonoBehaviour
         else
         {
             return null;
-        }
-        //OnGetItem?.Invoke();
+        }        
     }
     /// <summary>
     /// 유저가 보유한 제작도구들을 가져오기

@@ -71,5 +71,7 @@ public class GameManager : MonoBehaviour
         MonsterManager.Instance.Initialize();
         LocationManger.Instance.Initialize();
         ShopManager.Instance.Initialize();
+        CraftManager.Instance.Initialize();
+        CraftRecipeManager.Instance.Initialize();
     }
 }

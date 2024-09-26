@@ -263,7 +263,7 @@ CREATE TABLE NPC_TalkQuests(
     PRIMARY KEY (Quest_ID, NPC_ID),
     FOREIGN KEY (Quest_ID) REFERENCES Quests(Quest_ID)
 );*/
-CREATE TABLE npc_shop (
+/*CREATE TABLE npc_shop (
     npc_shop_id INT PRIMARY KEY AUTO_INCREMENT,  -- 고유 NPC 상점 ID
     npc_id INT,                                  -- NPC의 고유 ID (참조)           -- NPC 상점 이름
     location_id INT,                             -- NPC 상점이 위치한 장소의 ID (참조)
@@ -278,6 +278,20 @@ CREATE TABLE npc_shop_items (
     stock INT DEFAULT 0,                              -- 재고 수량
     FOREIGN KEY (npc_shop_id) REFERENCES npc_shop(npc_shop_id),  -- npc_shop 테이블 참조
     FOREIGN KEY (item_id) REFERENCES items(item_id)  -- items 테이블 참조
-);
+);*/
 
+CREATE TABLE CraftingRecipes (
+    Recipe_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Crafted_Item_ID INT,  -- 제작할 아이템
+    FOREIGN KEY (Crafted_Item_ID) REFERENCES Items(Item_ID),
+    Crafting_Time float DEFAULT 0  -- 제작에 걸리는 시간 (초 단위)
+);
+CREATE TABLE RecipeMaterials (
+    Recipe_ID INT,  -- 레시피 ID
+    Material_Item_ID INT,  -- 재료 아이템 ID
+    Quantity INT NOT NULL,  -- 필요한 수량
+    FOREIGN KEY (Recipe_ID) REFERENCES CraftingRecipes(Recipe_ID),
+    FOREIGN KEY (Material_Item_ID) REFERENCES Items(Item_ID),
+    PRIMARY KEY (Recipe_ID, Material_Item_ID)  -- 레시피와 재료의 복합 기본키
+);
 
