@@ -5,6 +5,9 @@ using System.Data;
 public class CraftingRecipeData
 {
     public int Recipe_ID { get; set; }
+    /// <summary>
+    /// 제작할 아이템 ID
+    /// </summary>
     public int CraftItem_ID { get; set; }
     public float CraftTime { get; set; }
 

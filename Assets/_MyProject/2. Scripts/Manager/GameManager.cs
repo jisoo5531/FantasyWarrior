@@ -73,5 +73,6 @@ public class GameManager : MonoBehaviour
         ShopManager.Instance.Initialize();
         CraftManager.Instance.Initialize();
         CraftRecipeManager.Instance.Initialize();
+        BlacksmithManager.Instance.Initialize();
     }
 }

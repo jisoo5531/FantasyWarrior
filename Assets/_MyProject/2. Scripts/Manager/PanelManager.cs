@@ -16,6 +16,7 @@ public class PanelManager : MonoBehaviour
     public UI_QuestPanel QuestPanel;
     public UI_StatPanel StatPanel;
     public UI_ShopPanel ShopPanel;
+    public UI_CraftPanel craftPanel;
 
     private bool IsShopPanel = false;
 

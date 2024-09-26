@@ -37,7 +37,7 @@ public class CraftRecipeManager : MonoBehaviour
     public CraftingRecipeData GetRecipeData(int recipe_ID)
     {
         if (craftRecipe_Dict.TryGetValue(recipe_ID, out CraftingRecipeData recipe))
-        {
+        {            
             return recipe;
         }
         return null;

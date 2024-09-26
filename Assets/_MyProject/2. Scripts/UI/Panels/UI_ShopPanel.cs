@@ -23,8 +23,8 @@ public class UI_ShopPanel : MonoBehaviour
     public GameObject BuyWindow;
     [Header("상점 판매")]
     public GameObject SellWindow;
-    public List<Button> itemTabButtonList;
-    public List<GameObject> itemContentList;
+    public List<Button> itemTabButtonList;          // 장비, 소비, 기타 탭 버튼
+    public List<GameObject> itemContentList;        // 장비, 소비, 기타 아이템 리스트가 들어갈 곳
     public UI_ShopSellItemInfo sellItemInfo;
     private GameObject EquipContent;
     private GameObject ConsumpContent;
