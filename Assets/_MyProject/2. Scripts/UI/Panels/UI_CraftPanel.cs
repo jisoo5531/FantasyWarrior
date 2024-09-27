@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_CraftPanel : MonoBehaviour
 {
@@ -16,11 +17,22 @@ public class UI_CraftPanel : MonoBehaviour
     [Header("제작 아이템 상세정보")]
     public GameObject craftItemInfoWindow;
 
+    [Header("나가기 버튼")]
+    public Button exitButton;
+
+    [Header("플레이어 UI")]
+    public GameObject playerUIOBj;
 
     public void Initialize(int npcID)
     {
         this.npc_ID = npcID;
+        ButtonInitialize();
         SetCraftItemList();
+        craftItemInfoWindow.SetActive(false);
+    }    
+    private void ButtonInitialize()
+    {
+        exitButton.onClick.AddListener(OnClickExitButton);
     }
 
     /// <summary>
@@ -28,10 +40,17 @@ public class UI_CraftPanel : MonoBehaviour
     /// </summary>
     private void SetCraftItemList()
     {
+        recipeContent.ContentClear();
         foreach (var recipe in BlacksmithManager.Instance.GetBlacksmithRecipeList(this.npc_ID))
         {
             UI_CraftItemPrefab craftItemObj = Instantiate(uI_CraftItemPrefab, recipeContent.transform).GetComponent<UI_CraftItemPrefab>();
-            craftItemObj.SetCraftItemRecipe(recipe);
+            craftItemObj.SetCraftItemRecipe(this.npc_ID, recipe);
         }        
+    }
+
+    private void OnClickExitButton()
+    {
+        gameObject.SetActive(false);
+        playerUIOBj.SetActive(true);
     }
 }

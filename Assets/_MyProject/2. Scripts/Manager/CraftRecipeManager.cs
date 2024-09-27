@@ -13,6 +13,11 @@ public class CraftRecipeManager : MonoBehaviour
     /// </summary>
     private Dictionary<int, CraftingRecipeData> craftRecipe_Dict;
     /// <summary>
+    /// 아이템 제작 레시피를 담는 딕셔너리
+    /// <para>key는 만들어질 아이템의 ID</para>
+    /// </summary>
+    private Dictionary<int, CraftingRecipeData> craftRecipeKeyItemID_Dict;
+    /// <summary>
     /// 아이템 제작에 필요한 재료들을 담는 리스트
     /// </summary>
     private List<RecipeMaterialData> recipeMaterialList;
@@ -29,16 +34,20 @@ public class CraftRecipeManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 해당 레시피의 정보 가져오기 
+    /// 해당 레시피 또는 만들어질 대상 아이템 레시피 정보 가져오기 
     /// <para>(레시피로 만들 아이템, 소요 시간)</para>
     /// </summary>
     /// <param name="recipe_ID"></param>
     /// <returns></returns>
-    public CraftingRecipeData GetRecipeData(int recipe_ID)
+    public CraftingRecipeData GetRecipeData(int recipe_ID = 0, int item_ID = 0)
     {
-        if (craftRecipe_Dict.TryGetValue(recipe_ID, out CraftingRecipeData recipe))
+        if (craftRecipe_Dict.TryGetValue(recipe_ID, out CraftingRecipeData R_Recipe))
         {            
-            return recipe;
+            return R_Recipe;
+        }
+        else if (craftRecipeKeyItemID_Dict.TryGetValue(item_ID, out CraftingRecipeData I_Recipe))
+        {
+            return I_Recipe;
         }
         return null;
     }
@@ -50,7 +59,7 @@ public class CraftRecipeManager : MonoBehaviour
     public List<RecipeMaterialData> GetRecipeMaterialList(int recipe_ID)
     {
         return recipeMaterialList.FindAll(x => x.Recipe_ID == recipe_ID);
-    }
+    }    
 
     #region DB
     /// <summary>
@@ -59,6 +68,7 @@ public class CraftRecipeManager : MonoBehaviour
     private void GetRecipeFromDB()
     {
         craftRecipe_Dict = new Dictionary<int, CraftingRecipeData>();
+        craftRecipeKeyItemID_Dict = new Dictionary<int, CraftingRecipeData>();
         string query =
             $"SELECT *\n" +
             $"FROM craftingrecipes;";
@@ -71,7 +81,9 @@ public class CraftRecipeManager : MonoBehaviour
             foreach (DataRow row in dataSet.Tables[0].Rows)
             {
                 int id = int.Parse(row["Recipe_ID"].ToString());
+                int itemID = int.Parse(row["Crafted_Item_ID"].ToString());
                 craftRecipe_Dict.Add(id, new CraftingRecipeData(row));
+                craftRecipeKeyItemID_Dict.Add(itemID, new CraftingRecipeData(row));
             }            
         }
         else

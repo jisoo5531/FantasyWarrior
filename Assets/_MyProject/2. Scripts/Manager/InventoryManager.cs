@@ -187,6 +187,11 @@ public class InventoryManager : MonoBehaviour
     {
         DeleteItem(itemID);
     }
+    /// <summary>
+    /// 인벤토리에 있는 해당 아이템의 수량 가져오기
+    /// </summary>
+    /// <param name="itemID"></param>
+    /// <returns></returns>
     public int? GetItemQuantity(int itemID)
     {
         int user_ID = DatabaseManager.Instance.userData.UID;

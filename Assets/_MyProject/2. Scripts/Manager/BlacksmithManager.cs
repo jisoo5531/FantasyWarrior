@@ -37,6 +37,16 @@ public class BlacksmithManager : MonoBehaviour
     {
         return blacksmithRecipeList.FindAll(x => x.Blacksmith_ID == blacksmith_ID);
     }
+    /// <summary>
+    /// 해당 제작가 만드는 아이템의 제작 비용 가져오기
+    /// </summary>
+    /// <param name="blacksmith_ID"></param>
+    /// <param name="recipe_Id"></param>
+    /// <returns></returns>
+    public int GetCraftItemCost(int blacksmith_ID, int recipe_Id)
+    {
+        return blacksmithRecipeList.Find(x => x.Blacksmith_ID == blacksmith_ID && x.Recipe_ID == recipe_Id).Cost;
+    }
 
     #region DB
 
