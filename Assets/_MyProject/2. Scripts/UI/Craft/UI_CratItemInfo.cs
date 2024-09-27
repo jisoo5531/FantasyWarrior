@@ -43,6 +43,10 @@ public class UI_CratItemInfo : MonoBehaviour
     /// 만들어지는 데 들어가는 비용
     /// </summary>
     private int craftCost;
+    /// <summary>
+    /// 만들 수 있는 최대 수량
+    /// </summary>
+    private int maxCraft;
 
     private List<C_MaterialPossesion> m_Possesion;
 
@@ -100,17 +104,6 @@ public class UI_CratItemInfo : MonoBehaviour
         Debug.Log($"{reqAmount}, {haveAmount}");
         m_Possesion.Add(new C_MaterialPossesion(reqAmount, haveAmount));
     }
-    private bool CheckPossesion()
-    {
-        foreach (var materialPossesion in m_Possesion)
-        {
-            if (false == materialPossesion.CheckAmount(itemQuantity))
-            {
-                return false;                
-            }            
-        }
-        return true;
-    }
     /// <summary>
     /// 만들 수 있는 최대 수량 가져오기
     /// </summary>
@@ -125,8 +118,8 @@ public class UI_CratItemInfo : MonoBehaviour
         {
             Debug.Log(item);
         }
-        
-        maxCraftText.text = maxAmountList.Min().ToString();
+        maxCraft = maxAmountList.Min();
+        maxCraftText.text = maxCraft.ToString();
     }
     /// <summary>
     /// 수량 Up 버튼 클릭
@@ -134,11 +127,14 @@ public class UI_CratItemInfo : MonoBehaviour
     private void OnClickAmountUpButton()
     {
         itemQuantity += 1;
-        if (false == CheckPossesion())
+
+        if (itemQuantity > maxCraft)
         {
             // 만약 재료가 그만큼 없으면 
-            itemQuantity -= 1;
+            itemQuantity = maxCraft;
         }
+        UpdateItemCostGoldText();
+        UpdateQuantityText();
     }
     /// <summary>
     /// 수량 Down 버튼 클릭
@@ -168,7 +164,13 @@ public class UI_CratItemInfo : MonoBehaviour
     private void OnValueChangedInputQuantity(string value)
     {
         itemQuantity = int.Parse(value);
-        // 만들 수량만큼 재료가 없으면 
+        if (itemQuantity > maxCraft)
+        {
+            // 만들 수량만큼 재료가 없으면 
+            itemQuantity = maxCraft;
+        }
+        UpdateItemCostGoldText();
+        UpdateQuantityText();
     }
     private void OnClickBackButton()
     {
