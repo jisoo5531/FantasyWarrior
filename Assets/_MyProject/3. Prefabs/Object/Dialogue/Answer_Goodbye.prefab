@@ -965,8 +965,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Goodbye
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 3cd57b48cb32aa2408ee0460d689be68, type: 2}
-  m_sharedMaterial: {fileID: -7244873375232470608, guid: 3cd57b48cb32aa2408ee0460d689be68, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 94c346aa5f609d64d823358c4cfabf21, type: 2}
+  m_sharedMaterial: {fileID: 7873608570861970023, guid: 94c346aa5f609d64d823358c4cfabf21, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

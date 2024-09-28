@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,5 +15,15 @@ public class CraftManager : MonoBehaviour
 
     }
 
-
+    /// <summary>
+    /// 아이템 제작을 할 때 호출할 메서드
+    /// <para>수량만큼 제작</para>
+    /// </summary>
+    /// <param name="craftItem"></param>
+    /// <param name="amount"></param>
+    public void CraftItem(ItemData craftItem, int amount, Action success)
+    {        
+        InventoryManager.Instance.GetItem(craftItem, amount);        
+        success?.Invoke();
+    }    
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UI_CraftPanel : MonoBehaviour
 {
@@ -22,6 +23,11 @@ public class UI_CraftPanel : MonoBehaviour
 
     [Header("플레이어 UI")]
     public GameObject playerUIOBj;
+    [Header("제작 실패 메시지")]
+    public GameObject error_CraftWindow;
+
+    [Header("플레이어 보유 골드")]
+    public TMP_Text playerGoldText;
 
     public void Initialize(int npcID)
     {
@@ -29,6 +35,7 @@ public class UI_CraftPanel : MonoBehaviour
         ButtonInitialize();
         SetCraftItemList();
         craftItemInfoWindow.SetActive(false);
+        SetPlayerGold();
     }    
     private void ButtonInitialize()
     {
@@ -46,6 +53,10 @@ public class UI_CraftPanel : MonoBehaviour
             UI_CraftItemPrefab craftItemObj = Instantiate(uI_CraftItemPrefab, recipeContent.transform).GetComponent<UI_CraftItemPrefab>();
             craftItemObj.SetCraftItemRecipe(this.npc_ID, recipe);
         }        
+    }
+    public void SetPlayerGold()
+    {
+        playerGoldText.text = UserStatManager.Instance.userStatClient.Gold.ToString();
     }
 
     private void OnClickExitButton()

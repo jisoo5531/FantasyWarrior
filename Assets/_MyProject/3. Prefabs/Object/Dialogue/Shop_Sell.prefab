@@ -965,8 +965,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uC544\uC774\uD15C\uC744 \uD310\uB2E4."
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: baf22bce5357cbe4497ac301f63efa11, type: 2}
-  m_sharedMaterial: {fileID: 6056140247387118318, guid: baf22bce5357cbe4497ac301f63efa11, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 94c346aa5f609d64d823358c4cfabf21, type: 2}
+  m_sharedMaterial: {fileID: 7873608570861970023, guid: 94c346aa5f609d64d823358c4cfabf21, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

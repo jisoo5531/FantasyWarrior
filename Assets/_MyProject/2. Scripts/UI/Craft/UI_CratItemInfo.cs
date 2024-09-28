@@ -60,6 +60,7 @@ public class UI_CratItemInfo : MonoBehaviour
         Q_UpButton.onClick.AddListener(OnClickAmountUpButton);
         Q_DownButton.onClick.AddListener(OnClickAmountDownButton);
         backButton.onClick.AddListener(OnClickBackButton);
+        craftButton.onClick.AddListener(OnClickCraftButton);
     }
     public void Initialize(int npcID, ItemData item)
     {
@@ -175,5 +176,24 @@ public class UI_CratItemInfo : MonoBehaviour
     private void OnClickBackButton()
     {
         gameObject.SetActive(false);
+    }
+    private void OnClickCraftButton()
+    {
+        if (craftCost * itemQuantity > UserStatManager.Instance.userStatClient.Gold)
+        {
+            FailureCraft();
+            return;
+        }
+        CraftManager.Instance.CraftItem(craftItem, itemQuantity, SuccessCraft);
+        
+    }
+    private void SuccessCraft()
+    {
+        UserStatManager.Instance.UseGold(craftCost * itemQuantity);
+        PanelManager.Instance.CraftPanel.SetPlayerGold();
+    }
+    private void FailureCraft()
+    {
+        PanelManager.Instance.CraftPanel.error_CraftWindow.SetActive(true);
     }
 }

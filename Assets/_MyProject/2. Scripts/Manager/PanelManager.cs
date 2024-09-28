@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public class PanelManager : MonoBehaviour
 {
@@ -16,128 +13,125 @@ public class PanelManager : MonoBehaviour
     public UI_QuestPanel QuestPanel;
     public UI_StatPanel StatPanel;
     public UI_ShopPanel ShopPanel;
-    public UI_CraftPanel craftPanel;
+    public UI_CraftPanel CraftPanel;
 
-    private bool IsShopPanel = false;
+    // 상점과 제작 패널이 열렸던 상태를 기록
+    private bool wasShopPanelOpen = false;
+    private bool wasCraftPanelOpen = false;
 
     private void Awake()
     {
         Instance = this;
-        //EventHandler.managerEvent.RegisterQuestManagerInit(QuestPanel.QuestPanelInit);        
-        //EventHandler.managerEvent.RegisterStatManagerInit(StatPanel.StatPanelInit);
-        PlayerSkill.OnKeyBindInit += SkillPanel.SkillPanelInit;        
+        PlayerSkill.OnKeyBindInit += SkillPanel.SkillPanelInit;
     }
 
     private void OnEnable()
     {
-        GameManager.inputActions.PlayerActions.UI_Skill.performed += OnSkill_UI;
-        GameManager.inputActions.PlayerActions.UI_Inventory.performed += OnInventory_UI;
-        GameManager.inputActions.PlayerActions.UI_Quest.performed += OnQuest_UI;
-        GameManager.inputActions.PlayerActions.UI_Status.performed += OnStat_UI;
+        var playerActions = GameManager.inputActions.PlayerActions;
+        playerActions.UI_Skill.performed += OnSkillUI;
+        playerActions.UI_Inventory.performed += OnInventoryUI;
+        playerActions.UI_Quest.performed += OnQuestUI;
+        playerActions.UI_Status.performed += OnStatUI;
     }
+
     private void OnDisable()
     {
-        GameManager.inputActions.PlayerActions.UI_Skill.performed -= OnSkill_UI;
-        GameManager.inputActions.PlayerActions.UI_Skill.performed -= OnInventory_UI;
-        GameManager.inputActions.PlayerActions.UI_Quest.performed -= OnQuest_UI;
-        GameManager.inputActions.PlayerActions.UI_Status.performed -= OnStat_UI;
+        var playerActions = GameManager.inputActions.PlayerActions;
+        playerActions.UI_Skill.performed -= OnSkillUI;
+        playerActions.UI_Inventory.performed -= OnInventoryUI;
+        playerActions.UI_Quest.performed -= OnQuestUI;
+        playerActions.UI_Status.performed -= OnStatUI;
     }
 
-    private void OnSkill_UI(InputAction.CallbackContext context)
+    private void TogglePanel(GameObject panel)
     {
-        SkillPanel.gameObject.SetActive(!SkillPanel.gameObject.activeSelf);
-        if (ShopPanel.gameObject.activeSelf)
-        {
-            IsShopPanel = true;
-        }
-        if (IsShopPanel)
-        {
-            if (false == SkillPanel.gameObject.activeSelf)
-            {
-                IsShopPanel = false;
-            }
-            ShopPanel.gameObject.SetActive(!SkillPanel.gameObject.activeSelf);
-        }
-        else
-        {
-            playerUI.gameObject.SetActive(!SkillPanel.gameObject.activeSelf);
-        }
-
-                
-        InventoryPanel.gameObject.SetActive(false);
-        QuestPanel.gameObject.SetActive(false);
-        StatPanel.gameObject.SetActive(false);
-    }
-    private void OnInventory_UI(InputAction.CallbackContext context)
-    {
-        InventoryPanel.gameObject.SetActive(!InventoryPanel.gameObject.activeSelf);
-        if (ShopPanel.gameObject.activeSelf)
-        {
-            IsShopPanel = true;
-        }
-        if (IsShopPanel)
-        {
-            if (false == InventoryPanel.gameObject.activeSelf)
-            {
-                IsShopPanel = false;
-            }
-            ShopPanel.gameObject.SetActive(!InventoryPanel.gameObject.activeSelf);
-        }
-        else
-        {
-            playerUI.gameObject.SetActive(!InventoryPanel.gameObject.activeSelf);
-        }       
+        bool isActive = !panel.activeSelf;
+        panel.SetActive(isActive);
         
-        SkillPanel.gameObject.SetActive(false);
-        QuestPanel.gameObject.SetActive(false);
-        StatPanel.gameObject.SetActive(false);
+        UpdateUIState();
+        CloseOtherPanels(panel);
+
+        // 현재 패널을 닫았을 때 상점 또는 제작 패널을 복원할지 판단
+        if (!isActive)
+        {
+            RestoreShopOrCraftPanel();
+        }
     }
-    private void OnQuest_UI(InputAction.CallbackContext context)
+
+    // 모든 패널이 닫힐 때 상점 또는 제작 창을 복원
+    private void RestoreShopOrCraftPanel()
     {
-        QuestPanel.gameObject.SetActive(!QuestPanel.gameObject.activeSelf);
+        // 다른 패널이 모두 닫혔을 때만 상점/제작 창 복원
+        if (!SkillPanel.gameObject.activeSelf &&
+            !InventoryPanel.gameObject.activeSelf &&
+            !QuestPanel.gameObject.activeSelf &&
+            !StatPanel.gameObject.activeSelf)
+        {
+            if (wasShopPanelOpen)
+            {
+                Debug.Log("상점 복구");
+                ShopPanel.gameObject.SetActive(true);
+                wasShopPanelOpen = false;  // 복구했으므로 초기화
+                playerUI.gameObject.SetActive(!ShopPanel.gameObject.activeSelf);
+            }
+            else if (wasCraftPanelOpen)
+            {
+                Debug.Log("제작 복구");
+                CraftPanel.gameObject.SetActive(true);
+                wasCraftPanelOpen = false;  // 복구했으므로 초기화
+                playerUI.gameObject.SetActive(!CraftPanel.gameObject.activeSelf);
+            }
+        }
+    }
+    private void UpdateUIState()
+    {
+        bool anyPanelOpen = SkillPanel.gameObject.activeSelf ||
+                            InventoryPanel.gameObject.activeSelf ||
+                            QuestPanel.gameObject.activeSelf ||
+                            StatPanel.gameObject.activeSelf ||
+                            ShopPanel.gameObject.activeSelf ||
+                            CraftPanel.gameObject.activeSelf;
+        Debug.Log(CraftPanel.gameObject.activeSelf);
+        // 모든 패널이 닫혔을 때만 플레이어 UI를 활성화
+        playerUI.gameObject.SetActive(!anyPanelOpen);
+    }
+    private void CloseOtherPanels(GameObject activePanel)
+    {
+        if (SkillPanel.gameObject != activePanel) SkillPanel.gameObject.SetActive(false);
+        if (InventoryPanel.gameObject != activePanel) InventoryPanel.gameObject.SetActive(false);
+        if (QuestPanel.gameObject != activePanel) QuestPanel.gameObject.SetActive(false);
+        if (StatPanel.gameObject != activePanel) StatPanel.gameObject.SetActive(false);
+
+        // 상점 또는 제작 창이 열려 있었다면 일단 닫지만 상태는 기억
         if (ShopPanel.gameObject.activeSelf)
         {
-            IsShopPanel = true;
+            Debug.Log("여기야?");
+            wasShopPanelOpen = true;
+            ShopPanel.gameObject.SetActive(false);
         }
-        if (IsShopPanel)
+        if (CraftPanel.gameObject.activeSelf)
         {
-            if (false == QuestPanel.gameObject.activeSelf)
-            {
-                IsShopPanel = false;
-            }
-            ShopPanel.gameObject.SetActive(!QuestPanel.gameObject.activeSelf);
+            wasCraftPanelOpen = true;
+            CraftPanel.gameObject.SetActive(false);
         }
-        else
-        {
-            playerUI.gameObject.SetActive(!QuestPanel.gameObject.activeSelf);
-        }
-                
-        SkillPanel.gameObject.SetActive(false);
-        InventoryPanel.gameObject.SetActive(false);
-        StatPanel.gameObject.SetActive(false);
     }
-    private void OnStat_UI(InputAction.CallbackContext context)
+    private void OnSkillUI(InputAction.CallbackContext context)
     {
-        StatPanel.gameObject.SetActive(!StatPanel.gameObject.activeSelf);
-        if (ShopPanel.gameObject.activeSelf)
-        {
-            IsShopPanel = true;
-        }
-        if (IsShopPanel)
-        {
-            if (false == StatPanel.gameObject.activeSelf)
-            {
-                IsShopPanel = false;
-            }
-            ShopPanel.gameObject.SetActive(!StatPanel.gameObject.activeSelf);
-        }
-        else
-        {
-            playerUI.gameObject.SetActive(!StatPanel.gameObject.activeSelf);
-        }
-                
-        SkillPanel.gameObject.SetActive(false);
-        InventoryPanel.gameObject.SetActive(false);
-        QuestPanel.gameObject.SetActive(false);
+        TogglePanel(SkillPanel.gameObject);                
+    }
+
+    private void OnInventoryUI(InputAction.CallbackContext context)
+    {
+        TogglePanel(InventoryPanel.gameObject);        
+    }
+
+    private void OnQuestUI(InputAction.CallbackContext context)
+    {
+        TogglePanel(QuestPanel.gameObject);        
+    }
+
+    private void OnStatUI(InputAction.CallbackContext context)
+    {
+        TogglePanel(StatPanel.gameObject);        
     }
 }
