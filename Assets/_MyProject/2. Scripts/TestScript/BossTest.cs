@@ -24,6 +24,9 @@ public class BossTest : MonoBehaviour
     public MMF_Player JumpFeedback;
     /// a MMF_Player to play when the Hero lands after a jump
     public MMF_Player LandingFeedback;
+    public MMF_Player ChargeFeedback;
+    public MMF_Player RotateFeedback;
+    public MMF_Player RockShootingFeedback;
 
     private void Awake()
     {
@@ -41,6 +44,14 @@ public class BossTest : MonoBehaviour
         {
             Jump();
         }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            Rotate();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            RockShootingAction();
+        }
 
         // 점프 중이고 최대 높이를 넘으면 위로의 속도를 줄임
         if (!isGrounded && transform.position.y > initialPosition.y + maxJumpHeight)
@@ -57,16 +68,16 @@ public class BossTest : MonoBehaviour
             rb.AddForce(Vector3.down * additionalFallForce);
         }
     }
-
+    #region 점프 공격
     private void Jump()
     {
         // 점프 시작 시 현재 위치 저장
         initialPosition = transform.position;
 
         // 점프 애니메이션 실행
-        anim.SetTrigger("jump");                
+        anim.SetTrigger("jump");
+        ChargeFeedback?.PlayFeedbacks();
     }
-
     public void OnUpforce()
     {
         // 위쪽으로 강하게 힘을 추가
@@ -74,14 +85,12 @@ public class BossTest : MonoBehaviour
         isGrounded = false; // 점프 후 땅에 있지 않음
         isLanding = false;
     }
-
     // 최대 점프 높이를 넘으면 속도를 제어
     private void LimitJumpHeight()
     {
         // 위로 올라가는 속도를 0으로 설정하여 더 이상 올라가지 않도록 함
         rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
     }
-
     // 캐릭터 아래에 땅이 가까이 있는지 확인
     private void CheckGroundProximity()
     {
@@ -101,6 +110,39 @@ public class BossTest : MonoBehaviour
             isLanding = false;
         }
     }
+
+    #endregion
+
+    #region 회전 공격
+
+    private void Rotate()
+    {
+        RotateFeedback?.PlayFeedbacks();
+    }
+
+    #endregion
+
+    #region 돌 슈팅 공격
+    private void RockShootingAction()
+    {
+        anim.SetTrigger("ShardRock_Shooting");
+        
+    }
+    public void RockShooting()
+    {
+        RockShootingFeedback?.PlayFeedbacks();
+    }
+    #endregion
+
+
+
+
+
+
+
+
+
+
 
     private void OnCollisionEnter(Collision collision)
     {
