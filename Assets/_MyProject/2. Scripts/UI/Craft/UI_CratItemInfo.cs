@@ -191,6 +191,7 @@ public class UI_CratItemInfo : MonoBehaviour
     {
         UserStatManager.Instance.UseGold(craftCost * itemQuantity);
         PanelManager.Instance.CraftPanel.SetPlayerGold();
+        gameObject.SetActive(false);
     }
     private void FailureCraft()
     {
