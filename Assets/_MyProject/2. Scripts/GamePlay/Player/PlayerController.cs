@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [
-    RequireComponent(typeof(CharacterController)), 
     RequireComponent(typeof(PlayerInput)), 
     RequireComponent(typeof(PlayerMovement)), 
     RequireComponent(typeof(PlayerAnimation)),
@@ -14,7 +13,7 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {    
     
-    protected CharacterController controller;
+    //protected CharacterController controller;
     //protected PlayerInput playerInput;
     protected PlayerMovement playerMovement;
     protected PlayerAnimation playerAnimation;
@@ -27,7 +26,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {        
-        controller = GetComponent<CharacterController>();        
+        //controller = GetComponent<CharacterController>();        
         //playerInput = GetComponent<PlayerInput>();
         playerMovement = GetComponent<PlayerMovement>();
         playerAnimation = GetComponent<PlayerAnimation>();
@@ -74,7 +73,7 @@ public class PlayerController : MonoBehaviour
     
     private void FixedUpdate()
     {
-        playerMovement?.Move(controller);
+        //playerMovement?.Move(controller);
     }    
 
     private void OnDisable()

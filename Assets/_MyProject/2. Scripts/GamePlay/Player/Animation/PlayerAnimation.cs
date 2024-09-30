@@ -43,6 +43,10 @@ public class PlayerAnimation : MonoBehaviour
     }
 
     #region Move
+    public void MoveAnimation(float speed)
+    {
+        anim.SetFloat("Speed", speed);
+    }    
     public void MoveAnimation(InputAction.CallbackContext context)
     {
         Vector2 move = context.ReadValue<Vector2>();

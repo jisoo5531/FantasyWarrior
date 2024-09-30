@@ -5,13 +5,13 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    // TODO : ÇÃ·¹ÀÌ¾î ¿òÁ÷ÀÓ ¸¶¿ì½º·Î ÇØº¸±â
+    // TODO : ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ì½ºï¿½ï¿½ ï¿½Øºï¿½ï¿½ï¿½
     private float initSpeed = 0f;
     private float walkSpeed = 6f;
     private float runSpeed = 10f;
     private float gravity = -9.81f;
     private float jumpHeight = 1.5f;
-    private float rotationSpeed = 100f; // È¸Àü ¼Óµµ
+    private float rotationSpeed = 100f;
     private Vector2 moveInput;
     private Vector3 moveDir;
     private Vector3 velocity;
@@ -20,6 +20,38 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isRun = false;
 
+    // ï¿½Ã·ï¿½ï¿½Ì¾î¿¡ NavMeshAgentï¿½ï¿½ ï¿½Ò´ï¿½
+    private UnityEngine.AI.NavMeshAgent agent;
+
+    void Start()
+    {
+        Debug.Log("ì—¬ê¸° ë˜ë‚˜?");
+        agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+    }
+
+    void Update()
+    {        
+        if (Input.GetMouseButtonDown(1))
+        {
+            agent.isStopped = false;
+            Debug.Log("ì™¼ìª½ í´ë¦­");
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+            
+            if (Physics.Raycast(ray, out hit))
+            {                
+                if (UnityEngine.AI.NavMesh.SamplePosition(hit.point, out UnityEngine.AI.NavMeshHit navHit, 1.0f, UnityEngine.AI.NavMesh.AllAreas))
+                {
+                    Debug.Log(navHit.position);
+                    Debug.Log(agent == null);
+                    agent.SetDestination(navHit.position);
+                }
+            }
+            
+        }
+        float speed = agent.velocity.magnitude; // NavMeshAgentì˜ ì†ë„
+        GetComponent<PlayerAnimation>().MoveAnimation(speed);        
+    }
     private void OnEnable()
     {
         GameManager.inputActions.PlayerActions.Move.performed += OnMovePerformed;
@@ -53,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
             Rotate(moveDir);
         }
 
-        // Áß·Â Àû¿ë
+        // ï¿½ß·ï¿½ ï¿½ï¿½ï¿½ï¿½
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
@@ -65,11 +97,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void CheckGrounded()
     {
-        // ¶¥¿¡ ´ê¾Æ ÀÖ´ÂÁö È®ÀÎ
         isGrounded = controller.isGrounded;
         if (isGrounded && velocity.y < 0)
         {
-            velocity.y = -2f; // ¶¥¿¡ ÀÖÀ» ¶§ÀÇ ¼Óµµ ÃÊ±âÈ­
+            velocity.y = -2f; 
         }
     }
     public void OnMovePerformed(InputAction.CallbackContext context)
@@ -82,7 +113,7 @@ public class PlayerMovement : MonoBehaviour
     }
     public void OnRunPerformed(InputAction.CallbackContext context)
     {
-        Debug.Log("´Ş¸°´Ù.");
+        Debug.Log("ï¿½Ş¸ï¿½ï¿½ï¿½.");
         isRun = context.ReadValueAsButton();
     }
 }
