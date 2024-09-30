@@ -25,9 +25,9 @@ public class NPCManager : MonoBehaviour
     /// <summary>
     /// 연계 퀘스트 등의 임시로 추가하거나 그런 것들을 위한 리스트
     /// </summary>
-    public List<NPCTalkQuestData> talkNpcQuestList { get; private set; }
+    public List<User_NPCTalkQuestData> talkNpcQuestList { get; private set; }
 
-    private List<NPCTalkQuestData> orgTalkQuestList;
+    private List<User_NPCTalkQuestData> orgTalkQuestList;
 
     private void Awake()
     {
@@ -94,7 +94,7 @@ public class NPCManager : MonoBehaviour
     /// 퀘스트 수락 시 또는 그 외 상황에서 대화 연계 퀘스트 데이터 리스트에 추가
     /// </summary>
     /// <param name="talkQuest"></param>
-    public void AddTalkQuest(NPCTalkQuestData talkQuest)
+    public void AddTalkQuest(User_NPCTalkQuestData talkQuest)
     {
         talkNpcQuestList.Add(talkQuest);
     }
@@ -104,7 +104,8 @@ public class NPCManager : MonoBehaviour
     /// <param name="quest_ID"></param>
     public void RemoveTalkQuest(int quest_ID)
     {
-        int talkQuestIndex = talkNpcQuestList.FindIndex(x => x.Quest_ID == quest_ID);
+        int userID = DatabaseManager.Instance.userData.UID;
+        int talkQuestIndex = talkNpcQuestList.FindIndex(x => x.User_ID == userID && x.Quest_ID == quest_ID);
         if (talkQuestIndex >= 0)
         {
             talkNpcQuestList.RemoveAt(talkQuestIndex);
@@ -197,11 +198,14 @@ public class NPCManager : MonoBehaviour
     /// <returns></returns>
     private void GetTalkQuestDataFromDB()
     {
-        orgTalkQuestList = new List<NPCTalkQuestData>();
-        talkNpcQuestList = new List<NPCTalkQuestData>();
+        int userID = DatabaseManager.Instance.userData.UID;
+
+        orgTalkQuestList = new List<User_NPCTalkQuestData>();
+        talkNpcQuestList = new List<User_NPCTalkQuestData>();
         string query =
             $"SELECT *" +
-            $"FROM npc_talkquests;";
+            $"FROM user_npc_talkquests\n" +
+            $"WHERE user_npc_talkquests.User_ID={userID};";
         DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
         bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
 
@@ -209,8 +213,8 @@ public class NPCManager : MonoBehaviour
         {
             foreach (DataRow row in dataSet.Tables[0].Rows)
             {
-                orgTalkQuestList.Add(new NPCTalkQuestData(row));
-                talkNpcQuestList.Add(new NPCTalkQuestData(row));
+                orgTalkQuestList.Add(new User_NPCTalkQuestData(row));
+                talkNpcQuestList.Add(new User_NPCTalkQuestData(row));
             }
         }
         else
@@ -239,8 +243,9 @@ public class NPCManager : MonoBehaviour
     /// DB에 아직 넣지 않고 클라이언트에 임의로 저장해놓은 데이터들을 DB로 저장 (npcQuestList)
     /// <para>(게임 종료 전 또는 일정 시간마다)</para>
     /// </summary>
-    public void SaveQuestProgress()
-    {        
+    private void SaveQuestProgress()
+    {
+        int userID = DatabaseManager.Instance.userData.UID;
         foreach (NPCQuestData npcQuest in NPCQuest_List)
         {
             string checkComplete = "false";
@@ -265,15 +270,15 @@ public class NPCManager : MonoBehaviour
         foreach (var talkQuest in differences.Added)
         {
             string query =
-                $"INSERT INTO npc_talkquests(npc_talkquests.NPC_ID, npc_talkquests.Quest_ID)\n" +
-                $"VALUES ({talkQuest.NPC_ID}, {talkQuest.Quest_ID});";
+                $"INSERT INTO user_npc_talkquests(user_npc_talkquests.NPC_ID, user_npc_talkquests.Quest_ID, user_npc_talkquests.User_ID)\n" +
+                $"VALUES ({talkQuest.NPC_ID}, {talkQuest.Quest_ID}, {userID});";
             _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
         }
         foreach (var talkQuest in differences.Removed)
         {
             string query =
-                $"DELETE FROM npc_talkquests\n" +
-                $"WHERE npc_talkquests.NPC_ID={talkQuest.NPC_ID} AND " +
+                $"DELETE FROM user_npc_talkquests\n" +
+                $"WHERE user_npc_talkquests.NPC_ID={talkQuest.NPC_ID} AND " +
                 $"npc_talkquests.Quest_ID={talkQuest.Quest_ID};";
             _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
         }

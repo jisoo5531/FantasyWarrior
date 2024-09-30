@@ -164,6 +164,7 @@ public class UI_NPCDialogue : MonoBehaviour
     }
     private void InitializeQuestButtons()
     {
+        int userID = DatabaseManager.Instance.userData.UID;
         #region 이 NPC의 퀘스트 확인
         foreach (int questID in questID_List)
         {
@@ -174,8 +175,13 @@ public class UI_NPCDialogue : MonoBehaviour
         #endregion
         #region 연계 퀘스트 확인
         // 만약 퀘스트가 말 전달 형식의 퀘스트여서 이 npc에게 왔다면
-        foreach (NPCTalkQuestData tempNPCQuest in NPCManager.Instance.talkNpcQuestList)
+        foreach (User_NPCTalkQuestData tempNPCQuest in NPCManager.Instance.talkNpcQuestList)
         {
+            if (userID != tempNPCQuest.User_ID)
+            {
+                // 이 유저의 퀘스트가 아니면
+                return;
+            }
             if (tempNPCQuest.NPC_ID != this.NPC_ID)
             {
                 continue;

@@ -28,4 +28,5 @@ public enum CraftType
     Hammer,
     Fishing,
     CutDownTree,
+    Harvest
 }

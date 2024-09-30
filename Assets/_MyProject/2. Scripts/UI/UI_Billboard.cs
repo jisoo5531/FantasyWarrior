@@ -12,6 +12,13 @@ public class UI_Billboard : MonoBehaviour
     }
     private void Update()
     {
-        transform.LookAt(transform.position + cam.transform.rotation * Vector3.forward, cam.transform.rotation * Vector3.up);
+        if (cam != null)
+        {
+            // 카메라를 바라보게 설정
+            transform.LookAt(transform.position + cam.transform.rotation * Vector3.forward, cam.transform.rotation * Vector3.up);
+
+            
+        }
     }
+
 }

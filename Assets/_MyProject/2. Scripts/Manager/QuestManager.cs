@@ -304,7 +304,7 @@ public class QuestManager : MonoBehaviour
 
             int npcID = GetTalkQuestInfo(objectiveData.Quest_ID).NPC_ID;
 
-            NPCManager.Instance.AddTalkQuest(new NPCTalkQuestData(npcID, quest_ID));
+            NPCManager.Instance.AddTalkQuest(new User_NPCTalkQuestData(npcID, quest_ID, user_ID));
         }
 
 

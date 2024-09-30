@@ -58,9 +58,10 @@ public class UI_DialogQuestPrefab : MonoBehaviour
     /// </summary>
     private void CheckTalkQuest()
     {
-        List<NPCTalkQuestData> talkList = NPCManager.Instance.talkNpcQuestList;
+        int userID = DatabaseManager.Instance.userData.UID;
+        List<User_NPCTalkQuestData> talkList = NPCManager.Instance.talkNpcQuestList;
         // 이 NPC한테 온 대화 퀘스트 있는지 확인
-        NPCTalkQuestData talkQuest = talkList.Find(x => x.NPC_ID == this.npc_ID);
+        User_NPCTalkQuestData talkQuest = talkList.Find(x => x.User_ID == userID && x.NPC_ID == this.npc_ID);
 
         if (talkQuest != null)
         {

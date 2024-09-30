@@ -7,12 +7,13 @@ using TMPro;
 public class UI_QW_Objective : MonoBehaviour
 {
     public TMP_Text questObjectiveText;
-    public Button navButton;
+    public Toggle navButton;
     private QuestData quest;
     private void Awake()
     {
         Debug.Log("됐나");
-        navButton.onClick.AddListener(OnClickNavButton);
+        navButton.group = transform.parent.GetComponent<ToggleGroup>();
+        navButton.onValueChanged.AddListener(OnClickNavButton);
     }
 
     public void Initialize(QuestData quest, QuestProgress questProgress)
@@ -33,9 +34,12 @@ public class UI_QW_Objective : MonoBehaviour
     /// <summary>
     /// 퀘스트 빠른 등록 창에서 길찾기 버튼을 클릭하면
     /// </summary>
-    private void OnClickNavButton()
+    private void OnClickNavButton(bool isOn)
     {
         Debug.Log("버튼 클릭");
-        EventHandler.questNavEvent.TriggerQuestNav(this.quest);
+        if (isOn)
+        {
+            EventHandler.questNavEvent.TriggerQuestNav(this.quest);
+        }        
     }
 }

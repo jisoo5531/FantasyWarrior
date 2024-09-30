@@ -8,6 +8,7 @@ public class CutDownTree : Craft
     protected override IEnumerator ActionCoroutine()
     {
         playerAnim.SetBool("CutDownTree", true);
+        OnProgressBar(this.actionTime);
         yield return new WaitForSeconds(actionTime);
         playerAnim.SetBool("CutDownTree", false);        
         yield return base.ActionCoroutine();

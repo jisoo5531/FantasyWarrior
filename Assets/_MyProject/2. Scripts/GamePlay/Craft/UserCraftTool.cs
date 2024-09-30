@@ -5,6 +5,7 @@ using UnityEngine;
 public class UserCraftTool : MonoBehaviour
 {
     public GameObject CutDownTree;
+    public GameObject Harvest;
 
     public void OnCutDownTree()
     {
@@ -13,5 +14,13 @@ public class UserCraftTool : MonoBehaviour
     public void OffCutDownTree()
     {
         CutDownTree.SetActive(false);
+    }
+    public void OnHarvest()
+    {
+        Harvest.SetActive(true);
+    }
+    public void OffHarvest()
+    {
+        Harvest.SetActive(false);
     }
 }
