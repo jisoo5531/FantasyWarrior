@@ -144,6 +144,9 @@ public class InventoryManager : MonoBehaviour
             inventoryDataList.Add(new InventoryData(user_Id, itemData.Item_ID, amount));
             AddWhichItem(new AddItemClassfiy(itemData.Item_ID, amount, false));
         }
+        // 아이템 획득 시, 퀘스트와 관련된 아이템인지 확인
+        QuestManager.Instance.UpdateQuestProgress(itemID: itemData.Item_ID);
+
         CheckGetCraftTool(itemData.Item_ID);
         OnGetItemData?.Invoke(itemData);
         OnGetItem?.Invoke();

@@ -18,6 +18,7 @@ public class Craft : MonoBehaviour
     protected int craftItemAmount;    
     public void Action()
     {
+        Debug.Log("¿©±â°¡ µÅ?");
         StartCoroutine(ActionCoroutine());
     }
     protected virtual IEnumerator ActionCoroutine()

@@ -3013,8 +3013,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1. I'll buy them at a high price
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 94c346aa5f609d64d823358c4cfabf21, type: 2}
-  m_sharedMaterial: {fileID: 7873608570861970023, guid: 94c346aa5f609d64d823358c4cfabf21, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c98de12a67c29d24bb64bebbf3eccc13, type: 2}
+  m_sharedMaterial: {fileID: -3045378223380182931, guid: c98de12a67c29d24bb64bebbf3eccc13, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

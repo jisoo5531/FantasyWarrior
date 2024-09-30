@@ -8,6 +8,7 @@ using UnityEngine;
 /// </summary>
 public class QuestProgress
 {
+    public int user_ID { get; private set; }
     public int quest_Id { get; private set; }         // 퀘스트 ID
     public int monster_Id { get; private set; }       // 타겟이 되는 몬스터 ID (없으면 0)
     public int Item_Id { get; private set; }         // 타겟이 되는 아이템 ID (없으면 0)
@@ -18,8 +19,9 @@ public class QuestProgress
     public Q_ObjectiveType questType { get; private set; }
 
     // 생성자
-    public QuestProgress(int questId, int? currentAmount = null)
+    public QuestProgress(int userID, int questId, int? currentAmount = null)
     {
+        this.user_ID = userID;
         this.quest_Id = questId;
         this.current_Amount = currentAmount;
         Initialize();
@@ -64,7 +66,7 @@ public class QuestProgress
     /// 진행도 업데이트
     /// </summary>
     public void UpdateProgress()
-    {
+    {        
         current_Amount++;        
     }
     /// <summary>

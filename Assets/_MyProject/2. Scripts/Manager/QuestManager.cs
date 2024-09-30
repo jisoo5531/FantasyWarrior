@@ -87,6 +87,7 @@ public class QuestManager : MonoBehaviour
         GetQuestObjTalk();
         GetQuestObjCollect();
 
+        int userID = DatabaseManager.Instance.userData.UID;
         questProgressList = new List<QuestProgress>();
         List<UserQuestObjectivesData> userQOList = GetUserQuestObjectivesFromDB();
         if (userQOList != null)
@@ -95,7 +96,7 @@ public class QuestManager : MonoBehaviour
             foreach (var QO in userQOList)
             {
                 QuestObjectiveData objective = GetObjectiveData(QO.ObjectiveID);
-                questProgressList.Add(new QuestProgress(objective.Quest_ID));
+                questProgressList.Add(new QuestProgress(userID, objective.Quest_ID, QO.CurrentAmount));
             }
         }
         //EventHandler.managerEvent.TriggerQuestManagerInit();
@@ -295,7 +296,7 @@ public class QuestManager : MonoBehaviour
         userQuestsList.Add(new UserQuestsData(user_ID, quest_ID, Q_Status.InProgress));
         userQuestObjList.Add(new UserQuestObjectivesData(user_ID, objectiveData.ObjectiveID, 0, false));
 
-        questProgressList.Add(new QuestProgress(quest_ID, 0));
+        questProgressList.Add(new QuestProgress(user_ID, quest_ID, 0));
 
         if (objectiveData.ObjectiveType == Q_ObjectiveType.Talk)
         {
@@ -318,9 +319,10 @@ public class QuestManager : MonoBehaviour
     /// <param name="item_ID"></param>
     public void UpdateQuestProgress(int unitID = 0, int itemID = 0)
     {
+        int userID = DatabaseManager.Instance.userData.UID;
         if (unitID != 0)
         {
-            int index = questProgressList.FindIndex((x) => { return x.monster_Id == unitID; });
+            int index = questProgressList.FindIndex((x) => { return x.user_ID == userID && x.monster_Id == unitID; });
             if (index < 0)
             {
                 // 퀘스트 대상이 아니다.
@@ -334,7 +336,7 @@ public class QuestManager : MonoBehaviour
         }
         if (itemID != 0)
         {
-            int index = questProgressList.FindIndex((x) => { return x.Item_Id == itemID; });
+            int index = questProgressList.FindIndex((x) => { return x.user_ID == userID && x.Item_Id == itemID; });
             if (index < 0)
             {
                 // 퀘스트 대상이 아니다.

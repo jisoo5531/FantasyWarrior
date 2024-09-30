@@ -41,9 +41,7 @@ public class PlayerMovement : MonoBehaviour
             if (Physics.Raycast(ray, out hit))
             {                
                 if (UnityEngine.AI.NavMesh.SamplePosition(hit.point, out UnityEngine.AI.NavMeshHit navHit, 1.0f, UnityEngine.AI.NavMesh.AllAreas))
-                {
-                    Debug.Log(navHit.position);
-                    Debug.Log(agent == null);
+                {                    
                     agent.SetDestination(navHit.position);
                 }
             }
@@ -112,8 +110,7 @@ public class PlayerMovement : MonoBehaviour
         moveDir = Vector2.zero;
     }
     public void OnRunPerformed(InputAction.CallbackContext context)
-    {
-        Debug.Log("�޸���.");
+    {        
         isRun = context.ReadValueAsButton();
     }
 }
