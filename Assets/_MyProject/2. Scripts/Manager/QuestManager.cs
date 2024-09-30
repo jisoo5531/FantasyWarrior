@@ -430,7 +430,9 @@ public class QuestManager : MonoBehaviour
             ItemData reward_Item = ItemManager.Instance.GetItemData(quest.RewardItemID);
             InventoryManager.Instance.GetItem(reward_Item, quest.RewardItem_Amount);
         }
-    }
+        UserStatManager.Instance.GetGold(quest.Reward_Gold);
+        UserStatManager.Instance.UpdateExp(quest.Reward_Exp);
+    }    
     #endregion
 
     #endregion

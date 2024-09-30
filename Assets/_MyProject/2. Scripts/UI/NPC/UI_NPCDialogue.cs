@@ -169,8 +169,11 @@ public class UI_NPCDialogue : MonoBehaviour
         foreach (int questID in questID_List)
         {
             QuestData questData = QuestManager.Instance.GetQuestData(questID);
-            UI_DialogQuestPrefab dialogSelectElement = Instantiate(dialogQuestPrefab, DialogSelectContent.transform).GetComponent<UI_DialogQuestPrefab>();
-            dialogSelectElement.Initialize(this.NPC_ID, questData, SelectDialog);
+            if (UserStatManager.Instance.userStatClient.Level >= questData.ReqLv)
+            {
+                UI_DialogQuestPrefab dialogSelectElement = Instantiate(dialogQuestPrefab, DialogSelectContent.transform).GetComponent<UI_DialogQuestPrefab>();
+                dialogSelectElement.Initialize(this.NPC_ID, questData, SelectDialog);
+            }            
         }
         #endregion
         #region 연계 퀘스트 확인

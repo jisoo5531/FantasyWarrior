@@ -69,7 +69,6 @@ public class UserStatManager : MonoBehaviour
     {
         userStatClient.UpdateGold(amount);
     }
-
     /// <summary>
     /// 유저 스탯 가져오기
     /// </summary>

@@ -18,6 +18,7 @@ public class QuestData
     public int RewardItemID { get; set; }    
     public int RewardItem_Amount { get; set; }
     public bool IsRepeatable { get; set; }
+    public int ReqLv { get; set; }
 
     public QuestData(DataRow row) : this
         (  
@@ -29,21 +30,23 @@ public class QuestData
             int.Parse(row["Reward_Gold"].ToString()),
             int.TryParse(row["RewardItem_ID"].ToString(), out int rewarditem) ? rewarditem : 0,
             int.Parse(row["RewardItem_Amount"].ToString()),
-            bool.Parse(row["IsRepeatable"].ToString())
+            bool.Parse(row["IsRepeatable"].ToString()),
+            int.Parse(row["ReqLv"].ToString())
         )
     { }
 
-    public QuestData(int quest_ID, string quest_Name, QuestType questType, string dESC, int reward_Exp, int reward_Gold, int rewardItemID, int rewardItem_Amount, bool isRepeatable)
+    public QuestData(int quest_ID, string quest_Name, QuestType questType, string dESC, int reward_Exp, int reward_Gold, int rewardItemID, int rewardItem_Amount, bool isRepeatable, int ReqLv)
     {
-        this.Quest_ID = quest_ID;
-        this.Quest_Name = quest_Name;
+        Quest_ID = quest_ID;
+        Quest_Name = quest_Name;
         this.questType = questType;
-        this.DESC = dESC;
-        this.Reward_Exp = reward_Exp;
-        this.Reward_Gold = reward_Gold;
-        this.RewardItemID = rewardItemID;
-        this.RewardItem_Amount = rewardItem_Amount;
-        this.IsRepeatable = isRepeatable;
+        DESC = dESC;
+        Reward_Exp = reward_Exp;
+        Reward_Gold = reward_Gold;
+        RewardItemID = rewardItemID;
+        RewardItem_Amount = rewardItem_Amount;
+        IsRepeatable = isRepeatable;
+        this.ReqLv = ReqLv;
     }
 }
 public enum QuestType
