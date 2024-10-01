@@ -33,12 +33,14 @@ public class NPC : MonoBehaviour
     private void OnDisable()
     {
         EventHandler.managerEvent.UnRegisterNPCManagerInit(Initialize);
+        UserStatManager.Instance.OnLevelUpUpdateStat -= CheckQuestStatus;
         QuestManager.Instance.OnAcceptQuest -= CheckQuestStatus;
         QuestManager.Instance.OnUpdateQuestProgress -= CheckQuestStatus;  // 퀘스트 진행상황 업데이트마다 이벤트를 호출한다.
         QuestManager.Instance.OnCompleteQuest -= CheckQuestStatus;
     }
     private void Initialize()
-    {        
+    {
+        UserStatManager.Instance.OnLevelUpUpdateStat += CheckQuestStatus;
         QuestManager.Instance.OnAcceptQuest += CheckQuestStatus;
         QuestManager.Instance.OnUpdateQuestProgress += CheckQuestStatus;  // 퀘스트 진행상황 업데이트마다 이벤트를 호출한다.
         QuestManager.Instance.OnCompleteQuest += CheckQuestStatus;

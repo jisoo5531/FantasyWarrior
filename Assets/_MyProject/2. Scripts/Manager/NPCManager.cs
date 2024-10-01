@@ -61,17 +61,24 @@ public class NPCManager : MonoBehaviour
     }
     /// <summary>
     /// 특정 npc가 가지고 있는 퀘스트들의 ID를 가져오는 메서드
+    /// <para>현재 레벨에서 수행 가능한 퀘스트만</para>
     /// <para>이미 완료된 퀘스트는 가져오지 않는다.</para>
     /// </summary>
     /// <param name="NPC_ID"></param>
     /// <returns>NPC_ID가 없는 ID면 QuestID는 0이 리턴.</returns>
     public List<int> GetQuestIDFromNPC(int NPC_ID)
-    {        
+    {
+        int currentLevel = UserStatManager.Instance.userStatClient.Level;
         List<int> questsID = new List<int>();        
+        
         List<NPCQuestData> NPCQuestData = NPCQuest_List.FindAll(x => false == x.IsComplete && x.NPC_ID == NPC_ID);
         foreach (NPCQuestData nPCQuest in NPCQuestData)
         {
-            questsID.Add(nPCQuest.Quest_ID);
+            QuestData questData = QuestManager.Instance.GetQuestData(nPCQuest.Quest_ID);
+            if (currentLevel >= questData.ReqLv)
+            {
+                questsID.Add(nPCQuest.Quest_ID);
+            }            
         }
         return questsID;
     }        

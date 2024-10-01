@@ -320,10 +320,14 @@ public class InventoryManager : MonoBehaviour
         );
         foreach (var craft in differences.Modified)
         {
+            ItemManager.Instance.GetCraftToolData(craft.Item_ID);
+
             string query =
                 $"UPDATE usercrafttools\n" +
                 $"SET usercrafttools.Item_ID={craft.Item_ID}\n" +
-                $"WHERE usercrafttools.User_ID={user_ID};";
+                $"WHERE usercrafttools.User_ID={user_ID} AND " +
+                $"usercrafttools.Craft_Type='{craft.CreftType}';";
+            Debug.Log(query);
             _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
         }
     }
