@@ -1890,8 +1890,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Skill Name
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 94c346aa5f609d64d823358c4cfabf21, type: 2}
-  m_sharedMaterial: {fileID: 7873608570861970023, guid: 94c346aa5f609d64d823358c4cfabf21, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: bd6e1803c8af76841b6c19ef361e69ea, type: 2}
+  m_sharedMaterial: {fileID: 6722367201785526945, guid: bd6e1803c8af76841b6c19ef361e69ea, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

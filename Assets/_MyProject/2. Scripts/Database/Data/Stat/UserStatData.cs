@@ -83,7 +83,7 @@ public class UserStatClient
     /// </summary>
     public class LevelUpStat
     {
-        public int MaxExpAmount = 2137;
+        public int MaxExpAmount = 500;
         public int MaxhpAmount = 500;
         public int MaxmpAmount = 150;
         public int ATKAmount = 5;
@@ -100,7 +100,7 @@ public class UserStatClient
 
     #region ¿øº» ½ºÅÈ
     private int orgLv = 1;
-    private int orgMaxExp = 100;
+    private int orgMaxExp = 500;
     private int orgStr = 5;
     private int orgDex = 5;    
     private int orgInt = 5;
@@ -158,7 +158,7 @@ public class UserStatClient
 
     public CharClass charClass;
     public int Level = 1;
-    public int MaxExp = 100;
+    public int MaxExp = 500;
     public int Exp = 0;
     public int STR = 5;
     public int DEX = 5;
