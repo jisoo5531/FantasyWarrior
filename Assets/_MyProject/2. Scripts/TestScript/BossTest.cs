@@ -2,6 +2,7 @@ using MoreMountains.Feedbacks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class BossTest : MonoBehaviour
 {
@@ -28,14 +29,22 @@ public class BossTest : MonoBehaviour
     public MMF_Player RotateFeedback;
     public MMF_Player RockShootingFeedback;
 
+    public GameObject player;
+
+    private NavMeshAgent nav;
     private void Awake()
     {
+        nav = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
     }
+    private void Start()
+    {
+        Move();
+    }
 
     private void Update()
-    {
+    {        
         // 매 프레임마다 바닥 감지
         CheckGroundProximity();
 
@@ -68,15 +77,28 @@ public class BossTest : MonoBehaviour
             rb.AddForce(Vector3.down * additionalFallForce);
         }
     }
+    public void Move()
+    {
+        nav.enabled = true;
+        nav.isStopped = false;
+        nav.SetDestination(player.transform.position);
+    }
+
     #region 점프 공격
     private void Jump()
     {
+        nav.isStopped = true;
+        nav.enabled = false;
         // 점프 시작 시 현재 위치 저장
         initialPosition = transform.position;
 
         // 점프 애니메이션 실행
         anim.SetTrigger("jump");
         ChargeFeedback?.PlayFeedbacks();
+    }
+    public void Land()
+    {
+        transform.position = player.transform.position;
     }
     public void OnUpforce()
     {
@@ -117,6 +139,7 @@ public class BossTest : MonoBehaviour
 
     private void Rotate()
     {
+        nav.isStopped = true;
         RotateFeedback?.PlayFeedbacks();
     }
 
@@ -125,23 +148,16 @@ public class BossTest : MonoBehaviour
     #region 돌 슈팅 공격
     private void RockShootingAction()
     {
+        nav.isStopped = true;
         anim.SetTrigger("ShardRock_Shooting");
         
     }
     public void RockShooting()
-    {
+    {        
         RockShootingFeedback?.PlayFeedbacks();
     }
     #endregion
-
-
-
-
-
-
-
-
-
+    
 
 
     private void OnCollisionEnter(Collision collision)
