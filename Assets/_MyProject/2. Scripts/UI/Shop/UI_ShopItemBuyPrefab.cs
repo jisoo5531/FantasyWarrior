@@ -27,7 +27,8 @@ public class UI_ShopItemBuyPrefab : UI_ShopOrCraftItemPrefab
 
     protected override void OnClickItemInfoButton()
     {
-        PanelManager.Instance.ShopPanel.UI_BuyAmount.SetUI_Buy(this.shopItem.NPC_Shop_Item_ID);
-        PanelManager.Instance.ShopPanel.UI_BuyAmount.gameObject.SetActive(true);
+        UI_ShopPanel shopPanel = FindObjectOfType<PanelManager>(true).ShopPanel;
+        shopPanel.UI_BuyAmount.SetUI_Buy(this.shopItem.NPC_Shop_Item_ID);
+        shopPanel.UI_BuyAmount.gameObject.SetActive(true);
     }
 }

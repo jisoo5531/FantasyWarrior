@@ -15,6 +15,7 @@ public class UI_NPCDialogShop : UI_NPCDialogue
     protected override void SelectDialogInit()
     {
         base.SelectDialogInit();
+        shopPanel = FindObjectOfType<UI_ShopPanel>(true);
         Instantiate(dialogShopBuyPrefab, DialogSelectContent.transform).GetComponent<Button>().onClick.AddListener(OnClickBuyButton);
         Instantiate(dialogShopSellPrefab, DialogSelectContent.transform).GetComponent<Button>().onClick.AddListener(OnClickSellButton);
     }
@@ -25,21 +26,22 @@ public class UI_NPCDialogShop : UI_NPCDialogue
     private void OnClickBuyButton()
     {
         Debug.Log("물건 사자");
+        
         shopPanel.Initialize(this.NPC_ID, ShopDL_Type.Buy);
         shopPanel.gameObject.SetActive(true);
         gameObject.SetActive(false);
-        playerUI.SetActive(false);
+        playerUI.gameObject.SetActive(false);
     }
     /// <summary>
     /// 상점에서 물건 팔기 버튼을 클릭하면
     /// </summary>
     private void OnClickSellButton()
     {
-        Debug.Log("물건 팔자");
+        Debug.Log("물건 팔자");        
         shopPanel.Initialize(this.NPC_ID, ShopDL_Type.Sell);
         shopPanel.gameObject.SetActive(true);
         gameObject.SetActive(false);
-        playerUI.SetActive(false);
+        playerUI.gameObject.SetActive(false);
     }
 }
 public enum ShopDL_Type

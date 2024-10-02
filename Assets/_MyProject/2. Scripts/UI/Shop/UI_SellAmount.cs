@@ -16,10 +16,9 @@ public class UI_SellAmount : UI_BuyOrSellAmount
         sellButton.onClick.AddListener(OnClickSellButton);
     }
     public void SetUI_Sell(ItemData item)
-    {        
-        int userID = DatabaseManager.Instance.userData.UID;
+    {                
         this.Item = item;
-        this.invenItem = InventoryManager.Instance.GetInventoryItem(userID, item.Item_ID);
+        this.invenItem = InventoryManager.Instance.GetInventoryItem(item.Item_ID);
         Initialize(item);
         itemGoldText.text = item.SellPrice.ToString();
     }

@@ -43,10 +43,9 @@ public class UI_ShopSellItemSlot : MonoBehaviour
         if (invenItem == null || this.invenItem.Item_ID != item.Item_ID)
         {
             return;
-        }
-        int userID = DatabaseManager.Instance.userData.UID;
+        }        
 
-        itemQuantityText.text = InventoryManager.Instance.GetInventoryItem(userID, item.Item_ID).Quantity.ToString();
+        itemQuantityText.text = InventoryManager.Instance.GetInventoryItem(item.Item_ID).Quantity.ToString();
 
 
     }
@@ -55,7 +54,8 @@ public class UI_ShopSellItemSlot : MonoBehaviour
     /// </summary>
     private void OnClickSellItemSlot()
     {
-        UI_ShopSellItemInfo sellItemInfo = PanelManager.Instance.ShopPanel.sellItemInfo;
+        UI_ShopPanel shopPanel = FindObjectOfType<PanelManager>(true).ShopPanel;
+        UI_ShopSellItemInfo sellItemInfo = shopPanel.sellItemInfo;
         sellItemInfo.Initialize(invenItem.Item_ID);
         sellItemInfo.gameObject.SetActive(true);
     }

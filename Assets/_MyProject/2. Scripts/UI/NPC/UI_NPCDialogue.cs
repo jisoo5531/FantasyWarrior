@@ -27,7 +27,7 @@ public class UI_NPCDialogue : MonoBehaviour
     public Button acceptQuestButton;
     public Button completeQuestButton;
     [Header("플레이어 UI")]
-    public GameObject playerUI;
+    public PlayerUI playerUI;
 
     /// <summary>
     /// 이 npc가 주는 퀘스트들의 ID.
@@ -88,6 +88,7 @@ public class UI_NPCDialogue : MonoBehaviour
     }
     public void Initialize()
     {
+        playerUI = FindObjectOfType<PlayerUI>();
         ResetDialogState();
         DialogClassify();
         Debug.Log($"{dailyDialogList.Count}, {questStartDL_List.Count}, {questEndDL_List.Count}");
@@ -105,7 +106,7 @@ public class UI_NPCDialogue : MonoBehaviour
     {
         GameManager.inputActions.PlayerActions.DialogProgress.performed -= OnPressNextDialog;
 
-        playerUI.SetActive(true);
+        playerUI.gameObject.SetActive(true);
     }
     private void ResetDialogState()
     {
@@ -147,7 +148,7 @@ public class UI_NPCDialogue : MonoBehaviour
     /// </summary>
     private void StartDialogue()
     {
-        playerUI.SetActive(false);
+        playerUI.gameObject.SetActive(false);
         DialogSelectContent.SetActive(true);
         SelectDialogInit();
     }

@@ -45,9 +45,8 @@ public class UI_InventorySlot : UI_ItemSlot
         if (item_ID == 0 || this.item_ID != item.Item_ID)
         {
             return;
-        }
-        int userID = DatabaseManager.Instance.userData.UID;
-        itemQuantityText.text = InventoryManager.Instance.GetInventoryItem(userID, item.Item_ID).Quantity.ToString();
+        }        
+        itemQuantityText.text = InventoryManager.Instance.GetInventoryItem(item.Item_ID).Quantity.ToString();
     }
 
     /// <summary>

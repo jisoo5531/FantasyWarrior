@@ -27,8 +27,9 @@ public class UI_CraftItemPrefab : UI_ShopOrCraftItemPrefab
     /// </summary>
     protected override void OnClickItemInfoButton()
     {
-        UI_CratItemInfo craftItemInfo = PanelManager.Instance.CraftPanel.craftItemInfoWindow.GetComponent<UI_CratItemInfo>();
+        UI_CraftPanel craftPanel = FindObjectOfType<PanelManager>(true).CraftPanel;
+        UI_CratItemInfo craftItemInfo = craftPanel.craftItemInfoWindow.GetComponent<UI_CratItemInfo>();
         craftItemInfo.Initialize(this.npc_ID, ItemManager.Instance.GetItemData(CraftingRecipe.CraftItem_ID));
-        PanelManager.Instance.CraftPanel.craftItemInfoWindow.SetActive(true);
+        craftPanel.craftItemInfoWindow.SetActive(true);
     }
 }

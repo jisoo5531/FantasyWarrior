@@ -72,8 +72,9 @@ public class InventoryManager : MonoBehaviour
     /// <param name="userID"></param>
     /// <param name="itemID"></param>
     /// <returns></returns>
-    public InventoryData GetInventoryItem(int userID, int itemID)
+    public InventoryData GetInventoryItem(int itemID)
     {
+        int userID = DatabaseManager.Instance.userData.UID;
         return inventoryDataList.Find(x => x.User_ID == userID && x.Item_ID == itemID);
     }
     /// <summary>

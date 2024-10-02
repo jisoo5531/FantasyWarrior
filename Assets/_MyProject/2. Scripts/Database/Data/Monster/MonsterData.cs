@@ -15,7 +15,7 @@ public class MonsterData
     public float AttackRange { get; set; }
     public int EXP_Reward { get; set; }
     public int Gold_Reward { get; set; }
-
+    public int Item_Reward { get; set; }
 
     public MonsterData(DataRow row) : this
         (
@@ -28,22 +28,24 @@ public class MonsterData
             float.Parse(row["MoveSpeed"].ToString()),
             float.Parse(row["AttackRange"].ToString()),
             int.Parse(row["EXP_Reward"].ToString()),
-            int.Parse(row["Gold_Reward"].ToString())
+            int.Parse(row["Gold_Reward"].ToString()),
+            int.Parse(row["Item_Reward"].ToString())
         )
     { }
 
-    public MonsterData(int monsterID, string monsterName, int maxHp, int hp, int damage, int defense, float moveSpeed, float attackRange, int eXP_Reward, int gold_Reward)
+    public MonsterData(int monsterID, string monsterName, int maxHp, int hp, int damage, int defense, float moveSpeed, float attackRange, int eXP_Reward, int gold_Reward, int item_Reward)
     {
-        this.MonsterID = monsterID;
-        this.MonsterName = monsterName;
-        this.MaxHp = maxHp;
-        this.Hp = hp;
-        this.Damage = damage;
-        this.Defense = defense;
-        this.MoveSpeed = moveSpeed;
-        this.AttackRange = attackRange;
-        this.EXP_Reward = eXP_Reward;
-        this.Gold_Reward = gold_Reward;
+        MonsterID = monsterID;
+        MonsterName = monsterName;
+        MaxHp = maxHp;
+        Hp = hp;
+        Damage = damage;
+        Defense = defense;
+        MoveSpeed = moveSpeed;
+        AttackRange = attackRange;
+        EXP_Reward = eXP_Reward;
+        Gold_Reward = gold_Reward;
+        Item_Reward = item_Reward;
     }
 }
 

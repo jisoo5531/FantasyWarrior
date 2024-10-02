@@ -17,9 +17,9 @@ public class UI_CraftMaterialInfo : MonoBehaviour
     private ItemData materialItem;
     private RecipeMaterialData recipeMaterial;
 
-    private Action<int, int> postInit;
+    private Action<int, int, int> postInit;
 
-    public void Initialize(RecipeMaterialData recipeMaterial, Action<int, int> init)
+    public void Initialize(RecipeMaterialData recipeMaterial, Action<int, int, int> init)
     {
         this.recipeMaterial = recipeMaterial;
         this.postInit = init;
@@ -36,7 +36,7 @@ public class UI_CraftMaterialInfo : MonoBehaviour
         if (haveAmount != null)
         {
             playerHaveAmountText.text = $"x{haveAmount.ToString()}";
-            postInit?.Invoke(recipeMaterial.M_Quantity, haveAmount.Value);
+            postInit?.Invoke(materialItem.Item_ID, recipeMaterial.M_Quantity, haveAmount.Value);
         }        
     }
 }
@@ -45,15 +45,16 @@ public class UI_CraftMaterialInfo : MonoBehaviour
 /// </summary>
 public class C_MaterialPossesion
 {
+    public int itemID { get; set; }
     public int reqAmount { get; set; }
     public int haveAmount { get; set; }
 
-    public C_MaterialPossesion(int reqAmount, int haveAmount)
-    {
+    public C_MaterialPossesion(int itemID, int reqAmount, int haveAmount)
+    {        
+        this.itemID = itemID;
         this.reqAmount = reqAmount;
         this.haveAmount = haveAmount;
     }
-
     /// <summary>
     /// 만들 수 있는 최대 수량
     /// </summary>

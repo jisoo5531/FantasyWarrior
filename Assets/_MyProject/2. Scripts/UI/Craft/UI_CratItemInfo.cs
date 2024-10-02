@@ -48,13 +48,15 @@ public class UI_CratItemInfo : MonoBehaviour
     /// </summary>
     private int maxCraft;
 
-    private List<C_MaterialPossesion> m_Possesion;
+    private Dictionary<int, C_MaterialPossesion> m_Possesion_Dict;
 
     private void Awake()
     {
         quantityInputText.onValueChanged.AddListener(OnValueChangedInputQuantity);
+        InventoryManager.Instance.OnSubtractItem += SubtractMatriealItem;
         ButtonInitialize();
     }
+    
     private void ButtonInitialize()
     {
         Q_UpButton.onClick.AddListener(OnClickAmountUpButton);
@@ -64,7 +66,7 @@ public class UI_CratItemInfo : MonoBehaviour
     }
     public void Initialize(int npcID, ItemData item)
     {
-        m_Possesion = new List<C_MaterialPossesion>();
+        m_Possesion_Dict = new Dictionary<int, C_MaterialPossesion>();
         this.npc_ID = npcID;
         this.craftItem = item;
         this.recipeData = CraftRecipeManager.Instance.GetRecipeData(item_ID: craftItem.Item_ID);
@@ -96,14 +98,26 @@ public class UI_CratItemInfo : MonoBehaviour
         MaxCraftQuantity();
     }
     /// <summary>
+    /// 인벤토리에서 아이템이 빠지면 현재 플레이어가 보유한 재료에서도 빠지게    
+    /// </summary>
+    /// <param name="item"></param>
+    private void SubtractMatriealItem(ItemData item)
+    {
+        if (m_Possesion_Dict.TryGetValue(item.Item_ID, out C_MaterialPossesion matrieal))
+        {
+            matrieal.haveAmount = InventoryManager.Instance.GetInventoryItem(item.Item_ID).Quantity;
+        }
+        MaxCraftQuantity();
+    }
+    /// <summary>
     /// 만들어질 수량 체크를 할 때 사용할 클래스에 데이터 추가
     /// </summary>
     /// <param name="reqAmount"></param>
     /// <param name="haveAmount"></param>
-    private void AddMaterialPossesion(int reqAmount, int haveAmount)
+    private void AddMaterialPossesion(int itemId, int reqAmount, int haveAmount)
     {
         Debug.Log($"{reqAmount}, {haveAmount}");
-        m_Possesion.Add(new C_MaterialPossesion(reqAmount, haveAmount));
+        m_Possesion_Dict.Add(itemId, new C_MaterialPossesion(itemId, reqAmount, haveAmount));        
     }
     /// <summary>
     /// 만들 수 있는 최대 수량 가져오기
@@ -111,9 +125,14 @@ public class UI_CratItemInfo : MonoBehaviour
     private void MaxCraftQuantity()
     {
         List<int> maxAmountList = new List<int>();
-        foreach (var materialPossesion in m_Possesion)
+        foreach (var materialPossesion in m_Possesion_Dict)
         {            
-            maxAmountList.Add(materialPossesion.MaxAmount());
+            maxAmountList.Add(materialPossesion.Value.MaxAmount());
+        }
+        if (maxAmountList == null || maxAmountList.Count == 0)
+        {
+            maxCraftText.text = "0";
+            return;
         }
         foreach (var item in maxAmountList)
         {
@@ -190,11 +209,18 @@ public class UI_CratItemInfo : MonoBehaviour
     private void SuccessCraft()
     {
         UserStatManager.Instance.UseGold(craftCost * itemQuantity);
-        PanelManager.Instance.CraftPanel.SetPlayerGold();
+
+        FindObjectOfType<PanelManager>(true).CraftPanel.SetPlayerGold();
+        foreach (var recipeMaterial in CraftRecipeManager.Instance.GetRecipeMaterialList(this.recipeData.Recipe_ID))
+        {
+            ItemData recipeItem = ItemManager.Instance.GetItemData(recipeMaterial.M_Item_ID);
+            InventoryManager.Instance.SubtractItem(recipeItem, recipeMaterial.M_Quantity * itemQuantity);
+        }
+        
         gameObject.SetActive(false);
     }
     private void FailureCraft()
     {
-        PanelManager.Instance.CraftPanel.error_CraftWindow.SetActive(true);
+        FindObjectOfType<PanelManager>(true).CraftPanel.error_CraftWindow.SetActive(true);
     }
 }

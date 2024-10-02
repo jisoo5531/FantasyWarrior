@@ -12,6 +12,7 @@ public class UI_NPCDialogCraft : UI_NPCDialogShop
     protected override void SelectDialogInit()
     {
         base.SelectDialogInit();
+        craftPanel = FindObjectOfType<UI_CraftPanel>(true);
         Instantiate(dialogCraftPrefab, DialogSelectContent.transform).GetComponent<Button>().onClick.AddListener(OnClickCraftDialog);
     }
 
@@ -20,9 +21,10 @@ public class UI_NPCDialogCraft : UI_NPCDialogShop
     /// </summary>
     private void OnClickCraftDialog()
     {
+        
         craftPanel.Initialize(this.NPC_ID);
         craftPanel.gameObject.SetActive(true);
         gameObject.SetActive(false);
-        playerUI.SetActive(false);
+        playerUI.gameObject.SetActive(false);
     }
 }
