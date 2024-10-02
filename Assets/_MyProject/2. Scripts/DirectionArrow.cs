@@ -7,9 +7,13 @@ public class DirectionArrow : MonoBehaviour
     public Transform target;       // 목표 지점의 Transform
     public RectTransform arrowUI;  // 화살표 이미지의 RectTransform
 
-    private void Awake()
+    private void OnEnable()
     {
         EventHandler.questNavEvent.RegisterQuestNav(OnSetQuestNavTarget);
+    }
+    private void OnDisable()
+    {
+        EventHandler.questNavEvent.UnRegisterQuestNav(OnSetQuestNavTarget);
     }
 
     private void Update()

@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
     public GameObject Item;
     public GameObject UI;
 
+    public Transform teleportTarget;
+
     public Transform player;
     private void Awake()
     {
@@ -54,6 +56,10 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F11))
         {
             UI.SetActive(!UI.activeSelf);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            player.transform.position = teleportTarget.position;
         }
     }
 

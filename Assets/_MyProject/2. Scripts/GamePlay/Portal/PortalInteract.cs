@@ -17,10 +17,10 @@ public class PortalInteract : MonoBehaviour
     {
         GameManager.inputActions.PlayerActions.Interact.performed += OnInteractFishing;
     }
-    private void OnDisable()
-    {
-        GameManager.inputActions.PlayerActions.Interact.performed -= OnInteractFishing;
-    }
+    //private void OnDisable()
+    //{
+    //    GameManager.inputActions.PlayerActions.Interact.performed -= OnInteractFishing;
+    //}
 
     private void OnTriggerEnter(Collider other)
     {
@@ -40,7 +40,7 @@ public class PortalInteract : MonoBehaviour
     {
         if (true == InteractAction.activeSelf)
         {
-            
+            transform.parent.GetComponent<Portal>().ActivePortal();
             InteractAction.SetActive(false);            
         }
     }

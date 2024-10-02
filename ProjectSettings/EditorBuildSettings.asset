@@ -8,5 +8,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_MyProject/1. Scenes/Test.unity
     guid: ce6794d9e4148814d9406f761100b57e
+  - enabled: 1
+    path: Assets/_MyProject/1. Scenes/Scene/Human/Human.unity
+    guid: 69990b81733f70644b26836ee211187b
+  - enabled: 1
+    path: Assets/_MyProject/1. Scenes/Scene/Goblin/Goblin.unity
+    guid: 970a72aa12cbda64ca8d09c194009809
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: d9f64eee248e50c49b583d761fc95367, type: 2}

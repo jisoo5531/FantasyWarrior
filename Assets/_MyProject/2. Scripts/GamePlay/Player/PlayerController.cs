@@ -79,9 +79,7 @@ public class PlayerController : MonoBehaviour
     private void OnDisable()
     {        
         damagable.OnTakeDamage -= OnHpChange;
-        damagable.OnDeath -= OnDeath;        
-        EventHandler.managerEvent.UnRegisterStatManagerInit(StatInit);
-        EventHandler.managerEvent.UnRegisterEquipManagerInit(StatInit);
+        damagable.OnDeath -= OnDeath;                
     }
     //private void OnDestroy()
     //{

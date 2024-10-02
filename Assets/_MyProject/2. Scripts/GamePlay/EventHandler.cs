@@ -7,9 +7,11 @@ public static class EventHandler
     public static PlayerEvent playerEvent = new();
     public static ManagerEvent managerEvent = new();
     public static QuestNavEvent questNavEvent = new();
+    public static SceneEvent sceneEvent = new();
 }
 public class PlayerEvent
 {
+    #region ·¹º§¾÷
     private event Action OnPlayerLevelUp;
 
     public void RegisterPlayerLevelUp(Action listener)
@@ -24,6 +26,8 @@ public class PlayerEvent
     {
         OnPlayerLevelUp?.Invoke();
     }
+    #endregion
+
 }
 public class SkillKeyEvent
 {
@@ -183,9 +187,9 @@ public class ManagerEvent
 }
 public class QuestNavEvent
 {
-    private event Action<QuestData> OnQuestNav;    
+    private event Action<QuestData> OnQuestNav;
     public void RegisterQuestNav(Action<QuestData> listener)
-    {        
+    {
         OnQuestNav += listener;
     }
     public void UnRegisterQuestNav(Action<QuestData> listener)
@@ -196,4 +200,37 @@ public class QuestNavEvent
     {
         OnQuestNav?.Invoke(quest);
     }
+}
+public class SceneEvent
+{
+    #region ¾À ¾Æ¿ô
+    private event Action OnSceneChangeOut;    
+    public void RegisterSceneOut(Action listener)
+    {
+        OnSceneChangeOut += listener;
+    }
+    public void UnRegisterSceneOut(Action listener)
+    {
+        OnSceneChangeOut -= listener;
+    }
+    public void TriggerSceneOut()
+    {
+        OnSceneChangeOut?.Invoke();
+    }
+    #endregion
+    #region ¾À ÀÎ
+    private event Action OnSceneChangeIn;    
+    public void RegisterSceneIn(Action listener)
+    {
+        OnSceneChangeIn += listener;
+    }
+    public void UnRegisterSceneIn(Action listener)
+    {
+        OnSceneChangeIn -= listener;
+    }
+    public void TriggerSceneIn()
+    {
+        OnSceneChangeIn?.Invoke();
+    }
+    #endregion
 }
