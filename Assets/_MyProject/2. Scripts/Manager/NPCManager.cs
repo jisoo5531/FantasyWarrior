@@ -21,7 +21,7 @@ public class NPCManager : MonoBehaviour
     /// <summary>
     /// NPC들이 어떤 퀘스트를 갖고 있는지에 대한 리스트
     /// </summary>
-    public List<NPCQuestData> NPCQuest_List { get; private set; }    
+    public List<User_NPCQuestData> NPCQuest_List { get; private set; }    
     /// <summary>
     /// 연계 퀘스트 등의 임시로 추가하거나 그런 것들을 위한 리스트
     /// </summary>
@@ -71,8 +71,8 @@ public class NPCManager : MonoBehaviour
         int currentLevel = UserStatManager.Instance.userStatClient.Level;
         List<int> questsID = new List<int>();        
         
-        List<NPCQuestData> NPCQuestData = NPCQuest_List.FindAll(x => false == x.IsComplete && x.NPC_ID == NPC_ID);
-        foreach (NPCQuestData nPCQuest in NPCQuestData)
+        List<User_NPCQuestData> NPCQuestData = NPCQuest_List.FindAll(x => false == x.IsComplete && x.NPC_ID == NPC_ID);
+        foreach (User_NPCQuestData nPCQuest in NPCQuestData)
         {
             QuestData questData = QuestManager.Instance.GetQuestData(nPCQuest.Quest_ID);
             if (currentLevel >= questData.ReqLv)
@@ -179,11 +179,13 @@ public class NPCManager : MonoBehaviour
     /// <returns></returns>
     private void GetNPCQuestFromDB()
     {
-        NPCQuest_List = new List<NPCQuestData>();
+        int userid = DatabaseManager.Instance.userData.UID;
+        NPCQuest_List = new List<User_NPCQuestData>();
 
         string query =
             $"SELECT *\n" +
-            $"FROM npc_quests;";
+            $"FROM user_npc_quests\n" +
+            $"WHERE user_id={userid};";
         DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
         bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
 
@@ -191,7 +193,7 @@ public class NPCManager : MonoBehaviour
         {
             foreach (DataRow row in dataSet.Tables[0].Rows)
             {
-                NPCQuest_List.Add(new NPCQuestData(row));
+                NPCQuest_List.Add(new User_NPCQuestData(row));
             }
         }
         else
@@ -253,7 +255,7 @@ public class NPCManager : MonoBehaviour
     private void SaveQuestProgress()
     {
         int userID = DatabaseManager.Instance.userData.UID;
-        foreach (NPCQuestData npcQuest in NPCQuest_List)
+        foreach (User_NPCQuestData npcQuest in NPCQuest_List)
         {
             string checkComplete = "false";
             if (npcQuest.IsComplete)
@@ -261,9 +263,10 @@ public class NPCManager : MonoBehaviour
                 checkComplete = "true";
             }            
             string query =
-                $"UPDATE npc_quests\n" +
-                $"SET npc_quests.IsComplete='{checkComplete}'\n" +
-                $"WHERE npc_quests.Quest_ID={npcQuest.Quest_ID};";
+                $"UPDATE user_npc_quests\n" +
+                $"SET user_npc_quests.IsComplete='{checkComplete}'\n" +
+                $"WHERE user_npc_quests.Quest_ID={npcQuest.Quest_ID} AND " +
+                $"user_id={userID};";
             _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
         }
 

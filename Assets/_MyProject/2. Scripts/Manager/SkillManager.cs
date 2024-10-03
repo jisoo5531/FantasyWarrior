@@ -98,11 +98,11 @@ public class SkillManager : MonoBehaviour
         UserStatClient userStat = UserStatManager.Instance.userStatClient;
         int userId = DatabaseManager.Instance.userData.UID;
         CharClass userClass = userStat.charClass;
-
+        Debug.Log($"¿©±â ¹¹¾ß : {userClass}");
         string query =
             $"SELECT *\n" +
             $"FROM skills\n" +
-            $"WHERE skills.Class={(int)userClass};";
+            $"WHERE skills.Class='{userClass}';";
 
         DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
 

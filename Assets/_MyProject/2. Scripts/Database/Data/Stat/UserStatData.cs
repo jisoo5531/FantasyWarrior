@@ -173,7 +173,10 @@ public class UserStatClient
     public int Gold = 1000;
 
     #endregion
+    public UserStatClient()
+    {
 
+    }
     public UserStatClient(UserStatData userStat)
     {
         this.charClass = userStat.CharClass;

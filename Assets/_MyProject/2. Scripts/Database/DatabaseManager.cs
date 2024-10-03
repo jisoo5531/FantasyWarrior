@@ -27,31 +27,41 @@ public class DatabaseManager : MonoBehaviour
     {
         Instance = this;
         DBConnect();
-        GetUserDataTest();
+
+        if (Instance != null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+        DontDestroyOnLoad(this);
     }
     public void DBConnect()
-    {        
+    {
         try
         {
             string config = $"server={serverIP};port={portHum};database={dbName};uid=root;pwd={rootPassword};charset=utf8;";
 
-            conn = new MySqlConnection(config);            
+            conn = new MySqlConnection(config);
             Debug.Log("Connect Success");
         }
         catch (Exception e)
         {
-            Debug.LogError(e.Message);            
-        }        
-    }   
+            Debug.LogError(e.Message);
+        }
+    }
     /// <summary>
     /// TODO : 임시
     /// </summary>
-    public void GetUserDataTest()
+    public void GetUserDataTest(string Email, string passwd)
     {
         string query =
             $"SELECT *\n" +
             $"FROM users\n" +
-            $"WHERE user_id = 1;";
+            $"WHERE email = '{Email}' AND " +
+            $"password_hash = '{passwd}';";
 
         DataSet dataSet = OnSelectRequest(query);
 
@@ -70,25 +80,83 @@ public class DatabaseManager : MonoBehaviour
         {
             //  실패
         }
-    }  
+    }
 
     #region 회원가입
 
-    public void SignUP(string email, string passwd, Action successCallback, Action failureCallback)
+    public void SignUP(string userName, string email, string passwd)
     {
-        MySqlCommand cmd = new MySqlCommand();
-        cmd.Connection = conn;
-        cmd.CommandText = $"INSERT INTO {tableName}(email, pw, LEVEL, class) VALUES('{email}', '{passwd}', {0}, {0})";
+        string query =
+            $"INSERT INTO users(username, email, password_hash) VALUES('{userName}', '{email}', '{passwd}')";
+        OnInsertOrUpdateRequest(query);
+        GetUserDataTest(email, passwd);
+        UserSet();
+        UserCraftTools();
+        GetNPCQuestFromDB();
+    }
+    private void UserSet()
+    {
+        Query("userstats");
+        Query("userskillkeybinds");
+        Debug.Log("여기가 안되는 것 같아");
+        Query("userjobs");
+        Query("playerequipment");
+    }
 
-        if (ExcuteNonQuery(cmd))
+    private void Query(string tableName)
+    {
+        int userID = DatabaseManager.Instance.userData.UID;
+        string query =
+            $"INSERT INTO {tableName} ({tableName}.User_ID)\n" +
+            $"VALUES ({userID});";
+        Debug.Log(query);
+        DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+
+    }
+    private void UserCraftTools()
+    {
+        int userID = DatabaseManager.Instance.userData.UID;
+        foreach (var enumValue in System.Enum.GetValues(typeof(CraftType)))
         {
-            successCallback?.Invoke();
+            string query =
+                $"INSERT INTO usercrafttools (usercrafttools.User_ID, usercrafttools.Craft_Type)\n" +
+                $"VALUES ({userID}, '{enumValue.ToString()}');";
+            DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
+        }
+    }
+
+    private void GetNPCQuestFromDB()
+    {        
+        int userid = DatabaseManager.Instance.userData.UID;
+        List<NPCQuestData> NPCQuest_List = new List<NPCQuestData>();
+
+        string query =
+            $"SELECT *\n" +
+            $"FROM npc_quests;";
+        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
+        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
+
+        if (isGetData)
+        {
+            foreach (DataRow row in dataSet.Tables[0].Rows)
+            {
+                NPCQuest_List.Add(new NPCQuestData(row));
+            }
         }
         else
         {
-            failureCallback?.Invoke();
+            //  실패
+        }
+        foreach (var npcQuest in NPCQuest_List)
+        {
+            string dbQuery =
+                $"INSERT INTO user_npc_quests (user_npc_quests.NPC_ID, user_npc_quests.Quest_ID, user_npc_quests.User_ID)\n" +
+                $"VALUES ({npcQuest.NPC_ID}, {npcQuest.Quest_ID}, {userid});";
+            Debug.Log(dbQuery);
+            OnInsertOrUpdateRequest(dbQuery);
         }
     }
+
 
     #endregion
 
@@ -147,7 +215,7 @@ public class DatabaseManager : MonoBehaviour
         };
 
         // TODO : 로그인 query문 바꾸기
-        DataSet set = OnSelectRequest(tableName);
+        DataSet set = OnSelectRequest(query);
 
         bool isLoginSuccess = set.Tables.Count > 0 && set.Tables[0].Rows.Count > 0;
 
@@ -157,7 +225,6 @@ public class DatabaseManager : MonoBehaviour
             DataRow row = set.Tables[0].Rows[0];
 
             userData = new UserData(row);
-
             successCallback?.Invoke(userData);
         }
         else
@@ -229,7 +296,7 @@ public class DatabaseManager : MonoBehaviour
 
         if (ExcuteNonQuery(cmd))
         {
-            data.Name = name;            
+            data.Name = name;
 
             data = UpdateData();
             successCallback?.Invoke(data);
@@ -238,7 +305,7 @@ public class DatabaseManager : MonoBehaviour
 
     #endregion
 
-    
+
 
     private UserData UpdateData()
     {
@@ -272,7 +339,7 @@ public class DatabaseManager : MonoBehaviour
 
             MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = conn;
-            cmd.CommandText = query;            
+            cmd.CommandText = query;
 
             if (ExcuteNonQuery(cmd))
             {
@@ -288,7 +355,7 @@ public class DatabaseManager : MonoBehaviour
         catch (Exception e)
         {
             Debug.LogError(e.Message);
-            return false;            
+            return false;
         }
     }
     /// <summary>
@@ -305,7 +372,7 @@ public class DatabaseManager : MonoBehaviour
 
             MySqlCommand cmd = new MySqlCommand();
             cmd.Connection = conn;
-            cmd.CommandText = query;                                
+            cmd.CommandText = query;
 
             MySqlDataAdapter dataAdapter = new MySqlDataAdapter(cmd);
             DataSet set = new DataSet();
@@ -329,7 +396,7 @@ public class DatabaseManager : MonoBehaviour
     /// <returns></returns>
     private bool ExcuteNonQuery(MySqlCommand cmd)
     {
-        int queryCount = cmd.ExecuteNonQuery();        
+        int queryCount = cmd.ExecuteNonQuery();
         return queryCount > 0;
     }
 

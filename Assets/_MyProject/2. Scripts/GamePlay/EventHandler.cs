@@ -3,12 +3,32 @@ using UnityEngine;
 
 public static class EventHandler
 {
+    public static GameStartEvent gameStartEvent = new();
     public static SkillKeyEvent skillKey = new();
     public static PlayerEvent playerEvent = new();
     public static ManagerEvent managerEvent = new();
     public static QuestNavEvent questNavEvent = new();
     public static SceneEvent sceneEvent = new();
 }
+
+public class GameStartEvent
+{
+    private event Action OnGameStart;
+
+    public void RegisterGameStart(Action listener)
+    {
+        OnGameStart += listener;
+    }
+    public void UnRegisterGameStart(Action listener)
+    {
+        OnGameStart -= listener;
+    }
+    public void TriggerGameStart()
+    {
+        OnGameStart?.Invoke();
+    }
+}
+
 public class PlayerEvent
 {
     #region ·¹º§¾÷

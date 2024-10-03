@@ -1,21 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 
 public class DatabaseUIManager : MonoBehaviour
 {
     [Header("Login")]
+    public GameObject loginPanel;
     public TMP_InputField emailInput;
     public TMP_InputField pwInput;
     public Button loginButton;
+    public Button goSignUpButton;
+
+    [Header("SignUp")]
+    public GameObject signUpPanel;
+    public TMP_InputField userNameInput;
+    public TMP_InputField signUpEmailInput;
+    public TMP_InputField signUpPwInput;
+    public Button signUpButton;
+    public Button goLoginButton;
 
     private UserData userData;
 
     private void Awake()
     {
         loginButton.onClick.AddListener(LoginButtonClick);
+        signUpButton.onClick.AddListener(SignUpButtonClick);
+        goSignUpButton.onClick.AddListener(GoSignUpButtonClick);
+        goLoginButton.onClick.AddListener(GoLoginButtonClick);
     }
 
     public void LoginButtonClick()
@@ -27,9 +41,26 @@ public class DatabaseUIManager : MonoBehaviour
         Debug.Log("로그인 성공");
 
         this.userData = data;        
+        SceneManager.LoadScene(1);
     }
     private void OnLoginFail()
     {
         Debug.Log("로그인 실패");
     }
+
+    private void GoSignUpButtonClick()
+    {
+        loginPanel.SetActive(false);
+        signUpPanel.SetActive(true);
+    }
+    private void GoLoginButtonClick()
+    {
+        loginPanel.SetActive(true);
+        signUpPanel.SetActive(false);
+    }
+    private void SignUpButtonClick()
+    {
+        DatabaseManager.Instance.SignUP(userNameInput.text, signUpEmailInput.text, signUpPwInput.text);
+        GoLoginButtonClick();
+    }    
 }

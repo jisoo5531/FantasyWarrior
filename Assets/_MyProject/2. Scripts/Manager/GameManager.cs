@@ -27,12 +27,12 @@ public class GameManager : MonoBehaviour
         inputActions = new();
     }
     private void OnEnable()
-    {        
+    {
         inputActions.PlayerActions.Enable();
     }
     private void OnDisable()
     {
-        
+
     }
     private void Start()
     {
@@ -63,7 +63,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    
     private void ManagerInit()
     {
         ItemManager.Instance.Initialize();
@@ -81,4 +80,6 @@ public class GameManager : MonoBehaviour
         CraftRecipeManager.Instance.Initialize();
         BlacksmithManager.Instance.Initialize();
     }
+    
 }
+

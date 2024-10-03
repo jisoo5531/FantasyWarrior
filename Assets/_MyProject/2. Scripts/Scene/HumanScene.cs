@@ -7,6 +7,7 @@ public class HumanScene : MonoBehaviour
     public Transform GameStartPos;
     public Transform GoblinToHumanPos;
 
+
     private void Start()
     {
         Debug.Log($"¾À ³Ñ¹ö Â÷ÀÌ : {SceneManager.Instance.CurrentMinusNext()}");
