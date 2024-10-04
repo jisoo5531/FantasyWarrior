@@ -214,11 +214,14 @@ public class InventoryManager : MonoBehaviour
     /// </summary>
     private List<InventoryData> GetDataFromDatabase()
     {
+        int userId = DatabaseManager.Instance.userData.UID;
+
         originInventoryList = new List<InventoryData>();
         inventoryDataList = new List<InventoryData>();
         string query =
             $"SELECT *\n" +
-            $"FROM inventory;";
+            $"FROM inventory\n" +
+            $"WHERE user_id={userId}";
         DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
 
         bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5735474671545061566
+--- !u!1 &2091317109045047276
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,10 +8,10 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5735474671545061554}
-  - component: {fileID: 5735474671545061553}
-  - component: {fileID: 5735474671545061552}
-  - component: {fileID: 5735474671545061567}
+  - component: {fileID: 2091317109045047272}
+  - component: {fileID: 2091317109045047275}
+  - component: {fileID: 2091317109045047274}
+  - component: {fileID: 2091317109045047277}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -19,28 +19,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5735474671545061554
+--- !u!4 &2091317109045047272
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5735474671545061566}
+  m_GameObject: {fileID: 2091317109045047276}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.081924, y: 1.3161975, z: 5.7637343}
+  m_LocalPosition: {x: 730.9831, y: 544.3171, z: -6.717959}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5735474671545061553
+--- !u!114 &2091317109045047275
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5735474671545061566}
+  m_GameObject: {fileID: 2091317109045047276}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8aab4c8111b7c411b9b92cf3dbc5bd4e, type: 3}
@@ -54,13 +54,13 @@ MonoBehaviour:
   offlineScene: Assets/_MyProject/1. Scenes/Mirror/Menu.unity
   onlineScene: Assets/_MyProject/1. Scenes/Mirror/MyScene.unity
   offlineSceneLoadDelay: 0
-  transport: {fileID: 5735474671545061552}
-  networkAddress: localhost
+  transport: {fileID: 2091317109045047274}
+  networkAddress: 52.78.239.203
   maxConnections: 100
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 60
   authenticator: {fileID: 0}
-  playerPrefab: {fileID: 6435852672160730993, guid: b1866f320f2d02844925be0ddb15e3ec, type: 3}
+  playerPrefab: {fileID: 1666529490906967433, guid: d3fe588266fb5024f9bfdf0c61ba6410, type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 1
   spawnPrefabs: []
@@ -79,13 +79,13 @@ MonoBehaviour:
   evaluationMethod: 0
   evaluationInterval: 3
   timeInterpolationGui: 0
---- !u!114 &5735474671545061552
+--- !u!114 &2091317109045047274
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5735474671545061566}
+  m_GameObject: {fileID: 2091317109045047276}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b0fecffa3f624585964b0d0eb21b18e, type: 3}
@@ -108,13 +108,13 @@ MonoBehaviour:
   debugLog: 0
   statisticsGUI: 0
   statisticsLog: 0
---- !u!114 &5735474671545061567
+--- !u!114 &2091317109045047277
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5735474671545061566}
+  m_GameObject: {fileID: 2091317109045047276}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6442dc8070ceb41f094e44de0bf87274, type: 3}

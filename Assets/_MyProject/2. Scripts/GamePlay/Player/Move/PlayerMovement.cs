@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Mirror;
 
-public class PlayerMovement : MonoBehaviour
-{
-    // TODO : �÷��̾� ������ ���콺�� �غ���
+public class PlayerMovement : NetworkBehaviour
+{    
     private float initSpeed = 0f;
     private float walkSpeed = 6f;
     private float runSpeed = 10f;
@@ -35,8 +35,18 @@ public class PlayerMovement : MonoBehaviour
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
     }
 
+    private bool isDance = false;
     void Update()
     {
+        if (!isLocalPlayer)
+        {
+            return;
+        }
+        isDance = !isDance;
+        if (Input.GetMouseButtonDown(0))
+        {
+            GetComponent<PlayerAnimation>().anim.SetBool("Dance", isDance);
+        }
         // 마우스 오른쪽 버튼을 클릭한 경우
         if (Input.GetMouseButtonDown(1))
         {

@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using Mirror;
 
-public class DatabaseUIManager : MonoBehaviour
+public class DatabaseUIManager : NetworkBehaviour
 {
     [Header("Login")]
     public GameObject loginPanel;
@@ -40,8 +41,8 @@ public class DatabaseUIManager : MonoBehaviour
     {
         Debug.Log("로그인 성공");
 
-        this.userData = data;        
-        SceneManager.LoadScene(1);
+        this.userData = data;
+        NetworkManager.singleton.StartClient();
     }
     private void OnLoginFail()
     {

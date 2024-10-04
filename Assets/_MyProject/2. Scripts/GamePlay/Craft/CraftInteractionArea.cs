@@ -1,9 +1,10 @@
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CraftInteractionArea : MonoBehaviour
+public class CraftInteractionArea : NetworkBehaviour
 {
     public LayerMask playerLayer;
     /// <summary>
@@ -15,7 +16,7 @@ public class CraftInteractionArea : MonoBehaviour
 
     public Craft craft;
 
-
+    private GameObject currentPlayer;    // 현재 상호작용 중인 플레이어
     public bool isHaveTool;
 
     private void Awake()
@@ -39,15 +40,29 @@ public class CraftInteractionArea : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other)
-    {
+    {        
         if ((playerLayer | (1 << other.gameObject.layer)) != playerLayer) return;
-        InteractAction.SetActive(isHaveTool);
+        NetworkIdentity playerIdentity = other.GetComponent<NetworkIdentity>();
+        // 만약 해당 플레이어가 로컬 플레이어일 경우에만 상호작용 UI 및 파티클 활성화
+        if (playerIdentity != null && playerIdentity.isLocalPlayer)
+        {
+            currentPlayer = other.gameObject;  // 상호작용 중인 플레이어 저장
+            InteractAction.SetActive(isHaveTool);
+        }        
     }
 
     private void OnTriggerExit(Collider other)
     {
         if ((playerLayer | (1 << other.gameObject.layer)) != playerLayer) return;
-        InteractAction.SetActive(false);
+        
+        NetworkIdentity playerIdentity = other.GetComponent<NetworkIdentity>();
+
+        // 만약 로컬 플레이어가 포탈 영역을 벗어났을 경우 상호작용 UI 및 파티클 비활성화
+        if (playerIdentity != null && playerIdentity.isLocalPlayer)
+        {
+            InteractAction.SetActive(false);            
+            currentPlayer = null;  // 플레이어가 나가면 null로 초기화
+        }
     }
 
     private void OnInteractFishing(InputAction.CallbackContext context)

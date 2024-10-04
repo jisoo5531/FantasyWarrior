@@ -6,14 +6,15 @@ using System;
 using System.Security.Cryptography;
 using System.Data;
 using System.Text;
+using Mirror;
 
-public class DatabaseManager : MonoBehaviour
+public class DatabaseManager : NetworkBehaviour
 {
     public static DatabaseManager Instance { get; private set; }
 
     private MySqlConnection conn;           // mySql DB와 연결상태를 유지하는 객체
 
-    private string serverIP = "52.78.239.203";
+    private string serverIP = "43.201.249.206";
     private string portHum = "3306";
     private string dbName = "game";
     private string tableName = "users";
@@ -54,7 +55,7 @@ public class DatabaseManager : MonoBehaviour
     }
     /// <summary>
     /// TODO : 임시
-    /// </summary>
+    /// </summary>    
     public void GetUserDataTest(string Email, string passwd)
     {
         string query =

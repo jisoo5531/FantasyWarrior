@@ -4,6 +4,7 @@ using UnityEngine;
 using MyScene;
 public class HumanScene : MonoBehaviour
 {
+    public PlayerController player;
     public Transform GameStartPos;
     public Transform GoblinToHumanPos;
 

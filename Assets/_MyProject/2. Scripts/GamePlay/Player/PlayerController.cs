@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Cinemachine;
+using Mirror;
 
 [
     RequireComponent(typeof(PlayerInput)), 
@@ -10,9 +12,10 @@ using UnityEngine.UI;
     RequireComponent(typeof(PlayerAnimation)),
     RequireComponent(typeof(PlayerStat))
 ]
-public class PlayerController : MonoBehaviour
-{    
-    
+public class PlayerController : NetworkBehaviour
+{
+    private HumanScene scene;
+
     //protected CharacterController controller;
     //protected PlayerInput playerInput;
     protected PlayerMovement playerMovement;
@@ -50,6 +53,7 @@ public class PlayerController : MonoBehaviour
     {
         StatInit();
     }
+    
 
     /// <summary>
     /// 플레이어의 레벨 등의 스탯 (UserStatManager), 플레이어가 착용하고 있는 장비 (PlayerEquipManager) 를 받아온 다음에 초기화
@@ -69,8 +73,14 @@ public class PlayerController : MonoBehaviour
         playerUI?.Initialize(damagable);
         damagable.OnDeath += () => { Debug.Log("플레이어 죽었다."); };
     }
-    
-    
+
+    public override void OnStartLocalPlayer()
+    {
+        GameObject.Find("_Scene").GetComponent<HumanScene>().player = this;
+        GameObject.Find("ClearShot Camera").GetComponent<CinemachineClearShot>().Follow = this.transform;
+        GameObject.Find("ClearShot Camera").GetComponent<CinemachineClearShot>().LookAt = this.transform;
+        FindObjectOfType<Craft>().playerAnim = this.GetComponent<Animator>();
+    }
     private void FixedUpdate()
     {
         //playerMovement?.Move(controller);

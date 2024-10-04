@@ -34,6 +34,5 @@ LEFT JOIN Items i6 ON PlayerEquipment.PendantItem_ID = i6.Item_ID
 LEFT JOIN Items i7 ON PlayerEquipment.RingItem_ID = i7.Item_ID
 WHERE PlayerEquipment.User_ID = 1;*/
 
-UPDATE usercrafttools
-SET usercrafttools.Item_ID={}
-WHERE usercrafttools.User_ID={} AND usercrafttools.Craft_Type=
+UPDATE user_npc_quests
+SET user_npc_quests.IsComplete
