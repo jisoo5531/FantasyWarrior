@@ -2,20 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Mirror;
 
-public class PlayerAnimation : MonoBehaviour
+public class PlayerAnimation : NetworkBehaviour
 {
     [HideInInspector] public Animator anim;
     private bool isRun = false;
     public Dictionary<int, string> skillTable;
     public List<int> equipSkills;
 
-    private void Awake()
+    public override void OnStartLocalPlayer()
     {
         anim = GetComponent<Animator>();
-    }
-    private void Start()
-    {
         PlayerSkill skill = GetComponent<PlayerSkill>();
         skillTable = skill.skillTable;
         equipSkills = PlayerSkill.EquipSkills;

@@ -4,9 +4,11 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Mirror;
 
 public class UI_InventoryPanel : MonoBehaviour
 {
+    public int userID;
     // TODO : 아이템 종류 더 많게 해서 테스트 해보기.    
     // TODO : 인벤토리 정렬 기능 넣기
 
@@ -29,7 +31,7 @@ public class UI_InventoryPanel : MonoBehaviour
     public UI_EquipItemInfo EquipitemInfo;
     public UI_ConsumpOtherItemInfo OtherConsumpItemInfo;
 
-    [Header("Gold")]    
+    [Header("Gold")]
     public TMP_Text goldText;
 
     private int itemID;
@@ -41,10 +43,16 @@ public class UI_InventoryPanel : MonoBehaviour
     private Queue<UI_InventorySlot> emptyEquipSlot = new();
     private Queue<UI_InventorySlot> emptyConsumpSlot = new();
     private Queue<UI_InventorySlot> emptyOtherSlot = new();
-    
 
-    private void Awake()
+    private void Start()
     {
+        // 로컬 플레이어 체크
+        NetworkIdentity networkIdentity = transform.root.GetComponent<NetworkIdentity>();
+        if (networkIdentity == null || !networkIdentity.isLocalPlayer)
+        {
+            return; // 로컬 플레이어가 아닐 경우 UI를 실행하지 않음
+        }
+
         this.EquipContent = itemContentList[0];
         this.ConsumpContent = itemContentList[1];
         this.OtherContent = itemContentList[2];
@@ -53,16 +61,10 @@ public class UI_InventoryPanel : MonoBehaviour
             int index = i;
             tabButtonList[index].onClick.AddListener(() => OnClickItemtabButton(index));
         }
-    }
-    private void Start()
-    {
-        InventoryPanelInit();
-    }
-    public void InventoryPanelInit()
-    {
+
         //PlayerEquipManager.Instance.OnAllUnEquipButtonClick += SetItemToSlot_Sort;
         //PlayerEquipManager.Instance.OnUnEquipItem += SetItemToSlot_Sort;
-        //InventoryManager.Instance.OnGetItem += SetItemToSlot_Sort;
+        //InventoryManager.Instance.OnGetItem += SetItemToSlot_Sort;        
         PlayerEquipManager.Instance.OnAllUnEquipButtonClick += SetItemToSlot;
         PlayerEquipManager.Instance.OnUnEquipItem += SetItemToSlot;
         InventoryManager.Instance.OnGetItem += SetItemToSlot;
@@ -70,6 +72,7 @@ public class UI_InventoryPanel : MonoBehaviour
 
 
         List<InventoryData> inventoryDataList = InventoryManager.Instance.inventoryDataList;
+        userID = inventoryDataList[0].User_ID;
         if (inventoryDataList.Count > 0)
         {
             oldInventoryList = inventoryDataList.Select(item => new InventoryData(item.User_ID, item.Item_ID, item.Quantity)).ToList();
@@ -78,14 +81,25 @@ public class UI_InventoryPanel : MonoBehaviour
             SetItemToSlot_Sort();
             //SetItemToSlot();
         }
-        SetPlayerGold();
+        goldText.text = UserStatManager.Instance.userStatClient.Gold.ToString();
     }
-    
+
+    public void Initialize()
+    {
+        
+
+        
+    }
+
     /// <summary>
     /// 유저가 소유한 골드 보유량 세팅
     /// </summary>
-    private void SetPlayerGold()
+    private void SetPlayerGold(int userID)
     {
+        if (this.userID != userID)
+        {
+            return;
+        }
         goldText.text = UserStatManager.Instance.userStatClient.Gold.ToString();
     }
 
@@ -93,11 +107,16 @@ public class UI_InventoryPanel : MonoBehaviour
     /// <para>인벤토리 슬롯으로 세팅</para>
     /// 인벤토리에 빈 곳 먼저 세팅.
     /// </summary>
-    private void SetItemToSlot()
+    private void SetItemToSlot(int userID)
     {
+        if (this.userID != userID)
+        {
+            return;
+        }
         List<InventoryData> newInventoryList = InventoryManager.Instance.inventoryDataList;
         List<AddItemClassfiy> whichAddItem = InventoryManager.Instance.addWhichItemList;
 
+        Debug.Log($"추가 개수 : {whichAddItem.Count}");
         foreach (var item in whichAddItem)
         {
             if (item.isExist)
@@ -146,7 +165,7 @@ public class UI_InventoryPanel : MonoBehaviour
         int index = inventoryDataList.FindIndex(x => x.Item_ID.Equals(itemID));
         int quantity = inventoryDataList[index].Quantity;
         for (int i = 0; i < EquipContent.transform.childCount; i++)
-        {            
+        {
             UI_InventorySlot slot = EquipContent.transform.GetChild(i).GetComponent<UI_InventorySlot>();
             if (slot.itemID.Equals(itemID))
             {
@@ -236,7 +255,7 @@ public class UI_InventoryPanel : MonoBehaviour
         for (int i = 0; i < itemContentList.Count; i++)
         {
             itemContentList[i].transform.parent.parent.gameObject.SetActive(i == index);
-        }        
+        }
     }
     private void SetItemToEquipSlot(int itemID, Sprite sprite, UI_InventorySlot slot)
     {

@@ -1,3 +1,4 @@
+using Mirror;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -34,15 +35,15 @@ public class InventoryManager : MonoBehaviour
     /// <summary>
     /// 아이템을 획득 시, 실행할 이벤트
     /// </summary>
-    public event Action OnGetItem;
+    public event Action<int> OnGetItem;
     /// <summary>
     /// 아이템 획득 시, 아이템 데이터와 같이 넘겨주기
     /// </summary>
-    public event Action<ItemData> OnGetItemData;
+    public event Action<ItemData, int> OnGetItemData;
     /// <summary>
     /// 제작도구를 획득 시, 실행할 이벤트
     /// </summary>
-    public event Action OnGetCraftItem;
+    public event Action<int> OnGetCraftItem;
     /// <summary>
     /// 인벤토리에서 아이템이 일정수량 빠졌을 때 실행
     /// </summary>
@@ -55,17 +56,20 @@ public class InventoryManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+    }    
+    public void Initialize(int userId)
+    {        
+        CmdRequestUserData(userId);
     }
-    private void Start()
+    
+    private void CmdRequestUserData(int userId)
     {
-        Initialize();
+        GetDataFromDatabase(userId);
+        GetUserCraftItemFromDB(userId);
     }
-    public void Initialize()
-    {
-        GetDataFromDatabase();
-        GetUserCraftItemFromDB();        
-        //EventHandler.managerEvent.TriggerInventoryManagerInit();
-    }
+
+    
+
     /// <summary>
     /// 해당 유저의 인벤토리에 있는 아이템ID의 정보 가져오기
     /// </summary>
@@ -127,30 +131,29 @@ public class InventoryManager : MonoBehaviour
     /// </summary>
     /// <param name="itemData"></param>
     /// <param name="amount"></param>
-    public void GetItem(ItemData itemData, int amount)
+    public void GetItem(int userID, ItemData itemData, int amount)
     {
-        this.itemData = itemData;
-        int user_Id = DatabaseManager.Instance.userData.UID;
-
-        int index = inventoryDataList.FindIndex(x => x.User_ID.Equals(user_Id) && x.Item_ID.Equals(itemData.Item_ID));
+        this.itemData = itemData;        
+        Debug.Log($"얘는 누구 : {userID}");
+        int index = inventoryDataList.FindIndex(x => x.User_ID.Equals(userID) && x.Item_ID.Equals(itemData.Item_ID));
         if (index >= 0)
         {
             // 아이템 획득 시, 인벤토리에 있는 아이템이라면
             inventoryDataList[index].Quantity += amount;
-            AddWhichItem(new AddItemClassfiy(itemData.Item_ID, amount, true));
+            AddWhichItem(new AddItemClassfiy(userID, itemData.Item_ID, amount, true));
         }
         else
         {
             // 아이템 획득 시, 인벤토리에 없는 아이템이라면
-            inventoryDataList.Add(new InventoryData(user_Id, itemData.Item_ID, amount));
-            AddWhichItem(new AddItemClassfiy(itemData.Item_ID, amount, false));
+            inventoryDataList.Add(new InventoryData(userID, itemData.Item_ID, amount));
+            AddWhichItem(new AddItemClassfiy(userID, itemData.Item_ID, amount, false));
         }
         // 아이템 획득 시, 퀘스트와 관련된 아이템인지 확인
         QuestManager.Instance.UpdateQuestProgress(itemID: itemData.Item_ID);
 
         CheckGetCraftTool(itemData.Item_ID);
-        OnGetItemData?.Invoke(itemData);
-        OnGetItem?.Invoke();
+        OnGetItemData?.Invoke(itemData, userID);
+        OnGetItem?.Invoke(userID);
     }    
     /// <summary>
     /// 얻은 아이템이 제작도구인지 확인
@@ -172,7 +175,7 @@ public class InventoryManager : MonoBehaviour
         int index = userCraftToolClient.FindIndex(x => x.CreftType.Equals(craftTool.CreftType));
         userCraftToolClient[index].Item_ID = craftTool.Item_ID;
 
-        OnGetCraftItem?.Invoke();
+        OnGetCraftItem?.Invoke(user_ID);
     }
     /// <summary>
     /// 장비를 벗을 때, 인벤토리로 추가
@@ -212,9 +215,8 @@ public class InventoryManager : MonoBehaviour
     /// <summary>
     /// <para>인벤토리 데이터를 가져오는 메서드</para>
     /// </summary>
-    private List<InventoryData> GetDataFromDatabase()
-    {
-        int userId = DatabaseManager.Instance.userData.UID;
+    private List<InventoryData> GetDataFromDatabase(int userId)
+    {                
 
         originInventoryList = new List<InventoryData>();
         inventoryDataList = new List<InventoryData>();
@@ -244,9 +246,8 @@ public class InventoryManager : MonoBehaviour
     /// 유저가 보유한 제작도구들을 가져오기
     /// <para>동시에 클라이언트에 임시로 저장하는 것도 같이</para>
     /// </summary>
-    private void GetUserCraftItemFromDB()
-    {
-        int user_ID = DatabaseManager.Instance.userData.UID;
+    private void GetUserCraftItemFromDB(int user_ID)
+    {        
         userCraftToolList = new List<UserCraftToolData>();
         userCraftToolClient = new List<UserCraftToolData>();
         string query =
@@ -277,9 +278,8 @@ public class InventoryManager : MonoBehaviour
     /// DB에 아직 넣지 않고 클라이언트에 임의로 저장해놓은 데이터들을 DB로 저장 (userquestList, userquestOBJList)
     /// <para>(게임 종료 전 또는 일정 시간마다)</para>
     /// </summary>
-    public void SaveInventory()
-    {        
-        int user_ID = DatabaseManager.Instance.userData.UID;
+    public void SaveInventory(int user_ID)
+    {                
 
         var differences = Extensions.GetDifferences(
             originInventoryList,
@@ -312,9 +312,8 @@ public class InventoryManager : MonoBehaviour
             _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
         }        
     }
-    public void SaveUserCraftTool()
-    {
-        int user_ID = DatabaseManager.Instance.userData.UID;
+    public void SaveUserCraftTool(int user_ID)
+    {        
 
         var differences = Extensions.GetDifferences(
             userCraftToolList,
@@ -337,14 +336,19 @@ public class InventoryManager : MonoBehaviour
     }
     private void AutoSave()
     {
-        SaveInventory();
-        SaveUserCraftTool();
+        //SaveInventory();
+        //SaveUserCraftTool();
     }
-    private void OnApplicationQuit()
+    public void Save(int userId)
     {
-        SaveInventory();
-        SaveUserCraftTool();
+        SaveInventory(userId);
+        SaveUserCraftTool(userId);
     }
+    //private void OnApplicationQuit()
+    //{
+    //    SaveInventory();
+    //    SaveUserCraftTool();
+    //}
     #endregion
 }
 /// <summary>
@@ -352,12 +356,14 @@ public class InventoryManager : MonoBehaviour
 /// </summary>
 public class AddItemClassfiy 
 {
+    public int User_ID { get; private set; }
     public int item_ID { get; private set; }
     public int Amount { get; private set; }
     public bool isExist { get; private set; }
 
-    public AddItemClassfiy(int item_ID, int amount, bool isExist)
+    public AddItemClassfiy(int user_ID, int item_ID, int amount, bool isExist)
     {
+        this.User_ID = user_ID;
         this.item_ID = item_ID;
         this.Amount = amount;
         this.isExist = isExist;

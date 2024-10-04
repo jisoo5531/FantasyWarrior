@@ -8,7 +8,20 @@ using System.Data;
 using System.Text;
 using Mirror;
 
-public class DatabaseManager : NetworkBehaviour
+public class PlayerData
+{
+    public int UserId;
+    public string UserName;
+    public UserStatData StatData; // 각 플레이어의 통계 데이터
+
+    public PlayerData(int userid, string userName)
+    {
+        this.UserId = userid;
+        this.UserName = userName;
+    }
+}
+
+public class DatabaseManager : MonoBehaviour
 {
     public static DatabaseManager Instance { get; private set; }
 
@@ -20,8 +33,11 @@ public class DatabaseManager : NetworkBehaviour
     private string tableName = "users";
     private string rootPassword = "1234";   // 테스트 시에 활용할 수 있지만 보안에 취약하므로 주의
 
+
+    private bool isGameStart = false;
     // TODO : 테스트용 임시 저장    
     public UserData userData { get; private set; }
+    private Dictionary<int, PlayerData> playerDataDict = new Dictionary<int, PlayerData>();
     public UserStatData userStatData { get; private set; }
 
     private void Awake()
@@ -38,7 +54,42 @@ public class DatabaseManager : NetworkBehaviour
             Destroy(this);
         }
         DontDestroyOnLoad(this);
+
+        EventHandler.gameStartEvent.RegisterGameStart(() => isGameStart = true);
     }
+    // 플레이어의 인스턴스 ID를 키로 데이터를 추가하는 메서드
+    public void InitializePlayer(GameObject playerObject, int userId, string userName)
+    {
+        int instanceID = playerObject.GetInstanceID();
+
+        // 딕셔너리에 인스턴스 ID가 없으면 추가
+        if (!playerDataDict.ContainsKey(instanceID))
+        {
+            playerDataDict.Add(instanceID, new PlayerData(userId, userName));
+            Debug.LogError($"Player {userName} initialized with instance ID: {instanceID}");
+        }
+        else
+        {
+            Debug.LogError($"Player with instance ID: {instanceID} already exists.");
+        }
+    }
+
+    // 인스턴스 ID로 플레이어 데이터를 조회하는 메서드
+    public PlayerData GetPlayerData(GameObject playerObject)
+    {
+        int instanceID = playerObject.GetInstanceID();
+
+        if (playerDataDict.TryGetValue(instanceID, out var playerData))
+        {
+            return playerData;
+        }
+        else
+        {
+            Debug.LogWarning($"Player with instance ID: {instanceID} not found.");
+            return null;
+        }
+    }
+
     public void DBConnect()
     {
         try
@@ -127,7 +178,7 @@ public class DatabaseManager : NetworkBehaviour
     }
 
     private void GetNPCQuestFromDB()
-    {        
+    {
         int userid = DatabaseManager.Instance.userData.UID;
         List<NPCQuestData> NPCQuest_List = new List<NPCQuestData>();
 
@@ -226,13 +277,24 @@ public class DatabaseManager : NetworkBehaviour
             DataRow row = set.Tables[0].Rows[0];
 
             userData = new UserData(row);
+            Debug.Log($"{userData.UID}, {userData.Name}");            
             successCallback?.Invoke(userData);
+            StartCoroutine(WaitGameStart(userData.UID));
         }
         else
         {
             // 로그인 실패
             failureCallback?.Invoke();
         }
+    }
+    IEnumerator WaitGameStart(int userid)
+    {
+        yield return new WaitUntil(() => isGameStart);
+        OnGameStartSetData(userid);
+    }
+    private void OnGameStartSetData(int userid)
+    {
+        GameManager.Instance.OnUserLoginManagerInit(userid);
     }
 
     #endregion

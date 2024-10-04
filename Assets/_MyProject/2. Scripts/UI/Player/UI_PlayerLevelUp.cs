@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Mirror;
 
 public class UI_PlayerLevelUp : MonoBehaviour
 {
@@ -10,6 +11,12 @@ public class UI_PlayerLevelUp : MonoBehaviour
 
     private void Awake()
     {
+        // 로컬 플레이어 체크
+        NetworkIdentity networkIdentity = transform.root.GetComponent<NetworkIdentity>();
+        if (networkIdentity == null || !networkIdentity.isLocalPlayer)
+        {
+            return; // 로컬 플레이어가 아닐 경우 UI를 실행하지 않음
+        }
         EventHandler.playerEvent.RegisterPlayerLevelUp(OnLevelUP);
     }    
 

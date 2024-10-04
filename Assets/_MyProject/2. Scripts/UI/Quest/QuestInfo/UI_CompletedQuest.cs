@@ -9,7 +9,7 @@ public class UI_CompletedQuest : UI_QuestElement
         base.OnClickToOpenQuestInfoWindow();
         if (isInfoOpen)
         {
-            questInfoWindow.Initialize(this.quest, Q_Status.Completed);
+            questInfoWindow.Initialize(this.userId, this.quest, Q_Status.Completed);
         }
         
     }

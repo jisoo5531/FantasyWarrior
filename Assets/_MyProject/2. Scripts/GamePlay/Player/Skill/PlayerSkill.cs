@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Mirror;
 
-public class PlayerSkill : MonoBehaviour
+public class PlayerSkill : NetworkBehaviour
 {
     
     /// <summary>
@@ -36,27 +37,20 @@ public class PlayerSkill : MonoBehaviour
     /// </summary>
     public static event Action OnKeyBindInit;
 
-    private void OnEnable()
-    {        
+
+    private void Start()
+    {
+        
+    }
+    public override void OnStartLocalPlayer()
+    {
+        Initialize();
+        playerAnimation = GetComponent<PlayerAnimation>();
         GameManager.inputActions.PlayerActions.Skill_1.performed += OnSkill_1;
         GameManager.inputActions.PlayerActions.Skill_2.performed += OnSkill_2;
         GameManager.inputActions.PlayerActions.Skill_3.performed += OnSkill_3;
         GameManager.inputActions.PlayerActions.Skill_4.performed += OnSkill_4;
     }
-    private void OnDisable()
-    {
-        GameManager.inputActions.PlayerActions.Skill_1.performed -= OnSkill_1;
-        GameManager.inputActions.PlayerActions.Skill_2.performed -= OnSkill_2;
-        GameManager.inputActions.PlayerActions.Skill_3.performed -= OnSkill_3;
-        GameManager.inputActions.PlayerActions.Skill_4.performed -= OnSkill_4;
-    }
-
-    private void Start()
-    {
-        Initialize();
-        playerAnimation = GetComponent<PlayerAnimation>();
-    }        
-    
 
     protected virtual void Initialize()
     {

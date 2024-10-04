@@ -17,8 +17,9 @@ public class Item : MonoBehaviour
         if ((targetLayer | (1 << other.gameObject.layer)) != targetLayer)
         {            
             return;
-        }            
-        InventoryManager.Instance.GetItem(itemData, 2);
+        }
+        int userId = other.GetComponent<PlayerController>().userID;
+        InventoryManager.Instance.GetItem(userId, itemData, 2);
 
         Destroy(gameObject);
     }

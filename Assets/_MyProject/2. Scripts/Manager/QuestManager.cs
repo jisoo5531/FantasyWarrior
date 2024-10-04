@@ -1,3 +1,4 @@
+using Mirror;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -44,19 +45,19 @@ public class QuestManager : MonoBehaviour
     /// <summary>
     /// 퀘스트를 수락하면 발생하는 이벤트
     /// </summary>
-    public event Action OnAcceptQuest;
+    public event Action<int> OnAcceptQuest;
     /// <summary>
     /// 퀘스트가 업데이트될 때마다 발생하는 이벤트
     /// </summary>
-    public event Action OnUpdateQuestProgress;
+    public event Action<int> OnUpdateQuestProgress;
     /// <summary>
     /// 퀘스트가 완료되면 발생하는 이벤트
     /// </summary>
-    public event Action OnCompleteQuest;
+    public event Action<int> OnCompleteQuest;
     /// <summary>
     /// 퀘스트가 완료되면 플레이어 퀘스트 완료 UI에 전달용.
     /// </summary>
-    public event Action<QuestData> OnCompleteQuestData;
+    public event Action<QuestData, int> OnCompleteQuestData;
     /// <summary>
     /// 퀘스트 완료 후, 보상 분배
     /// </summary>
@@ -77,29 +78,33 @@ public class QuestManager : MonoBehaviour
     /// <summary>
     /// 게임이 시작하면 저장되어 있던 데이터 가져오기
     /// </summary>
-    public void Initialize()
+    public void Initialize(int userid)
+    {        
+        CmdRequestUserData(userid);
+        //EventHandler.managerEvent.TriggerQuestManagerInit();
+    }
+    
+    private void CmdRequestUserData(int userId)
     {
         GetQuestListFromDB();
         GetObjectivesDataFromDB();
-        GetUserQuestObjectivesFromDB();
-        GetUserQuestsFromDB();
+        GetUserQuestObjectivesFromDB(userId);
+        GetUserQuestsFromDB(userId);
         GetQuestObjKill();
         GetQuestObjTalk();
         GetQuestObjCollect();
-
-        int userID = DatabaseManager.Instance.userData.UID;
+        
         questProgressList = new List<QuestProgress>();
-        List<UserQuestObjectivesData> userQOList = GetUserQuestObjectivesFromDB();
+        List<UserQuestObjectivesData> userQOList = GetUserQuestObjectivesFromDB(userId);
         if (userQOList != null)
         {
             Debug.Log("여긴 되냐?");
             foreach (var QO in userQOList)
             {
                 QuestObjectiveData objective = GetObjectiveData(QO.ObjectiveID);
-                questProgressList.Add(new QuestProgress(userID, objective.Quest_ID, QO.CurrentAmount));
+                questProgressList.Add(new QuestProgress(userId, objective.Quest_ID, QO.CurrentAmount));
             }
         }
-        //EventHandler.managerEvent.TriggerQuestManagerInit();
     }
 
     /// <summary>
@@ -308,7 +313,7 @@ public class QuestManager : MonoBehaviour
         }
 
 
-        OnAcceptQuest?.Invoke();
+        OnAcceptQuest?.Invoke(user_ID);
     }
     /// <summary>
     /// 퀘스트 진척도 업데이트를 위한 메서드
@@ -332,7 +337,7 @@ public class QuestManager : MonoBehaviour
             Debug.Log("퀘스트 대상이다.");
             questProgressList[index].UpdateProgress();
 
-            OnUpdateQuestProgress?.Invoke();
+            OnUpdateQuestProgress?.Invoke(userID);
         }
         if (itemID != 0)
         {
@@ -345,7 +350,7 @@ public class QuestManager : MonoBehaviour
             }
             Debug.Log("퀘스트 대상이다.");
             questProgressList[index].UpdateProgress();
-            OnUpdateQuestProgress?.Invoke();
+            OnUpdateQuestProgress?.Invoke(userID);
         }
 
     }
@@ -353,24 +358,25 @@ public class QuestManager : MonoBehaviour
     /// <summary>
     /// 퀘스트 완료 안내가 나온 뒤에 완료 보상 등을 얻기 위해
     /// </summary>
-    public void TriggerGetReward(int questID)
+    public void TriggerGetReward(int questID, int userId)
     {
-        GetReward(questID);
+        GetReward(questID, userId);
     }
     /// <summary>
     /// 퀘스트 완료 시에 실행할 메서드
     /// TODO : 완료 버튼을 누르면 완료 UI 뜨게
     /// </summary>
     /// <param name="quest_ID"></param>
-    public void QuestComplete(int quest_ID)
-    {
+    public void QuestComplete(int quest_ID, int userId)
+    {        
+
         QuestCompleteQuery(quest_ID);
         SetUserQuestData(quest_ID);        
 
         // 클라이언트에 저장한 임시 대화 퀘스트 목록에서 삭제
         NPCManager.Instance.RemoveTalkQuest(quest_ID);
-        OnCompleteQuest?.Invoke();
-        OnCompleteQuestData?.Invoke(GetQuestData(quest_ID));        
+        OnCompleteQuest?.Invoke(userId);
+        OnCompleteQuestData?.Invoke(GetQuestData(quest_ID), userId);        
     }
     /// <summary>
     /// DB에 퀘스트 완료문 쿼리문 날리기
@@ -421,14 +427,13 @@ public class QuestManager : MonoBehaviour
     /// 퀘스트 완료 후, 퀘스트 보상 수령
     /// </summary>
     /// <param name="quest_ID"></param>
-    private void GetReward(int quest_ID)
+    private void GetReward(int quest_ID, int userId)
     {
-        QuestData quest = GetQuestData(quest_ID);
-
+        QuestData quest = GetQuestData(quest_ID);        
         if (quest.RewardItemID != 0)
         {
             ItemData reward_Item = ItemManager.Instance.GetItemData(quest.RewardItemID);
-            InventoryManager.Instance.GetItem(reward_Item, quest.RewardItem_Amount);
+            InventoryManager.Instance.GetItem(userId, reward_Item, quest.RewardItem_Amount);
         }
         UserStatManager.Instance.GetGold(quest.Reward_Gold);
         UserStatManager.Instance.UpdateExp(quest.Reward_Exp);
@@ -500,9 +505,8 @@ public class QuestManager : MonoBehaviour
     /// 유저가 수행 중인 퀘스트들의 진행도 가져오기
     /// </summary>
     /// <returns></returns>
-    private List<UserQuestObjectivesData> GetUserQuestObjectivesFromDB()
-    {
-        int user_ID = DatabaseManager.Instance.userData.UID;
+    private List<UserQuestObjectivesData> GetUserQuestObjectivesFromDB(int user_ID)
+    {        
         userQuestObjList = new List<UserQuestObjectivesData>();
 
         string query =
@@ -530,9 +534,8 @@ public class QuestManager : MonoBehaviour
     /// 유저가 수행 중인 퀘스트들의 진행 상태 가져오기
     /// </summary>
     /// <returns></returns>
-    private List<UserQuestsData> GetUserQuestsFromDB()
-    {
-        int user_ID = DatabaseManager.Instance.userData.UID;
+    private List<UserQuestsData> GetUserQuestsFromDB(int user_ID)
+    {        
         userQuestsList = new List<UserQuestsData>();
 
         string query =
@@ -638,9 +641,8 @@ public class QuestManager : MonoBehaviour
     /// DB에 아직 넣지 않고 클라이언트에 임의로 저장해놓은 데이터들을 DB로 저장 (userquestList, userquestOBJList)
     /// <para>(게임 종료 전 또는 일정 시간마다)</para>
     /// </summary>
-    public void SaveQuestProgress()
-    {
-        int user_ID = DatabaseManager.Instance.userData.UID;
+    public void SaveQuestProgress(int user_ID)
+    {        
         foreach (QuestProgress questProgress in questProgressList)
         {
             QuestObjectiveData objectiveData = GetObjectiveData(questProgress.quest_Id);
@@ -655,12 +657,11 @@ public class QuestManager : MonoBehaviour
     }
     private void AutoSave()
     {
-        SaveQuestProgress();
+        //SaveQuestProgress();
     }
-    private void OnApplicationQuit()
+    public void Save(int userId)
     {
-        Debug.Log("게임 종료.");
-        SaveQuestProgress();
+        SaveQuestProgress(userId);
     }
     #endregion
 }

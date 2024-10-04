@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CraftInteractionArea : NetworkBehaviour
+public class CraftInteractionArea : MonoBehaviour
 {
     public LayerMask playerLayer;
     /// <summary>
@@ -22,14 +22,15 @@ public class CraftInteractionArea : NetworkBehaviour
     private void Awake()
     {
         GameManager.inputActions.PlayerActions.Interact.performed += OnInteractFishing;
+        EventHandler.playerEvent.RegisterPlayerEnter(CheckUserHaveTool);
     }
     private void Start()
     {
         // TODO : 나중에 아이템을 팔거나 버리는 기능 넣을 시, 그때에도 체크해주도록
         InventoryManager.Instance.OnGetCraftItem += CheckUserHaveTool;
-        CheckUserHaveTool();
+        
     }
-    protected virtual void CheckUserHaveTool()
+    protected virtual void CheckUserHaveTool(int userid)
     {
         UserCraftToolData userCraftTool = InventoryManager.Instance.userCraftToolClient.Find(x => x.CreftType.Equals(craftType));
         isHaveTool = userCraftTool.Item_ID != 0;
@@ -67,8 +68,10 @@ public class CraftInteractionArea : NetworkBehaviour
 
     private void OnInteractFishing(InputAction.CallbackContext context)
     {
+        Debug.Log("여기도 안 되나?");
         if (true == InteractAction.activeSelf)
         {
+            Debug.Log("여기는? 돼 ?");
             InteractAction.SetActive(false);
             craft.Action();
         }

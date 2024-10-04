@@ -9,6 +9,8 @@ public class UI_BuyAmount : UI_BuyOrSellAmount
     public Button buyButton;
 
     private NPC_Shop_Item_Data shopItem;
+    
+    private int userID;
 
     protected override void ButtonInitialize()
     {
@@ -19,8 +21,9 @@ public class UI_BuyAmount : UI_BuyOrSellAmount
     /// 사고자 할 때의 UI 세팅
     /// </summary>
     /// <param name="shopItemID"></param>
-    public void SetUI_Buy(int shopItemID)
+    public void SetUI_Buy(int userId, int shopItemID)
     {
+        this.userID = userId;
         itemQuantity = 0;
         NPC_Shop_Item_Data shopItem = ShopManager.Instance.GetShopItem(shopItemID);
         this.shopItem = shopItem;
@@ -63,8 +66,8 @@ public class UI_BuyAmount : UI_BuyOrSellAmount
     {
         Action buySuccess = PanelManager.Instance.ShopPanel.OnSuccessBuySell;
         Action sellSuccess = PanelManager.Instance.ShopPanel.OnFailureBuy;
-        buySuccess += SuccessBuy;
-        ShopManager.Instance.BuyItem(this.shopItem.NPC_Shop_Item_ID, itemQuantity, buySuccess, sellSuccess);
+        buySuccess += SuccessBuy;        
+        ShopManager.Instance.BuyItem(userID, this.shopItem.NPC_Shop_Item_ID, itemQuantity, buySuccess, sellSuccess);
     }    
     private void SuccessBuy()
     {

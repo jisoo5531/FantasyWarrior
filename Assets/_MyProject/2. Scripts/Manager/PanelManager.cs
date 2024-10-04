@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Mirror;
 
 public class PanelManager : MonoBehaviour
 {
@@ -21,12 +22,25 @@ public class PanelManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
-        PlayerSkill.OnKeyBindInit += SkillPanel.SkillPanelInit;
+        // 로컬 플레이어 체크
+        NetworkIdentity networkIdentity = transform.root.GetComponent<NetworkIdentity>();
+        if (networkIdentity == null || !networkIdentity.isLocalPlayer)
+        {
+            return; // 로컬 플레이어가 아닐 경우 UI를 실행하지 않음
+        }
+        Instance = this;        
     }
+
 
     private void OnEnable()
     {
+        // 로컬 플레이어 체크
+        NetworkIdentity networkIdentity = transform.root.GetComponent<NetworkIdentity>();
+        if (networkIdentity == null || !networkIdentity.isLocalPlayer)
+        {
+            return; // 로컬 플레이어가 아닐 경우 UI를 실행하지 않음
+        }
+        PlayerSkill.OnKeyBindInit += SkillPanel.SkillPanelInit;
         var playerActions = GameManager.inputActions.PlayerActions;
         playerActions.UI_Skill.performed += OnSkillUI;
         playerActions.UI_Inventory.performed += OnInventoryUI;
@@ -36,6 +50,13 @@ public class PanelManager : MonoBehaviour
 
     private void OnDisable()
     {
+        // 로컬 플레이어 체크
+        NetworkIdentity networkIdentity = transform.root.GetComponent<NetworkIdentity>();
+        if (networkIdentity == null || !networkIdentity.isLocalPlayer)
+        {
+            return; // 로컬 플레이어가 아닐 경우 UI를 실행하지 않음
+        }
+        PlayerSkill.OnKeyBindInit -= SkillPanel.SkillPanelInit;
         var playerActions = GameManager.inputActions.PlayerActions;
         playerActions.UI_Skill.performed -= OnSkillUI;
         playerActions.UI_Inventory.performed -= OnInventoryUI;

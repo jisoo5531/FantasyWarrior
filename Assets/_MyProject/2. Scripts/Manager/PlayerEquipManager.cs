@@ -5,7 +5,7 @@ using System.Data;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Mirror;
 
 public class PlayerEquipManager : MonoBehaviour
 {
@@ -28,28 +28,34 @@ public class PlayerEquipManager : MonoBehaviour
     /// <summary>
     /// 플레이어가 장비를 장착했을 때, 발생하는 이벤트
     /// </summary>
-    public event Action OnEquipItem;
+    public event Action<int> OnEquipItem;
     /// <summary>
     /// 플레이어가 장비를 해제했을 때, 발생하는 이벤트
     /// </summary>
-    public event Action OnUnEquipItem;
+    public event Action<int> OnUnEquipItem;
     /// <summary>
     /// 모든 장비 해제 버튼을 눌렀을 때, 발생하는 이벤트
     /// </summary>
-    public event Action OnAllUnEquipButtonClick;    
+    public event Action<int> OnAllUnEquipButtonClick;    
 
     private void Awake()
     {
-        Instance = this;
-        unEquipButton.onClick.AddListener(UnEquipAll);        
+        Instance = this;        
         //EventHandler.managerEvent.RegisterStatManagerInit(Initialize);
     }
     /// <summary>
     /// UserStatManager의 초기화 이후 초기화가 된다.
     /// </summary>
-    public void Initialize()
-    {        
-        PlayerEquipData playerEquipData = GetPlayerEquipFromDB();
+    public void Initialize(int userid)
+    {
+        CmdRequestUserData(userid);
+
+        //EventHandler.managerEvent.TriggerEquipManagerInit();
+        //UserStatManager.Instance.UpdateUserStat();
+    }    
+    private void CmdRequestUserData(int userId)
+    {
+        PlayerEquipData playerEquipData = GetPlayerEquipFromDB(userId);
         UserEquipTable = new Dictionary<string, int>
         {
             { EquipParts[0], playerEquipData.HeadItem_ID },
@@ -68,9 +74,6 @@ public class PlayerEquipManager : MonoBehaviour
         UserStatManager.Instance.EquipItemUpdateStat(isEquip: true, playerEquipData.WeaponItem_ID);
         UserStatManager.Instance.EquipItemUpdateStat(isEquip: true, playerEquipData.Pendant_ID);
         UserStatManager.Instance.EquipItemUpdateStat(isEquip: true, playerEquipData.Ring_ID);
-        
-        //EventHandler.managerEvent.TriggerEquipManagerInit();
-        //UserStatManager.Instance.UpdateUserStat();
     }
     private void Start()
     {
@@ -80,9 +83,8 @@ public class PlayerEquipManager : MonoBehaviour
     /// <summary>
     /// 플레이어가 장착한 장비 목록 가져오기
     /// </summary>
-    private PlayerEquipData GetPlayerEquipFromDB()
-    {
-        int user_id = DatabaseManager.Instance.userData.UID;
+    private PlayerEquipData GetPlayerEquipFromDB(int user_id)
+    {        
         string query =
             $"SELECT *\n" +
             $"FROM playerequipment\n" +
@@ -109,18 +111,19 @@ public class PlayerEquipManager : MonoBehaviour
     /// </summary>
     public void EquipItem(string part, int item_ID)
     {
+        int userid = DatabaseManager.Instance.userData.UID;
         Debug.Log($"아이템 ID : {item_ID}");
 
         UserEquipTable[part] = item_ID;
         UserStatManager.Instance.EquipItemUpdateStat(isEquip: true, itemID: item_ID);
-        OnEquipItem?.Invoke();
+        OnEquipItem?.Invoke(userid);
     }
     /// <summary>
     /// <para>모든 장비 해제</para>
     /// <para>HP 등의 스탯 변화도 같이 동작</para>
     /// </summary>
-    private void UnEquipAll()
-    {
+    public void UnEquipAll(int userId)
+    {        
         for (int i = 0; i < UserEquipTable.Count; i++)
         {
             int itemID = UserEquipTable[EquipParts[i]];
@@ -129,10 +132,10 @@ public class PlayerEquipManager : MonoBehaviour
                 UserEquipTable[EquipParts[i]] = 0;
                 UserStatManager.Instance.EquipItemUpdateStat(isEquip: false, itemID: itemID);
                 InventoryManager.Instance.GetItemUnEquip(itemID, 1);
-                InventoryManager.Instance.AddWhichItem(new AddItemClassfiy(itemID, 1, false));
+                InventoryManager.Instance.AddWhichItem(new AddItemClassfiy(userId, itemID, 1, false));
             }
         }
-        OnAllUnEquipButtonClick?.Invoke();
+        OnAllUnEquipButtonClick?.Invoke(userId);
     }
     /// <summary>
     /// 장비 슬롯에서 장비를 해제할 시, 특정 장비 해제 후, 인벤토리에 넣기
@@ -153,19 +156,18 @@ public class PlayerEquipManager : MonoBehaviour
 
         UserStatManager.Instance.EquipItemUpdateStat(isEquip: false, itemID);
         InventoryManager.Instance.GetItemUnEquip(itemID, 1);
-        InventoryManager.Instance.AddWhichItem(new AddItemClassfiy(itemID, 1, false));
+        InventoryManager.Instance.AddWhichItem(new AddItemClassfiy(user_ID, itemID, 1, false));
 
-        OnUnEquipItem?.Invoke();
+        OnUnEquipItem?.Invoke(user_ID);
     }
     #region 장착 장비 저장
     /// <summary>
     /// DB에 아직 넣지 않고 클라이언트에 임의로 저장해놓은 데이터들을 DB로 저장 (userquestList, userquestOBJList)
     /// <para>(게임 종료 전 또는 일정 시간마다)</para>
     /// </summary>
-    public void SaveEquipments()
+    public void SaveEquipments(int user_ID)
     {
-        Debug.Log("장착 장비 저장.");
-        int user_ID = DatabaseManager.Instance.userData.UID;
+        Debug.Log("장착 장비 저장.");        
 
         string head = UserEquipTable[EquipParts[0]] != 0 ? UserEquipTable[EquipParts[0]].ToString() : "NULL";
         string armor = UserEquipTable[EquipParts[1]] != 0 ? UserEquipTable[EquipParts[1]].ToString() : "NULL";
@@ -190,11 +192,11 @@ public class PlayerEquipManager : MonoBehaviour
     }
     private void AutoSave()
     {
-        SaveEquipments();
+        //SaveEquipments();
     }
-    private void OnApplicationQuit()
+    public void Save(int userId)
     {
-        SaveEquipments();
+        SaveEquipments(userId);
     }
     #endregion
 }

@@ -20,11 +20,11 @@ public class UI_InprogressQuest : UI_QuestElement
     /// </summary>
     public bool isGuided = false;
 
-    public static event Action OnGuideButton;
+    public static event Action<int> OnGuideButton;
 
-    public override void Initialize(int questID, UI_QuestInfo questInfoWindow)
+    public override void Initialize(int userId, int questID, UI_QuestInfo questInfoWindow)
     {
-        base.Initialize(questID, questInfoWindow);
+        base.Initialize(userId, questID, questInfoWindow);
         GuideButton.onClick.AddListener(OnClickGuide);        
     }
     
@@ -33,7 +33,7 @@ public class UI_InprogressQuest : UI_QuestElement
         base.OnClickToOpenQuestInfoWindow();
         if (isInfoOpen)
         {
-            questInfoWindow.Initialize(this.quest, Q_Status.InProgress);
+            questInfoWindow.Initialize(this.userId, this.quest, Q_Status.InProgress);
         }        
     }
     /// <summary>
@@ -51,7 +51,7 @@ public class UI_InprogressQuest : UI_QuestElement
             GuideImage.ImageTransparent(0);
         }
         SetIsGuide();
-        OnGuideButton?.Invoke();
+        OnGuideButton?.Invoke(DatabaseManager.Instance.userData.UID);
     }
     /// <summary>
     /// 알림이 버튼을 클릭할 시 IsGuide변수 세팅

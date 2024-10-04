@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
+using Mirror;
 
 [System.Serializable]
 public class Status
@@ -21,28 +23,37 @@ public class UI_StatPanel : MonoBehaviour
     public Status statusUI;
     private UserStatClient userStatClient;
 
-    public void StatPanelInit()
+    private int userId;
+
+    private void Start()
     {
+        // 로컬 플레이어 체크
+        NetworkIdentity networkIdentity = transform.root.GetComponent<NetworkIdentity>();
+        if (networkIdentity == null || !networkIdentity.isLocalPlayer)
+        {
+            return; // 로컬 플레이어가 아닐 경우 UI를 실행하지 않음
+        }
+
+        this.userId = transform.root.GetComponent<PlayerController>().userID;
         UserStatManager.Instance.OnLevelUpUpdateStat += SetStat;
         PlayerEquipManager.Instance.OnEquipItem += SetStat;
         PlayerEquipManager.Instance.OnUnEquipItem += SetStat;
         PlayerEquipManager.Instance.OnAllUnEquipButtonClick += SetStat;
-        SetStat();
-    }
-    private void OnEnable()
-    {
-        StatPanelInit();
-    }
-    private void OnDisable()
-    {
-        UserStatManager.Instance.OnLevelUpUpdateStat -= SetStat;
-        PlayerEquipManager.Instance.OnEquipItem -= SetStat;
-        PlayerEquipManager.Instance.OnUnEquipItem -= SetStat;
-        PlayerEquipManager.Instance.OnAllUnEquipButtonClick -= SetStat;
+        SetStat(userId);
     }
 
-    private void SetStat()
+    public void Initialize()
     {
+        
+    }
+
+    private void SetStat(int userID)
+    {
+        if (userId != userID)
+        {
+            return;
+        }
+
         this.userStatClient = UserStatManager.Instance.userStatClient;
 
         statusUI.LvText.text = userStatClient.Level.ToString();

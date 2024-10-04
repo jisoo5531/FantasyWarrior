@@ -48,6 +48,31 @@ public class PlayerEvent
     }
     #endregion
 
+    #region 플레이어 입장
+    private event Action<int> OnPlayerEnter;
+    private event Action OnPlayerEnterNo;
+
+    public void RegisterPlayerEnter(Action<int> listener)
+    {
+        OnPlayerEnter += listener;
+    }
+    public void RegisterPlayerEnter(Action listener)
+    {
+        OnPlayerEnterNo += listener;
+    }
+    public void UnRegisterPlayerEnter(Action<int> listener)
+    {
+        OnPlayerEnter -= listener;
+    }
+    public void TriggerPlayerEnter(int userid)
+    {
+        OnPlayerEnter?.Invoke(userid);
+        OnPlayerEnterNo?.Invoke();
+    }
+    #endregion
+
+
+
 }
 public class SkillKeyEvent
 {

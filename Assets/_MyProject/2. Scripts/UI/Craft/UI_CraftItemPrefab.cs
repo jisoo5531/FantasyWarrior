@@ -7,6 +7,7 @@ using UnityEngine;
 /// </summary>
 public class UI_CraftItemPrefab : UI_ShopOrCraftItemPrefab
 {
+    private int userID;
     private int npc_ID;
     private BlacksmithRecipeData RecipeData;
     private CraftingRecipeData CraftingRecipe;
@@ -14,8 +15,9 @@ public class UI_CraftItemPrefab : UI_ShopOrCraftItemPrefab
     /// <summary>
     /// 아이템 제작 레시피 항목 세팅
     /// </summary>
-    public void SetCraftItemRecipe(int npcID, BlacksmithRecipeData recipeData)
+    public void SetCraftItemRecipe(int userID, int npcID, BlacksmithRecipeData recipeData)
     {
+        this.userID = userID;
         this.npc_ID = npcID;
         this.RecipeData = recipeData;
         this.CraftingRecipe = CraftRecipeManager.Instance.GetRecipeData(recipe_ID: recipeData.Recipe_ID);
@@ -29,7 +31,7 @@ public class UI_CraftItemPrefab : UI_ShopOrCraftItemPrefab
     {
         UI_CraftPanel craftPanel = FindObjectOfType<PanelManager>(true).CraftPanel;
         UI_CratItemInfo craftItemInfo = craftPanel.craftItemInfoWindow.GetComponent<UI_CratItemInfo>();
-        craftItemInfo.Initialize(this.npc_ID, ItemManager.Instance.GetItemData(CraftingRecipe.CraftItem_ID));
+        craftItemInfo.Initialize(userID, this.npc_ID, ItemManager.Instance.GetItemData(CraftingRecipe.CraftItem_ID));
         craftPanel.craftItemInfoWindow.SetActive(true);
     }
 }

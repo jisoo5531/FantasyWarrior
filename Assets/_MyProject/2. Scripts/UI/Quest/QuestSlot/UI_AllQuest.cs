@@ -9,7 +9,7 @@ public class UI_AllQuest : UI_QuestElement
         base.OnClickToOpenQuestInfoWindow();
         if (isInfoOpen)
         {
-            questInfoWindow.Initialize(this.quest, q_Status: null);
+            questInfoWindow.Initialize(userId, this.quest, q_Status: null);
         }        
     }
 }

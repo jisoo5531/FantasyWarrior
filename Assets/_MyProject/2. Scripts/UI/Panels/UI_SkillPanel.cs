@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
 using UnityEngine.UI;
+using Mirror;
 
 [System.Serializable]
 public class KeySetIcon
@@ -35,6 +36,12 @@ public class UI_SkillPanel : MonoBehaviour
 
     private void Awake()
     {
+        // 로컬 플레이어 체크
+        NetworkIdentity networkIdentity = transform.root.GetComponent<NetworkIdentity>();
+        if (networkIdentity == null || !networkIdentity.isLocalPlayer)
+        {
+            return; // 로컬 플레이어가 아닐 경우 UI를 실행하지 않음
+        }
         EventHandler.skillKey.RegisterSkillKeyChange(OnChangeSkill);
         
     }
@@ -46,7 +53,13 @@ public class UI_SkillPanel : MonoBehaviour
         }
     }
     public void SkillPanelInit()
-    {        
+    {
+        // 로컬 플레이어 체크
+        NetworkIdentity networkIdentity = transform.root.GetComponent<NetworkIdentity>();
+        if (networkIdentity == null || !networkIdentity.isLocalPlayer)
+        {
+            return; // 로컬 플레이어가 아닐 경우 UI를 실행하지 않음
+        }
         SkillManager.Instance.OnUnlockSkillEvent += SkillWindowSetting;
 
         for (int i = 0; i < iconPanelList.Count; i++)

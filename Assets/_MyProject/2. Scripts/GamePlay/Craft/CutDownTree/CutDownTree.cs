@@ -7,6 +7,7 @@ public class CutDownTree : Craft
     private float actionTime = 2f;    
     protected override IEnumerator ActionCoroutine()
     {
+        Debug.Log("¿©±â ¾È µÅ?");
         playerAnim.SetBool("CutDownTree", true);
         OnProgressBar(this.actionTime);
         yield return new WaitForSeconds(actionTime);

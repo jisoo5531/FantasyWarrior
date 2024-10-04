@@ -79,7 +79,7 @@ public class ShopManager : MonoBehaviour
     /// <summary>
     /// 상점에서 아이템을 살 때 호출
     /// </summary>
-    public void BuyItem(int shopItemID, int amount, Action BuySuccess, Action BuyFailure)
+    public void BuyItem(int userID, int shopItemID, int amount, Action BuySuccess, Action BuyFailure)
     {
         if (Shop_Item_Dict.TryGetValue(shopItemID, out NPC_Shop_Item_Data shopItem))
         {
@@ -93,7 +93,7 @@ public class ShopManager : MonoBehaviour
                 Debug.Log("아이템 성공적으로 샀다.");
                 ItemData item = ItemManager.Instance.GetItemData(shopItem.Item_ID);
                 // TODO : 대량으로 사들일 경우엔 수량 변수로 변경
-                InventoryManager.Instance.GetItem(item, 1);
+                InventoryManager.Instance.GetItem(userID, item, 1);
                 BuySuccess?.Invoke();
             }
             //shopItem.Price

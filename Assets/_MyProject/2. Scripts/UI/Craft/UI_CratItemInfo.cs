@@ -7,6 +7,7 @@ using System.Linq;
 
 public class UI_CratItemInfo : MonoBehaviour
 {
+    private int userId;
     private int npc_ID;
 
     [Header("아이템 이미지")]
@@ -64,9 +65,10 @@ public class UI_CratItemInfo : MonoBehaviour
         backButton.onClick.AddListener(OnClickBackButton);
         craftButton.onClick.AddListener(OnClickCraftButton);
     }
-    public void Initialize(int npcID, ItemData item)
+    public void Initialize(int userId, int npcID, ItemData item)
     {
         m_Possesion_Dict = new Dictionary<int, C_MaterialPossesion>();
+        this.userId = userId;
         this.npc_ID = npcID;
         this.craftItem = item;
         this.recipeData = CraftRecipeManager.Instance.GetRecipeData(item_ID: craftItem.Item_ID);
@@ -203,7 +205,7 @@ public class UI_CratItemInfo : MonoBehaviour
             FailureCraft();
             return;
         }
-        CraftManager.Instance.CraftItem(craftItem, itemQuantity, SuccessCraft);
+        CraftManager.Instance.CraftItem(userId, craftItem, itemQuantity, SuccessCraft);
         
     }
     private void SuccessCraft()

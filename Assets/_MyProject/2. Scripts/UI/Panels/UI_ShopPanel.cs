@@ -93,7 +93,7 @@ public class UI_ShopPanel : MonoBehaviour
         foreach (var shopItem in shopItemList)
         {
             UI_ShopItemBuyPrefab ui_ShopItem = Instantiate(shopItemPrefab, shopItemListContent.transform).GetComponent<UI_ShopItemBuyPrefab>();
-            ui_ShopItem.SetBuyShopItem(shopItem);
+            ui_ShopItem.SetBuyShopItem(transform.root.GetComponent<PlayerController>().userID, shopItem);
         }
     }
     /// <summary>

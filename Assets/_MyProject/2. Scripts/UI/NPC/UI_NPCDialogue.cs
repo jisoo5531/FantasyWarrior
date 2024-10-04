@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using TMPro;
+using Mirror;
 
 public class UI_NPCDialogue : MonoBehaviour
 {
@@ -28,6 +29,7 @@ public class UI_NPCDialogue : MonoBehaviour
     public Button completeQuestButton;
     [Header("플레이어 UI")]
     public PlayerUI playerUI;
+    
 
     /// <summary>
     /// 이 npc가 주는 퀘스트들의 ID.
@@ -76,7 +78,7 @@ public class UI_NPCDialogue : MonoBehaviour
 
     private void Awake()
     {
-        InitializeButtonListeners();
+        InitializeButtonListeners();        
     }
     protected virtual void InitializeButtonListeners()
     {
@@ -88,7 +90,7 @@ public class UI_NPCDialogue : MonoBehaviour
     }
     public void Initialize()
     {
-        playerUI = FindObjectOfType<PlayerUI>();
+        playerUI = NetworkManager.singleton.playerPrefab.GetComponentInChildren<PlayerUI>();
         ResetDialogState();
         DialogClassify();
         Debug.Log($"{dailyDialogList.Count}, {questStartDL_List.Count}, {questEndDL_List.Count}");
@@ -337,7 +339,8 @@ public class UI_NPCDialogue : MonoBehaviour
         isDialogEnd = true;
         if (this.quest_ID != 0)
         {
-            QuestManager.Instance.QuestComplete(this.quest_ID);
+            int userId = playerUI.transform.root.GetComponent<PlayerController>().userID;
+            QuestManager.Instance.QuestComplete(this.quest_ID, userId);
         }
     }
     /// <summary>

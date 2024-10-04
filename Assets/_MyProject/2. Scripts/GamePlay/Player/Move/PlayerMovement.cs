@@ -24,16 +24,24 @@ public class PlayerMovement : NetworkBehaviour
     // �÷��̾ NavMeshAgent�� �Ҵ�
     private UnityEngine.AI.NavMeshAgent agent;
 
-    private void Awake()
-    {
-        Debug.Log("여기 몇 번? ");
-        
-    }
-    void Start()
+    public override void OnStartLocalPlayer()
     {
         Debug.Log("여기 되나?");
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
     }
+
+    [Command]
+    private void cmdServerMessage(int userID)
+    {
+        if (DatabaseManager.Instance == null)
+        {
+            Debug.LogError("DatabaseManager.Instance is null on the server.");
+            return;
+        }
+        
+        Debug.Log($"서버에게 {userID}가 안녕한다.");
+    }
+
 
     private bool isDance = false;
     void Update()
@@ -46,6 +54,7 @@ public class PlayerMovement : NetworkBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             GetComponent<PlayerAnimation>().anim.SetBool("Dance", isDance);
+            cmdServerMessage(DatabaseManager.Instance.GetPlayerData(this.gameObject).UserId);
         }
         // 마우스 오른쪽 버튼을 클릭한 경우
         if (Input.GetMouseButtonDown(1))
@@ -64,6 +73,7 @@ public class PlayerMovement : NetworkBehaviour
                 if (UnityEngine.AI.NavMesh.SamplePosition(hit.point, out UnityEngine.AI.NavMeshHit navHit, 1.0f, UnityEngine.AI.NavMesh.AllAreas))
                 {
                     clickPos = navHit.position; // 클릭된 NavMesh 좌표 저장
+
                     agent.SetDestination(navHit.position); // 에이전트가 목적지로 이동하도록 설정
                 }
             }

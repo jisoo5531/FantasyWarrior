@@ -1,3 +1,4 @@
+using Mirror;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -42,14 +43,20 @@ public class SkillManager : MonoBehaviour
         Instance = this;
         //EventHandler.managerEvent.RegisterStatManagerInit(SkillManagerInit);
     }
-    public void Initialize()
+    public void Initialize(int userid)
+    {
+        CmdRequestUserData(userid);
+        //EventHandler.managerEvent.TriggerSkillManagerInit();
+    }
+    
+    private void CmdRequestUserData(int userId)
     {
         UserStatManager.Instance.OnLevelUpUpdateStat += OnLevelUp_UnlockSkill;
 
         UserSkillKeyBInd = GetSkillKeyBind();
 
         _ = GetSkillFromDB();
-        _ = GetUserSkillFromDB();
+        _ = GetUserSkillFromDB(userId);
 
         userAvailableSkillList = new List<SkillData>();
         UserStatClient userStatClient = UserStatManager.Instance.userStatClient;
@@ -61,8 +68,8 @@ public class SkillManager : MonoBehaviour
                 userAvailableSkillList.Add(skillData);
             }
         }
-        //EventHandler.managerEvent.TriggerSkillManagerInit();
     }
+
     /// <summary>
     /// 데이터베이스에서 유저의 키셋팅 가져오기
     /// </summary>
@@ -129,14 +136,15 @@ public class SkillManager : MonoBehaviour
     /// 유저가 배운 스킬 목록 리스트 가져오기
     /// </summary>
     /// <returns></returns>
-    private List<UserSkillData> GetUserSkillFromDB()
+    private List<UserSkillData> GetUserSkillFromDB(int userid)
     {
         UserSkillOrigin = new List<UserSkillData>();
         UserSkillList = new List<UserSkillData>();
 
         string query =
             $"SELECT *\n" +
-            $"FROM userskills;";
+            $"FROM userskills\n" +
+            $"WHERE user_id={userid};";
         DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
         bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
         if (isGetData)
@@ -161,8 +169,12 @@ public class SkillManager : MonoBehaviour
     /// <summary>
     /// 유저 레벨에 따라 스킬 해제를 할 수 있는 메서드
     /// </summary>
-    private void OnLevelUp_UnlockSkill()
+    private void OnLevelUp_UnlockSkill(int userid)
     {
+        if (DatabaseManager.Instance.userData.UID != userid)
+        {
+            return;
+        }
         UserStatClient userStat = UserStatManager.Instance.userStatClient;
         int userLevel = userStat.Level;
         CharClass userClass = userStat.charClass;
@@ -198,10 +210,9 @@ public class SkillManager : MonoBehaviour
     /// DB에 아직 넣지 않고 클라이언트에 임의로 저장해놓은 데이터들을 DB로 저장 (userquestList, userquestOBJList)
     /// <para>(게임 종료 전 또는 일정 시간마다)</para>
     /// </summary>
-    public void SaveSkill()
+    public void SaveSkill(int user_ID)
     {
-        Debug.Log("스킬 저장.");
-        int user_ID = DatabaseManager.Instance.userData.UID;
+        Debug.Log("스킬 저장.");        
         CharClass charClass = UserStatManager.Instance.userStatClient.charClass;
 
         var differences = Extensions.GetDifferences(
@@ -228,9 +239,8 @@ public class SkillManager : MonoBehaviour
             _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
         }
     }
-    private void SaveSkillKeyBind()
-    {
-        int user_ID = DatabaseManager.Instance.userData.UID;
+    private void SaveSkillKeyBind(int user_ID)
+    {        
         string skill_1 = PlayerSkill.EquipSkills[0] != 0 ? PlayerSkill.EquipSkills[0].ToString() : "NULL";
         string skill_2 = PlayerSkill.EquipSkills[1] != 0 ? PlayerSkill.EquipSkills[1].ToString() : "NULL";
         string skill_3 = PlayerSkill.EquipSkills[2] != 0 ? PlayerSkill.EquipSkills[2].ToString() : "NULL";
@@ -246,14 +256,15 @@ public class SkillManager : MonoBehaviour
     }
     private void AutoSave()
     {
-        SaveSkill();
-        SaveSkillKeyBind();
+        //SaveSkill();
+        //SaveSkillKeyBind();
     }
-    private void OnApplicationQuit()
+    public void Save(int userId)
     {
-        SaveSkill();
-        SaveSkillKeyBind();
+        SaveSkillKeyBind(userId);
+        SaveSkill(userId);
     }
+
     #endregion
 
     #endregion

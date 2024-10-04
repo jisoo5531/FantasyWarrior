@@ -18,13 +18,16 @@ public class UI_QuestElement : MonoBehaviour
     protected QuestData quest;
     protected bool isInfoOpen;
 
+    protected int userId;
+
     private void Awake()
     {
         gameObject.GetComponent<Button>().onClick.AddListener(OnClickToOpenQuestInfoWindow);
     }
 
-    public virtual void Initialize(int questID, UI_QuestInfo questInfoWindow)
+    public virtual void Initialize(int userId, int questID, UI_QuestInfo questInfoWindow)
     {
+        this.userId = userId;
         this.quest = QuestManager.Instance.GetQuestData(questID);
         this.questInfoWindow = questInfoWindow;
         questNameText.text = quest.Quest_Name;

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using TMPro;
+using Mirror;
 
 public class PlayerUI : UIComponent
 {
@@ -19,16 +20,37 @@ public class PlayerUI : UIComponent
     public TMP_Text LevelText;
     public Animator LevelAnim;
     [Header("Skill")]
-    public List<Image> skillIconList;    
+    public List<Image> skillIconList;
+
+    private int userId;
 
     private void Awake()
     {
+        // 서버에서 실행되지 않도록
+        if (NetworkServer.active)
+        {
+            return; // 서버에서는 UI를 실행하지 않음
+        }
+
         EventHandler.playerEvent.RegisterPlayerLevelUp(OnLevelUp);
         EventHandler.skillKey.RegisterSkillKeyChange(OnChangeSkillKeyBind);
         PlayerSkill.OnKeyBindInit += OnChangeSkillKeyBind;
     }
     private void Start()
     {
+        // 서버에서 실행되지 않도록
+        if (NetworkServer.active)
+        {
+            return; // 서버에서는 UI를 실행하지 않음
+        }
+        // 로컬 플레이어 체크
+        NetworkIdentity networkIdentity = transform.root.GetComponent<NetworkIdentity>();
+        if (networkIdentity == null || !networkIdentity.isLocalPlayer)
+        {
+            return; // 로컬 플레이어가 아닐 경우 UI를 실행하지 않음
+        }
+        this.userId = DatabaseManager.Instance.GetPlayerData(transform.root.gameObject).UserId;
+        Debug.LogError($"UI id : {userId}");
         PlayerEquipManager.Instance.OnEquipItem += OnChangeMP;
         PlayerEquipManager.Instance.OnUnEquipItem += OnChangeMP;
         PlayerEquipManager.Instance.OnAllUnEquipButtonClick += OnChangeMP;
@@ -40,8 +62,11 @@ public class PlayerUI : UIComponent
     {
         Damagable.OnTakeDamage += OnHpChange;
         Damagable.OnChangeHPEvent += OnChangeHP;
-        
-        UserStatClient userStatClient = UserStatManager.Instance.userStatClient;
+
+        this.userId = DatabaseManager.Instance.GetPlayerData(transform.root.gameObject).UserId;
+        UserStatClient userStatClient = UserStatManager.Instance.GetUserStatClient(this.userId);
+        Debug.LogError($"{userStatClient.Exp}");
+
         LevelText.text = userStatClient.Level.ToString();
         if (hpBar != null)
         {
@@ -109,8 +134,13 @@ public class PlayerUI : UIComponent
     /// <summary>
     /// 마나의 변화가 있을 때 (스킬 시전, 레벨업, 물약 사용)
     /// </summary>
-    private void OnChangeMP()
-    {        
+    private void OnChangeMP(int userID)
+    {
+        if (userId != userID)
+        {
+            return;
+        }
+
         UserStatClient userStatClient = UserStatManager.Instance.userStatClient;
         MpBar.maxValue = userStatClient.MaxMP;
         MpBar.value = userStatClient.MP;
@@ -120,8 +150,13 @@ public class PlayerUI : UIComponent
     /// <summary>
     /// 경험치의 변화가 있을 때 
     /// </summary>
-    private void OnChangeExp()
-    {        
+    private void OnChangeExp(int userID)
+    {
+        if (userId != userID)
+        {
+            return;
+        }
+
         UserStatClient userStatClient = UserStatManager.Instance.userStatClient;
         ExpBar.maxValue = userStatClient.MaxExp;
         ExpBar.value = userStatClient.Exp;

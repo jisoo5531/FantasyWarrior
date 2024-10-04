@@ -17,8 +17,7 @@ public class UI_CraftTime : MonoBehaviour
     {
         float currentTime = 0f;
         while (true)
-        {
-            Debug.Log(currentTime);
+        {            
             if (currentTime >= actionTime)
             {
                 break;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Mirror;
 
 public class UI_QuestInfo : MonoBehaviour
 {
@@ -19,14 +20,23 @@ public class UI_QuestInfo : MonoBehaviour
     private QuestData questData;
     private Q_Status? questStatus;
 
+    private int userId;
+
     private void Awake()
     {
+        // 로컬 플레이어 체크
+        NetworkIdentity networkIdentity = transform.root.GetComponent<NetworkIdentity>();
+        if (networkIdentity == null || !networkIdentity.isLocalPlayer)
+        {
+            return; // 로컬 플레이어가 아닐 경우 UI를 실행하지 않음
+        }
         questStartButton.onClick.AddListener(OnClickQuestStartButton);
         questCompleteButton.onClick.AddListener(OnClickCompleteButton);
     }
 
-    public void Initialize(QuestData questData, Q_Status? q_Status = null)
+    public void Initialize(int userId, QuestData questData, Q_Status? q_Status = null)
     {
+        this.userId = userId;
         this.questData = questData;
         this.questStatus = q_Status;
 
@@ -101,6 +111,6 @@ public class UI_QuestInfo : MonoBehaviour
     /// </summary>
     private void OnClickCompleteButton()
     {
-        QuestManager.Instance.QuestComplete(questData.Quest_ID);
+        QuestManager.Instance.QuestComplete(userId, questData.Quest_ID);
     }
 }

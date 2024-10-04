@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
+using Mirror;
 
 public class GameManager : MonoBehaviour
 {
@@ -25,6 +26,7 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
         inputActions = new();
+        
     }
     private void OnEnable()
     {
@@ -36,7 +38,7 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
-        ManagerInit();
+        EventHandler.gameStartEvent.TriggerGameStart();
     }
 
     private void Update()
@@ -62,24 +64,37 @@ public class GameManager : MonoBehaviour
             player.transform.position = teleportTarget.position;
         }
     }
+    public void OnUserLoginManagerInit(int userID)
+    {        
 
-    private void ManagerInit()
-    {
         ItemManager.Instance.Initialize();
-        InventoryManager.Instance.Initialize();
-        UserStatManager.Instance.Initialize();
-        PlayerEquipManager.Instance.Initialize();
-        SkillManager.Instance.Initialize();
-        QuestManager.Instance.Initialize();
+        InventoryManager.Instance.Initialize(userID);
+        UserStatManager.Instance.Initialize(userID);
+        PlayerEquipManager.Instance.Initialize(userID);
+        SkillManager.Instance.Initialize(userID);
+        QuestManager.Instance.Initialize(userID);
         PlayerUIManager.Instance.Initialize();
-        NPCManager.Instance.Initialize();
+        NPCManager.Instance.Initialize(userID);
         MonsterManager.Instance.Initialize();
         LocationManger.Instance.Initialize();
         ShopManager.Instance.Initialize();
         CraftManager.Instance.Initialize();
         CraftRecipeManager.Instance.Initialize();
         BlacksmithManager.Instance.Initialize();
+
+        Debug.Log($"id : {userID}");        
+        EventHandler.playerEvent.TriggerPlayerEnter(userID);
     }
     
+    public void SaveData(GameObject player)
+    {
+        int userId = DatabaseManager.Instance.GetPlayerData(player).UserId;
+        InventoryManager.Instance.Save(userId);
+        UserStatManager.Instance.Save(userId);
+        PlayerEquipManager.Instance.Save(userId);
+        SkillManager.Instance.Save(userId);
+        QuestManager.Instance.Save(userId);
+        NPCManager.Instance.Save(userId);
+    }
 }
 

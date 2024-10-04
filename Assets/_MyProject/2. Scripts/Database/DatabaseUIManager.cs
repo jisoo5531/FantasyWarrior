@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using Mirror;
 
-public class DatabaseUIManager : NetworkBehaviour
+public class DatabaseUIManager : MonoBehaviour
 {
     [Header("Login")]
     public GameObject loginPanel;
@@ -26,7 +26,7 @@ public class DatabaseUIManager : NetworkBehaviour
     private UserData userData;
 
     private void Awake()
-    {
+    {        
         loginButton.onClick.AddListener(LoginButtonClick);
         signUpButton.onClick.AddListener(SignUpButtonClick);
         goSignUpButton.onClick.AddListener(GoSignUpButtonClick);
@@ -43,19 +43,21 @@ public class DatabaseUIManager : NetworkBehaviour
 
         this.userData = data;
         NetworkManager.singleton.StartClient();
+        
     }
     private void OnLoginFail()
     {
         Debug.Log("로그인 실패");
-    }
-
+    }    
     private void GoSignUpButtonClick()
     {
+        Debug.Log("클릭!");
         loginPanel.SetActive(false);
         signUpPanel.SetActive(true);
     }
     private void GoLoginButtonClick()
     {
+        Debug.Log("클릭?");
         loginPanel.SetActive(true);
         signUpPanel.SetActive(false);
     }

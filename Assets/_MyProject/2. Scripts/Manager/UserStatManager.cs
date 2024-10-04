@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
+using Mirror;
 
 public class UserStatManager : MonoBehaviour
 {
@@ -14,7 +15,9 @@ public class UserStatManager : MonoBehaviour
     public readonly string MaxHP = "maxhp";
     public readonly string MaxMP = "maxmana";
 
-    public static UserStatManager Instance { get; private set; }    
+    public static UserStatManager Instance { get; private set; }
+
+    public Dictionary<int, UserStatClient> userStat_Dict = new Dictionary<int, UserStatClient>();
     /// <summary>
     /// 게임 중에 사용할 유저 스탯을 관리하는 변수
     /// </summary>
@@ -22,32 +25,47 @@ public class UserStatManager : MonoBehaviour
     /// <summary>
     /// 레벨업 시, 실행할 이벤트
     /// </summary>
-    public event Action OnLevelUpUpdateStat;
+    public event Action<int> OnLevelUpUpdateStat;
     /// <summary>
     /// 몬스터를 잡거나 등의 경험치가 변동이 있을 때 발생
     /// </summary>
-    public event Action OnChangeExpStat;
+    public event Action<int> OnChangeExpStat;
 
     private void Awake()
     {
         Instance = this;
-        EventHandler.managerEvent.RegisterItemManagerInit(Initialize);
     }
     private void Start()
-    {                  
+    {
         InvokeRepeating("AutoSave", 300f, 300f);
     }
     /// <summary>
     /// 게임 시작하면 스탯 데이터 가져오기
     /// </summary>
-    public void Initialize()
+    public void Initialize(int userID)
     {
-        UserStatData userStatData = GetUserStatDataFromDB();
-        userStatClient = new UserStatClient(userStatData);                
         
+
+        CmdRequestUserData(userID);
+
         //EventHandler.managerEvent.TriggerStatManagerInit();
     }
-
+    
+    private void CmdRequestUserData(int userId)
+    {
+        Debug.Log("여긴 돼?");
+        UserStatData userStatData = GetUserStatDataFromDB(userId);
+        userStatClient = new UserStatClient(userStatData);
+        userStat_Dict.Add(userId, userStatClient);
+        // 클라이언트에게 데이터를 전송
+        RpcSendUserStatData(userStatClient);
+    }
+    
+    private void RpcSendUserStatData(UserStatClient userStatClient)
+    {
+        this.userStatClient = userStatClient;
+        Debug.Log("클라이언트에 유저 스탯 데이터 전송 완료.");
+    }
     /// <summary>
     /// 골드를 사용할 때 호출
     /// </summary>
@@ -70,39 +88,11 @@ public class UserStatManager : MonoBehaviour
         userStatClient.UpdateGold(amount);
     }
     /// <summary>
-    /// 유저 스탯 가져오기
-    /// </summary>
-    /// <returns></returns>
-    private UserStatData GetUserStatDataFromDB()
-    {
-        int user_ID = DatabaseManager.Instance.userData.UID;
-        string query =
-            $"SELECT *\n" +
-            $"FROM userstats\n" +
-            $"WHERE user_id={user_ID};";
-
-        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
-
-        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
-
-        if (isGetData)
-        {
-            DataRow row = dataSet.Tables[0].Rows[0];
-            return new UserStatData(row);
-        }
-        else
-        {
-            //  실패
-            return null;
-        }
-    }
-    
-    /// <summary>
     /// 아이템을 장착하거나 해제할 때 유저의 스탯에 반영하는 메서드
     /// </summary>
     /// <param name="itemID"></param>
     public void EquipItemUpdateStat(bool isEquip, int itemID = 0)
-    {        
+    {
         int user_ID = DatabaseManager.Instance.userData.UID;
         int atkAmount = 0;
         int strAmount = 0;
@@ -112,8 +102,8 @@ public class UserStatManager : MonoBehaviour
         int defAmount = 0;
         int hpAmount = 0;
         int mpAmount = 0;
-        
-        
+
+
         if (itemID != 0)
         {
             // 아이템을 장착하고 있을 때
@@ -155,7 +145,7 @@ public class UserStatManager : MonoBehaviour
         userStatClient.UpdateMaxHP(userStatClient.levelUpStat.MaxhpAmount);
         userStatClient.UpdateMaxMP(userStatClient.levelUpStat.MaxmpAmount);
 
-        OnLevelUpUpdateStat?.Invoke();
+        OnLevelUpUpdateStat?.Invoke(user_ID);
         EventHandler.playerEvent.TriggerPlayerLevelUp();
     }
     /// <summary>
@@ -173,18 +163,59 @@ public class UserStatManager : MonoBehaviour
             LevelUpUpdateStat(userStatClient.Exp - userStatClient.MaxExp);
         }
 
-        OnChangeExpStat?.Invoke();
+        OnChangeExpStat?.Invoke(user_ID);
     }
+    public UserStatClient GetUserStatClient(int userId)
+    {
+        Debug.Log("개수 : " + userStat_Dict.Count);
+        if (userStat_Dict.TryGetValue(userId, out UserStatClient userStat))
+        {
+            Debug.Log("여기");
+            return userStat;
+        }
+        Debug.Log("기여");
+        return null;
+    }
+
+    #region DB
+
+    /// <summary>
+    /// 유저 스탯 가져오기
+    /// </summary>
+    /// <returns></returns>
+    private UserStatData GetUserStatDataFromDB(int user_ID)
+    {
+        string query =
+            $"SELECT *\n" +
+            $"FROM userstats\n" +
+            $"WHERE user_id={user_ID};";
+
+        DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
+
+        bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
+
+        if (isGetData)
+        {
+            DataRow row = dataSet.Tables[0].Rows[0];
+            return new UserStatData(row);
+        }
+        else
+        {
+            //  실패
+            return null;
+        }
+    }
+    #endregion
 
     #region 스탯 저장
     /// <summary>
     /// DB에 아직 넣지 않고 클라이언트에 임의로 저장해놓은 데이터들을 DB로 저장 (userquestList, userquestOBJList)
     /// <para>(게임 종료 전 또는 일정 시간마다)</para>
     /// </summary>
-    public void SaveStat()
+    public void SaveStat(int user_ID)
     {
-        Debug.Log("Stat 저장.");
-        int user_ID = DatabaseManager.Instance.userData.UID;
+
+        Debug.Log("Stat 저장.");        
 
         string query =
             $"UPDATE userstats\n" +
@@ -204,11 +235,11 @@ public class UserStatManager : MonoBehaviour
     }
     private void AutoSave()
     {
-        SaveStat();
+        //SaveStat();
     }
-    private void OnApplicationQuit()
-    {        
-        SaveStat();
+    public void Save(int userId)
+    {
+        SaveStat(userId);
     }
     #endregion
 }

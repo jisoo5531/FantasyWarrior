@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Mirror;
 public class UI_QuestPanel : MonoBehaviour
 {
     // TODO : 퀘스트 상세정보 창 만들기
@@ -24,9 +24,16 @@ public class UI_QuestPanel : MonoBehaviour
     public GameObject InProgressQuestInfo;
     public GameObject CompleteQuestInfo;
 
+    private int userId;
 
     private void Awake()
     {
+        // 로컬 플레이어 체크
+        NetworkIdentity networkIdentity = transform.root.GetComponent<NetworkIdentity>();
+        if (networkIdentity == null || !networkIdentity.isLocalPlayer)
+        {
+            return; // 로컬 플레이어가 아닐 경우 UI를 실행하지 않음
+        }
         //allQuestTabButton.onClick.AddListener()
         allQuestTabButton.onClick.AddListener(() =>
         {
@@ -49,17 +56,29 @@ public class UI_QuestPanel : MonoBehaviour
     }
     private void Start()
     {
-        Initialize();
-    }
-    public void Initialize()
-    {
+        // 로컬 플레이어 체크
+        NetworkIdentity networkIdentity = transform.root.GetComponent<NetworkIdentity>();
+        if (networkIdentity == null || !networkIdentity.isLocalPlayer)
+        {
+            return; // 로컬 플레이어가 아닐 경우 UI를 실행하지 않음
+        }
+        this.userId = transform.root.GetComponent<PlayerController>().userID;
         QuestManager.Instance.OnAcceptQuest += QuestSet;
         QuestManager.Instance.OnUpdateQuestProgress += QuestSet;
         QuestManager.Instance.OnCompleteQuest += QuestSet;
-        QuestSet();
+        QuestSet(this.userId);
     }
-    private void QuestSet()
-    {        
+    public void Initialize()
+    {
+        
+    }
+    private void QuestSet(int userid)
+    {
+        if (this.userId != userid)
+        {
+            return;
+        }
+
         AllQuestSetting();
         InProgressQuestSetting();
         CompleteQuestSetting();
@@ -86,7 +105,8 @@ public class UI_QuestPanel : MonoBehaviour
                 continue;
             }
             UI_AllQuest questElement = Instantiate(QuestInfoPrefab, AllQuestContent.transform).GetComponent<UI_AllQuest>();
-            questElement.Initialize(quest.Key, QuestInfoWindow);
+            
+            questElement.Initialize(userId, quest.Key, QuestInfoWindow);
         }
     }
     /// <summary>
@@ -108,7 +128,7 @@ public class UI_QuestPanel : MonoBehaviour
             if (questData.questStatus == Q_Status.InProgress)
             {
                 UI_InprogressQuest questElement = Instantiate(InProgressQuestInfo, InProgressQuestContent.transform).GetComponent<UI_InprogressQuest>();
-                questElement.Initialize(questData.Quest_ID, QuestInfoWindow);
+                questElement.Initialize(userId, questData.Quest_ID, QuestInfoWindow);
             }
         }
     }
@@ -130,7 +150,7 @@ public class UI_QuestPanel : MonoBehaviour
             if (questData.questStatus == Q_Status.Completed)
             {
                 UI_CompletedQuest questElement = Instantiate(CompleteQuestInfo, CompleteQuestContent.transform).GetComponent<UI_CompletedQuest>();
-                questElement.Initialize(questData.Quest_ID, QuestInfoWindow);
+                questElement.Initialize(userId, questData.Quest_ID, QuestInfoWindow);
             }
         }
     }

@@ -9,6 +9,7 @@ public class UserCraftTool : MonoBehaviour
 
     public void OnCutDownTree()
     {
+        Debug.Log("여기 되나?");
         CutDownTree.SetActive(true);
     }
     public void OffCutDownTree()

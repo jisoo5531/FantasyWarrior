@@ -24,11 +24,11 @@ public class NPC : MonoBehaviour
 
     private void Awake()
     {
-        //EventHandler.managerEvent.RegisterNPCManagerInit(Initialize);
+        EventHandler.playerEvent.RegisterPlayerEnter(Initialize);
     }
     private void Start()
     {
-        Initialize();
+        
     }
     private void OnDisable()
     {
@@ -45,7 +45,7 @@ public class NPC : MonoBehaviour
         QuestManager.Instance.OnUpdateQuestProgress += CheckQuestStatus;  // 퀘스트 진행상황 업데이트마다 이벤트를 호출한다.
         QuestManager.Instance.OnCompleteQuest += CheckQuestStatus;
 
-        CheckQuestStatus();
+        CheckQuestStatus(DatabaseManager.Instance.userData.UID);
 
         //이 npc의 대화창 초기화
         nPCDialogue.Initialize();
@@ -54,10 +54,15 @@ public class NPC : MonoBehaviour
     /// <summary>
     /// 이 NPC의 퀘스트들의 상태 체크 (완료가능한지, 아닌지)
     /// </summary>
-    private void CheckQuestStatus()
-    {        
+    private void CheckQuestStatus(int userId)
+    {
+        if (DatabaseManager.Instance.userData.UID != userId)
+        {
+            return;
+        }
         questID_List = NPCManager.Instance.GetQuestIDFromNPC(this.NPC_ID);
         List<QuestProgress> userQuestList = QuestManager.Instance.questProgressList;
+        Debug.Log(userQuestList.Count);
         bool isAnyUserQuest = false;
         bool isAnyCompleteOrInprogressQuest = false;
 

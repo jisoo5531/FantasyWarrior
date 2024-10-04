@@ -10,6 +10,10 @@ public class UI_CraftPanel : MonoBehaviour
     /// 어떤 npc가 제작하는지
     /// </summary>
     private int npc_ID;
+    /// <summary>
+    /// 어떤 유저의 패널인지
+    /// </summary>
+    private int userID;
 
     [Header("아이템 제작")]
     public GameObject recipeContent;            // 제작할 아이템 리스트가 들어갈 곳
@@ -30,7 +34,7 @@ public class UI_CraftPanel : MonoBehaviour
     public TMP_Text playerGoldText;
 
     public void Initialize(int npcID)
-    {
+    {        
         this.npc_ID = npcID;
         ButtonInitialize();
         SetCraftItemList();
@@ -51,7 +55,7 @@ public class UI_CraftPanel : MonoBehaviour
         foreach (var recipe in BlacksmithManager.Instance.GetBlacksmithRecipeList(this.npc_ID))
         {
             UI_CraftItemPrefab craftItemObj = Instantiate(uI_CraftItemPrefab, recipeContent.transform).GetComponent<UI_CraftItemPrefab>();
-            craftItemObj.SetCraftItemRecipe(this.npc_ID, recipe);
+            craftItemObj.SetCraftItemRecipe(transform.root.GetComponent<PlayerController>().userID, this.npc_ID, recipe);
         }        
     }
     public void SetPlayerGold()

@@ -6367,6 +6367,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d24ef78e175d1354183e685b0cfebf4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  playerUIPrefab: {fileID: 5339415460767346329, guid: d142e4a9f51261a499ac2a066fcf0a42, type: 3}
+  userID: 0
 --- !u!114 &1666529490906967424
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6407,6 +6412,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6099a2bdbb05ba409ef682cd02e3388, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   anim: {fileID: 0}
   equipSkills: 
 --- !u!114 &1666529490906967429
@@ -6421,6 +6429,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b2e804ba45e6954099c3545171d8289, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   skillResourceList:
   - skillEffects:
     - effect: {fileID: 4894247296439973570, guid: 7e09b86b203df6240b854e4277945250, type: 3}

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
+using Mirror;
 
 public class NPCManager : MonoBehaviour
 {
@@ -38,13 +39,19 @@ public class NPCManager : MonoBehaviour
         
         //EventHandler.managerEvent.TriggerNPCManagerInit();
     }
-    public void Initialize()
+    public void Initialize(int userid)
     {
         GetNPCDataFromDB();
         GetNPCDialogFromDB();
-        GetNPCQuestFromDB();
-        GetTalkQuestDataFromDB();
+        CmdRequestUserData(userid);
     }
+    
+    private void CmdRequestUserData(int userId)
+    {        
+        GetNPCQuestFromDB(userId);
+        GetTalkQuestDataFromDB(userId);
+    }
+
 
     /// <summary>
     /// npc 이름 가져오기
@@ -69,6 +76,7 @@ public class NPCManager : MonoBehaviour
     public List<int> GetQuestIDFromNPC(int NPC_ID)
     {
         int currentLevel = UserStatManager.Instance.userStatClient.Level;
+        Debug.Log($"레벨 : {currentLevel}");
         List<int> questsID = new List<int>();        
         
         List<User_NPCQuestData> NPCQuestData = NPCQuest_List.FindAll(x => false == x.IsComplete && x.NPC_ID == NPC_ID);
@@ -177,9 +185,8 @@ public class NPCManager : MonoBehaviour
     /// NPC 가 어떤 퀘스트를 줄 것인지에 대한 데이터 가져오기
     /// </summary>
     /// <returns></returns>
-    private void GetNPCQuestFromDB()
-    {
-        int userid = DatabaseManager.Instance.userData.UID;
+    private void GetNPCQuestFromDB(int userid)
+    {        
         NPCQuest_List = new List<User_NPCQuestData>();
 
         string query =
@@ -205,9 +212,8 @@ public class NPCManager : MonoBehaviour
     /// 대화 연계 퀘스트 데이터 가져오기
     /// </summary>
     /// <returns></returns>
-    private void GetTalkQuestDataFromDB()
-    {
-        int userID = DatabaseManager.Instance.userData.UID;
+    private void GetTalkQuestDataFromDB(int userID)
+    {        
 
         orgTalkQuestList = new List<User_NPCTalkQuestData>();
         talkNpcQuestList = new List<User_NPCTalkQuestData>();
@@ -252,9 +258,8 @@ public class NPCManager : MonoBehaviour
     /// DB에 아직 넣지 않고 클라이언트에 임의로 저장해놓은 데이터들을 DB로 저장 (npcQuestList)
     /// <para>(게임 종료 전 또는 일정 시간마다)</para>
     /// </summary>
-    private void SaveQuestProgress()
-    {
-        int userID = DatabaseManager.Instance.userData.UID;
+    private void SaveQuestProgress(int userID)
+    {        
         foreach (User_NPCQuestData npcQuest in NPCQuest_List)
         {
             string checkComplete = "false";
@@ -295,10 +300,11 @@ public class NPCManager : MonoBehaviour
     }
     private void AutoSave()
     {
-        SaveQuestProgress();
+        
     }
-    private void OnApplicationQuit()
-    {        
-        SaveQuestProgress();
+
+    public void Save(int userId)
+    {
+        SaveQuestProgress(userId);
     }
 }
