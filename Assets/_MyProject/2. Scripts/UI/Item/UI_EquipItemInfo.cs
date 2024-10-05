@@ -24,9 +24,9 @@ public class UI_EquipItemInfo : UI_ItemInfo
     public TMP_Text HPText;    
     public TMP_Text MPText;
 
-    public override void Initialize(int itemID)
+    public override void Initialize(int userId, int itemID)
     {
-        base.Initialize(itemID);        
+        base.Initialize(userId, itemID);        
         EquipItemData equipItemData = ItemManager.Instance.GetEquipItemData(itemID);
 
         itemPartText.text = $"Part: {itemEquipPart[(int)equipItemData.Equip_Type]}";

@@ -28,9 +28,9 @@ public class UI_BuyAmount : UI_BuyOrSellAmount
         NPC_Shop_Item_Data shopItem = ShopManager.Instance.GetShopItem(shopItemID);
         this.shopItem = shopItem;
         ItemData itemData = ItemManager.Instance.GetItemData(shopItem.Item_ID);
-        Initialize(itemData);
-
-        List<InventoryData> inventoryList = InventoryManager.Instance.inventoryDataList;
+        Initialize(userId, itemData);
+        
+        List<InventoryData> inventoryList = GameManager.Instance.invenManger[userId].inventoryDataList;
         InventoryData invenItemData = inventoryList.Find(x => x.Item_ID == itemData.Item_ID);
 
         UpdateQuantityText();

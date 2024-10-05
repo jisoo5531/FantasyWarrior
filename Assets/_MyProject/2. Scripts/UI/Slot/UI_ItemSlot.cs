@@ -20,8 +20,11 @@ public class UI_ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
     /// </summary>
     protected float clickTime = 0;
 
-    public virtual void Initialize(int itemID, Sprite sprite = null, UI_ItemInfo itemInfo = null)
+    protected int userId;
+
+    public virtual void Initialize(int userId, int itemID, Sprite sprite = null, UI_ItemInfo itemInfo = null)
     {
+        this.userId = userId;
         this.itemID = itemID;
         this.itemImage.sprite = sprite;
         this.itemInfoWindow = itemInfo;        
@@ -65,7 +68,7 @@ public class UI_ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHan
         }
 
         itemInfoWindow.gameObject.SetActive(true);
-        itemInfoWindow.Initialize(this.itemID);
+        itemInfoWindow.Initialize(this.userId, this.itemID);
     }
     /// <summary>
     /// <para>IPointerExitHandler 인터페이스</para>

@@ -11,22 +11,27 @@ public class UI_ShopSellItemSlot : MonoBehaviour
 
     private InventoryData invenItem;
 
+    private int userId;
+
     private void Awake()
     {
         GetComponent<Button>().onClick.AddListener(OnClickSellItemSlot);
     }
-    private void Start()
+    private void EventListener()
     {
-        InventoryManager.Instance.OnSubtractItem += UpdateQuantityText;
-        InventoryManager.Instance.OnDeleteItem += EventSlotClear;
+        GameManager.Instance.invenManger[this.userId].OnSubtractItem += UpdateQuantityText;
+        GameManager.Instance.invenManger[this.userId].OnDeleteItem += EventSlotClear;        
     }
-    public void Initialize(InventoryData invenItem, Sprite itemSprite)
+    public void Initialize(int userId, InventoryData invenItem, Sprite itemSprite)
     {
+        this.userId = userId;
         this.invenItem = invenItem;
         itemIcon.ImageTransparent(1);
         itemIcon.sprite = itemSprite;
         itemQuantityText.gameObject.SetActive(true);
         itemQuantityText.text = invenItem.Quantity.ToString();
+
+        EventListener();
     }
     private void EventSlotClear(ItemData item)
     {
@@ -43,9 +48,9 @@ public class UI_ShopSellItemSlot : MonoBehaviour
         if (invenItem == null || this.invenItem.Item_ID != item.Item_ID)
         {
             return;
-        }        
-
-        itemQuantityText.text = InventoryManager.Instance.GetInventoryItem(item.Item_ID).Quantity.ToString();
+        }
+        
+        itemQuantityText.text = GameManager.Instance.invenManger[this.userId].GetInventoryItem(item.Item_ID).Quantity.ToString();
 
 
     }

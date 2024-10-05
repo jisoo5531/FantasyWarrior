@@ -10,6 +10,7 @@ public class UI_ShopPanel : MonoBehaviour
     /// 어떤 npc의 상점인지
     /// </summary>
     private int npc_ID;
+    private int userId;
 
     [Header("상점 아이템 오브젝트")]
     /// <summary>
@@ -41,8 +42,7 @@ public class UI_ShopPanel : MonoBehaviour
     public GameObject PlayerUI;
 
     private void Start()
-    {
-        
+    {        
     }
     private void ButtonInitialize()
     {
@@ -60,6 +60,7 @@ public class UI_ShopPanel : MonoBehaviour
     
     public void Initialize(int npcID, ShopDL_Type BuyOrSell)
     {
+        this.userId = DatabaseManager.Instance.GetPlayerData(transform.root.gameObject).UserId;
         this.npc_ID = npcID;
         SetPlayerGold();
         ButtonInitialize();
@@ -93,7 +94,7 @@ public class UI_ShopPanel : MonoBehaviour
         foreach (var shopItem in shopItemList)
         {
             UI_ShopItemBuyPrefab ui_ShopItem = Instantiate(shopItemPrefab, shopItemListContent.transform).GetComponent<UI_ShopItemBuyPrefab>();
-            ui_ShopItem.SetBuyShopItem(transform.root.GetComponent<PlayerController>().userID, shopItem);
+            ui_ShopItem.SetBuyShopItem(this.userId, shopItem);
         }
     }
     /// <summary>
@@ -125,7 +126,8 @@ public class UI_ShopPanel : MonoBehaviour
         int equipAmount = 0;
         int consumpAmount = 0;
         int otherAmount = 0;
-        List<InventoryData> inventoryDataList = InventoryManager.Instance.inventoryDataList;
+        
+        List<InventoryData> inventoryDataList = GameManager.Instance.invenManger[this.userId].inventoryDataList;
 
         foreach (InventoryData invenItem in inventoryDataList)
         {
@@ -167,7 +169,7 @@ public class UI_ShopPanel : MonoBehaviour
     }
     private void SetItemToSlot(InventoryData item, Sprite sprite, UI_ShopSellItemSlot slot)
     {
-        slot.Initialize(item, sprite);
+        slot.Initialize(this.userId, item, sprite);
     }
     private void OnClickItemTabButton(int num)
     {

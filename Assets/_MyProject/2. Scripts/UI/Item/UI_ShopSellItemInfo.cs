@@ -14,9 +14,9 @@ public class UI_ShopSellItemInfo : UI_ItemInfo
     {
         SellButton.onClick.AddListener(OnClickSellButton);
     }
-    public override void Initialize(int itemID)
+    public override void Initialize(int userId, int itemID)
     {
-        base.Initialize(itemID);
+        base.Initialize(userId, itemID);
         descText.text = itemData.Item_Description;
         sellPriceText.text = itemData.SellPrice.ToString();
     }

@@ -8,9 +8,9 @@ public class UI_ConsumpOtherItemInfo : UI_ItemInfo
 {    
     public TMP_Text descText;
 
-    public override void Initialize(int itemID)
+    public override void Initialize(int userId, int itemID)
     {
-        base.Initialize(itemID);
+        base.Initialize(userId, itemID);
         descText.text = itemData.Item_Description;
     }
 }

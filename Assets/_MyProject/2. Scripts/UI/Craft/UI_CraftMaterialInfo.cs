@@ -19,8 +19,11 @@ public class UI_CraftMaterialInfo : MonoBehaviour
 
     private Action<int, int, int> postInit;
 
-    public void Initialize(RecipeMaterialData recipeMaterial, Action<int, int, int> init)
+    private int userID;
+
+    public void Initialize(int userId, RecipeMaterialData recipeMaterial, Action<int, int, int> init)
     {
+        this.userID = userId;
         this.recipeMaterial = recipeMaterial;
         this.postInit = init;
         this.materialItem = ItemManager.Instance.GetItemData(recipeMaterial.M_Item_ID);
@@ -32,7 +35,7 @@ public class UI_CraftMaterialInfo : MonoBehaviour
         itemNameText.text = materialItem.Item_Name;
         ReqAmountText.text = $"x{recipeMaterial.M_Quantity.ToString()}";
 
-        int? haveAmount = InventoryManager.Instance.GetItemQuantity(materialItem.Item_ID);        
+        int? haveAmount = GameManager.Instance.invenManger[userID].GetItemQuantity(materialItem.Item_ID);        
         if (haveAmount != null)
         {
             playerHaveAmountText.text = $"x{haveAmount.ToString()}";

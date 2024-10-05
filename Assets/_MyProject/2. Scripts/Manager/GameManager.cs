@@ -9,6 +9,13 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     public static PlayerInputAction inputActions;
 
+    public Dictionary<int, InventoryManager> invenManger { get; private set; }
+    public Dictionary<int, UserStatManager> statManager { get; private set; }
+    public Dictionary<int, PlayerEquipManager> equipManager { get; private set; }
+    public Dictionary<int, SkillManager> skillManager { get; private set; }
+    public Dictionary<int, QuestManager> questManager { get; private set; }
+    public Dictionary<int, NPCManager> npcManager { get; private set; }
+
     /// <summary>
     /// 현재 플레이어가 있는 장소의 ID
     /// </summary>
@@ -26,7 +33,13 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
         inputActions = new();
-        
+
+        invenManger = new();
+        statManager = new();
+        equipManager = new();
+        skillManager = new();
+        questManager = new();
+        npcManager = new();
     }
     private void OnEnable()
     {
@@ -65,7 +78,14 @@ public class GameManager : MonoBehaviour
         }
     }
     public void OnUserLoginManagerInit(int userID)
-    {        
+    {
+        invenManger.Add(userID, new InventoryManager());
+        statManager.Add(userID, new UserStatManager());
+        equipManager.Add(userID, new PlayerEquipManager());
+        skillManager.Add(userID, new SkillManager());
+        questManager.Add(userID, new QuestManager());
+        npcManager.Add(userID, new NPCManager());
+        
 
         ItemManager.Instance.Initialize();
         InventoryManager.Instance.Initialize(userID);

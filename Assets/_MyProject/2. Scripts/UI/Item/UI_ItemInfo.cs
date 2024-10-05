@@ -12,8 +12,11 @@ public class UI_ItemInfo : MonoBehaviour
     protected ItemData itemData;
     protected string itemName;
 
-    public virtual void Initialize(int itemID)
-    {                
+    protected int userId;
+
+    public virtual void Initialize(int userId, int itemID)
+    {
+        this.userId = userId;
         itemData = ItemManager.Instance.GetItemData(itemID);
         itemName = itemData.Item_Name;
         itemNameText.text = itemName;

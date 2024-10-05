@@ -23,8 +23,7 @@ public class CraftManager : MonoBehaviour
     /// <param name="amount"></param>
     public void CraftItem(int userID, ItemData craftItem, int amount, Action success)
     {        
-        // TODO  : 얘 아이디 고쳐
-        InventoryManager.Instance.GetItem(userID, craftItem, amount);        
+        GameManager.Instance.invenManger[userID].GetItem(userID, craftItem, amount);        
         success?.Invoke();
     }    
 }

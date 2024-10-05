@@ -8,6 +8,9 @@ using UnityEngine;
 public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager Instance { get; private set; }
+
+    private int userID;
+
     /// <summary>
     /// 게임 중에 쓰일 인벤토리 리스트
     /// </summary>
@@ -58,7 +61,8 @@ public class InventoryManager : MonoBehaviour
         Instance = this;
     }    
     public void Initialize(int userId)
-    {        
+    {
+        this.userID = userId;
         CmdRequestUserData(userId);
     }
     
@@ -77,9 +81,8 @@ public class InventoryManager : MonoBehaviour
     /// <param name="itemID"></param>
     /// <returns></returns>
     public InventoryData GetInventoryItem(int itemID)
-    {
-        int userID = DatabaseManager.Instance.userData.UID;
-        return inventoryDataList.Find(x => x.User_ID == userID && x.Item_ID == itemID);
+    {        
+        return inventoryDataList.Find(x => x.User_ID == this.userID && x.Item_ID == itemID);
     }
     /// <summary>
     /// 인벤토리로 어떤 아이템이 추가되었는지 확인할 메서드
@@ -98,9 +101,8 @@ public class InventoryManager : MonoBehaviour
     /// </summary>
     /// <param name="itemID"></param>
     public void DeleteItem(int itemID)
-    {
-        int user_ID = DatabaseManager.Instance.userData.UID;
-        int index = inventoryDataList.FindIndex(x => x.User_ID.Equals(user_ID) && x.Item_ID.Equals(itemID));
+    {        
+        int index = inventoryDataList.FindIndex(x => x.User_ID.Equals(this.userID) && x.Item_ID.Equals(itemID));
         if (index >= 0)
         {
             inventoryDataList.RemoveAt(index);
@@ -113,9 +115,8 @@ public class InventoryManager : MonoBehaviour
     /// <param name="item"></param>
     /// <param name="amount"></param>
     public void SubtractItem(ItemData item, int amount)
-    {
-        int user_ID = DatabaseManager.Instance.userData.UID;
-        int index = inventoryDataList.FindIndex(x => x.User_ID == user_ID && x.Item_ID == item.Item_ID);
+    {        
+        int index = inventoryDataList.FindIndex(x => x.User_ID == this.userID && x.Item_ID == item.Item_ID);
         inventoryDataList[index].Quantity -= amount;
 
         if (inventoryDataList[index].Quantity == 0)
@@ -170,12 +171,11 @@ public class InventoryManager : MonoBehaviour
     /// 제작도구를 얻었을 때 유저가 가지고 있는 제작도구 리스트(usercraftList)에 추가
     /// </summary>
     private void AddCraftItem(CraftToolData craftTool)
-    {
-        int user_ID = DatabaseManager.Instance.userData.UID;
+    {        
         int index = userCraftToolClient.FindIndex(x => x.CreftType.Equals(craftTool.CreftType));
         userCraftToolClient[index].Item_ID = craftTool.Item_ID;
 
-        OnGetCraftItem?.Invoke(user_ID);
+        OnGetCraftItem?.Invoke(this.userID);
     }
     /// <summary>
     /// 장비를 벗을 때, 인벤토리로 추가
@@ -183,9 +183,8 @@ public class InventoryManager : MonoBehaviour
     /// <param name="item_ID"></param>
     /// <param name="amount"></param>
     public void GetItemUnEquip(int item_ID, int amount)
-    {
-        int user_ID = DatabaseManager.Instance.userData.UID;
-        inventoryDataList.Add(new InventoryData(user_ID, item_ID, amount));
+    {        
+        inventoryDataList.Add(new InventoryData(this.userID, item_ID, amount));
     }
     /// <summary>
     /// 장비를 장착 시, 인벤토리에서 해당 아이템 사라지게 할 메서드
@@ -200,10 +199,8 @@ public class InventoryManager : MonoBehaviour
     /// <param name="itemID"></param>
     /// <returns></returns>
     public int? GetItemQuantity(int itemID)
-    {
-        int user_ID = DatabaseManager.Instance.userData.UID;
-
-        int index = inventoryDataList.FindIndex(x => x.User_ID.Equals(user_ID) && x.Item_ID.Equals(itemID));
+    {        
+        int index = inventoryDataList.FindIndex(x => x.User_ID.Equals(this.userID) && x.Item_ID.Equals(itemID));
         if (index >= 0)
         {
             return inventoryDataList[index].Quantity;

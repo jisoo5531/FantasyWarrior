@@ -15,11 +15,12 @@ public class UI_SellAmount : UI_BuyOrSellAmount
         base.ButtonInitialize();
         sellButton.onClick.AddListener(OnClickSellButton);
     }
-    public void SetUI_Sell(ItemData item)
+    public void SetUI_Sell(int userId, ItemData item)
     {                
         this.Item = item;
-        this.invenItem = InventoryManager.Instance.GetInventoryItem(item.Item_ID);
-        Initialize(item);
+
+        GameManager.Instance.invenManger[userId].GetInventoryItem(item.Item_ID);        
+        Initialize(userId, item);
         itemGoldText.text = item.SellPrice.ToString();
     }
     protected override void OnClickAmountDownButton()

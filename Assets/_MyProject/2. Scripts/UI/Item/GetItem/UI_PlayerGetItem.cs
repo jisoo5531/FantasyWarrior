@@ -22,8 +22,8 @@ public class UI_PlayerGetItem : MonoBehaviour
         {
             return; // 로컬 플레이어가 아닐 경우 UI를 실행하지 않음
         }
-        InventoryManager.Instance.OnGetItemData += OnGetItem;
         this.userId = DatabaseManager.Instance.GetPlayerData(transform.root.gameObject).UserId;
+        GameManager.Instance.invenManger[this.userId].OnGetItemData += OnGetItem;        
     }
 
     private void OnGetItem(ItemData item, int userID)

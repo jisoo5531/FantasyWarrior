@@ -36,7 +36,7 @@ public class UI_BuyOrSellAmount : MonoBehaviour
         Q_DownButton.onClick.AddListener(OnClickAmountDownButton);
         backButton.onClick.AddListener(OnClickBackButton);
     }
-    protected void Initialize(ItemData item)
+    protected void Initialize(int userId, ItemData item)
     {
         itemQuantity = 0;
         quantityInputText.text = "0";

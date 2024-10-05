@@ -67,11 +67,12 @@ public class UI_InventoryPanel : MonoBehaviour
         //InventoryManager.Instance.OnGetItem += SetItemToSlot_Sort;        
         PlayerEquipManager.Instance.OnAllUnEquipButtonClick += SetItemToSlot;
         PlayerEquipManager.Instance.OnUnEquipItem += SetItemToSlot;
-        InventoryManager.Instance.OnGetItem += SetItemToSlot;
-        InventoryManager.Instance.OnGetItem += SetPlayerGold;
 
+        GameManager.Instance.invenManger[this.userID].OnGetItem += SetItemToSlot;
+        GameManager.Instance.invenManger[this.userID].OnGetItem += SetPlayerGold;
 
-        List<InventoryData> inventoryDataList = InventoryManager.Instance.inventoryDataList;
+        
+        List<InventoryData> inventoryDataList = GameManager.Instance.invenManger[this.userID].inventoryDataList;
         userID = inventoryDataList[0].User_ID;
         if (inventoryDataList.Count > 0)
         {
@@ -113,8 +114,9 @@ public class UI_InventoryPanel : MonoBehaviour
         {
             return;
         }
-        List<InventoryData> newInventoryList = InventoryManager.Instance.inventoryDataList;
-        List<AddItemClassfiy> whichAddItem = InventoryManager.Instance.addWhichItemList;
+
+        List<InventoryData> newInventoryList = GameManager.Instance.invenManger[userID].inventoryDataList;
+        List<AddItemClassfiy> whichAddItem = GameManager.Instance.invenManger[userID].addWhichItemList;
 
         Debug.Log($"추가 개수 : {whichAddItem.Count}");
         foreach (var item in whichAddItem)
@@ -132,7 +134,7 @@ public class UI_InventoryPanel : MonoBehaviour
         }
 
         // 다 더하고 난 뒤에 초기화.        
-        InventoryManager.Instance.ClearAddWhichItemList();
+        GameManager.Instance.invenManger[userID].ClearAddWhichItemList();        
     }
     private void AddItemSlotSetting(int itemID)
     {
@@ -161,7 +163,8 @@ public class UI_InventoryPanel : MonoBehaviour
     }
     private void ModifiedItemSlotSetting(int itemID)
     {
-        List<InventoryData> inventoryDataList = InventoryManager.Instance.inventoryDataList;
+        
+        List<InventoryData> inventoryDataList = GameManager.Instance.invenManger[this.userID].inventoryDataList;
         int index = inventoryDataList.FindIndex(x => x.Item_ID.Equals(itemID));
         int quantity = inventoryDataList[index].Quantity;
         for (int i = 0; i < EquipContent.transform.childCount; i++)
@@ -221,7 +224,8 @@ public class UI_InventoryPanel : MonoBehaviour
         SlotClear(itemContentList[1]);
         SlotClear(itemContentList[2]);
 
-        List<InventoryData> inventoryDataList = InventoryManager.Instance.inventoryDataList;
+        
+        List<InventoryData> inventoryDataList = GameManager.Instance.invenManger[this.userID].inventoryDataList;
 
         foreach (InventoryData item in inventoryDataList)
         {
@@ -259,15 +263,15 @@ public class UI_InventoryPanel : MonoBehaviour
     }
     private void SetItemToEquipSlot(int itemID, Sprite sprite, UI_InventorySlot slot)
     {
-        slot.Initialize(itemID, sprite, EquipitemInfo);
+        slot.Initialize(this.userID, itemID, sprite, EquipitemInfo);
     }
     private void SetItemToConsumpSlot(int itemID, Sprite sprite, UI_InventorySlot slot)
     {
-        slot.Initialize(itemID, sprite, OtherConsumpItemInfo);
+        slot.Initialize(this.userID, itemID, sprite, OtherConsumpItemInfo);
     }
     private void SetItemToOtherSlot(int itemID, Sprite sprite, UI_InventorySlot slot)
     {
-        slot.Initialize(itemID, sprite, OtherConsumpItemInfo);
+        slot.Initialize(this.userID, itemID, sprite, OtherConsumpItemInfo);
     }
     private void SlotClear(GameObject content)
     {

@@ -13,9 +13,9 @@ public class UI_EquipSlot : UI_ItemSlot
     /// </summary>
     /// <param name="itemID"></param>
     /// <param name="sprite"></param>
-    public override void Initialize(int itemID = 0, Sprite sprite = null, UI_ItemInfo itemInfo = null)
+    public override void Initialize(int userId, int itemID = 0, Sprite sprite = null, UI_ItemInfo itemInfo = null)
     {
-        base.Initialize(itemID, sprite, itemInfo);        
+        base.Initialize(userId, itemID, sprite, itemInfo);        
         if (itemID == 0)
         {            
             this.itemImage.ImageTransparent(0);
@@ -37,7 +37,7 @@ public class UI_EquipSlot : UI_ItemSlot
         if (itemInfoWindow != null && itemID != 0)
         {            
             itemInfoWindow.gameObject.SetActive(true);
-            itemInfoWindow.Initialize(this.itemID);
+            itemInfoWindow.Initialize(this.userId, this.itemID);
         }   
     }
 

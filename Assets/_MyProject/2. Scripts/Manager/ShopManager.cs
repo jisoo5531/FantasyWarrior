@@ -9,6 +9,8 @@ public class ShopManager : MonoBehaviour
 {
     public static ShopManager Instance { get; private set; }
 
+    private int userId;
+
     /// <summary>
     /// 상점 데이터들을 담는 딕셔너리
     /// <para>key는 상점의 ID</para>
@@ -92,8 +94,8 @@ public class ShopManager : MonoBehaviour
             {
                 Debug.Log("아이템 성공적으로 샀다.");
                 ItemData item = ItemManager.Instance.GetItemData(shopItem.Item_ID);
-                // TODO : 대량으로 사들일 경우엔 수량 변수로 변경
-                InventoryManager.Instance.GetItem(userID, item, 1);
+                
+                GameManager.Instance.invenManger[userID].GetItem(userID, item, amount);                
                 BuySuccess?.Invoke();
             }
             //shopItem.Price
@@ -109,7 +111,8 @@ public class ShopManager : MonoBehaviour
     public void SellItem(ItemData item, int amount, Action successSell)
     {
         UserStatManager.Instance.GetGold(item.SellPrice * amount);
-        InventoryManager.Instance.SubtractItem(item, amount);
+
+        GameManager.Instance.invenManger[this.userId].SubtractItem(item, amount);        
 
         successSell?.Invoke();
     }

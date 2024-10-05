@@ -18,6 +18,7 @@ public class CraftInteractionArea : MonoBehaviour
 
     private GameObject currentPlayer;    // 현재 상호작용 중인 플레이어
     public bool isHaveTool;
+    
 
     private void Awake()
     {
@@ -26,13 +27,14 @@ public class CraftInteractionArea : MonoBehaviour
     }
     private void Start()
     {
-        // TODO : 나중에 아이템을 팔거나 버리는 기능 넣을 시, 그때에도 체크해주도록
-        InventoryManager.Instance.OnGetCraftItem += CheckUserHaveTool;
+        int userId = DatabaseManager.Instance.GetPlayerData(currentPlayer).UserId;
+        GameManager.Instance.invenManger[userId].OnGetCraftItem += CheckUserHaveTool;
+        // TODO : 나중에 아이템을 팔거나 버리는 기능 넣을 시, 그때에도 체크해주도록        
         
     }
     protected virtual void CheckUserHaveTool(int userid)
     {
-        UserCraftToolData userCraftTool = InventoryManager.Instance.userCraftToolClient.Find(x => x.CreftType.Equals(craftType));
+        UserCraftToolData userCraftTool = GameManager.Instance.invenManger[userid].userCraftToolClient.Find(x => x.CreftType.Equals(craftType));        
         isHaveTool = userCraftTool.Item_ID != 0;
     }
     private void OnDisable()

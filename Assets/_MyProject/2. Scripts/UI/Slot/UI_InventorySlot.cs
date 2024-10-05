@@ -19,13 +19,15 @@ public class UI_InventorySlot : UI_ItemSlot
     /// </summary>
     private Item_Type? item_Type;
     private int? itemQuantity;
+    
 
-    public override void Initialize(int itemID, Sprite sprite = null, UI_ItemInfo itemInfo = null)
-    {
+    public override void Initialize(int userId, int itemID, Sprite sprite = null, UI_ItemInfo itemInfo = null)
+    {        
         this.item_ID = itemID;
-        base.Initialize(itemID, sprite, itemInfo);
+        base.Initialize(userId, itemID, sprite, itemInfo);
         this.item_Type = ItemManager.Instance.GetInventoryItemTypeFromDB(itemID);
-        itemQuantity = InventoryManager.Instance.GetItemQuantity(itemID);
+        
+        itemQuantity = GameManager.Instance.invenManger[userId].GetItemQuantity(itemID);
         if (itemQuantity == null)
         {
             Debug.Log("Àß¸øµÈ ID");
@@ -37,16 +39,17 @@ public class UI_InventorySlot : UI_ItemSlot
     }
     private void Start()
     {
-        InventoryManager.Instance.OnSubtractItem += UpdateQuantityText;
-        InventoryManager.Instance.OnDeleteItem += EventSlotClear;
+        GameManager.Instance.invenManger[this.userId].OnSubtractItem += UpdateQuantityText;
+        GameManager.Instance.invenManger[this.userId].OnDeleteItem += EventSlotClear;        
     }
     private void UpdateQuantityText(ItemData item)
     {
         if (item_ID == 0 || this.item_ID != item.Item_ID)
         {
             return;
-        }        
-        itemQuantityText.text = InventoryManager.Instance.GetInventoryItem(item.Item_ID).Quantity.ToString();
+        }
+        
+        itemQuantityText.text = GameManager.Instance.invenManger[this.userId].GetInventoryItem(item.Item_ID).Quantity.ToString();
     }
 
     /// <summary>
@@ -84,7 +87,7 @@ public class UI_InventorySlot : UI_ItemSlot
 
         PlayerEquipManager.Instance.EquipItem(PlayerEquipManager.Instance.EquipParts[(int)equipItem.Equip_Type], itemID);
 
-        InventoryManager.Instance.EquipItemUpdateInventory(itemID);
+        GameManager.Instance.invenManger[this.userId].EquipItemUpdateInventory(itemID);        
 
         itemInfoWindow.gameObject.SetActive(false);
 
