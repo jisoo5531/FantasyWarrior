@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
+using Mirror;
 
-public class MonsterManager : MonoBehaviour
+public class MonsterManager : NetworkBehaviour
 {
     public static MonsterManager Instance { get; private set; }
 
@@ -12,18 +13,28 @@ public class MonsterManager : MonoBehaviour
     /// <para>key는 몬스터의 ID.</para>
     /// </summary>
     public Dictionary<int, MonsterData> Monster_Dict { get; private set; }
-    
+
+    private void OnEnable()
+    {
+        
+    }
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+
+        }
+        else
+        {
+            Debug.LogError("여기지");
+            Destroy(gameObject); // 이미 인스턴스가 존재하면 새로 생성된 오브젝트는 파괴
+        }
+        DontDestroyOnLoad(gameObject); // 이 오브젝트가 씬 전환 시에도 파괴되지 않도록 설정
     }
 
-    private void Start()
-    {        
-        //EventHandler.managerEvent.TriggerMonsteranagerInit();
-    }
     public void Initialize()
-    {
+    {        
         GetMonsterDataFromDB();
     }
 
@@ -33,11 +44,11 @@ public class MonsterManager : MonoBehaviour
     /// <param name="monster_ID"></param>
     /// <returns></returns>
     public MonsterData GetMonsterData(int monster_ID)
-    {
+    {        
         if (Monster_Dict.TryGetValue(monster_ID, out MonsterData monster))
-        {
+        {            
             return monster;
-        }
+        }        
         return null;
     }
 
@@ -57,7 +68,7 @@ public class MonsterManager : MonoBehaviour
             foreach (DataRow row in dataSet.Tables[0].Rows)
             {
                 int id = int.Parse(row["Monster_ID"].ToString());
-                Monster_Dict.Add(id, new MonsterData(row));
+                Monster_Dict.Add(id, new MonsterData(row));                
             }
         }
         else

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 public class Damagable : MonoBehaviour, IDamagable
 {
@@ -14,6 +15,7 @@ public class Damagable : MonoBehaviour, IDamagable
 
     private bool isDeath = false;
 
+    private bool isMonster = false;
 
     #region ¿Ã∫•∆Æ
 
@@ -32,26 +34,41 @@ public class Damagable : MonoBehaviour, IDamagable
 
     #endregion
 
-    public void Initialize(int unitID, int maxHp, int hp)
+    public void Initialize(int unitID, int maxHp, int hp, bool isMonster)
     {
+        this.isMonster = isMonster;
         this.Unit_ID = unitID;
         this.MaxHp = maxHp;
         this.Hp = hp;
-    }
+
+        EventListener();
+    }    
     private void Awake()
     {
         
     }
-    private void Start()
+    private void EventListener()
     {
+        if (isMonster)
+        {
+            return;
+        }        
         UserStatManager.Instance.OnLevelUpUpdateStat += OnChangeHp;
         PlayerEquipManager.Instance.OnEquipItem += OnChangeHp;
         PlayerEquipManager.Instance.OnUnEquipItem += OnChangeHp;
         PlayerEquipManager.Instance.OnAllUnEquipButtonClick += OnChangeHp;
     }
+    private void Start()
+    {
+        
+    }
 
     private void OnDisable()
     {
+        if (isMonster)
+        {
+            return;
+        }        
         UserStatManager.Instance.OnLevelUpUpdateStat -= OnChangeHp;
         PlayerEquipManager.Instance.OnEquipItem -= OnChangeHp;
         PlayerEquipManager.Instance.OnUnEquipItem -= OnChangeHp;

@@ -124,7 +124,7 @@ public class GameManager : MonoBehaviour
         // 글로벌 매니저 초기화
         ItemManager.Instance.Initialize();
         PlayerUIManager.Instance.Initialize();
-        MonsterManager.Instance.Initialize();
+        //MonsterManager.Instance.Initialize();
         LocationManger.Instance.Initialize();
         ShopManager.Instance.Initialize();
         CraftManager.Instance.Initialize();

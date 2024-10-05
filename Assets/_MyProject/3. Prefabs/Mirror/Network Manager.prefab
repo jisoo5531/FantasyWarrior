@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6913731571992310956}
-  - component: {fileID: 6913731571992310957}
+  - component: {fileID: 8895934155477580524}
   - component: {fileID: 6913731571992310958}
-  - component: {fileID: 8595180087828664947}
+  - component: {fileID: 2969558227249579828}
   m_Layer: 0
   m_Name: Network Manager
   m_TagString: Untagged
@@ -34,7 +34,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6913731571992310957
+--- !u!114 &8895934155477580524
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -43,7 +43,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6913731571992310959}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8aab4c8111b7c411b9b92cf3dbc5bd4e, type: 3}
+  m_Script: {fileID: 11500000, guid: dc4356cf230c8a54096ccf176bc24db3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 1
@@ -64,7 +64,7 @@ MonoBehaviour:
   autoCreatePlayer: 1
   playerSpawnMethod: 1
   spawnPrefabs:
-  - {fileID: 3732044691190739331, guid: 04a2980a50acf7648a99ef0f4414f6ad, type: 3}
+  - {fileID: 151341626602812967, guid: a5fa37c8a38f68b498532d451e97eafa, type: 3}
   exceptionsDisconnect: 1
   snapshotSettings:
     bufferTimeMultiplier: 2
@@ -109,7 +109,7 @@ MonoBehaviour:
   debugLog: 0
   statisticsGUI: 0
   statisticsLog: 0
---- !u!114 &8595180087828664947
+--- !u!114 &2969558227249579828
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

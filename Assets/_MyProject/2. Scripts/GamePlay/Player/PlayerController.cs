@@ -60,6 +60,11 @@ public class PlayerController : NetworkBehaviour
         userID = id; // 서버에서 userID 설정
         Debug.Log($"User ID set to: {userID}");
     }
+    [Command]
+    private void cmdOnJoin(int userId)
+    {
+        Debug.Log($"{userId} 들어옴");
+    }
 
     /// <summary>
     /// 플레이어의 레벨 등의 스탯 (UserStatManager), 플레이어가 착용하고 있는 장비 (PlayerEquipManager) 를 받아온 다음에 초기화
@@ -73,17 +78,13 @@ public class PlayerController : NetworkBehaviour
         int MaxHp = userStatClient.MaxHP;
         int Hp = userStatClient.HP;
         int damage = userStatClient.STR;        
-        damagable.Initialize(unitID: this.userID, maxHp: MaxHp, hp: Hp);
+        damagable.Initialize(unitID: this.userID, maxHp: MaxHp, hp: Hp, isMonster: false);        
         attackable.Initialize(damage: damage, range: 2);        
 
         playerUI?.Initialize(damagable);
         damagable.OnDeath += () => { Debug.Log("플레이어 죽었다."); };
     }
-    [Command]
-    private void cmdOnJoin(int userId)
-    {
-        Debug.Log($"{userId} 들어옴");
-    }
+    
     private void Start()
     {
         // 로컬 플레이어만 초기화하는 로직

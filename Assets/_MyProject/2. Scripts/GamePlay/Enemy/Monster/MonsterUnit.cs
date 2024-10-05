@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
 using UnityEngine.AI;
+using Mirror;
 
 [RequireComponent(typeof(NavMeshAgent)), RequireComponent(typeof(UnitAnimation))]
-public class MonsterUnit : Enemy
+public class MonsterUnit : NetworkBehaviour
 {
     // TODO : 몬스터를 잡으면 보상(경험치, 재화, 아이템) 등을 얻는다.    
     protected MonsterData monsterData;
@@ -26,36 +27,51 @@ public class MonsterUnit : Enemy
 
     protected int monsterID;
 
+    public void SetPlayer(PlayerController player)
+    {
+        this.player = player;
+        Debug.Log($"플레이어 세팅 : {player.userID}");
+    }
+
     private void Awake()
     {        
-        player = FindObjectOfType<PlayerController>();
         attackable = gameObject.AddComponent<Attackable>();
         damagable = gameObject.AddComponent<Damagable>();
         followable = gameObject.AddComponent<Followable>();
 
         monsterUI = GetComponentInChildren<UIComponent>();
         unitAnim = GetComponent<UnitAnimation>();
-        nav = GetComponent<NavMeshAgent>();        
+        nav = GetComponent<NavMeshAgent>();
+        Debug.Log("여기");
     }
 
     private void OnEnable()
     {
+        Debug.Log("여기");
         Initialize();
         damagable.OnTakeDamage += OnHpChange;
         damagable.OnDeath += OnDeath;
     }
     protected virtual void Initialize()
-    {        
+    {
+        Debug.Log("여기" + monsterID);
+        Debug.Log(MonsterManager.Instance == null);
+        Debug.Log(MonsterManager.Instance.GetMonsterData(monsterID).MonsterName);
+
         this.monsterData = MonsterManager.Instance.GetMonsterData(monsterID);
+        Debug.Log("여기");
         Debug.Log(monsterData.MonsterName);
-        damagable.Initialize(unitID: monsterData.MonsterID, maxHp: monsterData.MaxHp, hp: monsterData.Hp);
+        damagable.Initialize(unitID: monsterData.MonsterID, maxHp: monsterData.MaxHp, hp: monsterData.Hp, isMonster: true);
         attackable.Initialize(damage: monsterData.Damage, range: monsterData.AttackRange);
         followable.Initialize(moveSpeed: monsterData.MoveSpeed);
         nav.speed = followable.MoveSpeed;
 
         monsterUI.Initialize(damagable);
+        Debug.Log("여기");
         M_StateMachine = new MonsterStateMachine(this);
+        Debug.Log("여기");
         M_StateMachine.Initialize(M_StateMachine.idleState);
+        Debug.Log("여기");
     }
     private void Update()
     {
