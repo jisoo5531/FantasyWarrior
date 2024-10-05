@@ -299,6 +299,8 @@ GameObject:
   - component: {fileID: 151341626602812964}
   - component: {fileID: 151341626602812963}
   - component: {fileID: 151341626602812962}
+  - component: {fileID: 8909343684864879636}
+  - component: {fileID: 7363737845461607217}
   m_Layer: 6
   m_Name: Goblins Test
   m_TagString: Untagged
@@ -438,6 +440,40 @@ MonoBehaviour:
   - {fileID: 7400000, guid: 847d794dc9365d346821462bddb923fe, type: 3}
   - {fileID: 7400000, guid: 43fa86021ab7e5541b0fc59c6f40468d, type: 3}
   - {fileID: 7400000, guid: 8ae8d26ba8d8e7941b556b1310f8bffc, type: 3}
+--- !u!114 &8909343684864879636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 151341626602812967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  _assetId: 1921601729
+  serverOnly: 0
+  visibility: 0
+  hasSpawned: 0
+--- !u!114 &7363737845461607217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 151341626602812967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f6f3bf89aa97405989c802ba270f815, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 1
+  syncMode: 0
+  syncInterval: 0
+  clientAuthority: 0
+  animator: {fileID: 0}
 --- !u!1 &232015584211087060
 GameObject:
   m_ObjectHideFlags: 0
