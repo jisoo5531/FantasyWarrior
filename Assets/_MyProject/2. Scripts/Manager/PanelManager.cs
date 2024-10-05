@@ -34,13 +34,13 @@ public class PanelManager : MonoBehaviour
 
     private void OnEnable()
     {
+        Debug.Log("여기가 먼저?");
         // 로컬 플레이어 체크
         NetworkIdentity networkIdentity = transform.root.GetComponent<NetworkIdentity>();
         if (networkIdentity == null || !networkIdentity.isLocalPlayer)
         {
             return; // 로컬 플레이어가 아닐 경우 UI를 실행하지 않음
-        }
-        PlayerSkill.OnKeyBindInit += SkillPanel.SkillPanelInit;
+        }        
         var playerActions = GameManager.inputActions.PlayerActions;
         playerActions.UI_Skill.performed += OnSkillUI;
         playerActions.UI_Inventory.performed += OnInventoryUI;
@@ -55,8 +55,7 @@ public class PanelManager : MonoBehaviour
         if (networkIdentity == null || !networkIdentity.isLocalPlayer)
         {
             return; // 로컬 플레이어가 아닐 경우 UI를 실행하지 않음
-        }
-        PlayerSkill.OnKeyBindInit -= SkillPanel.SkillPanelInit;
+        }        
         var playerActions = GameManager.inputActions.PlayerActions;
         playerActions.UI_Skill.performed -= OnSkillUI;
         playerActions.UI_Inventory.performed -= OnInventoryUI;

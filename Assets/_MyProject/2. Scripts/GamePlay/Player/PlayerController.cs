@@ -90,7 +90,7 @@ public class PlayerController : NetworkBehaviour
     {
         // 로컬 플레이어만 초기화하는 로직
         if (!isLocalPlayer) return;
-        Debug.LogError("여기;!!!");
+        
 
         GameObject playerUI = Instantiate(playerUIPrefab, transform);
         this.playerUI = playerUI.GetComponentInChildren<UIComponent>();
@@ -101,7 +101,7 @@ public class PlayerController : NetworkBehaviour
         CmdSetUserID(userID);
         cmdOnJoin(userID);
 
-        Debug.LogError($"얘 아이디 : {this.userID}");
+        
         GameObject.Find("_Scene").GetComponent<HumanScene>().player = this;
         GameObject.Find("ClearShot Camera").GetComponent<CinemachineClearShot>().Follow = this.transform;
         GameObject.Find("ClearShot Camera").GetComponent<CinemachineClearShot>().LookAt = this.transform;

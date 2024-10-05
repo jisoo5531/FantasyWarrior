@@ -66,7 +66,7 @@ public class DatabaseManager : MonoBehaviour
         if (!playerDataDict.ContainsKey(instanceID))
         {
             playerDataDict.Add(instanceID, new PlayerData(userId, userName));
-            Debug.LogError($"Player {userName} initialized with instance ID: {instanceID}");
+            
         }
         else
         {

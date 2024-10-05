@@ -50,7 +50,7 @@ public class PlayerUI : UIComponent
             return; // 로컬 플레이어가 아닐 경우 UI를 실행하지 않음
         }
         this.userId = DatabaseManager.Instance.GetPlayerData(transform.root.gameObject).UserId;
-        Debug.LogError($"UI id : {userId}");
+        
         PlayerEquipManager.Instance.OnEquipItem += OnChangeMP;
         PlayerEquipManager.Instance.OnUnEquipItem += OnChangeMP;
         PlayerEquipManager.Instance.OnAllUnEquipButtonClick += OnChangeMP;
@@ -65,7 +65,7 @@ public class PlayerUI : UIComponent
 
         this.userId = DatabaseManager.Instance.GetPlayerData(transform.root.gameObject).UserId;
         UserStatClient userStatClient = UserStatManager.Instance.GetUserStatClient(this.userId);
-        Debug.LogError($"{userStatClient.Exp}");
+        
 
         LevelText.text = userStatClient.Level.ToString();
         if (hpBar != null)

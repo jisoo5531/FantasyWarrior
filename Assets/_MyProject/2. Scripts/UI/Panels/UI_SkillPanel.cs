@@ -45,6 +45,10 @@ public class UI_SkillPanel : MonoBehaviour
         EventHandler.skillKey.RegisterSkillKeyChange(OnChangeSkill);
         
     }
+    private void Start()
+    {
+        SkillPanelInit();
+    }
     private void SkillContentClear(GameObject content)
     {
         for (int i = 0; i < content.transform.childCount; i++)
@@ -83,7 +87,7 @@ public class UI_SkillPanel : MonoBehaviour
     private void SkillWindowSetting()
     {
         List<SkillData> skills = SkillManager.Instance.ClassSkillDataList;
-        
+        Debug.Log($"스킬 개수 : {skills.Count}");
         SkillContentClear(skillWindowContent);
         if (skills != null)
         {

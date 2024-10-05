@@ -28,7 +28,7 @@ public class UI_QuestWindow : MonoBehaviour
             return; // 로컬 플레이어가 아닐 경우 UI를 실행하지 않음
         }
 
-        Debug.LogError(transform.root.gameObject.GetInstanceID());
+        
         this.userId = DatabaseManager.Instance.GetPlayerData(transform.root.gameObject).UserId;
 
         UI_InprogressQuest.OnGuideButton += SetQuestWindow;

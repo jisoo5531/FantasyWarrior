@@ -54,6 +54,7 @@ public class PlayerSkill : NetworkBehaviour
 
     protected virtual void Initialize()
     {
+        Debug.Log("여기가 먼저???ㄴㅇㄹ");
         SkillKeyBind userSkillKeyBind = SkillManager.Instance.UserSkillKeyBInd;
         EquipSkills = new List<int>
         {
