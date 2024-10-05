@@ -30,7 +30,7 @@ public class UI_BuyAmount : UI_BuyOrSellAmount
         ItemData itemData = ItemManager.Instance.GetItemData(shopItem.Item_ID);
         Initialize(userId, itemData);
         
-        List<InventoryData> inventoryList = GameManager.Instance.invenManger[userId].inventoryDataList;
+        List<InventoryData> inventoryList = GameManager.Instance.invenManager[userId].inventoryDataList;
         InventoryData invenItemData = inventoryList.Find(x => x.Item_ID == itemData.Item_ID);
 
         UpdateQuantityText();

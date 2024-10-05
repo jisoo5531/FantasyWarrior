@@ -127,7 +127,7 @@ public class UI_ShopPanel : MonoBehaviour
         int consumpAmount = 0;
         int otherAmount = 0;
         
-        List<InventoryData> inventoryDataList = GameManager.Instance.invenManger[this.userId].inventoryDataList;
+        List<InventoryData> inventoryDataList = GameManager.Instance.invenManager[this.userId].inventoryDataList;
 
         foreach (InventoryData invenItem in inventoryDataList)
         {

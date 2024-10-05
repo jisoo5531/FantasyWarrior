@@ -158,8 +158,8 @@ public class SkillManager : MonoBehaviour
     {
         ClassSkillDataList = new List<SkillData>();
 
-        UserStatClient userStat = UserStatManager.Instance.userStatClient;
-        int userId = DatabaseManager.Instance.userData.UID;
+        Debug.Log("아이디? :  " + this.userId);
+        UserStatClient userStat = UserStatManager.Instance.GetUserStatClient(this.userId);
         CharClass userClass = userStat.charClass;
         Debug.Log($"여기 뭐야 : {userClass}");
         string query =

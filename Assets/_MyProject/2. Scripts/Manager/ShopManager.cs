@@ -95,7 +95,7 @@ public class ShopManager : MonoBehaviour
                 Debug.Log("아이템 성공적으로 샀다.");
                 ItemData item = ItemManager.Instance.GetItemData(shopItem.Item_ID);
                 
-                GameManager.Instance.invenManger[userID].GetItem(userID, item, amount);                
+                GameManager.Instance.invenManager[userID].GetItem(userID, item, amount);                
                 BuySuccess?.Invoke();
             }
             //shopItem.Price
@@ -112,7 +112,7 @@ public class ShopManager : MonoBehaviour
     {
         UserStatManager.Instance.GetGold(item.SellPrice * amount);
 
-        GameManager.Instance.invenManger[this.userId].SubtractItem(item, amount);        
+        GameManager.Instance.invenManager[this.userId].SubtractItem(item, amount);        
 
         successSell?.Invoke();
     }

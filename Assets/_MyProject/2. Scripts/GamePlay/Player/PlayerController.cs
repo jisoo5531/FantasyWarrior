@@ -14,8 +14,7 @@ using Mirror;
 ]
 public class PlayerController : NetworkBehaviour
 {
-    public GameObject playerUIPrefab;
-    private HumanScene scene;
+    public GameObject playerUIPrefab;    
     
     [SyncVar]
     public int userID;
@@ -62,7 +61,6 @@ public class PlayerController : NetworkBehaviour
         Debug.Log($"User ID set to: {userID}");
     }
 
-
     /// <summary>
     /// 플레이어의 레벨 등의 스탯 (UserStatManager), 플레이어가 착용하고 있는 장비 (PlayerEquipManager) 를 받아온 다음에 초기화
     /// </summary>
@@ -89,14 +87,15 @@ public class PlayerController : NetworkBehaviour
     private void Start()
     {
         // 로컬 플레이어만 초기화하는 로직
-        if (!isLocalPlayer) return;
-        
-
-        GameObject playerUI = Instantiate(playerUIPrefab, transform);
-        this.playerUI = playerUI.GetComponentInChildren<UIComponent>();
-
+        if (!isLocalPlayer) return;       
         DatabaseManager.Instance.InitializePlayer(this.gameObject, DatabaseManager.Instance.userData.UID, DatabaseManager.Instance.userData.Name);
         this.userID = DatabaseManager.Instance.GetPlayerData(this.gameObject).UserId;
+
+        GameManager.Instance.userManager_Dict[this.userID].transform.SetParent(this.transform);
+
+        
+        this.playerUI = Instantiate(playerUIPrefab, transform).GetComponentInChildren<UIComponent>();
+
         StatInit();
         CmdSetUserID(userID);
         cmdOnJoin(userID);

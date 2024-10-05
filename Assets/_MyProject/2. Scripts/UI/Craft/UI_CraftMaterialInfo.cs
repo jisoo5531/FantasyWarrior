@@ -35,7 +35,7 @@ public class UI_CraftMaterialInfo : MonoBehaviour
         itemNameText.text = materialItem.Item_Name;
         ReqAmountText.text = $"x{recipeMaterial.M_Quantity.ToString()}";
 
-        int? haveAmount = GameManager.Instance.invenManger[userID].GetItemQuantity(materialItem.Item_ID);        
+        int? haveAmount = GameManager.Instance.invenManager[userID].GetItemQuantity(materialItem.Item_ID);        
         if (haveAmount != null)
         {
             playerHaveAmountText.text = $"x{haveAmount.ToString()}";

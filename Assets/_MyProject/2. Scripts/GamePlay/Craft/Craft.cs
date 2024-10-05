@@ -31,7 +31,7 @@ public class Craft : MonoBehaviour
     protected virtual void GetItem()
     {
         int userid = playerAnim.GetComponent<PlayerController>().userID;
-        GameManager.Instance.invenManger[userid].GetItem(userid, craftItem, 1);        
+        GameManager.Instance.invenManager[userid].GetItem(userid, craftItem, 1);        
     }
     protected void OnProgressBar(float actionTime)
     {        

@@ -131,8 +131,8 @@ public class PlayerEquipManager : MonoBehaviour
             {
                 UserEquipTable[EquipParts[i]] = 0;
                 UserStatManager.Instance.EquipItemUpdateStat(isEquip: false, itemID: itemID);
-                GameManager.Instance.invenManger[userId].GetItemUnEquip(itemID, 1);
-                GameManager.Instance.invenManger[userId].AddWhichItem(new AddItemClassfiy(userId, itemID, 1, false));                
+                GameManager.Instance.invenManager[userId].GetItemUnEquip(itemID, 1);
+                GameManager.Instance.invenManager[userId].AddWhichItem(new AddItemClassfiy(userId, itemID, 1, false));                
             }
         }
         OnAllUnEquipButtonClick?.Invoke(userId);
@@ -155,8 +155,8 @@ public class PlayerEquipManager : MonoBehaviour
         UserEquipTable[part] = 0;
 
         UserStatManager.Instance.EquipItemUpdateStat(isEquip: false, itemID);
-        GameManager.Instance.invenManger[user_ID].GetItemUnEquip(itemID, 1);
-        GameManager.Instance.invenManger[user_ID].AddWhichItem(new AddItemClassfiy(user_ID, itemID, 1, false));        
+        GameManager.Instance.invenManager[user_ID].GetItemUnEquip(itemID, 1);
+        GameManager.Instance.invenManager[user_ID].AddWhichItem(new AddItemClassfiy(user_ID, itemID, 1, false));        
 
         OnUnEquipItem?.Invoke(user_ID);
     }

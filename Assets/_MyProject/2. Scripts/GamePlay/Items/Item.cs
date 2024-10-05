@@ -19,7 +19,7 @@ public class Item : MonoBehaviour
             return;
         }
         int userId = other.GetComponent<PlayerController>().userID;
-        GameManager.Instance.invenManger[userId].GetItem(userId, itemData, 2);        
+        GameManager.Instance.invenManager[userId].GetItem(userId, itemData, 2);        
 
         Destroy(gameObject);
     }

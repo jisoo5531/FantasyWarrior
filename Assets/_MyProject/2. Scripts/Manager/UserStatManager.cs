@@ -17,7 +17,7 @@ public class UserStatManager : MonoBehaviour
 
     public static UserStatManager Instance { get; private set; }
 
-    public Dictionary<int, UserStatClient> userStat_Dict = new Dictionary<int, UserStatClient>();
+    public Dictionary<int, UserStatClient> userStat_Dict { get; private set; }
     /// <summary>
     /// 게임 중에 사용할 유저 스탯을 관리하는 변수
     /// </summary>
@@ -44,7 +44,7 @@ public class UserStatManager : MonoBehaviour
     /// </summary>
     public void Initialize(int userID)
     {
-        
+        userStat_Dict = new Dictionary<int, UserStatClient>();
 
         CmdRequestUserData(userID);
 
@@ -57,15 +57,17 @@ public class UserStatManager : MonoBehaviour
         UserStatData userStatData = GetUserStatDataFromDB(userId);
         userStatClient = new UserStatClient(userStatData);
         userStat_Dict.Add(userId, userStatClient);
+        Debug.Log(userStatClient == null);
+
         // 클라이언트에게 데이터를 전송
-        RpcSendUserStatData(userStatClient);
+        //RpcSendUserStatData(userStatClient);
     }
     
-    private void RpcSendUserStatData(UserStatClient userStatClient)
-    {
-        this.userStatClient = userStatClient;
-        Debug.Log("클라이언트에 유저 스탯 데이터 전송 완료.");
-    }
+    //private void RpcSendUserStatData(UserStatClient userStatClient)
+    //{
+    //    this.userStatClient = userStatClient;
+    //    Debug.Log("클라이언트에 유저 스탯 데이터 전송 완료.");
+    //}
     /// <summary>
     /// 골드를 사용할 때 호출
     /// </summary>
@@ -167,6 +169,7 @@ public class UserStatManager : MonoBehaviour
     }
     public UserStatClient GetUserStatClient(int userId)
     {
+        Debug.Log(userStatClient == null);
         Debug.Log("개수 : " + userStat_Dict.Count);
         if (userStat_Dict.TryGetValue(userId, out UserStatClient userStat))
         {

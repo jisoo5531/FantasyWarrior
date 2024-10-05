@@ -27,7 +27,7 @@ public class UI_InventorySlot : UI_ItemSlot
         base.Initialize(userId, itemID, sprite, itemInfo);
         this.item_Type = ItemManager.Instance.GetInventoryItemTypeFromDB(itemID);
         
-        itemQuantity = GameManager.Instance.invenManger[userId].GetItemQuantity(itemID);
+        itemQuantity = GameManager.Instance.invenManager[userId].GetItemQuantity(itemID);
         if (itemQuantity == null)
         {
             Debug.Log("잘못된 ID");
@@ -36,12 +36,15 @@ public class UI_InventorySlot : UI_ItemSlot
         itemImage.ImageTransparent(1);
         itemQuantityText.text = itemQuantity.ToString();
         itemQuantityText.gameObject.SetActive(true);
+
+        EventListener();
     }
-    private void Start()
+    private void EventListener()
     {
-        GameManager.Instance.invenManger[this.userId].OnSubtractItem += UpdateQuantityText;
-        GameManager.Instance.invenManger[this.userId].OnDeleteItem += EventSlotClear;        
-    }
+        Debug.Log("아이디 : " + this.userId);
+        GameManager.Instance.invenManager[this.userId].OnSubtractItem += UpdateQuantityText;
+        GameManager.Instance.invenManager[this.userId].OnDeleteItem += EventSlotClear;
+    }    
     private void UpdateQuantityText(ItemData item)
     {
         if (item_ID == 0 || this.item_ID != item.Item_ID)
@@ -49,7 +52,7 @@ public class UI_InventorySlot : UI_ItemSlot
             return;
         }
         
-        itemQuantityText.text = GameManager.Instance.invenManger[this.userId].GetInventoryItem(item.Item_ID).Quantity.ToString();
+        itemQuantityText.text = GameManager.Instance.invenManager[this.userId].GetInventoryItem(item.Item_ID).Quantity.ToString();
     }
 
     /// <summary>
@@ -87,7 +90,7 @@ public class UI_InventorySlot : UI_ItemSlot
 
         PlayerEquipManager.Instance.EquipItem(PlayerEquipManager.Instance.EquipParts[(int)equipItem.Equip_Type], itemID);
 
-        GameManager.Instance.invenManger[this.userId].EquipItemUpdateInventory(itemID);        
+        GameManager.Instance.invenManager[this.userId].EquipItemUpdateInventory(itemID);        
 
         itemInfoWindow.gameObject.SetActive(false);
 

@@ -54,7 +54,7 @@ public class UI_CratItemInfo : MonoBehaviour
     private void Awake()
     {
         quantityInputText.onValueChanged.AddListener(OnValueChangedInputQuantity);
-        GameManager.Instance.invenManger[this.userId].OnSubtractItem += SubtractMatriealItem;        
+        GameManager.Instance.invenManager[this.userId].OnSubtractItem += SubtractMatriealItem;        
         ButtonInitialize();
     }
     
@@ -107,7 +107,7 @@ public class UI_CratItemInfo : MonoBehaviour
     {
         if (m_Possesion_Dict.TryGetValue(item.Item_ID, out C_MaterialPossesion matrieal))
         {
-            matrieal.haveAmount = GameManager.Instance.invenManger[this.userId].GetInventoryItem(item.Item_ID).Quantity;            
+            matrieal.haveAmount = GameManager.Instance.invenManager[this.userId].GetInventoryItem(item.Item_ID).Quantity;            
         }
         MaxCraftQuantity();
     }
@@ -216,7 +216,7 @@ public class UI_CratItemInfo : MonoBehaviour
         foreach (var recipeMaterial in CraftRecipeManager.Instance.GetRecipeMaterialList(this.recipeData.Recipe_ID))
         {
             ItemData recipeItem = ItemManager.Instance.GetItemData(recipeMaterial.M_Item_ID);
-            GameManager.Instance.invenManger[this.userId].SubtractItem(recipeItem, recipeMaterial.M_Quantity * itemQuantity);            
+            GameManager.Instance.invenManager[this.userId].SubtractItem(recipeItem, recipeMaterial.M_Quantity * itemQuantity);            
         }
         
         gameObject.SetActive(false);

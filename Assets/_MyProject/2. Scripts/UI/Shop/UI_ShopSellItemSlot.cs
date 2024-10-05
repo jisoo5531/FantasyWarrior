@@ -19,8 +19,8 @@ public class UI_ShopSellItemSlot : MonoBehaviour
     }
     private void EventListener()
     {
-        GameManager.Instance.invenManger[this.userId].OnSubtractItem += UpdateQuantityText;
-        GameManager.Instance.invenManger[this.userId].OnDeleteItem += EventSlotClear;        
+        GameManager.Instance.invenManager[this.userId].OnSubtractItem += UpdateQuantityText;
+        GameManager.Instance.invenManager[this.userId].OnDeleteItem += EventSlotClear;        
     }
     public void Initialize(int userId, InventoryData invenItem, Sprite itemSprite)
     {
@@ -50,7 +50,7 @@ public class UI_ShopSellItemSlot : MonoBehaviour
             return;
         }
         
-        itemQuantityText.text = GameManager.Instance.invenManger[this.userId].GetInventoryItem(item.Item_ID).Quantity.ToString();
+        itemQuantityText.text = GameManager.Instance.invenManager[this.userId].GetInventoryItem(item.Item_ID).Quantity.ToString();
 
 
     }

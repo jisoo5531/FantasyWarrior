@@ -19,7 +19,7 @@ public class UI_SellAmount : UI_BuyOrSellAmount
     {                
         this.Item = item;
 
-        GameManager.Instance.invenManger[userId].GetInventoryItem(item.Item_ID);        
+        GameManager.Instance.invenManager[userId].GetInventoryItem(item.Item_ID);        
         Initialize(userId, item);
         itemGoldText.text = item.SellPrice.ToString();
     }
