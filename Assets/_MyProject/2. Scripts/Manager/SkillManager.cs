@@ -9,6 +9,8 @@ public class SkillManager : MonoBehaviour
 {
     public static SkillManager Instance { get; private set; }
 
+    private int userId;
+
     public void StartSkill(Skill skill, Damagable damagable)
     {
         StartCoroutine(skill.SkillMechanism(damagable));
@@ -31,6 +33,8 @@ public class SkillManager : MonoBehaviour
     /// 저장할 때 비교를 위한 원본 스킬 리스트
     /// </summary>
     public List<UserSkillData> UserSkillOrigin { get; private set; }
+
+    public Dictionary<int, SkillKeyBind> UserSkillKeyBInd_Dict { get; private set; }
     public SkillKeyBind UserSkillKeyBInd { get; private set; }
 
     /// <summary>
@@ -45,15 +49,16 @@ public class SkillManager : MonoBehaviour
     }
     public void Initialize(int userid)
     {
+        this.userId = userid;
         CmdRequestUserData(userid);
         //EventHandler.managerEvent.TriggerSkillManagerInit();
     }
-    
+
     private void CmdRequestUserData(int userId)
-    {
+    {        
         UserStatManager.Instance.OnLevelUpUpdateStat += OnLevelUp_UnlockSkill;
 
-        UserSkillKeyBInd = GetSkillKeyBind();
+        GetSkillKeyBind();
 
         _ = GetSkillFromDB();
         _ = GetUserSkillFromDB(userId);
@@ -69,30 +74,81 @@ public class SkillManager : MonoBehaviour
             }
         }
     }
-
+    /// <summary>
+    /// 해당 유저의 스킬 키셋팅 가져오기
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns></returns>
+    public SkillKeyBind GetSkillKeyBind(int userId)
+    {
+        if (UserSkillKeyBInd_Dict.TryGetValue(userId, out SkillKeyBind skillKeyBind))
+        {
+            return skillKeyBind;
+        }
+        return null;
+    }
+   
+    /// <summary>
+    /// 유저 레벨에 따라 스킬 해제를 할 수 있는 메서드
+    /// </summary>
+    private void OnLevelUp_UnlockSkill(int userid)
+    {
+        if (DatabaseManager.Instance.userData.UID != userid)
+        {
+            return;
+        }
+        UserStatClient userStat = UserStatManager.Instance.userStatClient;
+        int userLevel = userStat.Level;
+        CharClass userClass = userStat.charClass;
+        userAvailableSkillList = ClassSkillDataList.FindAll(x => userLevel >= x.Unlock_Level && x.CharClass.Equals(userClass));
+        OnUnlockSkillEvent?.Invoke();
+    }
+    /// <summary>
+    /// 스킬 습득 메서드
+    /// </summary>
+    /// <param name="skillID"></param>
+    public void LearnSkill(SkillData skill)
+    {
+        int userID = DatabaseManager.Instance.userData.UID;
+        CharClass charClass = UserStatManager.Instance.userStatClient.charClass;
+        UserSkillList.Add(new UserSkillData(userID, charClass, skill.Skill_ID));        
+    }
+    /// <summary>
+    /// 스킬 레벨업을 할 때 
+    /// </summary>
+    /// <param name="skill"></param>
+    public void SkillLevelUP(SkillData skill)
+    {
+        int user_ID = DatabaseManager.Instance.userData.UID;
+        int index = UserSkillList.FindIndex(x => x.User_ID.Equals(user_ID) && x.Skill_ID.Equals(skill.Skill_ID));
+        if (index >= 0)
+        {
+            UserSkillList[index].Skill_Level += 1;
+        }
+    }
+    #region DB
     /// <summary>
     /// 데이터베이스에서 유저의 키셋팅 가져오기
     /// </summary>
     /// <returns></returns>
-    private SkillKeyBind GetSkillKeyBind()
+    private void GetSkillKeyBind()
     {
-        int user_ID = DatabaseManager.Instance.userData.UID;
+        UserSkillKeyBInd_Dict = new Dictionary<int, SkillKeyBind>();
         string query =
             $"SELECT *\n" +
             $"FROM userskillkeybinds\n" +
-            $"WHERE userskillkeybinds.User_ID={user_ID}";
+            $"WHERE userskillkeybinds.User_ID={this.userId}";
         DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
 
         bool isGetData = dataSet.Tables.Count > 0 && dataSet.Tables[0].Rows.Count > 0;
         if (isGetData)
         {
             DataRow row = dataSet.Tables[0].Rows[0];
-            return new SkillKeyBind(row);
+            UserSkillKeyBInd_Dict.Add(this.userId, new SkillKeyBind(row));
         }
         else
         {
-            //  실패
-            return null;
+            //  실패            
         }
     }
     /// <summary>
@@ -118,7 +174,7 @@ public class SkillManager : MonoBehaviour
         {
             foreach (DataRow row in dataSet.Tables[0].Rows)
             {
-                           
+
                 Debug.Log($"{(Status_Effect)System.Enum.Parse(typeof(Status_Effect), row["CC"].ToString())}");
                 SkillData data = new SkillData(row);
                 ClassSkillDataList.Add(data);
@@ -165,45 +221,7 @@ public class SkillManager : MonoBehaviour
         }
 
     }
-
-    /// <summary>
-    /// 유저 레벨에 따라 스킬 해제를 할 수 있는 메서드
-    /// </summary>
-    private void OnLevelUp_UnlockSkill(int userid)
-    {
-        if (DatabaseManager.Instance.userData.UID != userid)
-        {
-            return;
-        }
-        UserStatClient userStat = UserStatManager.Instance.userStatClient;
-        int userLevel = userStat.Level;
-        CharClass userClass = userStat.charClass;
-        userAvailableSkillList = ClassSkillDataList.FindAll(x => userLevel >= x.Unlock_Level && x.CharClass.Equals(userClass));
-        OnUnlockSkillEvent?.Invoke();
-    }
-    /// <summary>
-    /// 스킬 습득 메서드
-    /// </summary>
-    /// <param name="skillID"></param>
-    public void LearnSkill(SkillData skill)
-    {
-        int userID = DatabaseManager.Instance.userData.UID;
-        CharClass charClass = UserStatManager.Instance.userStatClient.charClass;
-        UserSkillList.Add(new UserSkillData(userID, charClass, skill.Skill_ID));        
-    }
-    /// <summary>
-    /// 스킬 레벨업을 할 때 
-    /// </summary>
-    /// <param name="skill"></param>
-    public void SkillLevelUP(SkillData skill)
-    {
-        int user_ID = DatabaseManager.Instance.userData.UID;
-        int index = UserSkillList.FindIndex(x => x.User_ID.Equals(user_ID) && x.Skill_ID.Equals(skill.Skill_ID));
-        if (index >= 0)
-        {
-            UserSkillList[index].Skill_Level += 1;
-        }
-    }
+    #endregion
 
     #region 스킬 저장
     /// <summary>

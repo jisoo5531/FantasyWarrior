@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
 using UnityEngine.UI;
-
+using Mirror;
 public abstract class Skill
 {
     /// <summary>
@@ -24,6 +24,9 @@ public abstract class Skill
     protected int skillHitCount;
     protected Status_Effect Status_Effect;
     protected UserStatClient userStat;
+
+    
+
     /// <summary>
     /// 스킬이 들어갔을 때 들어가는 데미지 메커니즘
     /// </summary>
@@ -54,6 +57,14 @@ public class SkillResource
     {
         Debug.Log(effectObj.name);
         effectObj.GetComponent<Collider>().enabled = true;
+    }
+
+    // 클라이언트에서 파티클 실행
+    public void PlayOnClients(int skillNum)
+    {
+        Effect effect = skillEffects[skillNum];
+        effectObj = MonoBehaviour.Instantiate(effect.effect, effect.effectPos); // 지정된 위치와 회전으로 파티클 생성
+        MonoBehaviour.Destroy(effectObj, effect.destroyAfter); // 일정 시간이 지나면 파괴
     }
     public void Play(int skillNum)
     {        

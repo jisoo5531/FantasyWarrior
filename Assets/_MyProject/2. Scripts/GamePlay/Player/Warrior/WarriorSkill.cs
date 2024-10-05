@@ -24,11 +24,18 @@ public class WarriorSkill : PlayerSkill
     }
     public void Skill_Attack()
     {
+        if (!isLocalPlayer) return;
+
         skillResourceList[currentSkillNum - 1].OnCollider();
     }
     public void Skill_Play(int skillNum)
     {
+        if (!isLocalPlayer) return;        
+
+        Debug.Log($"{currentSkillNum}, {skillNum}");
         skillResourceList[currentSkillNum - 1].Play(skillNum);
+        // 스킬을 서버에 요청
+        CmdTriggerSkill(currentSkillNum - 1, skillNum); // 서버로 스킬 실행 명령 전송
     }
 }
 public class W_Skill_1 : Skill

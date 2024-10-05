@@ -84,7 +84,7 @@ public class PlayerMovement : NetworkBehaviour
 
         // 에이전트의 속도를 기반으로 애니메이션 제어
         float speed = agent.velocity.magnitude;
-        GetComponent<PlayerAnimation>().MoveAnimation(speed);
+        GetComponent<PlayerAnimation>().CmdMoveAnimation(speed);
     }
 
     private void CheckArriveDestination()

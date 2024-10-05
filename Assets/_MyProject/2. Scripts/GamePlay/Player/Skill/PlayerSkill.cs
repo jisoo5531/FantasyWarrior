@@ -37,25 +37,42 @@ public class PlayerSkill : NetworkBehaviour
     /// </summary>
     public static event Action OnKeyBindInit;
 
+    // 서버에서 스킬을 실행하는 명령(Command)
+    [Command]
+    public void CmdTriggerSkill(int currentSkillNum, int skillNum)
+    {
+        RpcPlaySkillEffect(currentSkillNum, skillNum); // 모든 클라이언트에서 스킬 이펙트 실행
+    }
+
+    // 모든 클라이언트에서 스킬 이펙트를 실행하는 RPC
+    [ClientRpc]
+    void RpcPlaySkillEffect(int currentSkillNum, int skillNum)
+    {
+        SkillResource skillResource = skillResourceList[currentSkillNum];
+        skillResource.PlayOnClients(skillNum); // 클라이언트에서 이펙트 생성
+    }
+
 
     private void Start()
     {
-        
-    }
-    public override void OnStartLocalPlayer()
-    {
-        Initialize();
+        if (!isLocalPlayer) return;
         playerAnimation = GetComponent<PlayerAnimation>();
+        Initialize();
         GameManager.inputActions.PlayerActions.Skill_1.performed += OnSkill_1;
         GameManager.inputActions.PlayerActions.Skill_2.performed += OnSkill_2;
         GameManager.inputActions.PlayerActions.Skill_3.performed += OnSkill_3;
         GameManager.inputActions.PlayerActions.Skill_4.performed += OnSkill_4;
     }
+    public override void OnStartLocalPlayer()
+    {
+        
+    }
 
     protected virtual void Initialize()
     {
         Debug.Log("여기가 먼저???ㄴㅇㄹ");
-        SkillKeyBind userSkillKeyBind = SkillManager.Instance.UserSkillKeyBInd;
+        int userid = DatabaseManager.Instance.GetPlayerData(this.gameObject).UserId;
+        SkillKeyBind userSkillKeyBind = SkillManager.Instance.GetSkillKeyBind(userid);
         EquipSkills = new List<int>
         {
             userSkillKeyBind.Skill_1,
