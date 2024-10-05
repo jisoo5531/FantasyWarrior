@@ -61,7 +61,7 @@ public class UI_ShopSellItemSlot : MonoBehaviour
     {
         UI_ShopPanel shopPanel = FindObjectOfType<PanelManager>(true).ShopPanel;
         UI_ShopSellItemInfo sellItemInfo = shopPanel.sellItemInfo;
-        sellItemInfo.Initialize(invenItem.Item_ID);
+        sellItemInfo.Initialize(this.userId, invenItem.Item_ID);
         sellItemInfo.gameObject.SetActive(true);
     }
 }

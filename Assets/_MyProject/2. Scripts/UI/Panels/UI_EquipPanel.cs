@@ -66,12 +66,12 @@ public class UI_EquipPanel : MonoBehaviour
         {
             string itemName = ItemManager.Instance.GetInventoryItemNameFromDB(itemID);
             Sprite sprite = Resources.Load<Sprite>($"Items/Icon/{itemName}");
-            slot.Initialize(itemID, sprite, EquipItemInfo);
+            slot.Initialize(this.userId, itemID, sprite, EquipItemInfo);
         }
         else
         {
             // 장비를 장착하지 않은 경우            
-            slot.Initialize();
+            slot.Initialize(this.userId);
         }
     }
 

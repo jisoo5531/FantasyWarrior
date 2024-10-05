@@ -26,7 +26,7 @@ public class UI_ShopSellItemInfo : UI_ItemInfo
     private void OnClickSellButton()
     {
         UI_SellAmount UI_setAmount = PanelManager.Instance.ShopPanel.uI_SellAmount;        
-        UI_setAmount.SetUI_Sell(this.itemData);
+        UI_setAmount.SetUI_Sell(this.userId, this.itemData);
         gameObject.SetActive(false);
         UI_setAmount.gameObject.SetActive(true);
     }
