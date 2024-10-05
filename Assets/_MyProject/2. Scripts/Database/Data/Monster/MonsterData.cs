@@ -17,6 +17,7 @@ public class MonsterData
     public int Gold_Reward { get; set; }
     public int Item_Reward { get; set; }
 
+    public MonsterData() { }
     public MonsterData(DataRow row) : this
         (
             int.Parse(row["monster_id"].ToString()),

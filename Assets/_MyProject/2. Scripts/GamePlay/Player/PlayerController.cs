@@ -87,8 +87,11 @@ public class PlayerController : NetworkBehaviour
     
     private void Start()
     {
+        Debug.LogError("플레이어 시작 : " + isServer);
         // 로컬 플레이어만 초기화하는 로직
-        if (!isLocalPlayer) return;       
+        if (!isLocalPlayer) return;
+
+        
         DatabaseManager.Instance.InitializePlayer(this.gameObject, DatabaseManager.Instance.userData.UID, DatabaseManager.Instance.userData.Name);
         this.userID = DatabaseManager.Instance.GetPlayerData(this.gameObject).UserId;
 

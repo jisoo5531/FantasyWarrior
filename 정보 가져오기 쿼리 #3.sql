@@ -34,5 +34,5 @@ LEFT JOIN Items i6 ON PlayerEquipment.PendantItem_ID = i6.Item_ID
 LEFT JOIN Items i7 ON PlayerEquipment.RingItem_ID = i7.Item_ID
 WHERE PlayerEquipment.User_ID = 1;*/
 
-UPDATE user_npc_quests
-SET user_npc_quests.IsComplete
+SELECT *
+FROM monsters;
