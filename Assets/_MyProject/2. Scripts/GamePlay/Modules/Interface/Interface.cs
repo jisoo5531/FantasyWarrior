@@ -13,8 +13,6 @@ public interface IAttackable
     LayerMask TargetLayer { get; set; }
     int Damage { get; set; }
     float Range { get; set; }
-
-    void SendDamage(int damage);
 }
 public interface IDamagable
 {

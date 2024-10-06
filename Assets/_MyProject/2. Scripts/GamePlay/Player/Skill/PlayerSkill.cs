@@ -8,7 +8,9 @@ using Mirror;
 
 public class PlayerSkill : NetworkBehaviour
 {
-    
+
+    private int userId;
+
     /// <summary>
     /// 현재 장착하고 있는 스킬
     /// </summary>
@@ -52,17 +54,29 @@ public class PlayerSkill : NetworkBehaviour
         skillResource.PlayOnClients(skillNum); // 클라이언트에서 이펙트 생성
     }
 
+    [Command]
+    private void CmdSetUserID(int id)
+    {
+        this.userId = id;  // 서버에서 userID 설정
+        Debug.Log($"서버에서 User ID 설정: {userId}");        
+    }
+
 
     private void Start()
     {
         if (!isLocalPlayer) return;
         playerAnimation = GetComponent<PlayerAnimation>();
+
+        // 로컬 플레이어만 이 코드를 실행
+        this.userId = DatabaseManager.Instance.GetPlayerData(this.gameObject).UserId;        
+        CmdSetUserID(userId);
         Initialize();
         GameManager.inputActions.PlayerActions.Skill_1.performed += OnSkill_1;
         GameManager.inputActions.PlayerActions.Skill_2.performed += OnSkill_2;
         GameManager.inputActions.PlayerActions.Skill_3.performed += OnSkill_3;
         GameManager.inputActions.PlayerActions.Skill_4.performed += OnSkill_4;
     }
+
     public override void OnStartLocalPlayer()
     {
         
@@ -70,9 +84,8 @@ public class PlayerSkill : NetworkBehaviour
 
     protected virtual void Initialize()
     {
-        Debug.Log("여기가 먼저???ㄴㅇㄹ");
-        int userid = DatabaseManager.Instance.GetPlayerData(this.gameObject).UserId;
-        SkillKeyBind userSkillKeyBind = SkillManager.Instance.GetSkillKeyBind(userid);
+        Debug.Log("여기가 먼저???ㄴㅇㄹ");        
+        SkillKeyBind userSkillKeyBind = SkillManager.Instance.GetSkillKeyBind(this.userId);        
         EquipSkills = new List<int>
         {
             userSkillKeyBind.Skill_1,

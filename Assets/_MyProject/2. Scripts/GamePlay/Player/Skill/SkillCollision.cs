@@ -16,7 +16,7 @@ public class SkillCollision : MonoBehaviour
         }
         
         // 퀘스트 진행상황 업데이트는 맞은 놈이 아닌 때린 놈이 판정
-        if (other.TryGetComponent(out Damagable damagable))
+        if (other.TryGetComponent(out MonsterDamagable damagable))
         {
             Debug.Log("파티클 맞았다.");
             transform.root.GetComponentInChildren<PlayerSkill>().skillList[skill_Order].SkillSendDamage(damagable);

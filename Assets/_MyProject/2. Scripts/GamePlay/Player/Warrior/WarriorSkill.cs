@@ -69,7 +69,7 @@ public class W_Skill_1 : Skill
     {
         for (int i = 0; i < skillHitCount; i++)
         {
-            Debug.Log("W_Skill_1 데미지 들어감");
+            Debug.Log("W_Skill_1 데미지 들어감");            
             CalculateSkillDamage();
             damagable.GetDamage(finalDamage);
             yield return new WaitForSeconds(0.05f);
@@ -342,8 +342,9 @@ public class W_Skill_8 : Skill
     }
     public override IEnumerator SkillMechanism(Damagable damagable)
     {
-        IStatusEffect stun = new StunEffect(stunDuration);
-        damagable.ApplyStatusEffect(stun);
+        // TODO : 상태이상 스턴 임시 해제
+        //IStatusEffect stun = new StunEffect(stunDuration);
+        //damagable.ApplyStatusEffect(stun);
         for (int i = 0; i < skillHitCount; i++)
         {
             Debug.Log("W_Skill_8 데미지 들어감");

@@ -20,17 +20,16 @@ public class MonsterManager : NetworkBehaviour
     }
     private void Awake()
     {
+        
         if (Instance == null)
         {
             Instance = this;
-
         }
         else
         {
-            Debug.LogError("여기지");
-            Destroy(gameObject); // 이미 인스턴스가 존재하면 새로 생성된 오브젝트는 파괴
+            Destroy(gameObject);
         }
-        DontDestroyOnLoad(gameObject); // 이 오브젝트가 씬 전환 시에도 파괴되지 않도록 설정
+        DontDestroyOnLoad(gameObject);
     }
 
     public void Initialize()

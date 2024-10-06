@@ -6373,6 +6373,9 @@ MonoBehaviour:
   syncInterval: 0
   playerUIPrefab: {fileID: 5339415460767346329, guid: d142e4a9f51261a499ac2a066fcf0a42, type: 3}
   userID: 0
+  MaxHp: 0
+  Hp: 0
+  Damage: 0
 --- !u!114 &1666529490906967424
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -6,10 +6,15 @@ using UnityEngine.UI;
 using TMPro;
 using Mirror;
 
-public class PlayerUI : UIComponent
+public class PlayerUI : MonoBehaviour
 {
+    public PlayerDamagable Damagable;
+
     // TODO : HP, MP, EXP, 스킬, 아이템
     // TODO : HP UI 동그란 걸로 바꾸기?
+    [Header("HP")]
+    public Slider hpBar;
+    public TextMeshProUGUI hpText;
     [Header("MP")]
     public Slider MpBar;
     public TMP_Text mpText;
@@ -26,11 +31,6 @@ public class PlayerUI : UIComponent
 
     private void Awake()
     {
-        // 서버에서 실행되지 않도록
-        if (NetworkServer.active)
-        {
-            return; // 서버에서는 UI를 실행하지 않음
-        }
 
         EventHandler.playerEvent.RegisterPlayerLevelUp(OnLevelUp);
         EventHandler.skillKey.RegisterSkillKeyChange(OnChangeSkillKeyBind);
@@ -38,11 +38,6 @@ public class PlayerUI : UIComponent
     }
     private void Start()
     {
-        // 서버에서 실행되지 않도록
-        if (NetworkServer.active)
-        {
-            return; // 서버에서는 UI를 실행하지 않음
-        }
         // 로컬 플레이어 체크
         NetworkIdentity networkIdentity = transform.root.GetComponent<NetworkIdentity>();
         if (networkIdentity == null || !networkIdentity.isLocalPlayer)
@@ -58,8 +53,10 @@ public class PlayerUI : UIComponent
         UserStatManager.Instance.OnChangeExpStat += OnChangeExp;        
     }
 
-    public override void SetInitValue()
+    public void Initialize(PlayerDamagable Damagable)
     {
+        this.Damagable = Damagable;
+
         Damagable.OnTakeDamage += OnHpChange;
         Damagable.OnChangeHPEvent += OnChangeHP;
 
@@ -90,7 +87,7 @@ public class PlayerUI : UIComponent
             expText.text = $"{userStatClient.Exp} / {userStatClient.MaxExp} {expTextValue}%";
         }
     }
-    public override void OnHpChange(int damage)
+    public void OnHpChange(int damage)
     {
         hpBar.value = Damagable.Hp;
         hpText.text = $"{Damagable.Hp} / {Damagable.MaxHp}";

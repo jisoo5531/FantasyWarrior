@@ -12,14 +12,19 @@ public class PlayerWeapon : Weapon
             return;
         }
         // 퀘스트 진행상황 업데이트는 맞은 놈이 아닌 때린 놈이 판정
-        if (other.TryGetComponent(out Damagable damagable))
+        if (other.TryGetComponent(out MonsterDamagable damagable))
         {
-            damagable.GetDamage(damage);
-            if (damagable.Hp <= 0)
-            {
-                Debug.Log("여기 안되나?");
-                QuestManager.Instance.UpdateQuestProgress(unitID: damagable.Unit_ID);
-            }
+            //damagable.GetDamage(damage);            
+            // PlayerAttackable이 클라이언트에서만 SendDamage를 호출하도록
+            var playerAttackable = transform.root.GetComponent<PlayerAttackable>();
+
+            playerAttackable?.SendDamage(damagable);
+            
+            //if (damagable.Hp <= 0)
+            //{
+            //    Debug.Log("여기 안되나?");
+            //    QuestManager.Instance.UpdateQuestProgress(unitID: damagable.Unit_ID);
+            //}
         }
     }
 

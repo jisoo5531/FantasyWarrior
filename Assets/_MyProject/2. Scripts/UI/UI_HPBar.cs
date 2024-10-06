@@ -1,43 +1,42 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
+//using System;
+//using System.Collections;
+//using System.Collections.Generic;
+//using UnityEngine;
+//using UnityEngine.UI;
+//using TMPro;
 
-public class UI_HPBar
-{
-    private Slider hpBar;
-    private TextMeshProUGUI hpText;
+//public class UI_HPBar
+//{
+//    private Slider hpBar;
+//    private TextMeshProUGUI hpText;
 
-    private Damagable damagable;    
+//    private Damagable damagable;    
 
-    public UI_HPBar(Damagable damagable, Slider slider, TextMeshProUGUI hpText)
-    {        
-        this.damagable = damagable;
-        this.hpBar = slider;
-        this.hpText = hpText;
+//    public UI_HPBar(Damagable damagable, Slider slider, TextMeshProUGUI hpText)
+//    {        
+//        this.damagable = damagable;
+//        this.hpBar = slider;
+//        this.hpText = hpText;
+        
 
-        damagable.OnTakeDamage += OnHpChange;        
+//        SetInitValue();
+//    }
+//    public void SetInitValue()
+//    {
+//        Debug.Log(damagable.MaxHp);
+//        if (hpBar != null)
+//        {
+//            Debug.Log("여기?");
+//            hpBar.maxValue = (float)damagable.MaxHp;
+//            hpBar.value = hpBar.maxValue;
 
-        SetInitValue();
-    }
-    public void SetInitValue()
-    {
-        Debug.Log(damagable.MaxHp);
-        if (hpBar != null)
-        {
-            Debug.Log("여기?");
-            hpBar.maxValue = (float)damagable.MaxHp;
-            hpBar.value = hpBar.maxValue;
+//            hpText.text = $"{damagable.Hp}";
+//        }        
+//    }
 
-            hpText.text = $"{damagable.Hp}";
-        }        
-    }
-
-    private void OnHpChange(int damage)
-    {        
-        hpBar.value = damagable.Hp;
-        hpText.text = $"{damagable.Hp}";
-    }
-}
+//    private void OnHpChange(int damage)
+//    {        
+//        hpBar.value = damagable.Hp;
+//        hpText.text = $"{damagable.Hp}";
+//    }
+//}

@@ -9,6 +9,7 @@ public static class EventHandler
     public static ManagerEvent managerEvent = new();
     public static QuestNavEvent questNavEvent = new();
     public static SceneEvent sceneEvent = new();
+    public static MonsterEvent monsterEvent = new();
 }
 
 public class GameStartEvent
@@ -73,6 +74,23 @@ public class PlayerEvent
 
 
 
+}
+public class MonsterEvent
+{
+    private event Action OnMonsterCreate;
+
+    public void RegisterMonsterCreate(Action listener)
+    {
+        OnMonsterCreate += listener;
+    }
+    public void UnRegisterMonsterCreate(Action listener)
+    {
+        OnMonsterCreate -= listener;
+    }
+    public void TriggerMonsterCreate()
+    {
+        OnMonsterCreate?.Invoke();
+    }
 }
 public class SkillKeyEvent
 {

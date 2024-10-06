@@ -3963,6 +3963,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4efac16060693af4f93214f2c7335437, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  Damagable: {fileID: 0}
   hpBar: {fileID: 6992239967993203384}
   hpText: {fileID: 6889009390248797880}
   DamagedContent: {fileID: 6577925140432188636}

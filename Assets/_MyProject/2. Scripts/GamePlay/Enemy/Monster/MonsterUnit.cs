@@ -15,11 +15,11 @@ public class MonsterUnit : NetworkBehaviour
     public UnitAnimation unitAnim;
     public NavMeshAgent nav;
 
-    [HideInInspector] public Damagable damagable;
-    [HideInInspector] public Attackable attackable;
+    [HideInInspector] public MonsterDamagable damagable;
+    [HideInInspector] public MonsterAttackable attackable;
     [HideInInspector] public Followable followable;
 
-    protected UIComponent monsterUI;
+    protected MonsterUI monsterUI;
 
     [Tooltip("모든 몬스터의 공통된 탐지거리값")]
     public int detectionRange = 10;
@@ -34,11 +34,11 @@ public class MonsterUnit : NetworkBehaviour
 
     private void Awake()
     {
-        attackable = gameObject.AddComponent<Attackable>();
-        damagable = gameObject.AddComponent<Damagable>();
+        attackable = gameObject.AddComponent<MonsterAttackable>();
+        damagable = gameObject.AddComponent<MonsterDamagable>();
         followable = gameObject.AddComponent<Followable>();
 
-        monsterUI = GetComponentInChildren<UIComponent>();
+        monsterUI = GetComponentInChildren<MonsterUI>();
         unitAnim = GetComponent<UnitAnimation>();
         nav = GetComponent<NavMeshAgent>();
 
@@ -48,33 +48,10 @@ public class MonsterUnit : NetworkBehaviour
     {
         damagable.OnTakeDamage += OnHpChange;
         damagable.OnDeath += OnDeath;
-
-        Debug.LogError("여기 하지마 " + isLocalPlayer);
-        if (isLocalPlayer)
-        {
-            CmdRequestMonsterData();
-        }        
+        
     }
 
-    // 서버에서 몬스터 데이터를 요청하는 Command
-    [Command]
-    private void CmdRequestMonsterData()
-    {
-        Debug.LogError(MonsterManager.Instance == null);
-        // 서버에서 몬스터 데이터를 가져옴
-        monsterData = MonsterManager.Instance.GetMonsterData(monsterID);
-
-        // 서버에서 가져온 데이터를 클라이언트와 동기화
-        RpcSetMonsterData(monsterData);
-    }
-
-    // 서버에서 받은 데이터를 클라이언트에 전달하는 ClientRpc
-    [ClientRpc]
-    private void RpcSetMonsterData(MonsterData data)
-    {
-        monsterData = data;
-        Initialize();
-    }
+    
 
     public void ServerInit()
     {
@@ -88,8 +65,7 @@ public class MonsterUnit : NetworkBehaviour
         {
             Debug.LogError("몬스터 데이터가 없습니다.");
             return;
-        }
-        Debug.LogError(monsterData.MonsterName);
+        }        
 
         damagable.Initialize(unitID: monsterData.MonsterID, maxHp: monsterData.MaxHp, hp: monsterData.Hp, isMonster: true);
         attackable.Initialize(damage: monsterData.Damage, range: monsterData.AttackRange);
@@ -97,8 +73,9 @@ public class MonsterUnit : NetworkBehaviour
         nav.speed = followable.MoveSpeed;
 
         monsterUI.Initialize(damagable);
-        M_StateMachine = new MonsterStateMachine(this);
+        M_StateMachine = new MonsterStateMachine(this);        
         M_StateMachine.Initialize(M_StateMachine.idleState);
+       
     }
 
     private void Update()
@@ -109,7 +86,7 @@ public class MonsterUnit : NetworkBehaviour
             return;
         }
         if (damagable.Hp > 0)
-        {
+        {            
             M_StateMachine.Excute();
         }
     }

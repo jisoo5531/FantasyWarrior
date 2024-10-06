@@ -14,46 +14,40 @@ using Mirror;
 ]
 public class PlayerController : NetworkBehaviour
 {
-    public GameObject playerUIPrefab;    
+    public GameObject playerUIPrefab;
+    public bool IsLocalPlayer => isLocalPlayer;
     
     [SyncVar]
     public int userID;
+    [SyncVar]
+    public int MaxHp;
+    [SyncVar]
+    public int Hp;
+    [SyncVar]
+    public int Damage;    
     //protected CharacterController controller;
     //protected PlayerInput playerInput;
     protected PlayerMovement playerMovement;
     protected PlayerAnimation playerAnimation;
-    protected UIComponent playerUI;
+    protected PlayerUI playerUI;
     protected PlayerSkill playerSkill;
     protected PlayerStat playerStat;
     
-    protected Damagable damagable;
-    protected Attackable attackable;
+    protected PlayerDamagable damagable;
+    protected PlayerAttackable attackable;
 
     private void Awake()
     {
-        // 서버에서 실행되지 않도록
-        if (NetworkServer.active)
+        if (!isLocalPlayer)
         {
-            return; // 서버에서는 UI를 실행하지 않음
-        }        
-
+            return;
+        }
         
-        //controller = GetComponent<CharacterController>();        
-        //playerInput = GetComponent<PlayerInput>();
-        playerMovement = GetComponent<PlayerMovement>();
-        playerAnimation = GetComponent<PlayerAnimation>();
-        playerStat = GetComponent<PlayerStat>();
-        //playerUI = FindObjectOfType<PlayerUI>();
-
-        damagable = gameObject.AddComponent<Damagable>();
-        attackable = gameObject.AddComponent<Attackable>();        
-        PlayerInit();        
     }
     protected virtual void PlayerInit()
     {
         // override
-    }
-
+    }    
     [Command]
     private void CmdSetUserID(int id)
     {
@@ -65,40 +59,70 @@ public class PlayerController : NetworkBehaviour
     {
         Debug.Log($"{userId} 들어옴");
     }
+    [Command]
+    public void CmdRequestSendDamage(NetworkIdentity damagableIdentity, int damage)
+    {
+        Debug.Log("서버야 처리해줘 ");
+        // NetworkIdentity를 통해 해당 오브젝트를 찾음
+        if (damagableIdentity.TryGetComponent<MonsterDamagable>(out var damagable))
+        {
+            Debug.Log("서버에서 데미지 처리.");
+            damagable.GetDamage(damage);
+        }
+        else
+        {
+            Debug.LogError("대상 몬스터를 찾을 수 없습니다.");
+        }
+    }
 
     /// <summary>
     /// 플레이어의 레벨 등의 스탯 (UserStatManager), 플레이어가 착용하고 있는 장비 (PlayerEquipManager) 를 받아온 다음에 초기화
     /// </summary>
     private void StatInit()
-    {        
+    {
+        if (!isLocalPlayer)
+        {
+            return;
+        }
+        Debug.Log(damagable == null);
         damagable.OnTakeDamage += OnHpChange;
         damagable.OnDeath += OnDeath;
         // TODO : 플레이어 스탯에 반영 (제대로)        
         UserStatClient userStatClient = UserStatManager.Instance.GetUserStatClient(this.userID);
-        int MaxHp = userStatClient.MaxHP;
-        int Hp = userStatClient.HP;
-        int damage = userStatClient.STR;        
+        this.MaxHp = userStatClient.MaxHP;
+        this.Hp = userStatClient.HP;
+        this.Damage = userStatClient.STR;        
         damagable.Initialize(unitID: this.userID, maxHp: MaxHp, hp: Hp, isMonster: false);        
-        attackable.Initialize(damage: damage, range: 2);        
+        attackable.Initialize(damage: Damage, range: 2);        
 
         playerUI?.Initialize(damagable);
         damagable.OnDeath += () => { Debug.Log("플레이어 죽었다."); };
     }
     
     private void Start()
-    {
-        Debug.LogError("플레이어 시작 : " + isServer);
+    {        
         // 로컬 플레이어만 초기화하는 로직
         if (!isLocalPlayer) return;
+        Debug.Log("여기 안 돼?ㄴㄻㄴㅇㅇㄻㄴㄹ");
+        //controller = GetComponent<CharacterController>();        
+        //playerInput = GetComponent<PlayerInput>();
+        playerMovement = GetComponent<PlayerMovement>();
+        playerAnimation = GetComponent<PlayerAnimation>();
+        playerStat = GetComponent<PlayerStat>();
+        //playerUI = FindObjectOfType<PlayerUI>();
 
-        
+        damagable = gameObject.AddComponent<PlayerDamagable>();
+        attackable = gameObject.AddComponent<PlayerAttackable>();
+        PlayerInit();
+        //EventHandler.monsterEvent.RegisterMonsterCreate(RequestInit);
+
         DatabaseManager.Instance.InitializePlayer(this.gameObject, DatabaseManager.Instance.userData.UID, DatabaseManager.Instance.userData.Name);
         this.userID = DatabaseManager.Instance.GetPlayerData(this.gameObject).UserId;
 
         GameManager.Instance.userManager_Dict[this.userID].transform.SetParent(this.transform);
 
         
-        this.playerUI = Instantiate(playerUIPrefab, transform).GetComponentInChildren<UIComponent>();
+        this.playerUI = Instantiate(playerUIPrefab, transform).GetComponentInChildren<PlayerUI>();
 
         StatInit();
         CmdSetUserID(userID);
@@ -121,10 +145,6 @@ public class PlayerController : NetworkBehaviour
         GetComponentInChildren<UI_InventoryPanel>(true).Initialize();
         GetComponentInChildren<UI_StatPanel>(true).Initialize();
     }
-    public override void OnStartLocalPlayer()
-    {
-          
-    }
     private void FixedUpdate()
     {
         //playerMovement?.Move(controller);
@@ -144,15 +164,32 @@ public class PlayerController : NetworkBehaviour
     
     private void OnHpChange(int damage)
     {
+        if (!isLocalPlayer)
+        {
+            return;
+        }
+        //if (!isServer)
+        //{
+        //    return;
+        //}
         // TODO : 유닛마다 들어가는 데미지 다르게끔 (방어도? 따라)
         damagable.Hp -= damage;        
     }
     private void OnDeath()
     {
+        if (!isLocalPlayer)
+        {
+            return;
+        }
+        //if (!isServer)
+        //{
+        //    return;
+        //}
         playerAnimation.DeathAnimation();
 
         Destroy(gameObject, 3f);
     }
+
 
     private void OnApplicationQuit()
     {
