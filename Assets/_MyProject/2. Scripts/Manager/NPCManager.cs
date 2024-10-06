@@ -71,7 +71,7 @@ public class NPCManager : MonoBehaviour
         int currentLevel = UserStatManager.Instance.userStatClient.Level;
         List<int> questsID = new List<int>();        
         
-        List<NPCQuestData> NPCQuestData = NPCQuest_List.FindAll(x => false == x.IsComplete && x.NPC_ID == NPC_ID);
+        List<NPCQuestData> NPCQuestData = NPCQuest_List.FindAll(x => x.NPC_ID == NPC_ID);
         foreach (NPCQuestData nPCQuest in NPCQuestData)
         {
             QuestData questData = QuestManager.Instance.GetQuestData(nPCQuest.Quest_ID);

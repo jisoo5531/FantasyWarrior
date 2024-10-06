@@ -38,6 +38,10 @@ public class PortalInteract : MonoBehaviour
 
     private void OnInteractFishing(InputAction.CallbackContext context)
     {
+        if (InteractAction == null)
+        {
+            return;
+        }
         if (true == InteractAction.activeSelf)
         {
             transform.parent.GetComponent<Portal>().ActivePortal();

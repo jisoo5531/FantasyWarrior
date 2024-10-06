@@ -58,9 +58,12 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
-
-        // 에이전트가 목적지에 도착했는지 확인
-        CheckArriveDestination();
+        if (agent.enabled)
+        {
+            // 에이전트가 목적지에 도착했는지 확인
+            CheckArriveDestination();
+        }
+        
 
         // 에이전트의 속도를 기반으로 애니메이션 제어
         float speed = agent.velocity.magnitude;
@@ -140,7 +143,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void OffNavAgent()
     {
-        agent.enabled = false;
+        agent.enabled = false;        
     }
     private void OnNavAgent()
     {

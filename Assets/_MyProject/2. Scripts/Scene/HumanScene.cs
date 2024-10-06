@@ -7,19 +7,27 @@ public class HumanScene : MonoBehaviour
     public Transform GameStartPos;
     public Transform GoblinToHumanPos;
 
+
+
     private void Start()
     {
-        Debug.Log($"씬 넘버 차이 : {SceneManager.Instance.CurrentMinusNext()}");
-        if (SceneManager.Instance.CurrentMinusNext() == -1)
+        //Debug.Log($"씬 넘버 차이 : {SceneManager.Instance.CurrentMinusNext()}");
+        //if (SceneManager.Instance.CurrentMinusNext() == 1)
+        //{
+        //    GameStart();
+        //}
+        //else if (SceneManager.Instance.CurrentMinusNext() == -1)
+        //{
+        //    Debug.Log("여기로 가는거지?");
+        //    GoblinToHuman();
+        //}
+        //SceneManager.Instance.currentSceneNumber = (int)Scene.Human;
+
+        if (SceneManager.Instance.currentSceneNumber == 2)
         {
-            GameStart();
-        }
-        else if (SceneManager.Instance.CurrentMinusNext() == 1)
-        {
-            Debug.Log("여기로 가는거지?");
             GoblinToHuman();
         }
-        SceneManager.Instance.currentSceneNumber = (int)Scene.Human;
+        SceneManager.Instance.currentSceneNumber = 1;
     }
 
     public void GameStart()

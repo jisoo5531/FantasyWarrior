@@ -54,6 +54,7 @@ public class SkillManager : MonoBehaviour
         userAvailableSkillList = new List<SkillData>();
         UserStatClient userStatClient = UserStatManager.Instance.userStatClient;
         Debug.Log($"플레이어 현재 레벨 : {userStatClient.Level}");
+        Debug.Log(ClassSkillDataList.Count);
         foreach (SkillData skillData in ClassSkillDataList)
         {
             if (userStatClient.Level >= skillData.Unlock_Level)
@@ -102,7 +103,7 @@ public class SkillManager : MonoBehaviour
         string query =
             $"SELECT *\n" +
             $"FROM skills\n" +
-            $"WHERE skills.Class={(int)userClass};";
+            $"WHERE skills.Class='{userClass}';";
 
         DataSet dataSet = DatabaseManager.Instance.OnSelectRequest(query);
 

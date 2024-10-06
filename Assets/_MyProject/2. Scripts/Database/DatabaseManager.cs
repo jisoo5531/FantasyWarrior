@@ -13,7 +13,7 @@ public class DatabaseManager : MonoBehaviour
 
     private MySqlConnection conn;           // mySql DB와 연결상태를 유지하는 객체
 
-    private string serverIP = "52.78.239.203";
+    private string serverIP = "43.201.249.206";
     private string portHum = "3306";
     private string dbName = "game";
     private string tableName = "users";
@@ -24,10 +24,17 @@ public class DatabaseManager : MonoBehaviour
     public UserStatData userStatData { get; private set; }
 
     private void Awake()
-    {
-        Instance = this;
-        DBConnect();
-        GetUserDataTest();
+    {        
+        DBConnect();        
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(gameObject);
     }
     public void DBConnect()
     {        
@@ -139,15 +146,10 @@ public class DatabaseManager : MonoBehaviour
         //        pwHash += $"{b:X2}";
         //    }
         //}
-        string query = $"SELECT * FROM {tableName} WHERE email='{email}' AND password_hash='{passwd}'";
-        Dictionary<string, object> where = new Dictionary<string, object>
-        {
-            { "email", email },
-            { "password_hash", passwd }
-        };
+        string query = $"SELECT * FROM {tableName} WHERE email='{email}' AND password_hash='{passwd}';";
 
         // TODO : 로그인 query문 바꾸기
-        DataSet set = OnSelectRequest(tableName);
+        DataSet set = OnSelectRequest(query);
 
         bool isLoginSuccess = set.Tables.Count > 0 && set.Tables[0].Rows.Count > 0;
 

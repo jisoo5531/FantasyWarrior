@@ -25,7 +25,7 @@ public class DatabaseUIManager : MonoBehaviour
     private void OnLoginSuccess(UserData data)
     {
         Debug.Log("로그인 성공");
-
+        UnityEngine.SceneManagement.SceneManager.LoadScene(1);
         this.userData = data;        
     }
     private void OnLoginFail()
