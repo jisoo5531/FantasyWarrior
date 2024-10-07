@@ -14,7 +14,8 @@ public enum Status_Effect
 {
     None,
     Slow,
-    Stun
+    Stun,
+    Airbone
 }
 
 public class SkillData

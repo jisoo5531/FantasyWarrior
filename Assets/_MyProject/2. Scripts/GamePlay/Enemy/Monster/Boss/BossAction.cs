@@ -1,7 +1,15 @@
 using MoreMountains.Feedbacks;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+public enum B_SkillAction
+{    
+    RockShooting,
+    Jump,
+    Spin,
+}
 
 public class BossAction : MonoBehaviour
 {
@@ -31,6 +39,13 @@ public class BossAction : MonoBehaviour
     private BossTest boss;
     private BossStateMachine bossStateMachine;
 
+    /// <summary>
+    /// 보스 스킬, 공격 액션이 끝났는지 확인을 위한 변수
+    /// </summary>
+    private bool isActionFinish = false;
+
+    public event Action<int> OnSkillPlay;
+
     private void Awake()
     {
         boss = GetComponent<BossTest>();
@@ -39,11 +54,64 @@ public class BossAction : MonoBehaviour
     }
     private void Start()
     {
-        if (boss.M_StateMachine is BossStateMachine bossStateMachine)
-        {
-            this.bossStateMachine = bossStateMachine;    
-        }
+        StartCoroutine(BossActionCoroutine());
     }
+
+    private IEnumerator BossActionCoroutine()
+    {
+        isActionFinish = false;
+        Debug.Log($"{boss.followable.DistanceToPlayer}, {boss.attackable.Range}");
+        if (boss.followable.DistanceToPlayer <= boss.attackable.Range)
+        {
+            int random = UnityEngine.Random.Range(0, 3);
+            // 기본 공격 사거리 내에 들어오면
+            // 기본 공격 또는 스핀 스킬 둘 중 하나
+            switch (random)
+            {
+                case 0:
+                case 1:
+                    // 기본공격
+                    BasicAttack();
+                    break;
+                case 2:
+                    Rotate();
+                    break;
+                default:
+                    break;
+            }
+        }
+        else
+        {
+            int random = UnityEngine.Random.Range(0, 5);
+            // 바깥에 있으면
+            // 점프, 락 슈팅 공격 중 하나
+            if (boss.followable.DistanceToPlayer > 10 && boss.followable.DistanceToPlayer < 12)
+            {
+                random = UnityEngine.Random.Range(0, 3);
+            }
+            switch (random)
+            {
+                case 0:
+                case 1:
+                    RockShootingAction();
+                    break;
+                case 2:
+                    Jump();
+                    break;
+                case 3:
+                case 4:
+                    Invoke("IsActionFinish", 2f);
+                    boss.IsNavStop(false, 0);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        yield return new WaitUntil(() => isActionFinish == true);
+
+        StartCoroutine(BossActionCoroutine());
+    }    
 
     private void Update()
     {
@@ -79,9 +147,22 @@ public class BossAction : MonoBehaviour
             rb.AddForce(Vector3.down * additionalFallForce);
         }
     }
+
+    #region 기본공격
+    private void BasicAttack()
+    {        
+        transform.LookAt(boss.player.transform.position);        
+        
+        boss.IsNavStop(false, 1f);
+        Invoke("IsActionFinish", 2f);
+    }
+    #endregion
+
     #region 점프 공격
     public void Jump()
     {
+        // TODO : 점프 공격 범위에 있으면 뒤로 밀려나게 하기, 골드메탈 참고
+
         boss.IsNavStop(true, 0);
         // 점프 시작 시 현재 위치 저장
         initialPosition = transform.position;
@@ -89,7 +170,9 @@ public class BossAction : MonoBehaviour
         // 점프 애니메이션 실행
         anim.SetTrigger("jump");
         ChargeFeedback?.PlayFeedbacks();
+        OnSkillPlay?.Invoke((int)B_SkillAction.Jump);
         boss.IsNavStop(false, 4f);
+        Invoke("IsActionFinish", 6f);
     }
     public void OnUpforce()
     {
@@ -133,7 +216,11 @@ public class BossAction : MonoBehaviour
     {
         boss.nav.isStopped = true;
         RotateFeedback?.PlayFeedbacks();
+        OnSkillPlay?.Invoke((int)B_SkillAction.Spin);
+
+
         boss.IsNavStop(false, 1f);
+        Invoke("IsActionFinish", 2f);
     }
 
     #endregion
@@ -141,16 +228,24 @@ public class BossAction : MonoBehaviour
     #region 돌 슈팅 공격
     public void RockShootingAction()
     {
+        transform.LookAt(boss.player.transform.position);
+
         boss.nav.isStopped = true;
         anim.SetTrigger("ShardRock_Shooting");
-
+        OnSkillPlay?.Invoke((int)B_SkillAction.RockShooting);
     }
     public void RockShooting()
     {
         RockShootingFeedback?.PlayFeedbacks();
         boss.IsNavStop(false, 1.5f);
+        Invoke("IsActionFinish", 3f);
     }
     #endregion    
+
+    private void IsActionFinish()
+    {
+        isActionFinish = true;
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
