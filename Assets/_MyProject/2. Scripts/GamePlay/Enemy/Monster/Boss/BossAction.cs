@@ -47,7 +47,7 @@ public class BossAction : MonoBehaviour
     public event Action<int> OnSkillPlay;
 
     private void Awake()
-    {
+    {        
         boss = GetComponent<BossTest>();
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
@@ -153,8 +153,8 @@ public class BossAction : MonoBehaviour
     {        
         transform.LookAt(boss.player.transform.position);        
         
-        boss.IsNavStop(false, 1f);
-        Invoke("IsActionFinish", 2f);
+        boss.IsNavStop(false, 4f);
+        Invoke("IsActionFinish", 5f);
     }
     #endregion
 
@@ -217,10 +217,15 @@ public class BossAction : MonoBehaviour
         boss.nav.isStopped = true;
         RotateFeedback?.PlayFeedbacks();
         OnSkillPlay?.Invoke((int)B_SkillAction.Spin);
-
-
+        
+        GetComponent<BossSkill>().SkillPlay(0);
         boss.IsNavStop(false, 1f);
+        Invoke("SpinAttackFinish", 1f);        
         Invoke("IsActionFinish", 2f);
+    }
+    private void SpinAttackFinish()
+    {
+        GetComponent<BossSkill>().SkillFinish(0);
     }
 
     #endregion

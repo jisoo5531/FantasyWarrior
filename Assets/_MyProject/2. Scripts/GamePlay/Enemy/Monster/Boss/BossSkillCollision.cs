@@ -20,6 +20,10 @@ public class BossSkillCollision : MonoBehaviour
             Debug.Log("에어본 된다.");
             other.GetComponent<Rigidbody>().AddForce(Vector3.up * 10f, ForceMode.Impulse);
         }
+        else if (skillCC == Status_Effect.NuckBack)
+        {
+            other.GetComponent<Rigidbody>().AddForce(Vector3.back * 10f, ForceMode.Impulse);
+        }
         // 퀘스트 진행상황 업데이트는 맞은 놈이 아닌 때린 놈이 판정
         if (other.TryGetComponent(out Damagable damagable))
         {

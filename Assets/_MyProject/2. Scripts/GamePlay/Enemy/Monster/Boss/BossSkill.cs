@@ -23,7 +23,8 @@ public class BossSkill : MonoBehaviour
 
     public void SkillPlay(int num)
     {
-        Collider collider = bossSkillList[skillNum].bossSkillEffect[num].effect.GetComponent<Collider>();
+        Debug.Log("현재 스킬 번호 : " + skillNum);
+        Collider collider = bossSkillList[skillNum].bossSkillEffect[num].effect.GetComponent<Collider>();        
         if (collider != null)
         {
             collider.enabled = true;
@@ -31,7 +32,8 @@ public class BossSkill : MonoBehaviour
     }
     public void SkillFinish(int num)
     {
-        Collider collider = bossSkillList[skillNum].bossSkillEffect[num].effect.GetComponent<Collider>();
+        Debug.Log("스탑합니다.");
+        Collider collider = bossSkillList[skillNum].bossSkillEffect[num].effect.GetComponent<Collider>();        
         if (collider != null)
         {
             collider.enabled = false;
