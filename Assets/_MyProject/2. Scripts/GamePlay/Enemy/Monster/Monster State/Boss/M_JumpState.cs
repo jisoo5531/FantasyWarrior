@@ -18,7 +18,7 @@ public class M_JumpState : IState
             return;
         }
         //Debug.Log("Idle State Enter");        
-
+        monster.GetComponent<BossAction>().Jump();
     }
     public void Excute()
     {
@@ -27,7 +27,7 @@ public class M_JumpState : IState
             return;
         }
         //Debug.Log("Idle State ½ÇÇà Áß");
-        monster.GetComponent<BossAction>().Jump();
+        
     }
     public void Exit()
     {

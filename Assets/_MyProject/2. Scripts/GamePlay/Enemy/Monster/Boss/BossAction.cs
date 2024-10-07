@@ -53,18 +53,15 @@ public class BossAction : MonoBehaviour
         // 점프 입력을 받았을 때, 땅에 있을 경우에만 점프
         if (Input.GetKeyDown(KeyCode.Alpha1) && isGrounded)
         {
-            boss.M_StateMachine.StateTransition(bossStateMachine.jumpState);
-            //Jump();
+            Jump();
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            boss.M_StateMachine.StateTransition(bossStateMachine.spinState);
-            //Rotate();
+            Rotate();
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            boss.M_StateMachine.StateTransition(bossStateMachine.rockShootingState);
-            //RockShootingAction();
+            RockShootingAction();
         }
 
         // 점프 중이고 최대 높이를 넘으면 위로의 속도를 줄임
@@ -85,12 +82,14 @@ public class BossAction : MonoBehaviour
     #region 점프 공격
     public void Jump()
     {
+        boss.IsNavStop(true, 0);
         // 점프 시작 시 현재 위치 저장
         initialPosition = transform.position;
 
         // 점프 애니메이션 실행
         anim.SetTrigger("jump");
         ChargeFeedback?.PlayFeedbacks();
+        boss.IsNavStop(false, 4f);
     }
     public void OnUpforce()
     {
@@ -123,6 +122,7 @@ public class BossAction : MonoBehaviour
         {
             isLanding = false;
         }
+        
     }
 
     #endregion
@@ -131,7 +131,9 @@ public class BossAction : MonoBehaviour
 
     public void Rotate()
     {
+        boss.nav.isStopped = true;
         RotateFeedback?.PlayFeedbacks();
+        boss.IsNavStop(false, 1f);
     }
 
     #endregion
@@ -139,14 +141,16 @@ public class BossAction : MonoBehaviour
     #region 돌 슈팅 공격
     public void RockShootingAction()
     {
+        boss.nav.isStopped = true;
         anim.SetTrigger("ShardRock_Shooting");
 
     }
     public void RockShooting()
     {
         RockShootingFeedback?.PlayFeedbacks();
+        boss.IsNavStop(false, 1.5f);
     }
-    #endregion
+    #endregion    
 
     private void OnCollisionEnter(Collision collision)
     {

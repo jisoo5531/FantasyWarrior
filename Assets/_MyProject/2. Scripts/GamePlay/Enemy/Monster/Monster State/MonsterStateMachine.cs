@@ -32,6 +32,7 @@ public class MonsterStateMachine
 
     public void Excute()
     {
+        Debug.Log(CurrentState.ToString());
         CurrentState?.Excute();
     }
 }

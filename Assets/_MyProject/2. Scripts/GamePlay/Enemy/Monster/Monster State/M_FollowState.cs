@@ -21,15 +21,14 @@ public class M_FollowState : IState
         //Debug.Log("Follow State Enter");
 
         monster.nav.isStopped = false;
-
-
+        monster.nav?.SetDestination(monster.player.transform.position);
         monster.unitAnim.MoveAnimPlay(true);
     }
 
     public void Excute()
     {
         //Debug.Log("Follow State 실행 중");        
-        monster.nav?.SetDestination(monster.player.transform.position);
+        
 
         // TODO : follow state에서 idle state로 전환 시 원래 자리로 이동?
         if (monster.followable.DistanceToPlayer >= monster.detectionRange)

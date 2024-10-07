@@ -46,6 +46,7 @@ public class MonsterUnit : Enemy
         damagable.OnTakeDamage += OnHpChange;
         damagable.OnDeath += OnDeath;
     }
+
     protected virtual void Initialize()
     {
         Debug.Log("몬스터 아이디 " + monsterID);
@@ -60,10 +61,24 @@ public class MonsterUnit : Enemy
         nav.speed = followable.MoveSpeed;
 
         monsterUI?.Initialize(damagable);
-        
-        
+        M_StateMachine = new MonsterStateMachine(this);
+        M_StateMachine.Initialize(M_StateMachine.idleState);
     }
-    
+    private void Update()
+    {
+        Debug.Log("nav " + nav.isStopped);
+        if (damagable.isStunned)
+        {
+            Debug.Log("얘 스턴이다. 못 움직여");
+            M_StateMachine.StateTransition(M_StateMachine.idleState);
+            return;
+        }
+        if (damagable.Hp > 0)
+        {
+            M_StateMachine.Excute();
+        }
+    }
+
     private void LateUpdate()
     {
         followable.CalculateDistance(transform.position, player.transform.position);
@@ -91,5 +106,25 @@ public class MonsterUnit : Enemy
         unitAnim.DeathAnimPlay();
         GetComponent<Collider>().enabled = false;
         Destroy(gameObject, 3f);
+    }
+
+    public void IsNavStop(bool isStop, float afterTime)
+    {
+        if (isStop)
+        {
+            Invoke("NavStop", afterTime);
+        }
+        else
+        {
+            Invoke("NavMove", afterTime);
+        }
+    }
+    private void NavStop()
+    {
+        nav.isStopped = true;
+    }
+    private void NavMove()
+    {
+        nav.isStopped = false;
     }
 }

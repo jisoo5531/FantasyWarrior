@@ -12,25 +12,8 @@ public class BossTest : MonsterUnit
     {        
         monsterID = 2;        
         // TODO : ÀÓ½Ã
-        this.monsterData = new MonsterData(2, "°í´ë °ñ·½", 2000, 2000, 200, 10, 5, 3, 100, 100, 1);
-
-        M_StateMachine = new BossStateMachine(this);          
-        M_StateMachine.Initialize(M_StateMachine.idleState);
+        this.monsterData = new MonsterData(2, "°í´ë °ñ·½", 2000, 2000, 200, 10, 5, 5, 100, 100, 1);
         base.Initialize();
-    }
-    private void Update()
-    {
-        if (damagable.isStunned)
-        {
-            Debug.Log("¾ê ½ºÅÏÀÌ´Ù. ¸ø ¿òÁ÷¿©");
-            M_StateMachine.StateTransition(M_StateMachine.idleState);
-            
-            return;
-        }
-        if (damagable.Hp > 0)
-        {
-            M_StateMachine.Excute();
-        }
     }
     protected override void OnHpChange(int damage)
     {
@@ -53,4 +36,5 @@ public class BossTest : MonsterUnit
 
         base.OnDeath();
     }
+    
 }
