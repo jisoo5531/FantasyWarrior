@@ -13,7 +13,7 @@ public class Damagable : MonoBehaviour, IDamagable
     public bool isStunned { get; set; }
 
     private bool isDeath = false;
-
+    private bool isMonster = false;
 
     #region ¿Ã∫•∆Æ
 
@@ -32,18 +32,19 @@ public class Damagable : MonoBehaviour, IDamagable
 
     #endregion
 
-    public void Initialize(int unitID, int maxHp, int hp)
+    public void Initialize(int unitID, int maxHp, int hp, bool isMonster)
     {
+        this.isMonster = isMonster;
         this.Unit_ID = unitID;
         this.MaxHp = maxHp;
         this.Hp = hp;
-    }
-    private void Awake()
-    {
-        
-    }
+    }    
     private void Start()
     {
+        if (isMonster)
+        {
+            return;
+        }
         UserStatManager.Instance.OnLevelUpUpdateStat += OnChangeHp;
         PlayerEquipManager.Instance.OnEquipItem += OnChangeHp;
         PlayerEquipManager.Instance.OnUnEquipItem += OnChangeHp;
@@ -52,6 +53,10 @@ public class Damagable : MonoBehaviour, IDamagable
 
     private void OnDisable()
     {
+        if (isMonster)
+        {
+            return;
+        }
         UserStatManager.Instance.OnLevelUpUpdateStat -= OnChangeHp;
         PlayerEquipManager.Instance.OnEquipItem -= OnChangeHp;
         PlayerEquipManager.Instance.OnUnEquipItem -= OnChangeHp;

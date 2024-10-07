@@ -14,15 +14,24 @@ public class Attackable : MonoBehaviour, IAttackable
 
     private void Awake()
     {
-        weapon = GetComponentInChildren<Weapon>();
-        weaponCollider = weapon.GetComponent<Collider>();
+        if (weapon != null)
+        {
+            weapon = GetComponentInChildren<Weapon>();
+        }
+        if (weaponCollider != null)
+        {
+            weaponCollider = weapon.GetComponent<Collider>();
+        }
     }
-    
+
     public void Initialize(int damage, float range)
     {
         this.Damage = damage;
         this.Range = range;
-        this.TargetLayer = weapon.targetLayer;
+        if (weapon != null)
+        {
+            this.TargetLayer = weapon.targetLayer;
+        }
 
         if (weapon != null)
         {
@@ -32,15 +41,15 @@ public class Attackable : MonoBehaviour, IAttackable
 
     public void SendDamage(int damage)
     {
-        
+
     }
 
     public void OnWeaponCollider()
-    {        
+    {
         if (weaponCollider != null)
         {
             weaponCollider.enabled = true;
-        }        
+        }
     }
     public void OffWeaponCollider()
     {

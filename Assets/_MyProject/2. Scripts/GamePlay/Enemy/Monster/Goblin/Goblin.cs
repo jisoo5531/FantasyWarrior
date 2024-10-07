@@ -4,15 +4,30 @@ using System.Data;
 using UnityEngine;
 
 public class Goblin : MonsterUnit
-{
+{    
     int rewardExp = 1000;
     protected override void Initialize()
     {
         monsterID = 1;
-        base.Initialize();      
-                    
+        M_StateMachine = new MonsterStateMachine(this);
+        M_StateMachine.Initialize(M_StateMachine.idleState);
+
+        base.Initialize();                          
     }
 
+    private void Update()
+    {
+        if (damagable.isStunned)
+        {
+            Debug.Log("얘 스턴이다. 못 움직여");
+            M_StateMachine.StateTransition(M_StateMachine.idleState);
+            return;
+        }
+        if (damagable.Hp > 0)
+        {
+            M_StateMachine.Excute();
+        }
+    }
     protected override void OnHpChange(int damage)
     {
         base.OnHpChange(damage);

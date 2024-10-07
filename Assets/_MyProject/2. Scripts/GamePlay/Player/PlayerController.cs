@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour
         int MaxHp = userStatClient.MaxHP;
         int Hp = userStatClient.HP;
         int damage = userStatClient.STR;        
-        damagable.Initialize(unitID: user_ID, maxHp: MaxHp, hp: Hp);
+        damagable.Initialize(unitID: user_ID, maxHp: MaxHp, hp: Hp, isMonster: false);
         attackable.Initialize(damage: damage, range: 2);
 
 

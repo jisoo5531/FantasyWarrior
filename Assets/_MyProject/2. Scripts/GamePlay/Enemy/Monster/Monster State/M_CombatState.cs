@@ -13,11 +13,12 @@ public class M_CombatState : IState
 
     public void Enter()
     {
-        if (monster.damagable.Hp <= 0 || monster == null)
+        if (monster.damagable.Hp <= 0 || monster == null || !monster.nav.enabled)
         {
             return;
         }
         //Debug.Log("Combat State Enter");
+
         if (false == monster.nav.isStopped)
         {
             monster.nav.isStopped = true;
