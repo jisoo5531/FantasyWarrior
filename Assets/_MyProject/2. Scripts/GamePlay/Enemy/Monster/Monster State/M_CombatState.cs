@@ -23,14 +23,14 @@ public class M_CombatState : IState
         {
             monster.nav.isStopped = true;
         }
-        
+        monster.GetComponent<Animator>().SetLayerWeight(1, 1);
     }
 
     public void Excute()
     {
         //Debug.Log("Combat State ½ÇÇà Áß");
 
-        monster.unitAnim.AttackAnimPlay();
+        monster.unitAnim.AttackAnimPlay();        
 
         if (monster.followable.DistanceToPlayer > monster.attackable.Range)
         {
@@ -50,6 +50,7 @@ public class M_CombatState : IState
 
     public void Exit()
     {
+        monster.GetComponent<Animator>().SetLayerWeight(1, 0);
         //Debug.Log("Combat State exit");        
     }
 }

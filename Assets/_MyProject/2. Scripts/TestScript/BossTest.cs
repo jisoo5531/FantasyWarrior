@@ -5,12 +5,12 @@ using UnityEngine;
 public class BossTest : MonsterUnit
 {
     // TOOD : 임시 플레이어 타겟 설정, 나중에 MonsterUnit의 플레이어 주석 해제로 사용
-    public GameObject testPlayer;
+    //public GameObject testPlayer;
     
     int rewardExp = 1000;
     protected override void Initialize()
     {        
-        monsterID = 2;        
+        monsterID = 2;
         // TODO : 임시
         this.monsterData = new MonsterData(2, "고대 골렘", 2000, 2000, 200, 10, 5, 5, 100, 100, 1);
         base.Initialize();

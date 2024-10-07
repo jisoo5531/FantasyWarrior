@@ -151,7 +151,7 @@ public class BossAction : MonoBehaviour
     #region 기본공격
     private void BasicAttack()
     {        
-        transform.LookAt(boss.player.transform.position);        
+        //transform.LookAt(boss.player.transform.position);        
         
         boss.IsNavStop(false, 4f);
         Invoke("IsActionFinish", 5f);
@@ -163,16 +163,20 @@ public class BossAction : MonoBehaviour
     {
         // TODO : 점프 공격 범위에 있으면 뒤로 밀려나게 하기, 골드메탈 참고
 
-        boss.IsNavStop(true, 0);
+        boss.unitAnim.MoveAnimPlay(false);
+        boss.isAction = true;
+        boss.M_StateMachine.Stop();
+        boss.nav.enabled = false;
+
         // 점프 시작 시 현재 위치 저장
         initialPosition = transform.position;
 
+
         // 점프 애니메이션 실행
-        anim.SetTrigger("jump");
+        anim.SetTrigger("jump");        
         ChargeFeedback?.PlayFeedbacks();
-        OnSkillPlay?.Invoke((int)B_SkillAction.Jump);
-        boss.IsNavStop(false, 4f);
-        Invoke("IsActionFinish", 6f);
+        OnSkillPlay?.Invoke((int)B_SkillAction.Jump);        
+        
     }
     public void OnUpforce()
     {
@@ -199,6 +203,8 @@ public class BossAction : MonoBehaviour
             {
                 isLanding = true;  // 착지 애니메이션 실행
                 anim.SetTrigger("Land");
+                Invoke("JumpAttackFinish", 2f);
+                Invoke("IsActionFinish", 2f);
             }
         }
         else
@@ -208,12 +214,20 @@ public class BossAction : MonoBehaviour
         
     }
 
+    private void JumpAttackFinish()
+    {
+        boss.isAction = false;
+        boss.M_StateMachine.Initialize(boss.M_StateMachine.idleState);
+        boss.nav.enabled = true;
+    }
+
     #endregion
 
     #region 회전 공격
 
     public void Rotate()
     {
+        boss.unitAnim.MoveAnimPlay(false);
         boss.nav.isStopped = true;
         RotateFeedback?.PlayFeedbacks();
         OnSkillPlay?.Invoke((int)B_SkillAction.Spin);
@@ -233,8 +247,8 @@ public class BossAction : MonoBehaviour
     #region 돌 슈팅 공격
     public void RockShootingAction()
     {
+        boss.unitAnim.MoveAnimPlay(false);
         transform.LookAt(boss.player.transform.position);
-
         boss.nav.isStopped = true;
         anim.SetTrigger("ShardRock_Shooting");
         OnSkillPlay?.Invoke((int)B_SkillAction.RockShooting);
@@ -254,17 +268,11 @@ public class BossAction : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        Debug.Log(collision.gameObject.name);
         if (collision.gameObject.CompareTag("Ground"))
         {
             LandingFeedback?.PlayFeedbacks();
             isGrounded = true; // 바닥에 닿으면 다시 점프 가능
-        }
-    }
-    private void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = false;
         }
     }
 }

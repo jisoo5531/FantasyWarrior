@@ -9,11 +9,11 @@ public class MonsterUnit : Enemy
 {
     // TODO : 몬스터를 잡으면 보상(경험치, 재화, 아이템) 등을 얻는다.    
     protected MonsterData monsterData;
-    public MonsterStateMachine M_StateMachine;    
+    public MonsterStateMachine M_StateMachine;
 
     // TODO : 플레이어 찾기 보스 임시 주석
-    public GameObject player;
-    //public PlayerController player;
+    //public GameObject player;
+    public PlayerController player;
     public UnitAnimation unitAnim;
     public NavMeshAgent nav;
 
@@ -26,11 +26,13 @@ public class MonsterUnit : Enemy
     [Tooltip("모든 몬스터의 공통된 탐지거리값")]
     public int detectionRange = 10;
 
+    public bool isAction = false;
+
     protected int monsterID;
 
     private void Awake()
     {
-        //player = FindObjectOfType<PlayerController>();
+        player = FindObjectOfType<PlayerController>();
         attackable = gameObject.AddComponent<Attackable>();
         damagable = gameObject.AddComponent<Damagable>();
         followable = gameObject.AddComponent<Followable>();
@@ -65,8 +67,7 @@ public class MonsterUnit : Enemy
         M_StateMachine.Initialize(M_StateMachine.idleState);
     }
     private void Update()
-    {
-        Debug.Log("nav " + nav.isStopped);
+    {        
         if (damagable.isStunned)
         {
             Debug.Log("얘 스턴이다. 못 움직여");
@@ -75,6 +76,10 @@ public class MonsterUnit : Enemy
         }
         if (damagable.Hp > 0)
         {
+            if (isAction)
+            {
+                return;
+            }
             M_StateMachine.Excute();
         }
     }

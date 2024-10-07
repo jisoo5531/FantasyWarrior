@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
+using Cinemachine;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class GameManager : MonoBehaviour
     public GameObject mummy;
     public GameObject Item;
     public GameObject UI;
+    public CinemachineClearShot clearShot;
 
     public Transform teleportTarget;
 
@@ -60,6 +62,16 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
             player.transform.position = teleportTarget.position;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            clearShot.Follow = GameObject.Find("Ancient Golem").transform;
+            clearShot.LookAt = GameObject.Find("Ancient Golem").transform;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha7))
+        {
+            clearShot.Follow = player.transform;
+            clearShot.LookAt = player.transform;
         }
     }
 

@@ -1,0 +1,129 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Boss
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: RM_Root
+    m_Weight: 1
+  - m_Path: RM_Root/Bone030
+    m_Weight: 0
+  - m_Path: RM_Root/Bone031
+    m_Weight: 0
+  - m_Path: RM_Root/Bone032
+    m_Weight: 0
+  - m_Path: RM_Root/Bone033
+    m_Weight: 1
+  - m_Path: RM_Root/Bone034
+    m_Weight: 1
+  - m_Path: RM_Root/Bone037
+    m_Weight: 1
+  - m_Path: RM_Root/Bone038
+    m_Weight: 1
+  - m_Path: RM_Root/Bone039
+    m_Weight: 1
+  - m_Path: RM_Root/Bone042
+    m_Weight: 1
+  - m_Path: RM_Root/Bone043
+    m_Weight: 1
+  - m_Path: RM_Root/Bone044
+    m_Weight: 1
+  - m_Path: RM_Root/Bone045
+    m_Weight: 1
+  - m_Path: RM_Root/Bone046
+    m_Weight: 1
+  - m_Path: RM_Root/Bone047
+    m_Weight: 1
+  - m_Path: RM_Root/Bone048
+    m_Weight: 1
+  - m_Path: RM_Root/Bone051
+    m_Weight: 1
+  - m_Path: RM_Root/Bone052
+    m_Weight: 1
+  - m_Path: RM_Root/Bone053
+    m_Weight: 1
+  - m_Path: RM_Root/Bone054
+    m_Weight: 1
+  - m_Path: RM_Root/Bone055
+    m_Weight: 1
+  - m_Path: RM_Root/Bone056
+    m_Weight: 1
+  - m_Path: RM_Root/Bone057
+    m_Weight: 1
+  - m_Path: RM_Root/Bone058
+    m_Weight: 1
+  - m_Path: RM_Root/Bone059
+    m_Weight: 1
+  - m_Path: RM_Root/Bone060
+    m_Weight: 1
+  - m_Path: RM_Root/PelvisPoint
+    m_Weight: 1
+  - m_Path: RM_Root/PelvisPoint/RMPelvis
+    m_Weight: 1
+  - m_Path: RM_Root/Point005
+    m_Weight: 1
+  - m_Path: RM_Root/Point005/RMShoulderR
+    m_Weight: 1
+  - m_Path: RM_Root/Point006
+    m_Weight: 1
+  - m_Path: RM_Root/Point006/RMShoulderL
+    m_Weight: 1
+  - m_Path: RM_Root/Point007
+    m_Weight: 0
+  - m_Path: RM_Root/Point007/RMLegL1
+    m_Weight: 1
+  - m_Path: RM_Root/Point008
+    m_Weight: 0
+  - m_Path: RM_Root/Point008/RMLegR1
+    m_Weight: 1
+  - m_Path: RM_Root/Point009
+    m_Weight: 1
+  - m_Path: RM_Root/Point009/Bone061
+    m_Weight: 1
+  - m_Path: RM_Root/Point010
+    m_Weight: 1
+  - m_Path: RM_Root/Point010/Bone035
+    m_Weight: 1
+  - m_Path: RM_Root/Point011
+    m_Weight: 1
+  - m_Path: RM_Root/Point011/Bone040
+    m_Weight: 1
+  - m_Path: RM_Root/Point012
+    m_Weight: 1
+  - m_Path: RM_Root/Point012/Bone041
+    m_Weight: 1
+  - m_Path: RM_Root/RMArmL1
+    m_Weight: 1
+  - m_Path: RM_Root/RMArmL2
+    m_Weight: 1
+  - m_Path: RM_Root/RMArmR1
+    m_Weight: 1
+  - m_Path: RM_Root/RMArmR2
+    m_Weight: 1
+  - m_Path: RM_Root/RMHead
+    m_Weight: 1
+  - m_Path: RM_Root/RMLegL2
+    m_Weight: 0
+  - m_Path: RM_Root/RMLegL3
+    m_Weight: 0
+  - m_Path: RM_Root/RMLegR2
+    m_Weight: 0
+  - m_Path: RM_Root/RMLegR3
+    m_Weight: 0
+  - m_Path: RM_Root/RMSpine01
+    m_Weight: 1
+  - m_Path: RM_Root/RMSpine02
+    m_Weight: 1
+  - m_Path: RM_Root/RMSpine03
+    m_Weight: 1
+  - m_Path: RockCreatureMesh_LP
+    m_Weight: 1
+  - m_Path: RockCreatureSpikesMesh_LP
+    m_Weight: 1

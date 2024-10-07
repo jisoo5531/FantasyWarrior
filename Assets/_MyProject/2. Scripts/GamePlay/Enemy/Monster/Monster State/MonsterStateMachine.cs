@@ -30,6 +30,10 @@ public class MonsterStateMachine
 
     }
 
+    public void Stop()
+    {
+        CurrentState.Exit();
+    }
     public void Excute()
     {
         Debug.Log(CurrentState.ToString());
