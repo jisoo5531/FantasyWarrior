@@ -4,7 +4,9 @@ using UnityEngine;
 using MyScene;
 public class GoblinScene : MonoBehaviour
 {
-    public GameObject playerSpawnPos;
+    public GameObject player;
+    public GameObject UI;
+    public Transform playerSpawnPos;
     private void Start()
     {
         SceneManager.Instance.currentSceneNumber = (int)Scene.Goblin;
@@ -12,13 +14,12 @@ public class GoblinScene : MonoBehaviour
         PlayerPosInit();
     }
     private void PlayerPosInit()
-    {        
-        GameObject player = GameObject.Find("Player");
-        
-        player.transform.position = playerSpawnPos.transform.position;
+    {
+        //GameObject player = GameObject.Find("Player");
+        GameObject playerObj = Instantiate(player, playerSpawnPos.position, Quaternion.identity);
+        Instantiate(UI);
+        FindObjectOfType<SetCamera>().Initialize(playerObj);
+        //player.transform.position = playerSpawnPos.transform.position;
         EventHandler.sceneEvent.TriggerSceneIn();
-    }
-    private void Update()
-    {        
-    }
+    }    
 }

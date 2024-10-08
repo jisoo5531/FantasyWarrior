@@ -21,34 +21,26 @@ public class NPC : MonoBehaviour
     /// 이 npc가 줄 퀘스트들
     /// </summary>
     private List<QuestData> npcQuestList = new List<QuestData>();
+        
 
-    private void Awake()
-    {
-        //EventHandler.managerEvent.RegisterNPCManagerInit(Initialize);
-    }
     private void Start()
     {
-        Initialize();
+        // 매니저들이 초기화되었을 때 이벤트 등록
+        UserStatManager.Instance.OnLevelUpUpdateStat += CheckQuestStatus;
+        QuestManager.Instance.OnAcceptQuest += CheckQuestStatus;
+        QuestManager.Instance.OnUpdateQuestProgress += CheckQuestStatus;
+        QuestManager.Instance.OnCompleteQuest += CheckQuestStatus;
+
+        CheckQuestStatus();
+        //이 npc의 대화창 초기화
+        nPCDialogue.Initialize();
     }
-    private void OnDisable()
+    private void OnDestroy()
     {
-        EventHandler.managerEvent.UnRegisterNPCManagerInit(Initialize);
         UserStatManager.Instance.OnLevelUpUpdateStat -= CheckQuestStatus;
         QuestManager.Instance.OnAcceptQuest -= CheckQuestStatus;
         QuestManager.Instance.OnUpdateQuestProgress -= CheckQuestStatus;  // 퀘스트 진행상황 업데이트마다 이벤트를 호출한다.
         QuestManager.Instance.OnCompleteQuest -= CheckQuestStatus;
-    }
-    private void Initialize()
-    {
-        UserStatManager.Instance.OnLevelUpUpdateStat += CheckQuestStatus;
-        QuestManager.Instance.OnAcceptQuest += CheckQuestStatus;
-        QuestManager.Instance.OnUpdateQuestProgress += CheckQuestStatus;  // 퀘스트 진행상황 업데이트마다 이벤트를 호출한다.
-        QuestManager.Instance.OnCompleteQuest += CheckQuestStatus;
-
-        CheckQuestStatus();
-
-        //이 npc의 대화창 초기화
-        nPCDialogue.Initialize();
     }
 
     /// <summary>
@@ -56,11 +48,10 @@ public class NPC : MonoBehaviour
     /// </summary>
     private void CheckQuestStatus()
     {        
-        questID_List = NPCManager.Instance.GetQuestIDFromNPC(this.NPC_ID);
-        List<QuestProgress> userQuestList = QuestManager.Instance.questProgressList;
+        questID_List = NPCManager.Instance.GetQuestIDFromNPC(this.NPC_ID);        
+        List<QuestProgress> userQuestList = QuestManager.Instance.questProgressList;        
         bool isAnyUserQuest = false;
-        bool isAnyCompleteOrInprogressQuest = false;
-
+        bool isAnyCompleteOrInprogressQuest = false;        
         if (questID_List == null)
         {
             UpdateQuestIcons(false, false);

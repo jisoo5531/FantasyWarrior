@@ -53,20 +53,31 @@ public class UI_InventoryPanel : MonoBehaviour
             int index = i;
             tabButtonList[index].onClick.AddListener(() => OnClickItemtabButton(index));
         }
+
+        PlayerEquipManager.Instance.OnAllUnEquipButtonClick += SetItemToSlot;
+        PlayerEquipManager.Instance.OnUnEquipItem += SetItemToSlot;
+        InventoryManager.Instance.OnGetItem += SetItemToSlot;
+        InventoryManager.Instance.OnGetItem += SetPlayerGold;
     }
     private void Start()
     {
         InventoryPanelInit();
     }
+        
+    private void OnDestroy()
+    {
+        PlayerEquipManager.Instance.OnAllUnEquipButtonClick -= SetItemToSlot;
+        PlayerEquipManager.Instance.OnUnEquipItem -= SetItemToSlot;
+        InventoryManager.Instance.OnGetItem -= SetItemToSlot;
+        InventoryManager.Instance.OnGetItem -= SetPlayerGold;
+    }
+
     public void InventoryPanelInit()
     {
         //PlayerEquipManager.Instance.OnAllUnEquipButtonClick += SetItemToSlot_Sort;
         //PlayerEquipManager.Instance.OnUnEquipItem += SetItemToSlot_Sort;
         //InventoryManager.Instance.OnGetItem += SetItemToSlot_Sort;
-        PlayerEquipManager.Instance.OnAllUnEquipButtonClick += SetItemToSlot;
-        PlayerEquipManager.Instance.OnUnEquipItem += SetItemToSlot;
-        InventoryManager.Instance.OnGetItem += SetItemToSlot;
-        InventoryManager.Instance.OnGetItem += SetPlayerGold;
+        
 
 
         List<InventoryData> inventoryDataList = InventoryManager.Instance.inventoryDataList;

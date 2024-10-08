@@ -9,14 +9,23 @@ public class UI_QuestWindow : MonoBehaviour
 {    
     public GameObject QW_ObjectiveList;
     [Header("Prefab")]
-    public UI_QW_Objective objectiveElement;    
+    public UI_QW_Objective objectiveElement;
 
-    private void Start()
+    private void Awake()
     {
         UI_InprogressQuest.OnGuideButton += SetQuestWindow;
         QuestManager.Instance.OnUpdateQuestProgress += SetQuestWindow;
         QuestManager.Instance.OnCompleteQuest += SetQuestWindow;
+    }
+    private void Start()
+    {        
         SetQuestWindow();
+    }
+    private void OnDestroy()
+    {
+        UI_InprogressQuest.OnGuideButton -= SetQuestWindow;
+        QuestManager.Instance.OnUpdateQuestProgress -= SetQuestWindow;
+        QuestManager.Instance.OnCompleteQuest -= SetQuestWindow;
     }
     private void SetQuestWindow()
     {        

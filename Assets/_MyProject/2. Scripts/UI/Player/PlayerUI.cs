@@ -29,18 +29,24 @@ public class PlayerUI : UIComponent
         EventHandler.playerEvent.RegisterPlayerLevelUp(OnLevelUp);
         EventHandler.skillKey.RegisterSkillKeyChange(OnChangeSkillKeyBind);
         PlayerSkill.OnKeyBindInit += OnChangeSkillKeyBind;
-    }
-    private void Start()
-    {
         PlayerEquipManager.Instance.OnEquipItem += OnChangeMP;
         PlayerEquipManager.Instance.OnUnEquipItem += OnChangeMP;
         PlayerEquipManager.Instance.OnAllUnEquipButtonClick += OnChangeMP;
         UserStatManager.Instance.OnLevelUpUpdateStat += OnChangeMP;
-        UserStatManager.Instance.OnChangeExpStat += OnChangeExp;        
-    }
-    private void OnEnable()
-    {
+        UserStatManager.Instance.OnChangeExpStat += OnChangeExp;
         GameManager.inputActions.PlayerActions.Menu.performed += OnMenu;
+    }
+    private void OnDestroy()
+    {
+        EventHandler.playerEvent.UnRegisterPlayerLevelUp(OnLevelUp);
+        EventHandler.skillKey.UnRegisterSkillKeyChange(OnChangeSkillKeyBind);
+        PlayerSkill.OnKeyBindInit -= OnChangeSkillKeyBind;
+        PlayerEquipManager.Instance.OnEquipItem -= OnChangeMP;
+        PlayerEquipManager.Instance.OnUnEquipItem -= OnChangeMP;
+        PlayerEquipManager.Instance.OnAllUnEquipButtonClick -= OnChangeMP;
+        UserStatManager.Instance.OnLevelUpUpdateStat -= OnChangeMP;
+        UserStatManager.Instance.OnChangeExpStat -= OnChangeExp;
+        GameManager.inputActions.PlayerActions.Menu.performed -= OnMenu;
     }
 
     public override void SetInitValue()

@@ -15,11 +15,12 @@ public class UI_PlayerQuestComplete : MonoBehaviour
 
     private QuestData quest;
 
-    private void OnEnable()
+    private void Awake()
     {
+        Debug.Log("이벤트 등록");
         QuestManager.Instance.OnCompleteQuestData += OnCompleteQuestData;
     }
-    private void OnDisable()
+    private void OnDestroy()
     {
         QuestManager.Instance.OnCompleteQuestData -= OnCompleteQuestData;
     }

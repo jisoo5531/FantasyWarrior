@@ -21,9 +21,9 @@ public class PanelManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
-        PlayerSkill.OnKeyBindInit += SkillPanel.SkillPanelInit;
+        Instance = this;        
     }
+    
 
     private void OnEnable()
     {
@@ -32,6 +32,8 @@ public class PanelManager : MonoBehaviour
         playerActions.UI_Inventory.performed += OnInventoryUI;
         playerActions.UI_Quest.performed += OnQuestUI;
         playerActions.UI_Status.performed += OnStatUI;
+
+        PlayerSkill.OnKeyBindInit += SkillPanel.SkillPanelInit;
     }
 
     private void OnDisable()
@@ -41,6 +43,8 @@ public class PanelManager : MonoBehaviour
         playerActions.UI_Inventory.performed -= OnInventoryUI;
         playerActions.UI_Quest.performed -= OnQuestUI;
         playerActions.UI_Status.performed -= OnStatUI;
+
+        PlayerSkill.OnKeyBindInit -= SkillPanel.SkillPanelInit;
     }
 
     private void TogglePanel(GameObject panel)

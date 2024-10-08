@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
         playerMovement = GetComponent<PlayerMovement>();
         playerAnimation = GetComponent<PlayerAnimation>();
         playerStat = GetComponent<PlayerStat>();
-        playerUI = FindObjectOfType<PlayerUI>();
+        
 
         damagable = gameObject.AddComponent<Damagable>();
         attackable = gameObject.AddComponent<Attackable>();        
@@ -46,8 +46,15 @@ public class PlayerController : MonoBehaviour
         damagable.OnTakeDamage += OnHpChange;
         damagable.OnDeath += OnDeath;
     }
+    private void OnDisable()
+    {
+        damagable.OnTakeDamage -= OnHpChange;
+        damagable.OnDeath -= OnDeath;
+        GameManager.Instance.Save();
+    }
     private void Start()
     {
+        playerUI = FindObjectOfType<PlayerUI>();
         StatInit();
     }
 
@@ -76,11 +83,7 @@ public class PlayerController : MonoBehaviour
         //playerMovement?.Move(controller);
     }    
 
-    private void OnDisable()
-    {        
-        damagable.OnTakeDamage -= OnHpChange;
-        damagable.OnDeath -= OnDeath;                
-    }
+    
     //private void OnDestroy()
     //{
     //    playerInput.OnAttack -= playerAnimation.AttackAnimation;

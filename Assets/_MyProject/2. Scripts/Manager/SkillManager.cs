@@ -42,9 +42,18 @@ public class SkillManager : MonoBehaviour
         Instance = this;
         //EventHandler.managerEvent.RegisterStatManagerInit(SkillManagerInit);
     }
+    private void OnEnable()
+    {
+        Debug.Log(UserStatManager.Instance == null);
+        UserStatManager.Instance.OnLevelUpUpdateStat += OnLevelUp_UnlockSkill;
+    }
+    private void OnDisable()
+    {
+        UserStatManager.Instance.OnLevelUpUpdateStat -= OnLevelUp_UnlockSkill;
+    }
     public void Initialize()
     {
-        UserStatManager.Instance.OnLevelUpUpdateStat += OnLevelUp_UnlockSkill;
+        
 
         UserSkillKeyBInd = GetSkillKeyBind();
 
@@ -229,7 +238,7 @@ public class SkillManager : MonoBehaviour
             _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
         }
     }
-    private void SaveSkillKeyBind()
+    public void SaveSkillKeyBind()
     {
         int user_ID = DatabaseManager.Instance.userData.UID;
         string skill_1 = PlayerSkill.EquipSkills[0] != 0 ? PlayerSkill.EquipSkills[0].ToString() : "NULL";

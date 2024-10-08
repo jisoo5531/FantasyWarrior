@@ -7,23 +7,18 @@ public class HumanScene : MonoBehaviour
     public Transform GameStartPos;
     public Transform GoblinToHumanPos;
 
-
-
+    public GameObject player;
+    public GameObject UI;
+    SetCamera setCamera;
     private void Start()
     {
-        //Debug.Log($"씬 넘버 차이 : {SceneManager.Instance.CurrentMinusNext()}");
-        //if (SceneManager.Instance.CurrentMinusNext() == 1)
-        //{
-        //    GameStart();
-        //}
-        //else if (SceneManager.Instance.CurrentMinusNext() == -1)
-        //{
-        //    Debug.Log("여기로 가는거지?");
-        //    GoblinToHuman();
-        //}
-        //SceneManager.Instance.currentSceneNumber = (int)Scene.Human;
+        setCamera = FindObjectOfType<SetCamera>();
 
-        if (SceneManager.Instance.currentSceneNumber == 2)
+        if (SceneManager.Instance.currentSceneNumber == 0)
+        {
+            GameStart();
+        }
+        else if (SceneManager.Instance.currentSceneNumber == 2)
         {
             GoblinToHuman();
         }
@@ -32,12 +27,18 @@ public class HumanScene : MonoBehaviour
 
     public void GameStart()
     {
-        GameObject.Find("Player").transform.position = GameStartPos.position;
+        //GameObject.Find("Player").transform.position = GameStartPos.position;
+        GameObject playerObj = Instantiate(player, GameStartPos.position, Quaternion.identity);
+        Instantiate(UI);
+        setCamera.Initialize(playerObj);
         EventHandler.sceneEvent.TriggerSceneIn();
     }
     public void GoblinToHuman()
     {
-        GameObject.Find("Player").transform.position = GoblinToHumanPos.position;
+        GameObject playerObj = Instantiate(player, GoblinToHumanPos.position, Quaternion.identity);
+        Instantiate(UI);
+        setCamera.Initialize(playerObj);
+        //GameObject.Find("Player").transform.position = GoblinToHumanPos.position;
         EventHandler.sceneEvent.TriggerSceneIn();
     }    
 }

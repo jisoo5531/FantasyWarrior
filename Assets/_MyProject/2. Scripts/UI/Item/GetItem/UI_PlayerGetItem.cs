@@ -8,18 +8,18 @@ public class UI_PlayerGetItem : MonoBehaviour
     public GameObject GetItemContent;
 
 
-    private void Start()
-    {
-        InventoryManager.Instance.OnGetItemData += OnGetItem;
-    }
-    //private void OnEnable()
+    //private void Start()
     //{
     //    InventoryManager.Instance.OnGetItemData += OnGetItem;
     //}
-    //private void OnDisable()
-    //{
-    //    InventoryManager.Instance.OnGetItemData -= OnGetItem;
-    //}
+    private void Awake()
+    {
+        InventoryManager.Instance.OnGetItemData += OnGetItem;
+    }
+    private void OnDestroy()
+    {
+        InventoryManager.Instance.OnGetItemData -= OnGetItem;
+    }
 
     private void OnGetItem(ItemData item)
     {

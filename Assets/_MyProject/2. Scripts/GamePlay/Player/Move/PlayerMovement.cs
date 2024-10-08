@@ -27,12 +27,12 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         Debug.Log("여기 몇 번? ");
-        
+        agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
     }
     void Start()
     {
         Debug.Log("여기 되나?");
-        agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        
     }
 
     void Update()

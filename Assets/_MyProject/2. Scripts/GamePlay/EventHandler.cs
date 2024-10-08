@@ -37,7 +37,7 @@ public class SkillKeyEvent
     {
         OnKeyChangeSkill += listener;
     }
-    public void UnRegisterHpChange(Action listener, int number)
+    public void UnRegisterSkillKeyChange(Action listener)
     {
 
         OnKeyChangeSkill -= listener;

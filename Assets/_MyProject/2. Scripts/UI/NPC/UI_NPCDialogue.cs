@@ -336,9 +336,10 @@ public class UI_NPCDialogue : MonoBehaviour
     /// </summary>
     private void OnClickCompleteQuestButton()
     {
-        isDialogEnd = true;
+        isDialogEnd = true;        
         if (this.quest_ID != 0)
         {
+            Debug.Log("완료 실행되야 할거야");
             QuestManager.Instance.QuestComplete(this.quest_ID);
         }
     }

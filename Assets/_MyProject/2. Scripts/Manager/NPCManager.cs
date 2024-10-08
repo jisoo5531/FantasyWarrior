@@ -68,6 +68,8 @@ public class NPCManager : MonoBehaviour
     /// <returns>NPC_ID가 없는 ID면 QuestID는 0이 리턴.</returns>
     public List<int> GetQuestIDFromNPC(int NPC_ID)
     {
+        Debug.Log(UserStatManager.Instance == null);
+        Debug.Log(UserStatManager.Instance.userStatClient == null);
         int currentLevel = UserStatManager.Instance.userStatClient.Level;
         List<int> questsID = new List<int>();        
         

@@ -38,7 +38,8 @@ public class Damagable : MonoBehaviour, IDamagable
         this.Unit_ID = unitID;
         this.MaxHp = maxHp;
         this.Hp = hp;
-    }    
+    }
+
     private void Start()
     {
         if (isMonster)
@@ -50,7 +51,6 @@ public class Damagable : MonoBehaviour, IDamagable
         PlayerEquipManager.Instance.OnUnEquipItem += OnChangeHp;
         PlayerEquipManager.Instance.OnAllUnEquipButtonClick += OnChangeHp;
     }
-
     private void OnDisable()
     {
         if (isMonster)

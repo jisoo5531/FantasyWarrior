@@ -21,7 +21,7 @@ public class UI_StatPanel : MonoBehaviour
     public Status statusUI;
     private UserStatClient userStatClient;
 
-    public void StatPanelInit()
+    private void Start()
     {
         UserStatManager.Instance.OnLevelUpUpdateStat += SetStat;
         PlayerEquipManager.Instance.OnEquipItem += SetStat;
@@ -29,11 +29,7 @@ public class UI_StatPanel : MonoBehaviour
         PlayerEquipManager.Instance.OnAllUnEquipButtonClick += SetStat;
         SetStat();
     }
-    private void OnEnable()
-    {
-        StatPanelInit();
-    }
-    private void OnDisable()
+    private void OnDestroy()
     {
         UserStatManager.Instance.OnLevelUpUpdateStat -= SetStat;
         PlayerEquipManager.Instance.OnEquipItem -= SetStat;

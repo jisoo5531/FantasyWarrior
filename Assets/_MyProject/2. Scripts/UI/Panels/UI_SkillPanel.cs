@@ -33,11 +33,6 @@ public class UI_SkillPanel : MonoBehaviour
     [Header("스킬 상세정보")]
     public GameObject SkillInfoWindow;
 
-    private void Awake()
-    {
-        EventHandler.skillKey.RegisterSkillKeyChange(OnChangeSkill);
-        
-    }
     private void SkillContentClear(GameObject content)
     {
         for (int i = 0; i < content.transform.childCount; i++)
@@ -45,9 +40,19 @@ public class UI_SkillPanel : MonoBehaviour
             Destroy(content.transform.GetChild(i).gameObject);            
         }
     }
+    private void Start()
+    {
+        SkillManager.Instance.OnUnlockSkillEvent += SkillWindowSetting;
+        EventHandler.skillKey.RegisterSkillKeyChange(OnChangeSkill);
+    }
+    private void OnDestroy()
+    {
+        SkillManager.Instance.OnUnlockSkillEvent -= SkillWindowSetting;
+        EventHandler.skillKey.UnRegisterSkillKeyChange(OnChangeSkill);
+    }
     public void SkillPanelInit()
     {        
-        SkillManager.Instance.OnUnlockSkillEvent += SkillWindowSetting;
+        
 
         for (int i = 0; i < iconPanelList.Count; i++)
         {

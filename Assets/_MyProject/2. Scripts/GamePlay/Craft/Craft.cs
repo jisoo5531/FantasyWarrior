@@ -18,6 +18,7 @@ public class Craft : MonoBehaviour
     protected int craftItemAmount;    
     public void Action()
     {
+        playerAnim = FindAnyObjectByType<PlayerController>().GetComponent<Animator>();
         Debug.Log("¿©±â°¡ µÅ?");
         StartCoroutine(ActionCoroutine());
     }

@@ -49,13 +49,19 @@ public class UI_QuestPanel : MonoBehaviour
     }
     private void Start()
     {
-        Initialize();
-    }
-    public void Initialize()
-    {
         QuestManager.Instance.OnAcceptQuest += QuestSet;
         QuestManager.Instance.OnUpdateQuestProgress += QuestSet;
         QuestManager.Instance.OnCompleteQuest += QuestSet;
+        Initialize();
+    }
+    private void OnDestroy()
+    {
+        QuestManager.Instance.OnAcceptQuest -= QuestSet;
+        QuestManager.Instance.OnUpdateQuestProgress -= QuestSet;
+        QuestManager.Instance.OnCompleteQuest -= QuestSet;
+    }
+    public void Initialize()
+    {        
         QuestSet();
     }
     private void QuestSet()

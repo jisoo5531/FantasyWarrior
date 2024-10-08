@@ -40,7 +40,6 @@ public class QuestManager : MonoBehaviour
 
     #region 이벤트
 
-    public event Action OnQuestManagerInit;
     /// <summary>
     /// 퀘스트를 수락하면 발생하는 이벤트
     /// </summary>
@@ -56,11 +55,7 @@ public class QuestManager : MonoBehaviour
     /// <summary>
     /// 퀘스트가 완료되면 플레이어 퀘스트 완료 UI에 전달용.
     /// </summary>
-    public event Action<QuestData> OnCompleteQuestData;
-    /// <summary>
-    /// 퀘스트 완료 후, 보상 분배
-    /// </summary>
-    public event Action<QuestData> OnGetQuestReward;
+    public event Action<QuestData> OnCompleteQuestData;    
 
     #endregion
 

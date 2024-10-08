@@ -20,6 +20,7 @@ public class UI_InventorySlot : UI_ItemSlot
     private Item_Type? item_Type;
     private int? itemQuantity;
 
+
     public override void Initialize(int itemID, Sprite sprite = null, UI_ItemInfo itemInfo = null)
     {
         this.item_ID = itemID;
@@ -39,6 +40,12 @@ public class UI_InventorySlot : UI_ItemSlot
     {
         InventoryManager.Instance.OnSubtractItem += UpdateQuantityText;
         InventoryManager.Instance.OnDeleteItem += EventSlotClear;
+    }
+
+    private void OnDestroy()
+    {
+        InventoryManager.Instance.OnSubtractItem -= UpdateQuantityText;
+        InventoryManager.Instance.OnDeleteItem -= EventSlotClear;
     }
     private void UpdateQuantityText(ItemData item)
     {

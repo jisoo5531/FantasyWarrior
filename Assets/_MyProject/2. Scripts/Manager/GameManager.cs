@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {        
         inputActions.PlayerActions.Enable();
+        
     }
     private void OnDisable()
     {
@@ -45,6 +46,7 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F1))
         {
+            player = FindObjectOfType<PlayerController>().gameObject.transform;
             Instantiate(goblin, player.position + new Vector3(Random.Range(0, 10), 0, Random.Range(0, 10)), goblin.transform.rotation);
         }
         else if (Input.GetKeyDown(KeyCode.F2))
@@ -78,6 +80,7 @@ public class GameManager : MonoBehaviour
     
     private void ManagerInit()
     {
+        Debug.Log(ItemManager.Instance == null);
         ItemManager.Instance.Initialize();
         InventoryManager.Instance.Initialize();
         UserStatManager.Instance.Initialize();
@@ -92,5 +95,14 @@ public class GameManager : MonoBehaviour
         CraftManager.Instance.Initialize();
         CraftRecipeManager.Instance.Initialize();
         BlacksmithManager.Instance.Initialize();
+    }
+    public void Save()
+    {
+        InventoryManager.Instance.Save();
+        UserStatManager.Instance.SaveStat();
+        PlayerEquipManager.Instance.SaveEquipments();
+        SkillManager.Instance.SaveSkill();
+        SkillManager.Instance.SaveSkillKeyBind();
+        QuestManager.Instance.SaveQuestProgress();        
     }
 }

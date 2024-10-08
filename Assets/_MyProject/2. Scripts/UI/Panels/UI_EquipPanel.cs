@@ -26,6 +26,11 @@ public class UI_EquipPanel : MonoBehaviour
         PlayerEquipManager.Instance.OnAllUnEquipButtonClick += SetItemToSlot;
         SetItemToSlot();
     }
+    private void OnDestroy()
+    {
+        PlayerEquipManager.Instance.OnEquipItem -= SetItemToSlot;
+        PlayerEquipManager.Instance.OnAllUnEquipButtonClick -= SetItemToSlot;
+    }
 
     /// <summary>
     /// <para>플레이어가 장착 중인 아이템에 맞춰 슬롯 UI에 세팅</para>

@@ -329,6 +329,11 @@ public class InventoryManager : MonoBehaviour
             _ = DatabaseManager.Instance.OnInsertOrUpdateRequest(query);
         }
     }
+    public void Save()
+    {
+        SaveInventory();
+        SaveUserCraftTool();
+    }
     private void AutoSave()
     {
         SaveInventory();

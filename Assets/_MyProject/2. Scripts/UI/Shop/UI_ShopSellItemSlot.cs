@@ -14,11 +14,13 @@ public class UI_ShopSellItemSlot : MonoBehaviour
     private void Awake()
     {
         GetComponent<Button>().onClick.AddListener(OnClickSellItemSlot);
-    }
-    private void Start()
-    {
         InventoryManager.Instance.OnSubtractItem += UpdateQuantityText;
         InventoryManager.Instance.OnDeleteItem += EventSlotClear;
+    }
+    private void OnDestroy()
+    {
+        InventoryManager.Instance.OnSubtractItem -= UpdateQuantityText;
+        InventoryManager.Instance.OnDeleteItem -= EventSlotClear;
     }
     public void Initialize(InventoryData invenItem, Sprite itemSprite)
     {
@@ -30,6 +32,10 @@ public class UI_ShopSellItemSlot : MonoBehaviour
     }
     private void EventSlotClear(ItemData item)
     {
+        if (invenItem == null || this.invenItem.Item_ID != item.Item_ID)
+        {
+            return;
+        }
         itemIcon.ImageTransparent(0);
         itemQuantityText.gameObject.SetActive(false);
     }

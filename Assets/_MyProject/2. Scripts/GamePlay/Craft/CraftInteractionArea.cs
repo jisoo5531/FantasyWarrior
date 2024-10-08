@@ -28,6 +28,10 @@ public class CraftInteractionArea : MonoBehaviour
         InventoryManager.Instance.OnGetCraftItem += CheckUserHaveTool;
         CheckUserHaveTool();
     }
+    private void OnDestroy()
+    {
+        InventoryManager.Instance.OnGetCraftItem -= CheckUserHaveTool;
+    }
     protected virtual void CheckUserHaveTool()
     {
         UserCraftToolData userCraftTool = InventoryManager.Instance.userCraftToolClient.Find(x => x.CreftType.Equals(craftType));
