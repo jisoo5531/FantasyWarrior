@@ -499,8 +499,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uC544\uC774\uD15C \uC774\uB984"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: baf22bce5357cbe4497ac301f63efa11, type: 2}
-  m_sharedMaterial: {fileID: 6056140247387118318, guid: baf22bce5357cbe4497ac301f63efa11, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 3da35a7d2ecf8804da1162d63477072c, type: 2}
+  m_sharedMaterial: {fileID: -359879048511075999, guid: 3da35a7d2ecf8804da1162d63477072c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -524,7 +524,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 41.85
+  m_fontSize: 41.9
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

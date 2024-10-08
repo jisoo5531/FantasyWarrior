@@ -12,7 +12,7 @@ public class BossTest : MonsterUnit
     {        
         monsterID = 2;
         // TODO : ¿”Ω√
-        this.monsterData = new MonsterData(2, "∞Ì¥Î ∞Ò∑Ω", 2000, 2000, 200, 10, 5, 5, 100, 100, 1);
+        //this.monsterData = new MonsterData(2, "∞Ì¥Î ∞Ò∑Ω", 2000, 2000, 200, 10, 5, 5, 100, 100, 1);
         base.Initialize();
     }
     protected override void OnHpChange(int damage)

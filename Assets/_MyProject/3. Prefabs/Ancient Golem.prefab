@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943667865842840}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bone047
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943667872038701}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: RMLegR2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,7 +73,7 @@ GameObject:
   - component: {fileID: 2424943667896812717}
   - component: {fileID: 2424943667896812715}
   - component: {fileID: 2424943667896812714}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FX_ShardRock_Dust_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4701,7 +4701,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943667902034379}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: RMLegR1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4732,7 +4732,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943667928475146}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: RMSpine03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4763,7 +4763,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943667945171411}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bone058
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4794,7 +4794,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943667959769500}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bone043
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4827,7 +4827,7 @@ GameObject:
   - component: {fileID: 2424943668001543836}
   - component: {fileID: 2424943668001543838}
   - component: {fileID: 2424943668001543839}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FX_ShardRock_Debris_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9716,7 +9716,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943668010922254}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: RMArmL1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9747,7 +9747,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943668053062780}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: RMShoulderR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9778,7 +9778,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943668057388550}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bone054
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9809,7 +9809,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943668123416029}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Point010
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9844,7 +9844,7 @@ GameObject:
   - component: {fileID: 2424943668168053988}
   - component: {fileID: 2424943668168053991}
   - component: {fileID: 2424943668168053990}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SideParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14816,7 +14816,7 @@ GameObject:
   - component: {fileID: 2424943668200452968}
   - component: {fileID: 2424943668200452970}
   - component: {fileID: 2424943668200452971}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FX_ShardRock_Dust_Trail_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19445,7 +19445,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2424943668201785654}
   - component: {fileID: 2424943668201785655}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: JumpFeedback
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19810,7 +19810,7 @@ GameObject:
   - component: {fileID: 2424943668222466150}
   - component: {fileID: 2424943668222466168}
   - component: {fileID: 2424943668222466169}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FX_ShardRock_Embers_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24429,7 +24429,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943668251985041}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Point007
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24461,7 +24461,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943668282033521}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bone055
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24492,7 +24492,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943668297743655}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Point011
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24524,7 +24524,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943668305814278}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: RMSpine01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24555,7 +24555,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943668317496664}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bone033
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24588,7 +24588,7 @@ GameObject:
   - component: {fileID: 2424943668322904889}
   - component: {fileID: 2424943668322904871}
   - component: {fileID: 2424943668322904870}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FX_ShardRock_Dust_End_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29216,7 +29216,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943668340789539}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bone061
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29249,7 +29249,7 @@ GameObject:
   - component: {fileID: 2424943668388948371}
   - component: {fileID: 2424943668388948373}
   - component: {fileID: 2424943668388948370}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FX_ShardRock_Embers_Trail_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33868,7 +33868,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943668395635670}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Feedback Action
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33904,7 +33904,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943668464595086}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Point006
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33938,7 +33938,7 @@ GameObject:
   - component: {fileID: 2424943668473702939}
   - component: {fileID: 2424943668473702941}
   - component: {fileID: 2424943668473702938}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FX_ShardRock_Smaller_Trail_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38864,7 +38864,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943668480416668}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bone051
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38897,7 +38897,7 @@ GameObject:
   - component: {fileID: 2424943668494338701}
   - component: {fileID: 2424943668494338699}
   - component: {fileID: 2424943668494338698}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FX_ShardRock_Dust_End_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43529,7 +43529,7 @@ GameObject:
   - component: {fileID: 2424943668557209958}
   - component: {fileID: 2424943668557209954}
   - component: {fileID: 2424943668557209957}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FX_Swirl_Fast_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48442,7 +48442,7 @@ GameObject:
   - component: {fileID: 2424943668561755211}
   - component: {fileID: 2424943668561755209}
   - component: {fileID: 2424943668561755208}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FX_ShardRock_Embers_End_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53061,7 +53061,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943668566917972}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: RMShoulderL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53092,7 +53092,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943668650877883}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bone030
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -53125,7 +53125,7 @@ GameObject:
   - component: {fileID: 2424943668665842659}
   - component: {fileID: 2424943668665842661}
   - component: {fileID: 2424943668665842658}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FX_ShardRock_Debris_End_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58014,7 +58014,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943668692833051}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bone044
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58045,7 +58045,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943668714576105}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bone059
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58078,7 +58078,7 @@ GameObject:
   - component: {fileID: 2424943668721529919}
   - component: {fileID: 2424943668721529917}
   - component: {fileID: 2424943668721529916}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SparksSide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62959,7 +62959,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943668753185269}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Point009
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62993,7 +62993,7 @@ GameObject:
   - component: {fileID: 2424943668796106213}
   - component: {fileID: 2424943668796106211}
   - component: {fileID: 2424943668796106210}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FX_ShardRock_Debris_End_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67884,7 +67884,7 @@ GameObject:
   - component: {fileID: 2424943668824318304}
   - component: {fileID: 2424943668824318318}
   - component: {fileID: 2424943668824318305}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Sparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72764,7 +72764,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943668827865013}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Plane Transform 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72795,7 +72795,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943668829018244}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bone041
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72828,7 +72828,7 @@ GameObject:
   - component: {fileID: 2424943668830080937}
   - component: {fileID: 2424943668830080919}
   - component: {fileID: 2424943668830080918}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FX_ShardRock_Embers_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -77447,7 +77447,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943668852391517}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bone056
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -77478,7 +77478,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943668852958878}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: RMLegL2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -77511,7 +77511,7 @@ GameObject:
   - component: {fileID: 2424943668870489176}
   - component: {fileID: 2424943668870489179}
   - component: {fileID: 2424943668870489178}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FX_ShardRock_Shooting_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82445,7 +82445,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2424943668887450542}
   - component: {fileID: 2424943668887450543}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: RotateFeedback
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82962,7 +82962,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943668887780881}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bone031
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82993,7 +82993,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943668970708311}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bone057
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83026,7 +83026,7 @@ GameObject:
   - component: {fileID: 2424943668998398770}
   - component: {fileID: 2424943668998398768}
   - component: {fileID: 2424943668998398771}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ForwardParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87857,7 +87857,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943669010212292}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: RM_Root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87935,7 +87935,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2424943669014029478}
   - component: {fileID: 2424943669014029497}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: ShardRockFeedback
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88144,7 +88144,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943669032563662}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bone037
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88175,7 +88175,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943669041840819}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bone038
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88206,7 +88206,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943669045488087}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: RMLegR3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88237,7 +88237,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943669087583822}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bone032
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88270,7 +88270,7 @@ GameObject:
   - component: {fileID: 2424943669152538689}
   - component: {fileID: 2424943669152538703}
   - component: {fileID: 2424943669152538702}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FX_ShardRock_Smaller_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93199,7 +93199,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943669157919861}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: RMSpine02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93231,7 +93231,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2424943669163182384}
   - component: {fileID: 2424943669163182385}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ChargeFeedbacks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94135,7 +94135,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943669177712300}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bone040
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94166,7 +94166,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943669197275781}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: RMHead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94197,7 +94197,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943669208134171}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: RMPelvis
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94228,7 +94228,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943669237719982}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bone060
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94259,7 +94259,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943669239609309}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: RMArmL2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94292,7 +94292,7 @@ GameObject:
   - component: {fileID: 2424943669374241438}
   - component: {fileID: 2424943669374241425}
   - component: {fileID: 2424943669374241424}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ChargeExplosion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99185,7 +99185,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943669385130809}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bone053
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99216,7 +99216,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943669398108570}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: RMArmR2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99247,7 +99247,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943669399432119}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: RMLegL3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -99280,7 +99280,7 @@ GameObject:
   - component: {fileID: 2424943669419354733}
   - component: {fileID: 2424943669419354735}
   - component: {fileID: 2424943669419354732}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FX_ShardRock_Blast_Trail_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104160,7 +104160,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943669422003044}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bone034
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104191,7 +104191,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943669459249471}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: PelvisPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -104225,7 +104225,7 @@ GameObject:
   - component: {fileID: 2424943669482270864}
   - component: {fileID: 2424943669482270866}
   - component: {fileID: 2424943669482270867}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FX_ShardRock_Dust_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -108857,7 +108857,7 @@ GameObject:
   - component: {fileID: 2424943669568031597}
   - component: {fileID: 2424943669568031595}
   - component: {fileID: 2424943669568031592}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FX_ShardRock_Explosion_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113823,7 +113823,7 @@ GameObject:
   - component: {fileID: 2424943669580180074}
   - component: {fileID: 2424943669580180072}
   - component: {fileID: 2424943669580180075}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FX_ShardRock_Blast_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118703,7 +118703,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943669584458260}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Point008
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118743,7 +118743,7 @@ GameObject:
   - component: {fileID: 2424943669643182966}
   - component: {fileID: 2424943669643182967}
   - component: {fileID: 2424943669643182964}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Ancient Golem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118876,7 +118876,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpForce: 60
   groundCheckDistance: 10
-  maxJumpHeight: 50
+  maxJumpHeight: 30
   fallMultiplier: 5
   additionalFallForce: 40
   groundLayer:
@@ -118933,7 +118933,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2424943669679610868}
   - component: {fileID: 2424943669679610869}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: RockCreatureMesh_LP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119080,7 +119080,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943669691976452}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Point012
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -119114,7 +119114,7 @@ GameObject:
   - component: {fileID: 2424943669715425761}
   - component: {fileID: 2424943669715425775}
   - component: {fileID: 2424943669715425774}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FX_ShardRock_Embers_End_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -123733,7 +123733,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943669720385775}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: RMLegL1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -123764,7 +123764,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943669762460247}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bone052
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -123798,7 +123798,7 @@ GameObject:
   - component: {fileID: 2424943669771159478}
   - component: {fileID: 2424943669771159476}
   - component: {fileID: 2424943669771159477}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: LandingFeedback
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124268,7 +124268,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943669781586454}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bone046
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124299,7 +124299,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943669806640549}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bone048
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124331,7 +124331,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2424943669807106199}
   - component: {fileID: 2424943669807106196}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: RockCreatureSpikesMesh_LP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124431,7 +124431,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943669823982143}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: RMArmR1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124462,7 +124462,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943669825149460}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bone042
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124493,7 +124493,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943669830594492}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Point005
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124525,7 +124525,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943669840523950}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bone035
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124556,7 +124556,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943669865898542}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bone039
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124587,7 +124587,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2424943669942995901}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: Bone045
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124620,7 +124620,7 @@ GameObject:
   - component: {fileID: 2424943669946241944}
   - component: {fileID: 2424943669946241926}
   - component: {fileID: 2424943669946241945}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FX_ShardRock_Debris_End_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -129511,7 +129511,7 @@ GameObject:
   - component: {fileID: 2604288421009928772}
   - component: {fileID: 2807299295108332422}
   - component: {fileID: 2806644169799811616}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FX_Explosion_Sparks_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134393,7 +134393,7 @@ GameObject:
   - component: {fileID: 2610799997390468992}
   - component: {fileID: 2777191195930487358}
   - component: {fileID: 2805790285333402736}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FX_Explosion_Fire_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -139284,7 +139284,7 @@ GameObject:
   - component: {fileID: 2610912418877234452}
   - component: {fileID: 2807289931431873356}
   - component: {fileID: 2807645159341016204}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: FX_Explosion_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

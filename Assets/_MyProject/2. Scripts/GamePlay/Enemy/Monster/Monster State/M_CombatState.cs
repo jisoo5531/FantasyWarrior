@@ -29,8 +29,10 @@ public class M_CombatState : IState
     public void Excute()
     {
         //Debug.Log("Combat State ½ÇÇà Áß");
-
-        monster.unitAnim.AttackAnimPlay();        
+        if (monster.unitAnim != null)
+        {
+            monster.unitAnim.AttackAnimPlay();
+        }
 
         if (monster.followable.DistanceToPlayer > monster.attackable.Range)
         {

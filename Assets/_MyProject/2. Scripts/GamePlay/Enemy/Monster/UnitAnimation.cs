@@ -22,6 +22,7 @@ public class UnitAnimation : MonoBehaviour
         {
             return;
         }
+        anim.SetLayerWeight(1, 1);
         anim.SetTrigger("Attack");
     }
 

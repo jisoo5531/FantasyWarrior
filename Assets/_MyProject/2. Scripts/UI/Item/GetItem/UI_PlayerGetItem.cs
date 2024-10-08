@@ -11,10 +11,7 @@ public class UI_PlayerGetItem : MonoBehaviour
     {
         InventoryManager.Instance.OnGetItemData += OnGetItem;
     }
-    private void OnDisable()
-    {
-        InventoryManager.Instance.OnGetItemData -= OnGetItem;
-    }
+
     private void OnGetItem(ItemData item)
     {
         GameObject go_getItem = Instantiate(UI_GetitemPrefab, GetItemContent.transform);
