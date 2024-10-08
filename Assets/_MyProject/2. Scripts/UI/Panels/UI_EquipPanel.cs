@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class UI_EquipPanel : MonoBehaviour
 {
+    [Header("장비 해제 버튼")]
+    public Button unEquipButton;
 
     [Header("Slot")]
     public List<UI_EquipSlot> EquipItemParts;
@@ -14,6 +16,10 @@ public class UI_EquipPanel : MonoBehaviour
 
     private Dictionary<string, int> userEquip;
 
+    private void Awake()
+    {
+        unEquipButton.onClick.AddListener(UnEquipAll);
+    }
     private void Start()
     {
         PlayerEquipManager.Instance.OnEquipItem += SetItemToSlot;
@@ -51,5 +57,8 @@ public class UI_EquipPanel : MonoBehaviour
         }
     }
 
-    
+    private void UnEquipAll()
+    {
+        PlayerEquipManager.Instance.UnEquipAll();
+    }
 }

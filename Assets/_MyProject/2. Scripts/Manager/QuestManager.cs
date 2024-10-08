@@ -270,6 +270,16 @@ public class QuestManager : MonoBehaviour
         return null;
     }
 
+    public bool IsFinishQuest(int quest_ID)
+    {
+        QuestProgress questProgress = questProgressList.Find(x => x.quest_Id == quest_ID);
+        if (questProgress == null)
+        {
+            return false;
+        }
+        return questProgress.IsQuestComplete();
+    }
+
     #endregion
 
 

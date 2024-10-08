@@ -197,6 +197,15 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Menu"",
+                    ""type"": ""Button"",
+                    ""id"": ""a4f565a2-32ae-476e-898c-75b2c412ceff"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -463,6 +472,17 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""action"": ""DialogProgress"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f80f5006-7fef-49bc-b073-ee84ac2a4d74"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -507,6 +527,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         m_PlayerActions_Item_5 = m_PlayerActions.FindAction("Item_5", throwIfNotFound: true);
         m_PlayerActions_Interact = m_PlayerActions.FindAction("Interact", throwIfNotFound: true);
         m_PlayerActions_DialogProgress = m_PlayerActions.FindAction("DialogProgress", throwIfNotFound: true);
+        m_PlayerActions_Menu = m_PlayerActions.FindAction("Menu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -587,6 +608,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_Item_5;
     private readonly InputAction m_PlayerActions_Interact;
     private readonly InputAction m_PlayerActions_DialogProgress;
+    private readonly InputAction m_PlayerActions_Menu;
     public struct PlayerActionsActions
     {
         private @PlayerInputAction m_Wrapper;
@@ -610,6 +632,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         public InputAction @Item_5 => m_Wrapper.m_PlayerActions_Item_5;
         public InputAction @Interact => m_Wrapper.m_PlayerActions_Interact;
         public InputAction @DialogProgress => m_Wrapper.m_PlayerActions_DialogProgress;
+        public InputAction @Menu => m_Wrapper.m_PlayerActions_Menu;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -676,6 +699,9 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @DialogProgress.started += instance.OnDialogProgress;
             @DialogProgress.performed += instance.OnDialogProgress;
             @DialogProgress.canceled += instance.OnDialogProgress;
+            @Menu.started += instance.OnMenu;
+            @Menu.performed += instance.OnMenu;
+            @Menu.canceled += instance.OnMenu;
         }
 
         private void UnregisterCallbacks(IPlayerActionsActions instance)
@@ -737,6 +763,9 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @DialogProgress.started -= instance.OnDialogProgress;
             @DialogProgress.performed -= instance.OnDialogProgress;
             @DialogProgress.canceled -= instance.OnDialogProgress;
+            @Menu.started -= instance.OnMenu;
+            @Menu.performed -= instance.OnMenu;
+            @Menu.canceled -= instance.OnMenu;
         }
 
         public void RemoveCallbacks(IPlayerActionsActions instance)
@@ -784,5 +813,6 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         void OnItem_5(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnDialogProgress(InputAction.CallbackContext context);
+        void OnMenu(InputAction.CallbackContext context);
     }
 }

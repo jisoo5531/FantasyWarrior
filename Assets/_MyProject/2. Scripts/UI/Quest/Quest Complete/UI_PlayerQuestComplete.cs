@@ -15,9 +15,13 @@ public class UI_PlayerQuestComplete : MonoBehaviour
 
     private QuestData quest;
 
-    private void Start()
+    private void OnEnable()
     {
         QuestManager.Instance.OnCompleteQuestData += OnCompleteQuestData;
+    }
+    private void OnDisable()
+    {
+        QuestManager.Instance.OnCompleteQuestData -= OnCompleteQuestData;
     }
 
     private void OnCompleteQuestData(QuestData quest)

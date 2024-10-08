@@ -23,8 +23,7 @@ public class PlayerEquipManager : MonoBehaviour
     /// </summary>
     public Dictionary<string, int> UserEquipTable { get; private set; }
 
-    [Header("장비 해제 버튼")]
-    public Button unEquipButton;
+    
     /// <summary>
     /// 플레이어가 장비를 장착했을 때, 발생하는 이벤트
     /// </summary>
@@ -41,7 +40,7 @@ public class PlayerEquipManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        unEquipButton.onClick.AddListener(UnEquipAll);        
+        
         //EventHandler.managerEvent.RegisterStatManagerInit(Initialize);
     }
     /// <summary>
@@ -119,7 +118,7 @@ public class PlayerEquipManager : MonoBehaviour
     /// <para>모든 장비 해제</para>
     /// <para>HP 등의 스탯 변화도 같이 동작</para>
     /// </summary>
-    private void UnEquipAll()
+    public void UnEquipAll()
     {
         for (int i = 0; i < UserEquipTable.Count; i++)
         {

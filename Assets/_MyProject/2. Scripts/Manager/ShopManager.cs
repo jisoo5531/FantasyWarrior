@@ -91,9 +91,8 @@ public class ShopManager : MonoBehaviour
             else
             {
                 Debug.Log("아이템 성공적으로 샀다.");
-                ItemData item = ItemManager.Instance.GetItemData(shopItem.Item_ID);
-                // TODO : 대량으로 사들일 경우엔 수량 변수로 변경
-                InventoryManager.Instance.GetItem(item, 1);
+                ItemData item = ItemManager.Instance.GetItemData(shopItem.Item_ID);                
+                InventoryManager.Instance.GetItem(item, amount);
                 BuySuccess?.Invoke();
             }
             //shopItem.Price

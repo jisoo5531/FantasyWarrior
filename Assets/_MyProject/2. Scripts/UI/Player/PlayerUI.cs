@@ -19,10 +19,13 @@ public class PlayerUI : UIComponent
     public TMP_Text LevelText;
     public Animator LevelAnim;
     [Header("Skill")]
-    public List<Image> skillIconList;    
+    public List<Image> skillIconList;
+
+    [Header("빠른 메뉴")]
+    public UI_Menu menu;
 
     private void Awake()
-    {
+    {        
         EventHandler.playerEvent.RegisterPlayerLevelUp(OnLevelUp);
         EventHandler.skillKey.RegisterSkillKeyChange(OnChangeSkillKeyBind);
         PlayerSkill.OnKeyBindInit += OnChangeSkillKeyBind;
@@ -34,6 +37,10 @@ public class PlayerUI : UIComponent
         PlayerEquipManager.Instance.OnAllUnEquipButtonClick += OnChangeMP;
         UserStatManager.Instance.OnLevelUpUpdateStat += OnChangeMP;
         UserStatManager.Instance.OnChangeExpStat += OnChangeExp;        
+    }
+    private void OnEnable()
+    {
+        GameManager.inputActions.PlayerActions.Menu.performed += OnMenu;
     }
 
     public override void SetInitValue()
@@ -127,5 +134,10 @@ public class PlayerUI : UIComponent
         ExpBar.value = userStatClient.Exp;
         float expTextValue = Mathf.Floor((float)userStatClient.Exp / (float)userStatClient.MaxExp * 1000f) / 1000f;
         expText.text = $"{userStatClient.Exp} / {userStatClient.MaxExp} {expTextValue}%";
+    }
+
+    private void OnMenu(InputAction.CallbackContext context)
+    {
+        menu.gameObject.SetActive(!menu.gameObject.activeSelf);
     }
 }

@@ -7,14 +7,28 @@ public class UI_PlayerGetItem : MonoBehaviour
     public GameObject UI_GetitemPrefab;
     public GameObject GetItemContent;
 
+
     private void Start()
     {
         InventoryManager.Instance.OnGetItemData += OnGetItem;
     }
+    //private void OnEnable()
+    //{
+    //    InventoryManager.Instance.OnGetItemData += OnGetItem;
+    //}
+    //private void OnDisable()
+    //{
+    //    InventoryManager.Instance.OnGetItemData -= OnGetItem;
+    //}
 
     private void OnGetItem(ItemData item)
     {
-        GameObject go_getItem = Instantiate(UI_GetitemPrefab, GetItemContent.transform);
+        Debug.Log("아이템 이름 : " + item.Item_Name);
+        Debug.Log(UI_GetitemPrefab == null);
+        //Debug.Log()
+        Debug.Log(this == null);
+        Debug.Log(GetItemContent == null);
+        GameObject go_getItem = Instantiate(UI_GetitemPrefab, transform);
         go_getItem.GetComponent<UI_GetItemPrefab>().Initialize(item);
     }
 }

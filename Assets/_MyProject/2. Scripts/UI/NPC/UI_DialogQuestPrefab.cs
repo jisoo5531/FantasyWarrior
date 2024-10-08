@@ -8,6 +8,8 @@ using System;
 public class UI_DialogQuestPrefab : MonoBehaviour
 {
     public TMP_Text dialogNameLabel;
+    public Image startQuestImage;
+    public Image completeQuestImage;
 
     /// <summary>
     /// 어떤 npc와 대화 중인지
@@ -26,12 +28,22 @@ public class UI_DialogQuestPrefab : MonoBehaviour
     {
         GetComponent<Button>().onClick.AddListener(OnClickQuestDialog);
     }
-    public void Initialize(int npcID, QuestData quest, Action<DialogStatus, int> SelectDialog)
+    public void Initialize(int npcID, QuestData quest, bool isFinished, Action<DialogStatus, int> SelectDialog)
     {
         this.npc_ID = npcID;
         this.quest = quest;
         dialogNameLabel.text = quest.Quest_Name;
         clickStartDialog = SelectDialog;
+
+        SetQuestIcon(isFinished);
+    }
+    /// <summary>
+    /// 이 퀘스트가 완료 가능한 퀘스트인지 여부를 확인할 이미지 셋팅
+    /// </summary>
+    private void SetQuestIcon(bool isFinished)
+    {
+        startQuestImage.gameObject.SetActive(!isFinished);
+        completeQuestImage.gameObject.SetActive(isFinished);
     }
 
     private void OnClickQuestDialog()

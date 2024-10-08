@@ -40,10 +40,6 @@ public class UI_ShopPanel : MonoBehaviour
     [Header("플레이어 UI")]
     public GameObject PlayerUI;
 
-    private void Start()
-    {
-        
-    }
     private void ButtonInitialize()
     {
         this.EquipContent = itemContentList[0];
@@ -109,8 +105,15 @@ public class UI_ShopPanel : MonoBehaviour
     public void OnFailureBuy()
     {
         Debug.Log("아이템 사는 것 실패");
-        Warining_NOMoney.SetActive(false);
+        Debug.Log(this == null);
+        Debug.Log(gameObject.name);
+        //Debug.Log(FindObjectOfType<UI_Warning>(true).gameObject.name);
+        //GameObject.Find("Warning_Buy").SetActive(true);        
+        //GetComponentInChildren<UI_Warning>().gameObject.SetActive(true);
         Warining_NOMoney.SetActive(true);
+        //FindObjectOfType<UI_Warning>(true).gameObject.SetActive(true);
+        Debug.Log(Warining_NOMoney == null);
+        //Warining_NOMoney.SetActive(true);
     }
     #endregion
 

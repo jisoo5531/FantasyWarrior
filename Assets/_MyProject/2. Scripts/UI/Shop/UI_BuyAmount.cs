@@ -61,10 +61,11 @@ public class UI_BuyAmount : UI_BuyOrSellAmount
     /// </summary>
     private void OnClickBuyButton()
     {
-        Action buySuccess = PanelManager.Instance.ShopPanel.OnSuccessBuySell;
-        Action sellSuccess = PanelManager.Instance.ShopPanel.OnFailureBuy;
+        
+        Action buySuccess = transform.parent.GetComponent<UI_ShopPanel>().OnSuccessBuySell;
+        Action buyFail = transform.parent.GetComponent<UI_ShopPanel>().OnFailureBuy;
         buySuccess += SuccessBuy;
-        ShopManager.Instance.BuyItem(this.shopItem.NPC_Shop_Item_ID, itemQuantity, buySuccess, sellSuccess);
+        ShopManager.Instance.BuyItem(this.shopItem.NPC_Shop_Item_ID, itemQuantity, buySuccess, buyFail);
     }    
     private void SuccessBuy()
     {

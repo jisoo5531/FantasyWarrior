@@ -88,7 +88,7 @@ public class UI_NPCDialogue : MonoBehaviour
     }
     public void Initialize()
     {
-        playerUI = FindObjectOfType<PlayerUI>();
+        
         ResetDialogState();
         DialogClassify();
         Debug.Log($"{dailyDialogList.Count}, {questStartDL_List.Count}, {questEndDL_List.Count}");
@@ -99,6 +99,7 @@ public class UI_NPCDialogue : MonoBehaviour
     private void OnEnable()
     {
         GameManager.inputActions.PlayerActions.DialogProgress.performed += OnPressNextDialog;
+        playerUI = FindObjectOfType<PlayerUI>();
         ResetDialogState();
         StartDialogue();
     }
@@ -172,8 +173,9 @@ public class UI_NPCDialogue : MonoBehaviour
             QuestData questData = QuestManager.Instance.GetQuestData(questID);
             if (UserStatManager.Instance.userStatClient.Level >= questData.ReqLv)
             {
+                bool isFinish = QuestManager.Instance.IsFinishQuest(questID);
                 UI_DialogQuestPrefab dialogSelectElement = Instantiate(dialogQuestPrefab, DialogSelectContent.transform).GetComponent<UI_DialogQuestPrefab>();
-                dialogSelectElement.Initialize(this.NPC_ID, questData, SelectDialog);
+                dialogSelectElement.Initialize(this.NPC_ID, questData, isFinish, SelectDialog);
             }            
         }
         #endregion
@@ -192,7 +194,7 @@ public class UI_NPCDialogue : MonoBehaviour
             }
             QuestData questData = QuestManager.Instance.GetQuestData(tempNPCQuest.Quest_ID);
             UI_DialogQuestPrefab dialogSelectElement = Instantiate(dialogQuestPrefab, DialogSelectContent.transform).GetComponent<UI_DialogQuestPrefab>();
-            dialogSelectElement.Initialize(this.NPC_ID, questData, SelectDialog);
+            dialogSelectElement.Initialize(this.NPC_ID, questData, true, SelectDialog);
         }
         #endregion
     }

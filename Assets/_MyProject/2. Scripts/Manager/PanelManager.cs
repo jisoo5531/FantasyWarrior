@@ -83,7 +83,7 @@ public class PanelManager : MonoBehaviour
             }
         }
     }
-    private void UpdateUIState()
+    public void UpdateUIState()
     {
         bool anyPanelOpen = SkillPanel.gameObject.activeSelf ||
                             InventoryPanel.gameObject.activeSelf ||
@@ -95,7 +95,7 @@ public class PanelManager : MonoBehaviour
         // 모든 패널이 닫혔을 때만 플레이어 UI를 활성화
         playerUI.gameObject.SetActive(!anyPanelOpen);
     }
-    private void CloseOtherPanels(GameObject activePanel)
+    public void CloseOtherPanels(GameObject activePanel)
     {
         if (SkillPanel.gameObject != activePanel) SkillPanel.gameObject.SetActive(false);
         if (InventoryPanel.gameObject != activePanel) InventoryPanel.gameObject.SetActive(false);
@@ -113,7 +113,7 @@ public class PanelManager : MonoBehaviour
         {
             wasCraftPanelOpen = true;
             CraftPanel.gameObject.SetActive(false);
-        }
+        }        
     }
     private void OnSkillUI(InputAction.CallbackContext context)
     {

@@ -56,10 +56,6 @@ public class InventoryManager : MonoBehaviour
     {
         Instance = this;
     }
-    private void Start()
-    {
-        Initialize();
-    }
     public void Initialize()
     {
         GetDataFromDatabase();
@@ -148,6 +144,7 @@ public class InventoryManager : MonoBehaviour
         // 아이템 획득 시, 퀘스트와 관련된 아이템인지 확인
         QuestManager.Instance.UpdateQuestProgress(itemID: itemData.Item_ID);
 
+        Debug.Log("여기 안 돼?");
         CheckGetCraftTool(itemData.Item_ID);
         OnGetItemData?.Invoke(itemData);
         OnGetItem?.Invoke();

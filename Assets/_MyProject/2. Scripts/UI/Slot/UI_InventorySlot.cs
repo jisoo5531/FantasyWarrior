@@ -92,10 +92,13 @@ public class UI_InventorySlot : UI_ItemSlot
     }
     public void EventSlotClear(ItemData item)
     {
-        this.itemID = 0;
-        this.itemImage.sprite = null;
-        this.itemImage.ImageTransparent(0);
-        this.itemQuantityText.gameObject.SetActive(false);
+        if (item.Item_ID == this.itemID)
+        {
+            this.itemID = 0;
+            this.itemImage.sprite = null;
+            this.itemImage.ImageTransparent(0);
+            this.itemQuantityText.gameObject.SetActive(false);
+        }        
     }
     /// <summary>
     /// 아이템이 없는 슬롯 초기화
