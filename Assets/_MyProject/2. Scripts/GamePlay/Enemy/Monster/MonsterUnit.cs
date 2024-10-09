@@ -37,7 +37,10 @@ public class MonsterUnit : Enemy
         damagable = gameObject.AddComponent<Damagable>();
         followable = gameObject.AddComponent<Followable>();
 
-        monsterUI = GetComponentInChildren<UIComponent>();
+        if (monsterUI == null)
+        {
+            monsterUI = GetComponentInChildren<UIComponent>();
+        }
         unitAnim = GetComponent<UnitAnimation>();
         nav = GetComponent<NavMeshAgent>();
     }
@@ -67,7 +70,7 @@ public class MonsterUnit : Enemy
         M_StateMachine.Initialize(M_StateMachine.idleState);
     }
     private void Update()
-    {        
+    {
         if (damagable.isStunned)
         {
             Debug.Log("얘 스턴이다. 못 움직여");

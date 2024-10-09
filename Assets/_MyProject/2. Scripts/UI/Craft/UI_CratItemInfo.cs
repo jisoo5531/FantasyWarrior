@@ -150,6 +150,7 @@ public class UI_CratItemInfo : MonoBehaviour
 
         if (itemQuantity > maxCraft)
         {
+            SoundManager.Instance.PlaySound("Warning");
             // 만약 재료가 그만큼 없으면 
             itemQuantity = maxCraft;
         }
@@ -164,6 +165,7 @@ public class UI_CratItemInfo : MonoBehaviour
         itemQuantity -= 1;
         if (itemQuantity < 0)
         {
+            SoundManager.Instance.PlaySound("Warning");
             itemQuantity = 0;
         }
         UpdateItemCostGoldText();
@@ -188,6 +190,8 @@ public class UI_CratItemInfo : MonoBehaviour
         {
             // 만들 수량만큼 재료가 없으면 
             itemQuantity = maxCraft;
+
+            SoundManager.Instance.PlaySound("Warning");
         }
         UpdateItemCostGoldText();
         UpdateQuantityText();
@@ -195,6 +199,8 @@ public class UI_CratItemInfo : MonoBehaviour
     private void OnClickBackButton()
     {
         gameObject.SetActive(false);
+
+        SoundManager.Instance.PlaySound("Cancel");
     }
     private void OnClickCraftButton()
     {
@@ -218,9 +224,13 @@ public class UI_CratItemInfo : MonoBehaviour
         }
         
         gameObject.SetActive(false);
+
+        SoundManager.Instance.PlaySound("ShopBuy");
     }
     private void FailureCraft()
     {
         FindObjectOfType<PanelManager>(true).CraftPanel.error_CraftWindow.SetActive(true);
+
+        SoundManager.Instance.PlaySound("WarningBuy");
     }
 }

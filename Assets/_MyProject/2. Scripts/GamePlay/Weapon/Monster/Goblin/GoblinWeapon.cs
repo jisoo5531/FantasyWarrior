@@ -12,9 +12,12 @@ public class GoblinWeapon : Weapon
             return;
         }
 
+        
         if (other.TryGetComponent(out Damagable damagable))
         {
-            damagable.GetDamage(damage);
+            transform.root.GetComponent<Attackable>().SendDamage(damagable);
         }
     }
+
+    
 }

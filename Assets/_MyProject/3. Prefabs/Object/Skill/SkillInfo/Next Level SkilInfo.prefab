@@ -69,8 +69,8 @@ MonoBehaviour:
   m_text: "[\uB2E4\uC74C \uB808\uBCA8 31]\n230%\uC758 \uB370\uBBF8\uC9C0\uB85C \uC801\uC744
     3\uBC88 \uACF5\uACA9"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 3da35a7d2ecf8804da1162d63477072c, type: 2}
-  m_sharedMaterial: {fileID: -359879048511075999, guid: 3da35a7d2ecf8804da1162d63477072c, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: bd6e1803c8af76841b6c19ef361e69ea, type: 2}
+  m_sharedMaterial: {fileID: 6722367201785526945, guid: bd6e1803c8af76841b6c19ef361e69ea, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

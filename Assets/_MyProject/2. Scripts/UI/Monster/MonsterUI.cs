@@ -33,6 +33,7 @@ public class MonsterUI : UIComponent
         if (Damagable.Hp <= 0)
         {
             Damagable.Hp = 0;
+            this.gameObject.SetActive(false);
         }
         hpBar.value = Damagable.Hp;
         hpText.text = $"{Damagable.Hp}";

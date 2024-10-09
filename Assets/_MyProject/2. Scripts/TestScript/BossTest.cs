@@ -6,11 +6,12 @@ public class BossTest : MonsterUnit
 {
     // TOOD : 임시 플레이어 타겟 설정, 나중에 MonsterUnit의 플레이어 주석 해제로 사용
     //public GameObject testPlayer;
-    
+
     int rewardExp = 1000;
     protected override void Initialize()
-    {        
+    {
         monsterID = 2;
+        monsterUI = FindObjectOfType<MonsterUI>(true);
         // TODO : 임시
         //this.monsterData = new MonsterData(2, "고대 골렘", 2000, 2000, 200, 10, 5, 5, 100, 100, 1);
         base.Initialize();
@@ -24,7 +25,10 @@ public class BossTest : MonsterUnit
     // TODO : 아이템 랜덤하게?
     protected override void OnDeath()
     {
-        nav.isStopped = true;
+        if (nav.enabled)
+        {
+            nav.isStopped = true;
+        }
         ItemData dropItem = ItemManager.Instance.GetItemData(8);
 
         GameObject rewardItemOBJ = Resources.Load<GameObject>($"Items/{dropItem.Item_Name}");
@@ -36,5 +40,13 @@ public class BossTest : MonsterUnit
 
         base.OnDeath();
     }
-    
+
+    public void OnWeapon()
+    {
+        GetComponentInChildren<Weapon>().GetComponent<Collider>().enabled = true;
+    }
+    public void OffWeapon()
+    {
+        GetComponentInChildren<Weapon>().GetComponent<Collider>().enabled = false;
+    }
 }

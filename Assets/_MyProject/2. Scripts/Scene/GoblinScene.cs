@@ -12,6 +12,8 @@ public class GoblinScene : MonoBehaviour
         SceneManager.Instance.currentSceneNumber = (int)Scene.Goblin;
         //Invoke("PlayerPosInit", 2f);
         PlayerPosInit();
+
+        SoundManager.Instance.PlayBGM("GoblinBGM");
     }
     private void PlayerPosInit()
     {

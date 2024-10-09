@@ -11,7 +11,11 @@ public class UI_PlayerLevelUp : MonoBehaviour
     private void Awake()
     {
         EventHandler.playerEvent.RegisterPlayerLevelUp(OnLevelUP);
-    }    
+    }
+    private void OnDisable()
+    {
+        EventHandler.playerEvent.UnRegisterPlayerLevelUp(OnLevelUP);
+    }
 
     private void OnLevelUP()
     {

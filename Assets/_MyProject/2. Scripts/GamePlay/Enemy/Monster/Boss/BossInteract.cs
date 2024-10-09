@@ -16,7 +16,7 @@ public class BossInteract : MonoBehaviour
         FindObjectOfType<CinemachineClearShot>().Follow = bossAnim.transform;
         FindObjectOfType<CinemachineClearShot>().LookAt = bossAnim.transform;
 
-        Invoke("BossStart", 4f);
+        Invoke("BossStart", 5f);
     }
 
     private void BossStart()
@@ -26,6 +26,7 @@ public class BossInteract : MonoBehaviour
 
         Destroy(bossAnim.gameObject);
         Instantiate(bossPrefab, bossAnim.transform.position, bossAnim.transform.rotation);
+        FindObjectOfType<MonsterUI>(true).gameObject.SetActive(true);
 
         Destroy(this.gameObject);
     }

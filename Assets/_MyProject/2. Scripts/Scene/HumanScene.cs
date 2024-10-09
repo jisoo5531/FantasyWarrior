@@ -23,6 +23,8 @@ public class HumanScene : MonoBehaviour
             GoblinToHuman();
         }
         SceneManager.Instance.currentSceneNumber = 1;
+
+        SoundManager.Instance.PlayBGM("HumanBGM");
     }
 
     public void GameStart()

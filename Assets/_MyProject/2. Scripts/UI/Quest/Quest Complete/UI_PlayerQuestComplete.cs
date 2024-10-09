@@ -36,6 +36,7 @@ public class UI_PlayerQuestComplete : MonoBehaviour
     private void OnCompleteQuest_GO()
     {
         go_ComleteQuest.SetActive(true);
+        SoundManager.Instance.PlaySound("QuestComplete");
         Invoke("OffCompleteQuest_Go", 3.5f);
     }
     private void OffCompleteQuest_Go()

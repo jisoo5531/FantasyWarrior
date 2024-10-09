@@ -33,6 +33,7 @@ public class UI_SellAmount : UI_BuyOrSellAmount
         base.OnClickAmountUpButton();
         if (itemQuantity > invenItem.Quantity)
         {
+            SoundManager.Instance.PlaySound("Warning");
             itemQuantity = invenItem.Quantity;
         }
         UpdateItemGoldText();

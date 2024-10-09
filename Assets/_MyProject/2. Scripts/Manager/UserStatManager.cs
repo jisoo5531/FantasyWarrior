@@ -154,6 +154,8 @@ public class UserStatManager : MonoBehaviour
         userStatClient.UpdateDEF(userStatClient.levelUpStat.DEFAmount);
         userStatClient.UpdateMaxHP(userStatClient.levelUpStat.MaxhpAmount);
         userStatClient.UpdateMaxMP(userStatClient.levelUpStat.MaxmpAmount);
+        userStatClient.HP = userStatClient.MaxHP;
+        userStatClient.MP = userStatClient.MaxMP;
 
         OnLevelUpUpdateStat?.Invoke();
         EventHandler.playerEvent.TriggerPlayerLevelUp();

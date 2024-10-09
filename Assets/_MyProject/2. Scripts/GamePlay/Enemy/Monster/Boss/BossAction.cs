@@ -184,6 +184,14 @@ public class BossAction : MonoBehaviour
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         isGrounded = false; // 점프 후 땅에 있지 않음
         isLanding = false;
+
+        
+    }
+    public void ToPlayerPos()
+    {
+        float x = boss.player.transform.position.x;
+        float z = boss.player.transform.position.z;
+        transform.position = new Vector3(x, transform.position.y, z);
     }
     // 최대 점프 높이를 넘으면 속도를 제어
     private void LimitJumpHeight()

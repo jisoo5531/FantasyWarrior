@@ -96,24 +96,17 @@ public class UI_ShopPanel : MonoBehaviour
     /// 아이템 사거나 파는 것을 성공했을 때 플레이어 소지금 변경
     /// </summary>
     public void OnSuccessBuySell()
-    {
+    {       
         SetPlayerGold();
+        SoundManager.Instance.PlaySound("ShopBuy");
     }
     /// <summary>
     /// 아이템 사는 것을 실패했을 때의 콜백함수
     /// </summary>
     public void OnFailureBuy()
-    {
-        Debug.Log("아이템 사는 것 실패");
-        Debug.Log(this == null);
-        Debug.Log(gameObject.name);
-        //Debug.Log(FindObjectOfType<UI_Warning>(true).gameObject.name);
-        //GameObject.Find("Warning_Buy").SetActive(true);        
-        //GetComponentInChildren<UI_Warning>().gameObject.SetActive(true);
-        Warining_NOMoney.SetActive(true);
-        //FindObjectOfType<UI_Warning>(true).gameObject.SetActive(true);
-        Debug.Log(Warining_NOMoney == null);
-        //Warining_NOMoney.SetActive(true);
+    {        
+        SoundManager.Instance.PlaySound("WarningBuy");
+        Warining_NOMoney.SetActive(true);                
     }
     #endregion
 

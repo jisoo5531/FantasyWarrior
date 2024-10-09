@@ -96,6 +96,8 @@ public class UI_InventorySlot : UI_ItemSlot
         itemInfoWindow.gameObject.SetActive(false);
 
         SlotClear();
+
+        SoundManager.Instance.PlaySound("EquipItemSkill");
     }
     public void EventSlotClear(ItemData item)
     {

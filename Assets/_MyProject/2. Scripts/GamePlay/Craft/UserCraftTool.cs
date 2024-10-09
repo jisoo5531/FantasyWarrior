@@ -6,6 +6,7 @@ public class UserCraftTool : MonoBehaviour
 {
     public GameObject CutDownTree;
     public GameObject Harvest;
+    public GameObject Fishing;
 
     public void OnCutDownTree()
     {
@@ -22,5 +23,13 @@ public class UserCraftTool : MonoBehaviour
     public void OffHarvest()
     {
         Harvest.SetActive(false);
+    }
+    public void OnFishing()
+    {
+        Fishing.SetActive(true);
+    }
+    public void OffFishing()
+    {
+        Fishing.SetActive(false);
     }
 }

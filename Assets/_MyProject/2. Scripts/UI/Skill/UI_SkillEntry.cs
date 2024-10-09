@@ -124,6 +124,8 @@ public class UI_SkillEntry : MonoBehaviour
         SkillManager.Instance.LearnSkill(this.skillData);
         OnCheckSkillUnlock();
         CheckSkillLearned();
+
+        SoundManager.Instance.PlaySound("LearnSkill");
     }
     /// <summary>
     /// 스킬 항목 (자기 자신)을 누르면 스킬 상세정보 창이 나오게끔

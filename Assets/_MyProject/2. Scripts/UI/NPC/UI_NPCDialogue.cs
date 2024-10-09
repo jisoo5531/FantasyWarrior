@@ -93,7 +93,7 @@ public class UI_NPCDialogue : MonoBehaviour
         DialogClassify();
         Debug.Log($"{dailyDialogList.Count}, {questStartDL_List.Count}, {questEndDL_List.Count}");
 
-        NPC_NameText.text = NPCManager.Instance.GetNPCName(this.NPC_ID);
+        NPC_NameText.text = NPCManager.Instance.GetNPCName(this.NPC_ID);        
     }
 
     private void OnEnable()
@@ -152,6 +152,8 @@ public class UI_NPCDialogue : MonoBehaviour
         playerUI.gameObject.SetActive(false);
         DialogSelectContent.SetActive(true);
         SelectDialogInit();
+
+        SoundManager.Instance.PlaySound("PanelOpenClose");
     }
     /// <summary>
     /// 대화 선택창 초기화(세팅)
@@ -225,6 +227,8 @@ public class UI_NPCDialogue : MonoBehaviour
             default:
                 break;
         }
+
+        SoundManager.Instance.PlaySound("DialogSelect");
     }
     /// <summary>
     /// 대화 내용에 맞춰서 대화 내용 진행
@@ -286,6 +290,7 @@ public class UI_NPCDialogue : MonoBehaviour
     /// </summary>
     private void OnClickDailyDialog()
     {
+        SoundManager.Instance.PlaySound("DialogSelect");
         SelectDialog(DialogStatus.Talk, 0);
     }
     /// <summary>
@@ -293,6 +298,7 @@ public class UI_NPCDialogue : MonoBehaviour
     /// </summary>
     private void OnClickEndDialog()
     {
+        SoundManager.Instance.PlaySound("DialogSelect");
         isDialogSelectEnd = true;
     }
 

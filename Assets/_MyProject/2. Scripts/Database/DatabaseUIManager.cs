@@ -21,6 +21,7 @@ public class DatabaseUIManager : MonoBehaviour
     public void LoginButtonClick()
     {
         DatabaseManager.Instance.Login(emailInput.text, pwInput.text, OnLoginSuccess, OnLoginFail);
+        SoundManager.Instance.PlaySound("GameStart");
     }
     private void OnLoginSuccess(UserData data)
     {

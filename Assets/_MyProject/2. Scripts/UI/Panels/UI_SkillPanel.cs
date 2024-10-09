@@ -111,22 +111,7 @@ public class UI_SkillPanel : MonoBehaviour
             iconPanelList[i].KeyIcon.sprite = PlayerUIManager.Instance.skillIconList[PlayerSkill.EquipSkills[i] - 1];            
             iconPanelList[i].ActionBarIcon.ImageTransparent(1);
             iconPanelList[i].KeyIcon.ImageTransparent(1);
-        }        
-    }
-    private void Reset()
-    {
-        skillWindowContent = GameObject.Find("SkillWindowContent");
-        keySetPanel = GameObject.Find("SkillKeySet");
-
-        //iconPanelList = new List<KeySetIcon>();
-        //for (int i = 1; i <= 4; i++)
-        //{
-        //    KeySetIcon keySetIcon = new KeySetIcon
-        //    (
-        //    GameObject.Find($"ActionBar ICON {i}").GetComponent<Image>(),
-        //    GameObject.Find($"KeySet ICON {i}").GetComponent<Image>()
-        //    );
-        //    iconPanelList.Add(keySetIcon);
-        //}
+        }
+        SoundManager.Instance.PlaySound("EquipItemSkill");
     }
 }

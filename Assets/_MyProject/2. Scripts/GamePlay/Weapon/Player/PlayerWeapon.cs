@@ -14,7 +14,7 @@ public class PlayerWeapon : Weapon
         // 퀘스트 진행상황 업데이트는 맞은 놈이 아닌 때린 놈이 판정
         if (other.TryGetComponent(out Damagable damagable))
         {
-            damagable.GetDamage(damage);
+            transform.root.GetComponent<Attackable>().SendDamage(damagable);
             if (damagable.Hp <= 0)
             {
                 Debug.Log("여기 안되나?");

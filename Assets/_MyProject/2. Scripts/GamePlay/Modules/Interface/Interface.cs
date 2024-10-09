@@ -14,7 +14,7 @@ public interface IAttackable
     int Damage { get; set; }
     float Range { get; set; }
 
-    void SendDamage(int damage);
+    void SendDamage(Damagable damagable);
 }
 public interface IDamagable
 {

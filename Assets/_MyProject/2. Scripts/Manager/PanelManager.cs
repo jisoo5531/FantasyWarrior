@@ -117,7 +117,8 @@ public class PanelManager : MonoBehaviour
         {
             wasCraftPanelOpen = true;
             CraftPanel.gameObject.SetActive(false);
-        }        
+        }
+        SoundManager.Instance.PlaySound("PanelOpenClose");
     }
     private void OnSkillUI(InputAction.CallbackContext context)
     {

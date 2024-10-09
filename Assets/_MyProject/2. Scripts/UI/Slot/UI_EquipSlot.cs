@@ -59,5 +59,7 @@ public class UI_EquipSlot : UI_ItemSlot
         itemInfoWindow.gameObject.SetActive(false);
         this.itemImage.ImageTransparent(0);
         this.itemID = 0;
+
+        SoundManager.Instance.PlaySound("EquipItemSkill");
     }
 }

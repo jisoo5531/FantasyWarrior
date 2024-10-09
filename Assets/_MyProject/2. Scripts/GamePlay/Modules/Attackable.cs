@@ -31,17 +31,17 @@ public class Attackable : MonoBehaviour, IAttackable
         if (weapon != null)
         {
             this.TargetLayer = weapon.targetLayer;
-        }
-
+        }            
+        
         if (weapon != null)
         {
             weapon.damage = this.Damage;
         }
     }
 
-    public void SendDamage(int damage)
+    public void SendDamage(Damagable damagable)
     {
-
+        damagable.GetDamage(this.Damage);
     }
 
     public void OnWeaponCollider()

@@ -17,12 +17,12 @@ public class Weapon : MonoBehaviour
     {                
         // override    
     }
-    private void OnTriggerStay(Collider other)
-    {
-        if ((targetLayer | (1 << other.gameObject.layer)) != targetLayer)
-        {            
-            return;
-        }
-        GetComponent<Collider>().enabled = false;
-    }
+    //private void OnTriggerStay(Collider other)
+    //{
+    //    if ((targetLayer | (1 << other.gameObject.layer)) != targetLayer)
+    //    {            
+    //        return;
+    //    }
+    //    GetComponent<Collider>().enabled = false;
+    //}
 }

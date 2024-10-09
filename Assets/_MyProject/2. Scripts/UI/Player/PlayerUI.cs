@@ -24,8 +24,12 @@ public class PlayerUI : UIComponent
     [Header("빠른 메뉴")]
     public UI_Menu menu;
 
+    private Animator hitAnim;
+
     private void Awake()
-    {        
+    {
+        hitAnim = GameObject.Find("Hit Effect").GetComponent<Animator>();
+
         EventHandler.playerEvent.RegisterPlayerLevelUp(OnLevelUp);
         EventHandler.skillKey.RegisterSkillKeyChange(OnChangeSkillKeyBind);
         PlayerSkill.OnKeyBindInit += OnChangeSkillKeyBind;
@@ -80,6 +84,7 @@ public class PlayerUI : UIComponent
     }
     public override void OnHpChange(int damage)
     {
+        hitAnim.SetTrigger("Hit");
         hpBar.value = Damagable.Hp;
         hpText.text = $"{Damagable.Hp} / {Damagable.MaxHp}";
     }
@@ -91,6 +96,7 @@ public class PlayerUI : UIComponent
     {
         LevelText.text = UserStatManager.Instance.userStatClient.Level.ToString();
         LevelAnim.SetTrigger("LevelUp");
+        SoundManager.Instance.PlaySound("LevelUp");
     }
     private void OnChangeSkillKeyBind()
     {        

@@ -68,7 +68,8 @@ public class PlayerController : MonoBehaviour
         UserStatClient userStatClient = UserStatManager.Instance.userStatClient;
         int MaxHp = userStatClient.MaxHP;
         int Hp = userStatClient.HP;
-        int damage = userStatClient.STR;        
+        int damage = userStatClient.STR;
+        Debug.Log(damage);
         damagable.Initialize(unitID: user_ID, maxHp: MaxHp, hp: Hp, isMonster: false);
         attackable.Initialize(damage: damage, range: 2);
 

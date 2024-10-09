@@ -59,6 +59,7 @@ public class UI_BuyOrSellAmount : MonoBehaviour
         itemQuantity -= 1;
         if (itemQuantity < 0)
         {
+            SoundManager.Instance.PlaySound("Warning");
             itemQuantity = 0;
         }        
     }
@@ -81,5 +82,6 @@ public class UI_BuyOrSellAmount : MonoBehaviour
     private void OnClickBackButton()
     {
         gameObject.SetActive(false);
+        SoundManager.Instance.PlaySound("Cancel");
     }
 }

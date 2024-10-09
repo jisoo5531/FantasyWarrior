@@ -75,6 +75,7 @@ public class Damagable : MonoBehaviour, IDamagable
 
     public void GetDamage(int damage)
     {
+        Debug.Log(gameObject.name + "데미지 입었다");
         if (isDeath)
         {
             return;

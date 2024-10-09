@@ -82,7 +82,7 @@ public class PlayerSkill : MonoBehaviour
             for (int i = 0; i < skillDatas.Count; i++)
             {
                 SkillData skillData = skillDatas[i];
-                skillTable.Add(i + 1, skillData.Skill_Name);
+                skillTable.Add(i + 1, $"W_Skill_{i+1}");
             }
         }
     }
